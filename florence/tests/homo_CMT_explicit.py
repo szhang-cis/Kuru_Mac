@@ -4,7 +4,7 @@ import sys, os
 import numpy as np
 from numpy import einsum
 # Build a path for python to Florence
-sys.path.append(os.path.join(os.path.expanduser("~"),"florence"))
+sys.path.append(os.path.join(os.path.expanduser("~/femme"),"florence"))
 #import Florence
 from Florence import *
 

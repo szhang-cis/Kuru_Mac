@@ -4,27 +4,28 @@ function NodeArrangementHex(C)
    quad_aranger = vcat(linear_bases_idx,deleteat!(collect(1:(C+1)^2),sort(linear_bases_idx)))
    element_numbering = copy(quad_aranger)
    for i=1:C
+      idx = size(element_numbering,1)
       faces_z = quad_aranger.+maximum(element_numbering)
       element_numbering = vcat(element_numbering,faces_z)
       if i==C
-            element_numbering = element_numbering[!(element_numbering.==faces_z[1:4])]
-            element_numbering = vcat(element_numbering[1:4],faces_z[1:4],element_numbering[4:end])
+            element_numbering = deleteat!(element_numbering,idx+1:idx+4)
+            element_numbering = vcat(element_numbering[1:4],faces_z[1:4],element_numbering[5:end])
       end
    end
    traversed_edge_numbering_hex = nothing
 
 
    # GET FACE NUMBERING ORDER FROM TETRAHEDRAL ELEMENT
-   face_0,face_1,face_2,face_3 = [],[],[],[]
+   face_0,face_1,face_2,face_3 = Int[],Int[],Int[],Int[]
    if C==0
-      face_0 = [0,1,2,3]  # constant Z =-1 plane
-      face_1 = [4,5,6,7]  # constant Z = 1 plane
-      face_2 = [0,1,5,4]  # constant Y =-1 plane
-      face_3 = [3,2,6,7]  # constant Y = 1 plane
-      face_4 = [0,3,7,4]  # constant X =-1 plane
-      face_5 = [1,2,6,5]  # constant X = 1 plane
+      face_0 = [1 2 3 4]  # constant Z =-1 plane
+      face_1 = [5 6 7 8]  # constant Z = 1 plane
+      face_2 = [1 2 6 5]  # constant Y =-1 plane
+      face_3 = [4 3 7 8]  # constant Y = 1 plane
+      face_4 = [1 4 8 5]  # constant X =-1 plane
+      face_5 = [2 3 7 6]  # constant X = 1 plane
 
-      face_numbering = np.array([face_0,face_1,face_2,face_3,face_4,face_5])
+      face_numbering = vcat(face_0,face_1,face_2,face_3,face_4,face_5)
 
    elseif C==1
       face_numbering = np.array([[ 0,  1,  2,  3,  8,  9, 10, 11, 12],

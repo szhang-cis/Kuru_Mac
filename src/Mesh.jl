@@ -100,7 +100,7 @@ function GetFacesHex(elements)
    #   end
    #end
    #end
-   node_arranger = NodeArrangementHex(p-1)[1]
+   node_arranger = NodeArrangementHex(p)[1]
    fsize = ((p+1)^3)::Int
 
    # GET ALL FACES FROM THE ELEMENT CONNECTIVITY

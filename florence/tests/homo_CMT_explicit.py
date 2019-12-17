@@ -67,7 +67,7 @@ def PrestrainGradient(ElastinDepositionStretch, DeformationGradient, mesh):
         F_average += F
     F_average = np.divide(F_average,mesh.nnode)
     for node in range(mesh.nnode):
-        ElastinDepositionStretch[node] = np.dot(F_average,ElastinDepositionStretch[node])
+        ElastinDepositionStretch = np.dot(F_average,ElastinDepositionStretch)
     print('==> Elastin Deposition Stretch calculated')
     return ElastinDepositionStretch
 
@@ -238,13 +238,13 @@ def homogenized_CMT():
     
     # Deposition Stretch
     Deposition = {}
-    Deposition['Matrix'] = np.zeros((mesh.nnode,3,3),dtype=np.float64)
-    Deposition['Fibre'] = np.ones((mesh.nnode,5),dtype=np.float64)
-    Deposition['Matrix'][:,2,2] = 1.25
-    Deposition['Matrix'][:,1,1] = 4.17
-    Deposition['Matrix'][:,0,0] = 1.0/(1.25*4.17)
-    Deposition['Fibre'][:,0] = 1.1
-    Deposition['Fibre'][:,1:5] = 1.062
+    Deposition['Matrix'] = np.zeros((3,3),dtype=np.float64)
+    Deposition['Fibre'] = np.ones((5),dtype=np.float64)
+    Deposition['Matrix'][2,2] = 1.25
+    Deposition['Matrix'][1,1] = 4.17
+    Deposition['Matrix'][0,0] = 1.0/(1.25*4.17)
+    Deposition['Fibre'][0] = 1.1
+    Deposition['Fibre'][1:5] = 1.062
 
     # fibre directions [thick,sms,co1,co2,co3,co4]
     fibre_direction = Directions(mesh)
@@ -256,7 +256,7 @@ def homogenized_CMT():
                 c2m=11.4,
                 c1c=1136.0,
                 c2c=11.2,
-                kappa=72.0e4,
+                kappa=72.0e3,
                 anisotropic_orientations=fibre_direction,
                 Deposition=Deposition,
                 GrowthRemodeling=GrowthRemodeling)
@@ -330,7 +330,7 @@ def homogenized_CMT():
                             optimise=False,
                             print_incremental_log=True,
                             newton_raphson_tolerance=1.0e-5,
-                            number_of_load_increments=2)
+                            number_of_load_increments=4)
 
 #=================  HOMEOSTATIC SOLUTION  =======================
     # Homeostatic step solution
@@ -349,7 +349,7 @@ def homogenized_CMT():
         dmesh_bounds = dmesh.Bounds
         distortion = np.sqrt(dmesh_bounds[0,0]**2+dmesh_bounds[0,1]**2+dmesh_bounds[0,2]**2)/0.010
         print('Distortion: '+str(distortion))
-        if distortion<0.02: break
+        if distortion<0.05: break
         # GET DEFOMATION GRADIENT AT NODES TO COMPUTE A NEW ELASTIN DEPOSITION STRETCH
         solution.StressRecovery()
         DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
@@ -367,14 +367,8 @@ def homogenized_CMT():
     FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
     Softness = solution.recovered_fields['Softness'][-1,:,:]
     # Update mesh coordinates
-    #TotalDisplacements = solution.sol[:,:,-1]
-    #mesh.points += TotalDisplacements
-    #Deposition['Matrix'],Deposition['Fibre'] = UpdateDeposition(Deposition['Matrix'],Deposition['Fibre'],DeformationGradient,mesh)
-    #print(Deposition['Matrix'])
-    #print(Deposition['Fibre'])
-    # Check the displacement
-    #print('Maximum and Minimum coordinates at this point')
-    #print(mesh.Bounds)
+    TotalDisplacements = solution.sol[:,:,-1]
+    euler_x = mesh.points + TotalDisplacements
 
 #=================  REMODELING SOLUTION  =======================
     print('=====================================')
@@ -382,7 +376,7 @@ def homogenized_CMT():
     print('=====================================')
     #print(mesh.points[mesh.elements,:])
     # Growth and Remodeling steps [10 days]
-    total_time = 1000
+    total_time = 5500
     time = 0.0
     Delta_t = 10.0
     step = 0
@@ -398,8 +392,8 @@ def homogenized_CMT():
         material.GrowthRemodeling = GrowthRemodeling
         #print(GrowthRemodeling)
     #**** compute mechanical equilibrium at t_{n+1} **** F(t_{n+1})
-        solution = fem_solver1.Solve(formulation=formulation, mesh=mesh, material=material, 
-                boundary_condition=boundary_condition)
+        solution = fem_solver1.Solve(formulation=formulation, mesh=mesh, material=material,
+                boundary_condition=boundary_condition, Eulerx=euler_x)
         # Check Residual
         if np.isnan(fem_solver1.norm_residual) or fem_solver1.norm_residual>1e06:
             exit('MODEL DID NOT CONVERGE!')
@@ -411,12 +405,7 @@ def homogenized_CMT():
         Softness = solution.recovered_fields['Softness'][-1,:,:]
         # Update mesh coordinates
         TotalDisplacements = solution.sol[:,:,-1]
-        mesh.points += TotalDisplacements
-        Deposition['Matrix'],Deposition['Fibre'] = UpdateDeposition(Deposition['Matrix'],Deposition['Fibre'],DeformationGradient,mesh)
-        material.Deposition = Deposition
-        # Check the displacement
-        print('Maximum and Minimum coordinates at this point')
-        print(mesh.Bounds)
+        euler_x = mesh.points + TotalDisplacements
 
 
 if __name__ == "__main__":

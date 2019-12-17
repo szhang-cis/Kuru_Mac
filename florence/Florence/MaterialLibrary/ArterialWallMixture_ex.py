@@ -38,12 +38,6 @@ class ArterialWallMixture_ex(Material):
         self.has_low_level_dispatcher = False
         # GROWTH-REMODELING AND DEPOSITION STRETCH FOR TRY SENTENCE IN CHECKDATA
         self.growth_remodeling = np.ones((8,12),dtype=np.float64)
-        self.deposition_stretch = {}
-        self.deposition_stretch['Matrix'] = np.zeros((8,self.ndim,self.ndim),dtype=np.float64)
-        self.deposition_stretch['Matrix'][:,0,0] = 1.0
-        self.deposition_stretch['Matrix'][:,1,1] = 1.0
-        self.deposition_stretch['Matrix'][:,2,2] = 1.0
-        self.deposition_stretch['Fibre'] = np.ones((8,5),dtype=np.float64)
 
     def Hessian(self,StrainTensors,ElectricFieldx=0,elem=0,gcounter=0):
 
@@ -77,7 +71,7 @@ class ArterialWallMixture_ex(Material):
         #ELASTIN
         kappa = self.kappa*self.growth_remodeling[gcounter][0]
         mu3D = self.mu3D*self.growth_remodeling[gcounter][0]
-        Gh_ela = self.deposition_stretch['Matrix'][gcounter]
+        Gh_ela = self.Deposition['Matrix']
         Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
         F_ela = np.dot(F,Gh_ela)
         F_ela_e = np.dot(F_ela,F_gr_inv)
@@ -96,7 +90,7 @@ class ArterialWallMixture_ex(Material):
             N = self.anisotropic_orientations[key][elem][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
-            FN = np.dot(self.deposition_stretch['Fibre'][gcounter][key-1],FN)
+            FN = np.dot(self.Deposition['Fibre'][key-1],FN)
             if key is 1:
                 c1 = self.c1m*self.growth_remodeling[gcounter][1]
                 c2 = self.c2m
@@ -175,7 +169,7 @@ class ArterialWallMixture_ex(Material):
         #ELASTIN
         kappa = self.kappa*self.growth_remodeling[gcounter][0]
         mu3D = self.mu3D*self.growth_remodeling[gcounter][0]
-        Gh_ela = self.deposition_stretch['Matrix'][gcounter]
+        Gh_ela = self.Deposition['Matrix']
         Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
         F_ela = np.dot(F,Gh_ela)
         F_ela_e = np.dot(F_ela,F_gr_inv)
@@ -195,7 +189,7 @@ class ArterialWallMixture_ex(Material):
             N = self.anisotropic_orientations[key][elem][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
-            FN = np.dot(self.deposition_stretch['Fibre'][gcounter][key-1],FN)
+            FN = np.dot(self.Deposition['Fibre'][key-1],FN)
             if key is 1:
                 c1 = self.c1m*self.growth_remodeling[gcounter][1]
                 c2 = self.c2m
@@ -252,7 +246,7 @@ class ArterialWallMixture_ex(Material):
             N = self.anisotropic_orientations[key][elem][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
-            FN = np.dot(self.deposition_stretch['Fibre'][gcounter][key-1],FN)
+            FN = np.dot(self.Deposition['Fibre'][key-1],FN)
             if key is 1:
                 c1 = self.c1m*self.growth_remodeling[gcounter][1]
                 c2 = self.c2m

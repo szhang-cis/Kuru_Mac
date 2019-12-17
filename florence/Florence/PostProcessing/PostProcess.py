@@ -226,9 +226,9 @@ class PostProcess(object):
                 EulerELemCoords = Eulerx[elements[elem,:],:]
                 # GROWTH-REMODELING VALUES FOR THIS ELEMENT(JOANDLAUBRIE)
                 ElemGrowthRemodeling = material.GrowthRemodeling[elements[elem,:],:]
-                ElemDeposition = {}
-                ElemDeposition['Matrix'] = material.Deposition['Matrix'][mesh.elements[elem,:],:,:]
-                ElemDeposition['Fibre'] = material.Deposition['Fibre'][mesh.elements[elem,:],:]
+                #ElemDeposition = {}
+                #ElemDeposition['Matrix'] = material.Deposition['Matrix'][mesh.elements[elem,:],:,:]
+                #ElemDeposition['Fibre'] = material.Deposition['Fibre'][mesh.elements[elem,:],:]
                 if self.formulation.fields == 'electro_mechanics':
                     ElectricPotentialElem =  Eulerp[elements[elem,:]]
 
@@ -259,8 +259,8 @@ class PostProcess(object):
                     StrainTensors = KinematicMeasures(F[elem,:,:,:], fem_solver.analysis_nature)
                     # GROWTH-REMODELING VALUES AT GAUSS POINTS OR NODES (JOANDLAUBRIE)
                     material.growth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
-                    material.deposition_stretch['Matrix'] = np.einsum('ij,ikl->jkl',Bases,ElemDeposition['Matrix'])
-                    material.deposition_stretch['Fibre'] = np.einsum('ij,ik->jk',Bases,ElemDeposition['Fibre'])
+                    #material.deposition_stretch['Matrix'] = np.einsum('ij,ikl->jkl',Bases,ElemDeposition['Matrix'])
+                    #material.deposition_stretch['Fibre'] = np.einsum('ij,ik->jk',Bases,ElemDeposition['Fibre'])
 
                     # GEOMETRY UPDATE IS A MUST
                     # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]

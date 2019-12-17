@@ -4,7 +4,7 @@ import os, sys, warnings, platform
 import numpy as np
 #if "PyPy" not in platform.python_implementation():
 #    from scipy.io import loadmat, savemat
-#from Florence.Tensor import makezero, itemfreq, unique2d, in2d
+from Florence.Tensor import unique2d, itemfreq, in2d #, makezero
 #from Florence.Utils import insensitive
 #from .vtk_writer import write_vtu
 #try:
@@ -83,7 +83,82 @@ class Mesh(object):
         self.writer_type = None
 
         self.filename = None
-        # self.has_meshpy = has_meshpy
+
+    def Bounds(self):
+        """Returns bounds of a mesh i.e. the minimum and maximum coordinate values
+            in every direction
+        """
+        assert self.points is not None
+
+        if self.points.shape[1] == 3:
+            bounds = np.array([[np.min(self.points[:,0]),
+                        np.min(self.points[:,1]),
+                        np.min(self.points[:,2])],
+                        [np.max(self.points[:,0]),
+                        np.max(self.points[:,1]),
+                        np.max(self.points[:,2])]])
+            makezero(bounds)
+            return bounds
+        elif self.points.shape[1] == 2:
+            bounds = np.array([[np.min(self.points[:,0]),
+                        np.min(self.points[:,1])],
+                        [np.max(self.points[:,0]),
+                        np.max(self.points[:,1])]])
+            makezero(bounds)
+            return bounds
+        elif self.points.shape[1] == 1:
+            bounds = np.array([[np.min(self.points[:,0])],
+                        [np.max(self.points[:,0])]])
+            makezero(bounds)
+            return bounds
+        else:
+            raise ValueError("Invalid dimension for mesh coordinates")
+
+    def GetBoundaryEdges(self):
+        assert self.element_type is not None
+        if self.element_type == "tri":
+            self.GetBoundaryEdgesTri()
+        elif self.element_type == "quad":
+            self.GetBoundaryEdgesQuad()
+        elif self.element_type == "pent":
+            self.GetBoundaryEdgesPent()
+        elif self.element_type == "tet":
+            self.GetBoundaryEdgesTet()
+        elif self.element_type == "hex":
+            self.GetBoundaryEdgesHex()
+        else:
+            raise ValueError('Type of element not understood')
+        return self.edges
+
+    def GetBoundaryEdgesHex(self):
+        """Find boundary edges (lines) of hexahedral mesh.
+        """
+
+        p = self.InferPolynomialDegree()
+        # DO NOT COMPUTE IF ALREADY COMPUTED
+        if isinstance(self.edges,np.ndarray):
+            if self.edges.shape[0] > 1:
+                # IF LINEAR VERSION IS COMPUTED, DO COMPUTE HIGHER VERSION
+                if self.edges.shape[1] == 2 and p > 1:
+                    pass
+                else:
+                    return
+
+
+        # FIRST GET BOUNDARY FACES
+        if not isinstance(self.faces,np.ndarray):
+            self.GetBoundaryFacesHex()
+
+        # BUILD A 2D MESH
+        tmesh = Mesh()
+        tmesh.element_type = "quad"
+        tmesh.elements = self.faces
+        tmesh.nelem = tmesh.elements.shape[0]
+        del tmesh.faces
+        del tmesh.points
+
+        # ALL THE EDGES CORRESPONDING TO THESE BOUNDARY FACES ARE BOUNDARY EDGES
+        self.edges =  tmesh.GetEdgesQuad()
 
     def GetFaces(self):
         assert self.element_type is not None
@@ -96,6 +171,157 @@ class Mesh(object):
         else:
             raise ValueError('Type of element not understood')
         return self.all_faces
+
+    def GetBoundaryFaces(self):
+        assert self.element_type is not None
+        if self.element_type == "tet":
+            self.GetBoundaryFacesTet()
+        elif self.element_type == "hex":
+            self.GetBoundaryFacesHex()
+        elif self.element_type=="tri" or self.element_type=="quad":
+            raise ValueError("2D mesh does not have faces")
+        else:
+            raise ValueError('Type of element not understood')
+        return self.faces
+
+    def GetBoundaryFacesHex(self):
+        """Find boundary faces (surfaces) of a hexahedral mesh"""
+
+        p = self.InferPolynomialDegree()
+
+        # DO NOT COMPUTE IF ALREADY COMPUTED
+        if isinstance(self.faces,np.ndarray):
+            if self.faces.shape[0] > 1:
+                # IF LINEAR VERSION IS COMPUTED, DO COMPUTE HIGHER VERSION
+                if self.faces.shape[1] == 4 and p > 1:
+                    pass
+                else:
+                    return
+
+        node_arranger = NodeArrangementHex(p-1)[0]
+
+        # CONCATENATE ALL THE FACES MADE FROM ELEMENTS
+        all_faces = np.concatenate((np.concatenate((
+                np.concatenate((np.concatenate((np.concatenate((self.elements[:,node_arranger[0,:]],
+                self.elements[:,node_arranger[1,:]]),axis=0),self.elements[:,node_arranger[2,:]]),axis=0),
+                self.elements[:,node_arranger[3,:]]),axis=0),self.elements[:,node_arranger[4,:]]),axis=0),
+                self.elements[:,node_arranger[5,:]]),axis=0).astype(np.int64)
+        # GET UNIQUE ROWS
+        uniques, idx, inv = unique2d(all_faces,consider_sort=True,order=False,return_index=True,return_inverse=True)
+
+        # ROWS THAT APPEAR ONLY ONCE CORRESPOND TO BOUNDARY FACES
+        freqs_inv = itemfreq(inv)
+        faces_ext_flags = freqs_inv[freqs_inv[:,1]==1,0]
+        # NOT ARRANGED
+        self.faces = uniques[faces_ext_flags,:]
+
+        # DETERMINE WHICH FACE OF THE ELEMENT THEY ARE
+        boundary_face_to_element = np.zeros((faces_ext_flags.shape[0],2),dtype=np.int64)
+
+        # FURTHER RE-ARRANGEMENT / ARANGE THE NODES BASED ON THE ORDER THEY APPEAR
+        # IN ELEMENT CONNECTIVITY
+        # THIS STEP IS NOT NECESSARY INDEED - ITS JUST FOR RE-ARANGMENT OF FACES
+        all_faces_in_faces = in2d(all_faces,self.faces,consider_sort=True)
+        all_faces_in_faces = np.where(all_faces_in_faces==True)[0]
+
+        # boundary_face_to_element = np.zeros((all_faces_in_faces.shape[0],2),dtype=np.int64)
+        boundary_face_to_element[:,0] = all_faces_in_faces % self.elements.shape[0]
+        boundary_face_to_element[:,1] = all_faces_in_faces // self.elements.shape[0]
+
+        # ARRANGE FOR ANY ORDER OF BASES/ELEMENTS AND ASSIGN DATA MEMBERS
+        self.faces = self.elements[boundary_face_to_element[:,0][:,None],node_arranger[boundary_face_to_element[:,1],:]]
+        self.faces = self.faces.astype(np.uint64)
+        self.boundary_face_to_element = boundary_face_to_element
+
+    def GetEdgesQuad(self):
+        """Find the all edges of a quadrilateral mesh.
+            Sets all_edges property and returns it
+        returns:
+            arr:            numpy ndarray of all edges"""
+
+        p = self.InferPolynomialDegree()
+
+        # DO NOT COMPUTE IF ALREADY COMPUTED
+        if isinstance(self.all_edges,np.ndarray):
+            if self.all_edges.shape[0] > 1:
+                # IF LINEAR VERSION IS COMPUTED, DO COMPUTE HIGHER VERSION
+                if self.all_edges.shape[1]==2 and p > 1:
+                    pass
+                else:
+                    return self.all_edges
+
+        node_arranger = NodeArrangementQuad(p-1)[0]
+
+        # GET ALL EDGES FROM THE ELEMENT CONNECTIVITY
+        edges = np.concatenate((self.elements[:,node_arranger[0,:]],self.elements[:,node_arranger[1,:]],
+            self.elements[:,node_arranger[2,:]],self.elements[:,node_arranger[3,:]]),axis=0).astype(np.uint64)
+
+        # REMOVE DUPLICATES
+        edges, idx = unique2d(edges,consider_sort=True,order=False,return_index=True)
+
+        edge_to_element = np.zeros((edges.shape[0],2),np.int64)
+        edge_to_element[:,0] =  idx % self.elements.shape[0]
+        edge_to_element[:,1] =  idx // self.elements.shape[0]
+
+        self.edge_to_element = edge_to_element
+
+        # DO NOT SET all_edges IF THE CALLER FUNCTION IS GetBoundaryEdgesHex
+        import inspect
+        curframe = inspect.currentframe()
+        calframe = inspect.getouterframes(curframe, 2)[1][3]
+
+        if calframe != "GetBoundaryEdgesHex":
+            self.all_edges = edges
+
+        return edges
+
+    def GetBoundaryEdgesQuad(self):
+        """Find boundary edges (lines) of a quadrilateral mesh"""
+
+        p = self.InferPolynomialDegree()
+
+        # DO NOT COMPUTE IF ALREADY COMPUTED
+        if isinstance(self.edges,np.ndarray):
+            if self.edges.shape[0] > 1:
+                # IF LINEAR VERSION IS COMPUTED, DO COMPUTE HIGHER VERSION
+                if self.edges.shape[1] == 2 and p > 1:
+                    pass
+                else:
+                    return
+
+        node_arranger = NodeArrangementQuad(p-1)[0]
+
+        # GET ALL EDGES FROM THE ELEMENT CONNECTIVITY
+        all_edges = np.concatenate((self.elements[:,node_arranger[0,:]],self.elements[:,node_arranger[1,:]],
+            self.elements[:,node_arranger[2,:]],self.elements[:,node_arranger[3,:]]),axis=0).astype(np.uint64)
+
+        # GET UNIQUE ROWS
+        uniques, idx, inv = unique2d(all_edges,consider_sort=True,order=False,return_index=True,return_inverse=True)
+
+        # ROWS THAT APPEAR ONLY ONCE CORRESPOND TO BOUNDARY EDGES
+        freqs_inv = itemfreq(inv)
+        edges_ext_flags = freqs_inv[freqs_inv[:,1]==1,0]
+        # NOT ARRANGED
+        self.edges = uniques[edges_ext_flags,:]
+
+        # DETERMINE WHICH FACE OF THE ELEMENT THEY ARE
+        boundary_edge_to_element = np.zeros((edges_ext_flags.shape[0],2),dtype=np.int64)
+
+        # FURTHER RE-ARRANGEMENT / ARANGE THE NODES BASED ON THE ORDER THEY APPEAR
+        # IN ELEMENT CONNECTIVITY
+        # THIS STEP IS NOT NECESSARY INDEED - ITS JUST FOR RE-ARANGMENT OF EDGES
+        all_edges_in_edges = in2d(all_edges,self.edges,consider_sort=True)
+        all_edges_in_edges = np.where(all_edges_in_edges==True)[0]
+
+        boundary_edge_to_element[:,0] = all_edges_in_edges % self.elements.shape[0]
+        boundary_edge_to_element[:,1] = all_edges_in_edges // self.elements.shape[0]
+
+        # ARRANGE FOR ANY ORDER OF BASES/ELEMENTS AND ASSIGN DATA MEMBERS
+        self.edges = self.elements[boundary_edge_to_element[:,0][:,None],node_arranger[boundary_edge_to_element[:,1],:]]
+        self.edges = self.edges.astype(np.uint64)
+        self.boundary_edge_to_element = boundary_edge_to_element
+
+        return self.edges
 
     def GetFacesHex(self):
         """Find all faces (surfaces) in the hexahedral mesh (boundary & interior).
@@ -140,6 +366,136 @@ class Mesh(object):
 
         return self.all_faces
 
+    def GetHighOrderMesh(self,p=1, silent=True, **kwargs):
+        """Given a linear tri, tet, quad or hex mesh compute high order mesh based on it.
+        This is a static method linked to the HigherOrderMeshing module"""
+
+        if not isinstance(p,int):
+            raise ValueError("p must be an integer")
+        else:
+            if p < 1:
+                raise ValueError("Value of p={} is not acceptable. Provide p>=1.".format(p))
+
+        if self.degree is None:
+            self.InferPolynomialDegree()
+
+        C = p-1
+        if 'C' in kwargs.keys():
+            if kwargs['C'] != p - 1:
+                raise ValueError("Did not understand the specified interpolation degree of the mesh")
+            del kwargs['C']
+
+        # DO NOT COMPUTE IF ALREADY COMPUTED FOR THE SAME ORDER
+        if self.degree == None:
+            self.degree = self.InferPolynomialDegree()
+        if self.degree == p:
+            return
+
+        # SITUATIONS WHEN ANOTHER HIGH ORDER MESH IS REQUIRED, WITH ONE HIGH
+        # ORDER MESH ALREADY AVAILABLE
+        if self.degree != 1 and self.degree - 1 != C:
+            dum = self.GetLinearMesh(remap=True)
+            self.__dict__.update(dum.__dict__)
+
+        if not silent:
+            print('Generating p = '+str(C+1)+' mesh based on the linear mesh...')
+        t_mesh = time()
+        # BUILD A NEW MESH BASED ON THE LINEAR MESH
+        if self.element_type == 'line':
+            nmesh = HighOrderMeshLine(C,self,**kwargs)
+        if self.element_type == 'tri':
+            if self.edges is None:
+                self.GetBoundaryEdgesTri()
+            # nmesh = HighOrderMeshTri(C,self,**kwargs)
+            nmesh = HighOrderMeshTri_SEMISTABLE(C,self,**kwargs)
+        elif self.element_type == 'tet':
+            # nmesh = HighOrderMeshTet(C,self,**kwargs)
+            nmesh = HighOrderMeshTet_SEMISTABLE(C,self,**kwargs)
+        elif self.element_type == 'quad':
+            if self.edges is None:
+                self.GetBoundaryEdgesTri()
+            nmesh = HighOrderMeshQuad(C,self,**kwargs)
+        elif self.element_type == 'hex':
+            nmesh = HighOrderMeshHex(C,self,**kwargs)
+
+        self.points = nmesh.points
+        self.elements = nmesh.elements.astype(np.uint64)
+        if isinstance(self.corners,np.ndarray):
+            # NOT NECESSARY BUT GENERIC
+            self.corners = nmesh.corners.astype(np.uint64)
+        if isinstance(self.edges,np.ndarray):
+            self.edges = nmesh.edges.astype(np.uint64)
+        if isinstance(self.faces,np.ndarray):
+            if isinstance(nmesh.faces,np.ndarray):
+                self.faces = nmesh.faces.astype(np.uint64)
+        self.nelem = nmesh.nelem
+        self.nnode = self.points.shape[0]
+        self.element_type = nmesh.info
+        self.degree = C+1
+
+        self.ChangeType()
+
+        if not silent:
+            print('Finished generating the high order mesh. Time taken', time()-t_mesh,'sec')
+
+    def Rectangle(self,lower_left_point=(0,0), upper_right_point=(2,1),
+        nx=5, ny=5, element_type="tri"):
+        """Creates a quad/tri mesh of a rectangle"""
+
+        if element_type != "tri" and element_type != "quad":
+            raise ValueError("Element type should either be tri or quad")
+
+        if self.elements is not None and self.points is not None:
+            self.__reset__()
+
+        if (lower_left_point[0] > upper_right_point[0]) or \
+            (lower_left_point[1] > upper_right_point[1]):
+            raise ValueError("Incorrect coordinate for lower left and upper right vertices")
+
+        nx, ny = int(nx), int(ny)
+        if nx <= 0 or ny <= 0:
+            raise ValueError("Number of discretisation cannot be zero or negative: nx={} ny={}".format(nx,ny))
+
+
+
+        from scipy.spatial import Delaunay
+
+        x=np.linspace(lower_left_point[0],upper_right_point[0],nx+1)
+        y=np.linspace(lower_left_point[1],upper_right_point[1],ny+1)
+
+        X,Y = np.meshgrid(x,y)
+        coordinates = np.dstack((X.ravel(),Y.ravel()))[0,:,:]
+
+        if element_type == "tri":
+            tri_func = Delaunay(coordinates)
+            self.element_type = "tri"
+            self.elements = tri_func.simplices
+            self.nelem = self.elements.shape[0]
+            self.points = tri_func.points
+            self.nnode = self.points.shape[0]
+            self.GetBoundaryEdgesTri()
+
+        elif element_type == "quad":
+
+            self.nelem = int(nx*ny)
+            elements = np.zeros((self.nelem,4),dtype=np.int64)
+
+            dum_0 = np.arange((nx+1)*ny)
+            dum_1 = np.array([(nx+1)*i+nx for i in range(ny)])
+            col0 = np.delete(dum_0,dum_1)
+            elements[:,0] = col0
+            elements[:,1] = col0 + 1
+            elements[:,2] = col0 +  nx + 2
+            elements[:,3] = col0 +  nx + 1
+
+            self.nnode = int((nx+1)*(ny+1))
+            self.element_type = "quad"
+            self.elements = elements
+            self.points = coordinates
+            self.nnode = self.points.shape[0]
+            self.GetBoundaryEdgesQuad()
+            self.GetEdgesQuad()
+
     def Read(self, filename=None, element_type="tri", reader_type=None, reader_type_format=None,
         reader_type_version=None, order=0, read_surface_info=False, **kwargs):
         """Convenience mesh reader method to dispatch call to subsequent apporpriate methods"""
@@ -177,36 +533,45 @@ class Mesh(object):
         self.reader_type_version = reader_type_version
 
         if self.reader_type is 'salome':
-            self.ReadSalome(filename, element_type=element_type, read_surface_info=read_surface_info)
+            #self.ReadSalome(filename, element_type=element_type, read_surface_info=read_surface_info)
+            raise ValueError("Reader not implemented yet")
         elif reader_type is 'GID':
-            self.ReadGIDMesh(filename, element_type, order)
+            #self.ReadGIDMesh(filename, element_type, order)
+            raise ValueError("Reader not implemented yet")
         elif self.reader_type is 'gmsh':
             self.ReadGmsh(filename, element_type=element_type, read_surface_info=read_surface_info)
         elif self.reader_type is 'obj':
-            self.ReadOBJ(filename, element_type=element_type, read_surface_info=read_surface_info)
+            #self.ReadOBJ(filename, element_type=element_type, read_surface_info=read_surface_info)
+            raise ValueError("Reader not implemented yet")
         elif self.reader_type is 'fenics':
-            self.ReadFenics(filename, element_type)
+            #self.ReadFenics(filename, element_type)
+            raise ValueError("Reader not implemented yet")
         elif self.reader_type is 'vtu':
-            self.ReadVTK(filename)
+            #self.ReadVTK(filename)
+            raise ValueError("Reader not implemented yet")
         elif self.reader_type is 'unv':
-            self.ReadUNV(filename, element_type)
+            #self.ReadUNV(filename, element_type)
+            raise ValueError("Reader not implemented yet")
         elif self.reader_type is 'fro':
-            self.ReadFRO(filename, element_type)
+            #self.ReadFRO(filename, element_type)
+            raise ValueError("Reader not implemented yet")
         elif self.reader_type is 'read_separate':
             # READ MESH FROM SEPARATE FILES FOR CONNECTIVITY AND COORDINATES
+            raise ValueError("Reader not implemented yet")
             from Florence.Utils import insensitive
             # return insensitive(kwargs.keys())
-            for key in kwargs.keys():
-                inkey = insensitive(key)
-                if "connectivity" in inkey and "delimiter" not in inkey:
-                    connectivity_file = kwargs.get(key)
-                if "coordinate" in insensitive(key) and "delimiter" not in inkey:
-                    coordinates_file = kwargs.get(key)
+            #for key in kwargs.keys():
+            #    inkey = insensitive(key)
+            #    if "connectivity" in inkey and "delimiter" not in inkey:
+            #        connectivity_file = kwargs.get(key)
+            #    if "coordinate" in insensitive(key) and "delimiter" not in inkey:
+            #        coordinates_file = kwargs.get(key)
 
-            self.ReadSeparate(connectivity_file,coordinates_file,element_type,
-                delimiter_connectivity=',',delimiter_coordinates=',')
+            #self.ReadSeparate(connectivity_file,coordinates_file,element_type,
+            #    delimiter_connectivity=',',delimiter_coordinates=',')
         elif self.reader_type is 'ReadHDF5':
-            self.ReadHDF5(filename)
+            #self.ReadHDF5(filename)
+            raise ValueError("Reader not implemented yet")
 
         self.nnode = self.points.shape[0]
         # MAKE SURE MESH DATA IS CONTIGUOUS
@@ -410,6 +775,26 @@ class Mesh(object):
 
         return
 
+    def ChangeType(self):
+        """Change mesh data type from signed to unsigned"""
+
+        self.__do_essential_memebers_exist__()
+        self.points = np.ascontiguousarray(self.points.astype(np.float64))
+        if isinstance(self.elements,np.ndarray):
+            self.elements = np.ascontiguousarray(self.elements.astype(np.uint64))
+        if hasattr(self, 'edges'):
+            if isinstance(self.edges,np.ndarray):
+                self.edges = np.ascontiguousarray(self.edges.astype(np.uint64))
+        if hasattr(self, 'faces'):
+            if isinstance(self.faces,np.ndarray):
+                self.faces = np.ascontiguousarray(self.faces.astype(np.uint64))
+
+    def IsHighOrder(self):
+        is_high_order = False
+        if self.InferPolynomialDegree() > 1:
+            is_high_order = True
+        return is_high_order
+
     def InferPolynomialDegree(self):
         """Infer the degree of interpolation (p) based on the shape of
             self.elements
@@ -492,3 +877,225 @@ class Mesh(object):
         assert self.elements.shape[0] is not None
         return self.elements.shape[1]
 
+    def InferNumberOfNodesPerLinearElement(self, element_type=None):
+        """Infers number of nodes per element. If element_type are
+            not None then returns the number of nodes required for the given
+            element type"""
+
+        if element_type is None and self.element_type is None:
+            raise ValueError("Did not understand element type")
+        if element_type is None:
+            element_type = self.element_type
+
+        tmp = self.element_type
+        if element_type != self.element_type:
+            self.element_type = element_type
+
+        nodeperelem = None
+        if element_type=="line":
+            nodeperelem = 2
+        elif element_type=="tri":
+            nodeperelem = 3
+        elif element_type=="quad":
+            nodeperelem = 4
+        elif element_type=="tet":
+            nodeperelem = 4
+        elif element_type=="hex":
+            nodeperelem = 8
+        else:
+            raise ValueError("Did not understand element type")
+
+        self.element_type = tmp
+
+        return nodeperelem
+
+    def InferSpatialDimension(self):
+        """Infer the spatial dimension of the mesh"""
+
+        assert self.points is not None
+        # if self.points.shape[1] == 3:
+        #     if self.element_type == "tri" or self.element_type == "quad":
+        #         print("3D surface mesh of ", self.element_type)
+
+        return self.points.shape[1]
+
+    def InferElementType(self):
+
+        if self.element_type is not None:
+            return self.element_type
+
+        assert self.elements is not None
+        assert self.points is not None
+
+        ndim = self.InferSpatialDimension()
+        nodeperelem = self.InferNumberOfNodesPerElement()
+        nn = 20
+
+        if ndim==3:
+            if nodeperelem in [int((i+1)*(i+2)*(i+3)/6) for i in range(1,nn)]:
+                self.element_type = "tet"
+            elif nodeperelem in [int((i+1)**3) for i in range(1,nn)]:
+                self.element_type = "hex"
+            else:
+                if nodeperelem in [int((i+1)*(i+2)/2) for i in range(1,nn)]:
+                    self.element_type = "tri"
+                elif nodeperelem in [int((i+1)**2) for i in range(1,nn)]:
+                    self.element_type = "quad"
+                else:
+                    raise ValueError("Element type not understood")
+        elif ndim==2:
+            if nodeperelem in [int((i+1)*(i+2)/2) for i in range(1,nn)]:
+                self.element_type = "tri"
+            elif nodeperelem in [int((i+1)**2) for i in range(1,nn)]:
+                self.element_type = "quad"
+            else:
+                raise ValueError("Element type not understood")
+        elif ndim==1:
+            self.element_type = "line"
+        else:
+            raise ValueError("Element type not understood")
+
+        # IF POINTS ARE CO-PLANAR THEN IT IS NOT TET BUT QUAD
+        if ndim == 3 and self.element_type == "tet":
+            a = self.points[self.elements[:,0],:]
+            b = self.points[self.elements[:,1],:]
+            c = self.points[self.elements[:,2],:]
+            d = self.points[self.elements[:,3],:]
+
+            det_array = np.dstack((a-d,b-d,c-d))
+            # FIND VOLUME OF ALL THE ELEMENTS
+            volume = 1./6.*np.linalg.det(det_array)
+            if np.allclose(volume,0.0):
+                self.element_type = "quad"
+
+        return self.element_type
+
+    def InferBoundaryElementType(self):
+
+        self.InferElementType()
+        if self.element_type == "hex":
+            self.boundary_element_type = "quad"
+        elif self.element_type == "tet":
+            self.boundary_element_type = "tri"
+        elif self.element_type == "quad" or self.element_type == "tri":
+            self.boundary_element_type = "line"
+        elif self.element_type == "line":
+            self.boundary_element_type = "point"
+        else:
+            raise ValueError("Could not understand element type")
+
+        return self.boundary_element_type
+
+    def CreateDummyLowerDimensionalMesh(self):
+        """Create a dummy lower dimensional mesh that would have some specific mesh attributes at least.
+            The objective is that the lower dimensional mesh should have the same element type as the
+            boundary faces/edges of the actual mesh and be the same order"""
+
+
+        sys.stdout = open(os.devnull, "w")
+        p = self.InferPolynomialDegree()
+        mesh = Mesh()
+        if self.element_type == "tet":
+            mesh.Rectangle(nx=1,ny=1, element_type="tri")
+            mesh.GetHighOrderMesh(p=p)
+        elif self.element_type == "hex":
+            mesh.Rectangle(nx=1,ny=1, element_type="quad")
+            mesh.GetHighOrderMesh(p=p)
+        elif self.element_type == "tri" or self.element_type == "quad":
+            mesh.Line(n=1, p=p)
+        sys.stdout = sys.__stdout__
+
+        return mesh
+
+    def GetLinearMesh(self, solution=None, remap=False):
+        """Returns the linear mesh from a high order mesh. If mesh is already linear returns the same mesh.
+            Also maps any solution vector/tensor of high order mesh to the linear mesh, if supplied.
+            For safety purposes, always makes a copy"""
+
+        self.__do_essential_memebers_exist__()
+
+        ndim = self.InferSpatialDimension()
+        if ndim==2:
+            if self.element_type == "tri" or self.element_type == "quad":
+                assert self.edges is not None
+        elif ndim==3:
+            if self.element_type == "tet" or self.element_type == "hex":
+                assert self.faces is not None
+
+
+        if self.IsHighOrder is False:
+            if solution is not None:
+                return deepcopy(self), deepcopy(solution)
+            return deepcopy(self)
+        else:
+            if not remap:
+                # WORKS ONLY IF THE FIST COLUMNS CORRESPOND TO
+                # LINEAR CONNECTIVITY
+                lmesh = Mesh()
+                lmesh.element_type = self.element_type
+                lmesh.degree = 1
+                if self.element_type == "tri":
+                    lmesh.elements = np.copy(self.elements[:,:3])
+                    lmesh.edges = np.copy(self.edges[:,:2])
+                    lmesh.nnode = int(np.max(lmesh.elements)+1)
+                    lmesh.points = np.copy(self.points[:lmesh.nnode,:])
+                elif self.element_type == "tet":
+                    lmesh.elements = np.copy(self.elements[:,:4])
+                    lmesh.faces = np.copy(self.faces[:,:3])
+                    lmesh.nnode = int(np.max(lmesh.elements)+1)
+                    lmesh.points = np.copy(self.points[:lmesh.nnode,:])
+                elif self.element_type == "quad":
+                    lmesh.elements = np.copy(self.elements[:,:4])
+                    lmesh.edges = np.copy(self.edges[:,:2])
+                    lmesh.nnode = int(np.max(lmesh.elements)+1)
+                    lmesh.points = np.copy(self.points[:lmesh.nnode,:])
+                elif self.element_type == "hex":
+                    lmesh.elements = np.copy(self.elements[:,:8])
+                    lmesh.faces = np.copy(self.faces[:,:4])
+                    lmesh.nnode = int(np.max(lmesh.elements)+1)
+                    lmesh.points = np.copy(self.points[:lmesh.nnode,:])
+                lmesh.nelem = lmesh.elements.shape[0]
+
+                if solution is not None:
+                    solution = solution[np.unique(lmesh.elements),...]
+                    return lmesh, solution
+
+            else:
+                # WORKS FOR ALL CASES BUT REMAPS (NO MAPPING BETWEEN LOW AND HIGH ORDER)
+                nodeperelem = self.InferNumberOfNodesPerLinearElement()
+                lmesh = Mesh()
+                lmesh.element_type = self.element_type
+                lmesh.nelem = self.nelem
+                unnodes, inv = np.unique(self.elements[:,:nodeperelem], return_inverse=True)
+                aranger = np.arange(lmesh.nelem*nodeperelem)
+                lmesh.elements = inv[aranger].reshape(lmesh.nelem,nodeperelem)
+                lmesh.points = self.points[unnodes,:]
+                if lmesh.element_type == "hex" or lmesh.element_type == "tet":
+                    lmesh.GetBoundaryFaces()
+                    lmesh.GetBoundaryEdges()
+                elif lmesh.element_type == "quad" or lmesh.element_type == "tri":
+                    lmesh.GetBoundaryEdges()
+
+                if solution is not None:
+                    solution = solution[unnodes,...]
+                    return lmesh, solution
+
+        return lmesh
+
+    def __do_essential_memebers_exist__(self):
+        """Check if essential members exist"""
+        assert self.element_type is not None
+        assert self.elements is not None
+        assert self.points is not None
+
+
+    def __update__(self,other):
+        self.__dict__.update(other.__dict__)
+
+
+    def __reset__(self):
+        """Class resetter. Resets all elements of the class
+        """
+
+        for i in self.__dict__.keys():
+            self.__dict__[i] = None

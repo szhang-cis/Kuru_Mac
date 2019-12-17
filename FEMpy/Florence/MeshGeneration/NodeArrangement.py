@@ -1,5 +1,43 @@
 import numpy as np
 
+def NodeArrangementQuad(C):
+    """Edge node arrangement for quads
+                     edge 2
+                 _______________
+                |               |
+                |               |
+        edge 3  |               | edge 1
+                |               |
+                |_______________|
+                    edge 0
+    """
+
+    # ELEMENT NODE ARRANGEMENT
+    linear_bases_idx = np.array([0,(C+1),(C+2)**2-1,(C+2)**2-(C+2)])
+    element_numbering = np.concatenate((linear_bases_idx, np.delete(np.arange((C+2)**2),linear_bases_idx)))
+
+    # TRAVERSING QUAD ELEMENT VIA EDGES
+    traversed_edge_numbering_quad = None
+
+    # EDGE ARRANGEMENT
+    # GET EDGE NUMBERING ORDER FROM QUAD ELEMENT
+    edge0, edge1, edge2, edge3 = [], [], [], []
+    for i in range(C):
+        edge0 = np.append(edge0,i+4)
+        edge1 = np.append(edge1, 2*C+5 + i*(C+2))
+        edge3 = np.append(edge3, C + 4 + i*(C+2))
+
+    edge2 = np.arange((C+2)**2-C,(C+2)**2)
+
+    edge0 = np.append(np.append(0,1),edge0)
+    edge1 = np.append(np.append(1,2),edge1)
+    edge2 = np.append(np.append(2,3),edge2[::-1])
+    edge3 = np.append(np.append(3,0),edge3[::-1])
+
+    edge_numbering = np.concatenate((edge0[None,:],edge1[None,:],edge2[None,:],edge3[None,:]),axis=0).astype(np.int64)
+
+    return edge_numbering, traversed_edge_numbering_quad, element_numbering
+
 def NodeArrangementHex(C):
 
     linear_bases_idx = np.array([0,(C+1),(C+2)**2-1,(C+2)**2-(C+2)])
@@ -316,82 +354,7 @@ def NodeArrangementHex(C):
 
     else:
         # THIS IS A FLOATING POINT BASED ALGORITHM
-        from Florence.QuadratureRules.NumericIntegrator import GaussLobattoQuadrature
-        xs = GaussLobattoQuadrature(C+2)[0]
-        x,y,z = np.meshgrid(xs,xs,xs)
-        fekete = np.concatenate((y.T.flatten()[:,None],x.T.flatten()[:,None],z.T.flatten()[:,None]),axis=1)
-        fekete = fekete[element_numbering,:]
-        tol=1e-12
-        nsize = int((C+2)**3)
-
-        x,y = np.meshgrid(xs,xs)
-        points = np.concatenate((x.flatten()[:,None],y.flatten()[:,None]),axis=1)
-        facer = points[quad_aranger]
-
-        all_nodes = np.arange(nsize)
-
-        # CONSTANT Z PLANES
-        facer3d = np.zeros((facer.shape[0],3))
-        facer3d[:,:2] = facer
-
-        from Florence.Tensor import in2d_unsorted
-
-        # facer3d[:,2] = xs[0]
-        # face_0 = __FaceArrangementHex__(fekete,facer3d)
-        # facer3d[:,2] = xs[-1]
-        # face_1 = __FaceArrangementHex__(fekete,facer3d)
-
-        # # CONSTANT Y PLANES
-        # facer3d = np.zeros((facer.shape[0],3))
-        # facer3d[:,[0,2]] = facer
-
-        # facer3d[:,1] = xs[0]
-        # face_2 = __FaceArrangementHex__(fekete,facer3d)
-        # facer3d[:,1] = xs[-1]
-        # face_3 = __FaceArrangementHex__(fekete,facer3d)
-
-        # # CONSTANT X PLANES
-        # facer3d = np.zeros((facer.shape[0],3))
-        # facer3d[:,[1,2]] = facer
-
-        # facer3d[:,0] = xs[0]
-        # face_4 = __FaceArrangementHex__(fekete,facer3d)
-        # facer3d[:,0] = xs[-1]
-        # face_5 = __FaceArrangementHex__(fekete,facer3d)
-
-
-        facer3d[:,2] = xs[0]
-        face_0 = in2d_unsorted(fekete,facer3d)
-        facer3d[:,2] = xs[-1]
-        face_1 = in2d_unsorted(fekete,facer3d)
-
-        # CONSTANT Y PLANES
-        facer3d = np.zeros((facer.shape[0],3))
-        facer3d[:,[0,2]] = facer
-
-        facer3d[:,1] = xs[0]
-        face_2 = in2d_unsorted(fekete,facer3d)
-        facer3d[:,1] = xs[-1]
-        face_3 = in2d_unsorted(fekete,facer3d)
-
-        # CONSTANT X PLANES
-        facer3d = np.zeros((facer.shape[0],3))
-        facer3d[:,[1,2]] = facer
-
-        facer3d[:,0] = xs[0]
-        face_4 = in2d_unsorted(fekete,facer3d)
-        facer3d[:,0] = xs[-1]
-        face_5 = in2d_unsorted(fekete,facer3d)
-
-        # SANITY CHECK
-        assert len(face_0) == len(face_1)
-        assert len(face_1) == len(face_2)
-        assert len(face_2) == len(face_3)
-        assert len(face_3) == len(face_4)
-        assert len(face_4) == len(face_5)
-
-        face_numbering = np.array([face_0,face_1,face_2,face_3,face_4,face_5])
-        # print("face_numbering = ", repr(face_numbering))
+        raise ValueError("Polynomial degreee not implemented yet")
 
     return face_numbering, traversed_edge_numbering_hex, element_numbering
 

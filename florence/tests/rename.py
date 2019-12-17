@@ -7,4 +7,4 @@ Path = os.path.dirname(os.path.realpath(__file__))
 Files = os.listdir(Path)
 
 for filename in Files:
-    os.rename(filename,filename.replace('_quantity_0_increment_1',''))
+    os.rename(filename,filename.replace('_quantity_0_increment_0',''))

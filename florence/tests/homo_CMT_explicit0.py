@@ -4,7 +4,7 @@ import sys, os
 import numpy as np
 from numpy import einsum
 # Build a path for python to Florence
-sys.path.append(os.path.join(os.path.expanduser("~"),"florence"))
+sys.path.append(os.path.join(os.path.expanduser("~/femme"),"florence"))
 #import Florence
 from Florence import *
 
@@ -66,17 +66,17 @@ def PrestrainGradient(ElastinDepositionStretch, DeformationGradient, mesh):
         F = np.dot(Rotation,np.dot(F,Rotation.T))
         F_average += F
     F_average = np.divide(F_average,mesh.nnode)
-    for node in range(mesh.nnode):
-        ElastinDepositionStretch[node] = np.dot(F_average,ElastinDepositionStretch[node])
+    ElastinDepositionStretch = np.dot(F_average,ElastinDepositionStretch)
     print('==> Elastin Deposition Stretch calculated')
     return ElastinDepositionStretch
 
-def GetGrowthRemodelingRates(time,mesh,Stress_H,FibreStress,Softness,GrowthRemodeling):
+def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,Softness):
     """
         This are the rates of Growth and Remodeling.
         Forward Euler.
     """
     GrowthRemodeling_rate = np.zeros((mesh.nnode,11),dtype=np.float64)
+    den0_tot = 1050.0
     # Elastin degradation [days]
     L_dam = 0.010
     t_dam = 40.0
@@ -85,97 +85,35 @@ def GetGrowthRemodelingRates(time,mesh,Stress_H,FibreStress,Softness,GrowthRemod
     den0_e = 1050.0*0.23
     # Fribres turnover and remodeling
     turnover = 101.0
-    gain = 0.05/turnover
+    gain = 0.01/turnover
     for node in range(mesh.nnode):
         AxialCoord = mesh.points[node,1]
         # Update elastin density
         GrowthRemodeling_rate[node][0] = -GrowthRemodeling[node][0]/T_ela - \
             (D_max/t_dam)*np.multiply(np.exp(-0.5*(AxialCoord/L_dam)**2 - time/t_dam),den0_e)
-        #SMC AND COLLAGEN FIBRES
+        GrowthRemodeling[node][0] += Delta_t*GrowthRemodeling_rate[node][0]
+        den_tot = GrowthRemodeling[node][0]
         for key in [1,2,3,4,5]:
             # fibres density rates
             DeltaStress = FibreStress[node][key-1] - Stress_H[node][key-1]
             GrowthRemodeling_rate[node][key] = gain*np.multiply(GrowthRemodeling[node][key],
                 np.divide(DeltaStress,Stress_H[node][key-1]))
+            GrowthRemodeling[node][key] += Delta_t*GrowthRemodeling_rate[node][key]
             # fibres remodeling rates
             lambda_r_dot = np.divide(GrowthRemodeling_rate[node][key],GrowthRemodeling[node][key]) + 1./turnover
-            GrowthRemodeling_rate[node][key+5] = np.multiply(np.multiply(lambda_r_dot,DeltaStress),
-                Softness[node][key-1])
-
-    return GrowthRemodeling_rate
-
-def GetGrowthRemodeling(Delta_t,mesh,GrowthRemodeling,GrowthRemodeling_rate):
-    """
-        This are the rates of Growth and Remodeling.
-        Forward Euler.
-    """
-    den0_tot = 1050.0
-    for node in range(mesh.nnode):
-        den_tot = 0.0
-        for key in range(11):
-            GrowthRemodeling[node][key] += Delta_t*GrowthRemodeling_rate[node][key]
-            if key<6: den_tot += GrowthRemodeling[node][key]
-
+            GrowthRemodeling_rate[node][key+5] = np.multiply(np.multiply(lambda_r_dot,DeltaStress),Softness[node][key-1])
+            GrowthRemodeling[node][key+5] += Delta_t*GrowthRemodeling_rate[node][key+5]
+            den_tot += GrowthRemodeling[node][key]
         GrowthRemodeling[node][11] = den_tot/den0_tot
 
     return GrowthRemodeling
-
-def UpdateDeposition(DepositionMatrix, DepositionFibre, DeformationGradient, mesh):
-    """ 
-        This routine aim to get the radial deposition stretch from the boundary conditions 
-        in radial direction, as stress=-p in inner wall and stress=0 in outer wall. The 
-        relation for the stresses along the thickness come from thin-walled tube. So radial
-        deposition stretch is depending of the position (radius).
-    """
-
-    print('==> Updating Deposition Stretches')
-    directrix = [0.,1.,0.]
-    for node in range(mesh.nnode):
-        # Directional vector for element
-        #Axial = directrix
-        Tangential = np.cross(directrix,mesh.points[node,:])
-        Tangential = Tangential/np.linalg.norm(Tangential)
-        Normal = np.cross(Tangential,directrix)
-        Normal = Normal/np.linalg.norm(Normal)
-        Rotation = np.eye(3,3,dtype=np.float64)
-        for i in range(3):
-            Rotation[0,i] = Normal[i]
-            Rotation[1,i] = Tangential[i]
-            Rotation[2,i] = directrix[i]
-        F = DeformationGradient[node]
-        # Elastin
-        F = np.dot(Rotation,np.dot(F,Rotation.T))
-        DepositionMatrix[node] = np.dot(F,DepositionMatrix[node])
-        # Smooth Muscle Cells
-        FN = np.dot(DeformationGradient[node],Tangential)
-        innerFN = einsum('i,i',FN,FN)
-        DepositionFibre[node][0] = DepositionFibre[node][0]*np.sqrt(innerFN)
-        # Collagen 1
-        DepositionFibre[node][1] = DepositionFibre[node][1]*np.sqrt(innerFN)
-        # Collagen 2
-        N = np.multiply(directrix,np.cos(np.pi/4.)) + np.multiply(Tangential,np.sin(np.pi/4.))
-        FN = np.dot(DeformationGradient[node],N)
-        innerFN = einsum('i,i',FN,FN)
-        DepositionFibre[node][2] = DepositionFibre[node][2]*np.sqrt(innerFN)
-        # Collagen 3
-        N = np.multiply(directrix,np.cos(np.pi/4.)) - np.multiply(Tangential,np.sin(np.pi/4.))
-        FN = np.dot(DeformationGradient[node],N)
-        innerFN = einsum('i,i',FN,FN)
-        DepositionFibre[node][3] = DepositionFibre[node][3]*np.sqrt(innerFN)
-        # Collagen 4
-        FN = np.dot(DeformationGradient[node],directrix)
-        innerFN = einsum('i,i',FN,FN)
-        DepositionFibre[node][4] = DepositionFibre[node][4]*np.sqrt(innerFN)
-    
-    print('==> Deposition Stretches updated')
-    return DepositionMatrix,DepositionFibre
 
 def homogenized_CMT():
     """A hyperelastic implicit static example using ArterialMixture model
         of a cylinder under pression with hexahedral elements
     """
     ProblemPath = PWD(__file__)
-    mesh_file = ProblemPath + '/Quarter_Ring.msh'
+    mesh_file = ProblemPath + '/Quarter_Cylinder.msh'
 
 #===============  MESH PROCESING  ==========================
     # Build mesh with Florence tools from GMSH mesh
@@ -238,13 +176,13 @@ def homogenized_CMT():
     
     # Deposition Stretch
     Deposition = {}
-    Deposition['Matrix'] = np.zeros((mesh.nnode,3,3),dtype=np.float64)
-    Deposition['Fibre'] = np.ones((mesh.nnode,5),dtype=np.float64)
-    Deposition['Matrix'][:,2,2] = 1.25
-    Deposition['Matrix'][:,1,1] = 4.17
-    Deposition['Matrix'][:,0,0] = 1.0/(1.25*4.17)
-    Deposition['Fibre'][:,0] = 1.1
-    Deposition['Fibre'][:,1:5] = 1.062
+    Deposition['Matrix'] = np.zeros((3,3),dtype=np.float64)
+    Deposition['Fibre'] = np.ones((5),dtype=np.float64)
+    Deposition['Matrix'][2,2] = 1.25
+    Deposition['Matrix'][1,1] = 3.00
+    Deposition['Matrix'][0,0] = 1.0/(1.25*3.00)
+    Deposition['Fibre'][0] = 1.1
+    Deposition['Fibre'][1:5] = 1.062
 
     # fibre directions [thick,sms,co1,co2,co3,co4]
     fibre_direction = Directions(mesh)
@@ -256,7 +194,7 @@ def homogenized_CMT():
                 c2m=11.4,
                 c1c=1136.0,
                 c2c=11.2,
-                kappa=72.0e4,
+                kappa=72.0e3,
                 anisotropic_orientations=fibre_direction,
                 Deposition=Deposition,
                 GrowthRemodeling=GrowthRemodeling)
@@ -264,7 +202,6 @@ def homogenized_CMT():
 #===============  BOUNDARY CONDITIONS  ====================
     # Dirichlet Boundary Conditions
     def Dirichlet_Function(mesh, DirichletBoundary):
-        #num_of_points=mesh.point.shape[0], ndim=3 ==> boundary_data(npoin,ndim)
         boundary_data = np.zeros((mesh.nnode, 3))+np.NAN
         # boundary conditions base on BoundarySurface boolean array
         boundary_data[DirichletBoundary['Bottom'],1] = 0.
@@ -349,7 +286,7 @@ def homogenized_CMT():
         dmesh_bounds = dmesh.Bounds
         distortion = np.sqrt(dmesh_bounds[0,0]**2+dmesh_bounds[0,1]**2+dmesh_bounds[0,2]**2)/0.010
         print('Distortion: '+str(distortion))
-        if distortion<0.02: break
+        if distortion<0.06: break
         # GET DEFOMATION GRADIENT AT NODES TO COMPUTE A NEW ELASTIN DEPOSITION STRETCH
         solution.StressRecovery()
         DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
@@ -367,14 +304,8 @@ def homogenized_CMT():
     FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
     Softness = solution.recovered_fields['Softness'][-1,:,:]
     # Update mesh coordinates
-    #TotalDisplacements = solution.sol[:,:,-1]
-    #mesh.points += TotalDisplacements
-    #Deposition['Matrix'],Deposition['Fibre'] = UpdateDeposition(Deposition['Matrix'],Deposition['Fibre'],DeformationGradient,mesh)
-    #print(Deposition['Matrix'])
-    #print(Deposition['Fibre'])
-    # Check the displacement
-    #print('Maximum and Minimum coordinates at this point')
-    #print(mesh.Bounds)
+    TotalDisplacements = solution.sol[:,:,-1]
+    euler_x = mesh.points + TotalDisplacements
 
 #=================  REMODELING SOLUTION  =======================
     print('=====================================')
@@ -382,7 +313,7 @@ def homogenized_CMT():
     print('=====================================')
     #print(mesh.points[mesh.elements,:])
     # Growth and Remodeling steps [10 days]
-    total_time = 1000
+    total_time = 5500
     time = 0.0
     Delta_t = 10.0
     step = 0
@@ -393,13 +324,12 @@ def homogenized_CMT():
         print('==== STEP: '+str(step)+' |8===D| TIME: '+str(time)+' days ====')
         print('*** Compute Solution')
     #**** compute of G&R at t_n **** F_{gr}(t_{n+1})
-        GrowthRemodeling_rate=GetGrowthRemodelingRates(time,mesh,Stress_H,FibreStress,Softness,GrowthRemodeling)
-        GrowthRemodeling = GetGrowthRemodeling(Delta_t,mesh,GrowthRemodeling,GrowthRemodeling_rate)
+        GrowthRemodeling = GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,Softness)
         material.GrowthRemodeling = GrowthRemodeling
         #print(GrowthRemodeling)
     #**** compute mechanical equilibrium at t_{n+1} **** F(t_{n+1})
-        solution = fem_solver1.Solve(formulation=formulation, mesh=mesh, material=material, 
-                boundary_condition=boundary_condition)
+        solution = fem_solver1.Solve(formulation=formulation, mesh=mesh, material=material,
+                boundary_condition=boundary_condition, Eulerx=euler_x)
         # Check Residual
         if np.isnan(fem_solver1.norm_residual) or fem_solver1.norm_residual>1e06:
             exit('MODEL DID NOT CONVERGE!')
@@ -411,12 +341,7 @@ def homogenized_CMT():
         Softness = solution.recovered_fields['Softness'][-1,:,:]
         # Update mesh coordinates
         TotalDisplacements = solution.sol[:,:,-1]
-        mesh.points += TotalDisplacements
-        Deposition['Matrix'],Deposition['Fibre'] = UpdateDeposition(Deposition['Matrix'],Deposition['Fibre'],DeformationGradient,mesh)
-        material.Deposition = Deposition
-        # Check the displacement
-        print('Maximum and Minimum coordinates at this point')
-        print(mesh.Bounds)
+        euler_x = mesh.points + TotalDisplacements
 
 
 if __name__ == "__main__":

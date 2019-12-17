@@ -47,9 +47,9 @@ class DisplacementFormulation(VariationalPrinciple):
         EulerElemCoords = Eulerx[mesh.elements[elem,:],:]
         # GET DEPOSITION-STRETCH AND GROWTH-REMODELING FIELDS AT ELEMENT LEVEL (JOANDLAUBRIE)
         ElemGrowthRemodeling = material.GrowthRemodeling[mesh.elements[elem,:],:]
-        ElemDeposition = {}
-        ElemDeposition['Matrix'] = material.Deposition['Matrix'][mesh.elements[elem,:],:,:]
-        ElemDeposition['Fibre'] = material.Deposition['Fibre'][mesh.elements[elem,:],:]
+        #ElemDeposition = {}
+        #ElemDeposition['Matrix'] = material.Deposition['Matrix'][mesh.elements[elem,:],:,:]
+        #ElemDeposition['Fibre'] = material.Deposition['Fibre'][mesh.elements[elem,:],:]
 
         # COMPUTE THE STIFFNESS MATRIX
         if material.has_low_level_dispatcher:
@@ -57,7 +57,7 @@ class DisplacementFormulation(VariationalPrinciple):
                 LagrangeElemCoords,EulerElemCoords,fem_solver,elem)
         else:
             stiffnessel, t = self.GetLocalStiffness(function_space,material,
-                LagrangeElemCoords,EulerElemCoords,ElemGrowthRemodeling,ElemDeposition,fem_solver,elem)
+                LagrangeElemCoords,EulerElemCoords,ElemGrowthRemodeling,fem_solver,elem)
 
         I_mass_elem = []; J_mass_elem = []; V_mass_elem = []
         if fem_solver.analysis_type != 'static' and fem_solver.is_mass_computed is False:
@@ -109,7 +109,7 @@ class DisplacementFormulation(VariationalPrinciple):
 
 
 
-    def GetLocalStiffness(self, function_space, material, LagrangeElemCoords, EulerELemCoords, ElemGrowthRemodeling, ElemDeposition, fem_solver, elem=0):
+    def GetLocalStiffness(self, function_space, material, LagrangeElemCoords, EulerELemCoords, ElemGrowthRemodeling, fem_solver, elem=0):
         """Get stiffness matrix of the system"""
 
         nvar = self.nvar
@@ -137,8 +137,8 @@ class DisplacementFormulation(VariationalPrinciple):
 
         # MAPPING DEPOSITION-STRETCH AND GROWTH-REMODELING VALUES (JOANDLAUBRIE)
         material.growth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
-        material.deposition_stretch['Matrix'] = np.einsum('ij,ikl->jkl',Bases,ElemDeposition['Matrix'])
-        material.deposition_stretch['Fibre'] = np.einsum('ij,ik->jk',Bases,ElemDeposition['Fibre'])
+        #material.deposition_stretch['Matrix'] = np.einsum('ij,ikl->jkl',Bases,ElemDeposition['Matrix'])
+        #material.deposition_stretch['Fibre'] = np.einsum('ij,ik->jk',Bases,ElemDeposition['Fibre'])
 
         # COMPUTE REMAINING KINEMATIC MEASURES
         StrainTensors = KinematicMeasures(F, fem_solver.analysis_nature)

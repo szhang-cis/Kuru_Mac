@@ -11,7 +11,7 @@ Extrude {{0, 1, 0}, {0, 0, 0}, Pi/2} {
 //Thickness divisions
 Transfinite Line {1,2,7,9} = 2 Using Progression 1;
 //Axial divisions and Recombine
-Transfinite Line {3,4,8,10} = 61 Using Progression 1;
+Transfinite Line {3,4,8,10} = 41 Using Progression 1;
 Transfinite Surface {5,27};
 Recombine Surface {5,27};
 // Symmetry Z

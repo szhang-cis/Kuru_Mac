@@ -1,4 +1,4 @@
-#from __future__ import print_function
+from __future__ import print_function
 #import numpy as np
 #from Florence.Utils import insensitive
 from warnings import warn

@@ -12,7 +12,7 @@ from Florence.Utils import insensitive
 from Florence.FiniteElements.Assembly import Assemble
 from Florence.PostProcessing import *
 from Florence.Solver import LinearSolver
-from Florence.TimeIntegrators import StructuralDynamicIntegrators
+from Florence.TimeIntegrators import StructuralDynamicIntegrator
 from Florence import Mesh, FEMSolver
 
 

@@ -90,14 +90,19 @@ NeumannBoundary['InnerFaces'] = InnerFaces
 fibre_direction = Directions(mesh)
 
 # Define hyperelastic material for mesh
-material = ArterialWallMixture(ndim,
-            mu3D=72.0,
-            c1m=15.2,
-            c2m=11.4,
-            c1c=1136.0,
-            c2c=11.2,
-            kappa=72.0e3,
-            anisotropic_orientations=fibre_direction)
+#material = ArterialWallMixture(ndim,
+#            mu3D=72.0,
+#            c1m=15.2,
+#            c2m=11.4,
+#            c1c=1136.0,
+#            c2c=11.2,
+#            kappa=72.0e3,
+#            anisotropic_orientations=fibre_direction)
+
+# Define hyperelastic material for mesh
+material = NearlyIncompressibleNeoHookean(ndim,
+            mu=72.0*5000.0,
+            kappa=72.0e4*5000.0)
 
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
@@ -139,10 +144,8 @@ def Neumann_Function(mesh, NeumannBoundary):
             
             semi_diagonal = max(distances)
             area = 2.*semi_diagonal**2
-            mag0 = normal[0]*mag*area
-            mag2 = normal[2]*mag*area
-            boundary_data[idf,0] = mag0
-            boundary_data[idf,2] = mag2
+            boundary_data[idf,0] = normal[0]*mag*area
+            boundary_data[idf,2] = normal[2]*mag*area
             face += 1
 
     boundary_flags[NeumannBoundary['InnerLogic']] = True
@@ -160,8 +163,7 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        maximum_iteration_for_newton_raphson=50,
                        optimise=False,
                        print_incremental_log=True,
-                       newton_raphson_tolerance=1.0e-5,
-                       number_of_load_increments=1)
+                       number_of_load_increments=2)
 
 #===============  COMPUTE SOLUTION  ======================
 # Call FEM solver for the current state

@@ -1,4 +1,4 @@
-#from __future__ import print_function
+from __future__ import print_function
 #import gc, os, sys
 #import multiprocessing
 from copy import deepcopy
@@ -636,11 +636,6 @@ class FEMSolver(object):
                     mesh, TotalDisp, Eulerx, Eulerp, material, boundary_condition)
             else:
                 raise RuntimeError("Iterative technique for nonlinear solver not understood")
-
-            # from FEMSolverDisplacementControl import StaticSolverDisplacementControl
-            # TotalDisp = StaticSolverDisplacementControl(self,function_spaces, formulation, solver,
-            #     K,NeumannForces,NodalForces,Residual,
-            #     mesh, TotalDisp, Eulerx, Eulerp, material, boundary_condition)
 
         # LOG LEVEL CONTROLLER
         if self.report_log_level == 0:

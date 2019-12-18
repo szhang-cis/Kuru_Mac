@@ -1,4 +1,4 @@
-#from __future__ import print_function
+from __future__ import print_function
 import gc #, os, sys
 #from copy import deepcopy
 from warnings import warn
@@ -171,6 +171,7 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
     fem_solver.assembly_time = time() - t_assembly
 
     return stiffness, T, F, mass
+
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL TRACTION FORCES ----------------------------------#
 #----------------------------------------------------------------------------------------------------------------#
 

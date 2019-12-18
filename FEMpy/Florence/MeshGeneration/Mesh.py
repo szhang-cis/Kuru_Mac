@@ -1,10 +1,10 @@
-#from __future__ import print_function, division
+from __future__ import print_function, division
 import os, sys, warnings, platform
-#from time import time
+from time import time
 import numpy as np
 #if "PyPy" not in platform.python_implementation():
 #    from scipy.io import loadmat, savemat
-from Florence.Tensor import unique2d, itemfreq, in2d #, makezero
+from Florence.Tensor import unique2d, itemfreq, in2d, makezero
 #from Florence.Utils import insensitive
 #from .vtk_writer import write_vtu
 #try:
@@ -15,8 +15,8 @@ from Florence.Tensor import unique2d, itemfreq, in2d #, makezero
 #from .HigherOrderMeshing import *
 from .NodeArrangement import *
 #from .GeometricPath import *
-#from warnings import warn
-#from copy import deepcopy
+from warnings import warn
+from copy import deepcopy
 
 
 
@@ -84,6 +84,7 @@ class Mesh(object):
 
         self.filename = None
 
+    @property
     def Bounds(self):
         """Returns bounds of a mesh i.e. the minimum and maximum coordinate values
             in every direction

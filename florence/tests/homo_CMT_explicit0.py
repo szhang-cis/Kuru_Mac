@@ -179,8 +179,8 @@ def homogenized_CMT():
     Deposition['Matrix'] = np.zeros((3,3),dtype=np.float64)
     Deposition['Fibre'] = np.ones((5),dtype=np.float64)
     Deposition['Matrix'][2,2] = 1.25
-    Deposition['Matrix'][1,1] = 3.00
-    Deposition['Matrix'][0,0] = 1.0/(1.25*3.00)
+    Deposition['Matrix'][1,1] = 3.90
+    Deposition['Matrix'][0,0] = 1.0/(1.25*3.90)
     Deposition['Fibre'][0] = 1.1
     Deposition['Fibre'][1:5] = 1.062
 
@@ -257,7 +257,6 @@ def homogenized_CMT():
                             maximum_iteration_for_newton_raphson=50,
                             optimise=False,
                             print_incremental_log=True,
-                            newton_raphson_tolerance=1.0e-5,
                             number_of_load_increments=1)
 
     fem_solver1 = FEMSolver( analysis_nature="nonlinear",
@@ -266,8 +265,8 @@ def homogenized_CMT():
                             maximum_iteration_for_newton_raphson=50,
                             optimise=False,
                             print_incremental_log=True,
-                            newton_raphson_tolerance=1.0e-5,
-                            number_of_load_increments=2)
+                            nonlinear_iterative_technique="newton_raphson",
+                            number_of_load_increments=1)
 
 #=================  HOMEOSTATIC SOLUTION  =======================
     # Homeostatic step solution
@@ -275,7 +274,7 @@ def homogenized_CMT():
     print('==  COMPUTE HOMEOSTATIC STATE  ==')
     print('=====================================')
     # Call the solver for Homeostatic computation
-    for Iter in range(10):
+    for Iter in range(5):
         print('Iterarion ',Iter)
         # Call FEM solver for the current state
         solution = fem_solver0.Solve(formulation=formulation, mesh=mesh,
@@ -286,7 +285,7 @@ def homogenized_CMT():
         dmesh_bounds = dmesh.Bounds
         distortion = np.sqrt(dmesh_bounds[0,0]**2+dmesh_bounds[0,1]**2+dmesh_bounds[0,2]**2)/0.010
         print('Distortion: '+str(distortion))
-        if distortion<0.06: break
+        if distortion<0.05: break
         # GET DEFOMATION GRADIENT AT NODES TO COMPUTE A NEW ELASTIN DEPOSITION STRETCH
         solution.StressRecovery()
         DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]

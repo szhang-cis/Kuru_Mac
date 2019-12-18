@@ -101,8 +101,8 @@ fibre_direction = Directions(mesh)
 
 # Define hyperelastic material for mesh
 material = NearlyIncompressibleNeoHookean(ndim,
-            mu=72.0*5000.0,
-            kappa=72.0e4*5000.0)
+            mu=72.0*1.e9,
+            kappa=72.0e4*1.e9)
 
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
@@ -144,8 +144,8 @@ def Neumann_Function(mesh, NeumannBoundary):
             
             semi_diagonal = max(distances)
             area = 2.*semi_diagonal**2
-            boundary_data[idf,0] = normal[0]*mag*area
-            boundary_data[idf,2] = normal[2]*mag*area
+            boundary_data[idf,0] = normal[0]*mag
+            boundary_data[idf,2] = normal[2]*mag
             face += 1
 
     boundary_flags[NeumannBoundary['InnerLogic']] = True

@@ -189,7 +189,6 @@ def AssembleForces(boundary_condition, mesh, material, function_spaces, compute_
 
 def AssembleExternalTractionForces(boundary_condition, mesh, material, function_space):
 
-
     nvar = material.nvar
     ndim = material.ndim
     ngauss = function_space.AllGauss.shape[0]
@@ -210,13 +209,11 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
     else:
         N = boundary_condition.__Nt__
 
-
     F = np.zeros((mesh.points.shape[0]*nvar,1))
     for face in range(faces.shape[0]):
         if boundary_condition.neumann_flags[face] == True:
             ElemTraction = boundary_condition.applied_neumann[face,:]
             external_traction = np.einsum("ijk,j,k->ik",N,ElemTraction,function_space.AllGauss[:,0]).sum(axis=1)
             RHSAssemblyNative(F,np.ascontiguousarray(external_traction[:,None]),face,nvar,nodeperelem,faces)
-
 
     return F

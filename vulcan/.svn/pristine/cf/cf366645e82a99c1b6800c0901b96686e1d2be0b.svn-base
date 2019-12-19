@@ -1,0 +1,133 @@
+      SUBROUTINE RESIDU(DISIT,DISPR,DISTO,ELDAT,ELPRE,ELVAR,ELMAT,
+     .                  HEADS,IFFIX,LNODS,MATNO,PROEL,PROPS,REFOR,
+     .                  TLOAD,TEMPN,DTEMP,INFRI,COFRI,PWORK,PREAS,
+     .                  TGAPS,VNORM,COORD,FPCHA,LACTI,NOPRF,PRESF,
+     .                  VANIS,WORK1)
+C***********************************************************************
+C
+C**** THIS ROUTINE EVALUATES THE RESIDUAL FORCES AND REACTIONS
+C     IT ALSO PERFORMS THE LINE SEARCH IF DESIRED
+C
+C     Note: Dimensions of PREAS are inverted in order to properly
+C           transfer it to forcin.f
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'
+C
+C**** MECHANICAL VARIABLES
+C
+      INCLUDE 'prob_om.f'
+      INCLUDE 'inte_om.f'
+      INCLUDE 'auxl_om.f'
+      INCLUDE 'inpo_om.f'
+C
+      DIMENSION MATNO(NELEM),       LNODS(NNODE,NELEM),
+     .          PROEL(NPREL,NGRUP), PROPS(NPROP,NMATS),
+     .          ELDAT(NDATA),       ELPRE(NPREV),
+     .          ELVAR(NSTAT),       ELMAT(NMATX),
+     .          WORK1(*)
+      DIMENSION DISIT(*),           DISPR(NTOTV,NDISR), 
+     .          DISTO(NTOTV,NDISO), HEADS(NPOIN,*),
+     .          IFFIX(*),           REFOR(*),
+     .          TLOAD(*),           TEMPN(NPOIN,2),
+     .          DTEMP(NPOIN)
+      DIMENSION INFRI(*),           COFRI(NSKEW,NDIME,*),
+     .          PWORK(NPOIN,2),     PREAS(NPOIN,NPREA),
+     .          TGAPS(NPOIN),       VNORM(NTOTV),
+     .          COORD(NDIME,NPOIN), FPCHA(NFPCH,NPOIN),
+     .          LACTI(NELEM)
+      DIMENSION NOPRF(NNODE,NELEM), PRESF(NNODE,NDIME,NELEM),
+     .          VANIS(NANIV,NANIC,NELEM)
+C
+      CALL CPUTIM(TIME1)
+C
+C**** COMPUTE DISSIPATED ENERGY
+C
+      CALL ENERGY(DISIT,REFOR)
+C
+      AALPH=1.0D+00       ! Initialize LINE SEARCH parameters
+      ITRIL=0
+      LSRCH=1
+C
+C**** LINE SEARCH LOOP
+C
+      DO WHILE (LSRCH.EQ.1)
+C
+       ITRIL=ITRIL+1
+C
+C**** READ LAST CONVERGED DISPLACEMENTS
+C
+       CALL DATBAS(DISTO,   12,   2)
+C
+C**** UPDATE NODAL VARIABLES (BEFORE RESIDUAL EVALUATION)
+C
+       CALL CORREC(AALPH,DISIT,DISPR,DISTO,DTIME,KINTE,REFOR,
+     .             TALFA,TBETA,TGAMA,TDELT,    1)
+C
+C**** INITIALISES COUPLING & CONTACT MECHANICAL VARIABLES
+C
+       CALL INISTA(PWORK,PREAS(1,1),TGAPS)
+C
+C**** EVALUATE THE INTERNAL RESISTING FORCES
+C
+       IX=0
+       IF(ITERME.GE.0) IX=1
+       NPRX4=NPRE1+NPRE2+NPRE3+1
+       NPRX5=NPRE1+NPRE2+NPRE3+NPRE4+1
+       CALL FORCIN(DISTO(1,1),ELDAT,ELPRE,ELVAR,ELMAT,REFOR,HEADS,
+     .             LNODS,MATNO,PROEL,PROPS,WORK1,TEMPN(1,1),
+     .             DTEMP,DISPR(1,1),PWORK(1,1),PREAS(1,1),TGAPS,VNORM,
+     .             COORD,TEMPN(1,1+IX),FPCHA,DISIT,LACTI,NOPRF,PRESF,
+     .             VANIS,PREAS(1,NPRX4),PREAS(1,NPRX5))
+C
+C**** EVALUATE THE INERTIAL & DAMPING FORCES
+C
+       IF(KDYNA.EQ.1)
+     .  CALL FORCDY(DISTO(1,2),DISTO(1,3),LNODS,MATNO,PROEL,PROPS,REFOR,
+     .              ELDAT,ELPRE,ELVAR,ELMAT,COORD,LACTI,WORK1)
+C
+C**** CALCULATE RESIDUAL LOAD
+C
+       CALL RESLOD(DISIT,HEADS,IFFIX,REFOR,TLOAD)
+C
+C**** PRINT SOME RELEVANT DATA
+C
+       IF(IITER.NE.0) THEN
+        IF(ITRIL.EQ.1) THEN
+         WRITE(LURES,900) IITER,GZERO
+         IF(ABS(AACOE)+ABS(BBCOE).NE.0.0D0)
+     .    WRITE(LURES,910) AACOE,BBCOE/AACOE
+        ENDIF
+        RATIO=0.0D0
+        IF(GZERO.NE.0.0D0) RATIO=GCURN/GZERO
+        WRITE(LURES,905) ITRIL,AALPH,RATIO
+       ENDIF
+C
+C**** FIND A NEW FALUE FOR AALPH (LINE SEARCH) ; IF REQUIRED
+C
+       LSRCH=0                              ! Set mark not to loop again
+       IF(LINES.EQ.1.AND.IITER.GT.1)
+     .  CALL LINSCH(AALPH,GCURN,GZERO,ITRIL,LSRCH)
+C
+      END DO                                        ! WHILE (LSRCH.EQ.1)
+C
+C**** UPDATE NODAL VARIABLES (AFTER RESIDUAL EVALUATION)
+C
+      CALL CORREC(AALPH,DISIT,DISPR,DISTO,DTIME,KINTE,REFOR,
+     .            TALFA,TBETA,TGAMA,TDELT,    2)
+C
+      CALL CPUTIM(TIME2)
+      CPURE=CPURE+(TIME2-TIME1)
+C
+      RETURN
+C
+  900 FORMAT(132('='),//,
+     .          10X,'ITERATION NO. ',I5,28X,' GZERO =',E13.5/)
+  905 FORMAT(15X,'SEARCH NO. ',I3,3X,'AALPH =',F10.5,3X,
+     .           'GCURN/GZERO =',E13.5)
+  910 FORMAT(15X,'SECANT-NEWTON :      A =',F10.5,10X,' B/A =',E13.5)
+      END

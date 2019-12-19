@@ -1,0 +1,3 @@
+      SUBROUTINE CPUTIM5(RTIME)
+      RETURN
+      END     

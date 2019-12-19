@@ -1,0 +1,47 @@
+      SUBROUTINE HOURK4(CARTD,EPMTX,DVOLU,ELCOD,GPCOD,HPARA,PROPS,
+     .                  ARRAY,DMATX,NDIME,NEVAB,NNODE,NSTRS,NTYPE,
+     .                  THICK)
+C***********************************************************************
+C
+C**** THIS ROUTINE COMPUTES THE "HOURGLASS" STIFFNESS FOR THE 4-NODE EL.
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      DIMENSION CARTD(NDIME,*), EPMTX(*),   ELCOD(NDIME,*), 
+     .          PROPS(*),       ARRAY(*),   DMATX(NSTRS,*)
+      DIMENSION BEXI(4,8), BETA(4,8), SEXI(4),  SETA(4),  EMATX(8,8)
+C
+      DATA TWOPI/6.283185307179586/
+C
+      DAREA=DVOLU
+      IF(NTYPE.EQ.3) DAREA=DAREA/TWOPI*GPCOD
+      IF(NTYPE.NE.4) DAREA=DAREA/THICK
+      FMULT=HPARA*DVOLU/3.0
+C
+C     SET UP THE ELASTIC MATRIX
+C
+      KOUNT=0
+      DO ISTRS=1,NSTRS
+       DO JSTRS=ISTRS,NSTRS
+        KOUNT=KOUNT+1
+        DMATX(ISTRS,JSTRS)=EPMTX(KOUNT)
+        DMATX(JSTRS,ISTRS)=DMATX(ISTRS,JSTRS)
+       ENDDO
+      ENDDO
+C
+C     COMPUTE THE HOURGLASS B-MATRICES
+C
+      CALL HOURB4(BEXI,BETA,CARTD,DAREA,ELCOD,NDIME,NEVAB,NNODE,NSTRS)
+C
+C     COMPUTE HOURGLASS STIFFNESS MATRIX
+C
+      CALL BDBCO1(BEXI ,DMATX,EMATX,    1,NEVAB,NSTRS,NSTRS,NEVAB,
+     .            NSTRS)                                          !symm.
+      CALL SQTOTR(ARRAY,EMATX,FMULT,NEVAB)
+      CALL BDBCO1(BETA ,DMATX,EMATX,    1,NEVAB,NSTRS,NSTRS,NEVAB,
+     .           NSTRS)                                           !symm.
+      CALL SQTOTR(ARRAY,EMATX,FMULT,NEVAB)
+C
+      RETURN
+      END

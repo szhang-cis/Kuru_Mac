@@ -1,0 +1,3 @@
+      SUBROUTINE ASSIFIT1
+      RETURN
+      END

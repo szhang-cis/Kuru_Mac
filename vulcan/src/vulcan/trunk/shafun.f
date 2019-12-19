@@ -1,0 +1,20 @@
+      SUBROUTINE SHAFUN(DERIV,EXISP,ETASP,EZETA,NDIME,NNODE,
+     .                  NQUTR,NNODX,SHAPE)
+C***********************************************************************
+C
+C**** THIS ROUTINE EVALUATES SHAPE FUNCTIONS AND THEIR DERIVATIVES FOR
+C     LINEAR AND QUADRATIC ISOPARAMETRIC ELEMENTS
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      DIMENSION DERIV(NDIME,*),SHAPE(*)
+C
+      GOTO(1,2,3), NDIME
+    1 CALL SHAPE1(DERIV,EXISP,            NDIME,NNODE,      NNODX,SHAPE)
+      RETURN
+    2 CALL SHAPE2(DERIV,EXISP,ETASP,      NDIME,NNODE,NQUTR,NNODX,SHAPE)
+      RETURN
+    3 CALL SHAPE3(DERIV,EXISP,ETASP,EZETA,NDIME,NNODE,NQUTR,      SHAPE)
+      RETURN
+      END

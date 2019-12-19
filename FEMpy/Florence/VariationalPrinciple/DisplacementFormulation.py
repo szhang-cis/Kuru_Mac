@@ -43,6 +43,9 @@ class DisplacementFormulation(VariationalPrinciple):
         # GET THE FIELDS AT THE ELEMENT LEVEL
         LagrangeElemCoords = mesh.points[mesh.elements[elem,:],:]
         EulerElemCoords = Eulerx[mesh.elements[elem,:],:]
+        # GET DEPOSITION-STRETCH AND GROWTH-REMODELING FIELDS AT ELEMENT LEVEL (JOANDLAUBRIE)
+        ElemGrowthRemodeling = material.GrowthRemodeling[mesh.elements[elem,:],:]
+
 
         # COMPUTE THE STIFFNESS MATRIX
         if material.has_low_level_dispatcher:
@@ -50,7 +53,7 @@ class DisplacementFormulation(VariationalPrinciple):
                 LagrangeElemCoords,EulerElemCoords,fem_solver,elem)
         else:
             stiffnessel, t = self.GetLocalStiffness(function_space,material,
-                LagrangeElemCoords,EulerElemCoords,fem_solver,elem)
+                LagrangeElemCoords,EulerElemCoords,ElemGrowthRemodeling,fem_solver,elem)
 
         I_mass_elem = []; J_mass_elem = []; V_mass_elem = []
         if fem_solver.analysis_type != 'static' and fem_solver.is_mass_computed is False:
@@ -67,7 +70,7 @@ class DisplacementFormulation(VariationalPrinciple):
 
         return I_stiff_elem, J_stiff_elem, V_stiff_elem, t, f, I_mass_elem, J_mass_elem, V_mass_elem
 
-    def GetLocalStiffness(self, function_space, material, LagrangeElemCoords, EulerELemCoords, fem_solver, elem=0):
+    def GetLocalStiffness(self, function_space, material, LagrangeElemCoords, EulerELemCoords, ElemGrowthRemodeling, fem_solver, elem=0):
         """Get stiffness matrix of the system"""
 
         nvar = self.nvar
@@ -78,6 +81,7 @@ class DisplacementFormulation(VariationalPrinciple):
         inv = np.linalg.inv
         Jm = function_space.Jm
         AllGauss = function_space.AllGauss
+        Bases = function_space.Bases
 
         # ALLOCATE
         stiffness = np.zeros((nodeperelem*nvar,nodeperelem*nvar),dtype=np.float64)
@@ -91,6 +95,9 @@ class DisplacementFormulation(VariationalPrinciple):
         MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
         # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N)]
         F = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
+
+        # MAPPING DEPOSITION-STRETCH AND GROWTH-REMODELING VALUES (JOANDLAUBRIE)
+        material.growth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
 
         # COMPUTE REMAINING KINEMATIC MEASURES
         StrainTensors = KinematicMeasures(F, fem_solver.analysis_nature)

@@ -1,0 +1,74 @@
+      SUBROUTINE MEMODTT
+C***********************************************************************
+C
+C**** THIS ROUTINE CALCULATES THE MEMORY REQUIREMENTS & ADDRESS FOR 
+C     DATABASE
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** GENERAL DIMENSIONS
+C
+      INCLUDE 'para_omt.f'
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_omt.f'
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'prob_omt.f'
+      INCLUDE 'inte_omt.f'
+      INCLUDE 'auxl_omt.f'
+C
+C**** TRY TO ALLOCATE DATA BASE IN VIRTUAL MEMORY
+C
+      ISTOPT=NDISKD      ! ndiskd=0 out-of-core; ndiskd=1 virtual memory
+C
+      NBLOCT=11
+      DO 10 IBLOCT=NBLIMT,1,-1
+C
+C**** CHECK POSSIBILITY TO ALLOCATE IBLOC ARRAYS IN VIRTUAL MEMORY
+C
+       IF((IBLOCT.EQ.6).AND.(KDYNAT.EQ.0).AND.(KPORET.NE.2)) GO TO 10
+C
+       NWORPT=IDATPT(IBLOCT+1,3)
+C
+C**** MEMORY CONTROL
+C
+       IF(NWORPT.GT.MWORPT)
+     .  CALL RUNENDT('ERROR IN MEMODTT: NWORPT         ')
+C
+       LDABAT=NWORPT*NELEMT+IDATPT(12,3)
+       LBYTBT=LDABAT*8
+C
+C**** SET APPROPRIATE FLAGS AND POINTERS FOR DATABASE
+C                                 ISTOP=1 >> MEMORY HAS BEEN ALLOCATED
+       IF(ISTOPT.EQ.1) THEN
+        DO ILOOPT=1,IBLOCT
+         IDATPT(ILOOPT,5)=1
+        ENDDO
+        NSKIPT=IDATPT(IBLOCT+1,4)
+        NLENPT=NLENPT-NSKIPT
+        NRECPT=NLENPT*NELEMT
+        DO ILOOPT=NBLOCT+1,IBLOCT+1,-1
+         IDATPT(ILOOPT,4)=IDATPT(ILOOPT,4)-NSKIPT
+        ENDDO
+        GO TO 100
+       ENDIF
+   10 CONTINUE
+C
+C**** ALLOCATE VM FOR DISTO
+C
+      IBLOCT=0
+      LDABAT=IDATPT(12,3)
+      LBYTBT=LDABAT*8
+C
+  100 CONTINUE
+C
+C**** TRANSFER DISTO TO DATABASE
+C
+      IDATPT(12,5)=1
+C
+      RETURN
+      END

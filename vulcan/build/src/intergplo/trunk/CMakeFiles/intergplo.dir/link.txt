@@ -1,0 +1,1 @@
+/usr/bin/gfortran    -O2 -fopenmp -cpp CMakeFiles/intergplo.dir/intergplo.f.o  -o intergplo  

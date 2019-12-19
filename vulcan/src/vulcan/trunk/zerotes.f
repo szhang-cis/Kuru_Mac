@@ -1,0 +1,119 @@
+      SUBROUTINE ZEROTES(ELPRES,ELVARS,DISTOS,HEADSS,TLOADS,RLOADS,
+     .                   REFORS,DISPLS,PWORKS,PREASS,TGAPSS,TEMPIS,
+     .                   ADVELS,FPCHAS)
+C***********************************************************************
+C
+C**** THIS ROUTINE INITIALISES VARIOUS ARRAYS TO ZERO
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_oms.f'
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'
+      INCLUDE 'nued_om.f'
+C
+C**** MICROSTRUCTURAL VARIABLES
+C
+      INCLUDE 'prob_oms.f'
+      INCLUDE 'inte_oms.f'
+      INCLUDE 'auxl_oms.f'
+C
+      DIMENSION DISTOS(*),             HEADSS(*),
+     .          TLOADS(*),             RLOADS(*),
+     .          REFORS(*)
+      DIMENSION ELPRES(NPREVS),        ELVARS(NSTATS)
+      DIMENSION DISPLS(NTOTVMS),       PWORKS(NPOINS,3)
+      DIMENSION PREASS(NPREAS,NPOINS), TGAPSS(NPOINS)
+      DIMENSION TEMPIS(NPOINS,2),      ADVELS(NTOTVS*NDIMES),
+     .          FPCHAS(NFPCH,NPOINS)
+C
+      DO 20 INDEXS=1,NTOTVS*2
+      REFORS(INDEXS)=0.0D0
+   20 TLOADS(INDEXS)=0.0D0
+C
+      DO 30 INDEXS=1,NTOTVS*3
+   30 DISTOS(INDEXS)=0.0D0
+C
+      IF(KPORES.NE.0) THEN
+       DO 40 INDEXS=1,NPOINS*4
+   40  HEADSS(INDEXS)=0.0D0
+      ENDIF
+C
+      DO ITOTVS=1,NTOTVS
+       RLOADS(ITOTVS)=0.0D0
+      END DO
+C
+      IF(ITERME.GT.0) THEN
+       DO ITOTV=1,NTOTVMS
+        DISPLS(ITOTV)=0.0D0
+       END DO
+C
+       DO IPOINS=1,NPOINS
+        DO I=1,2
+         PWORKS(IPOINS,I)=0.0D0
+        END DO
+        IF(NITERCS.EQ.2.OR.NITERCS.EQ.3) PWORKS(IPOINS,3)=0.0D0
+        IF(NPRE1S.GT.0) PREASS(1,IPOINS)=0.0D0           ! see addpris.f
+        IF(NMEMO11S.EQ.0) TGAPSS(IPOINS)=0.0D0
+       END DO
+      ENDIF                !iterme.gt.0
+C
+      IF(ICONVS.EQ.1) THEN
+       DO INDEXS=1,NTOTVS*NDIMES
+        ADVELS(INDEXS)=0.0D0
+       ENDDO
+      ENDIF           !iconvs.eq.1
+C
+      DO IPOINS=1,NPOINS
+       TEMPIS(IPOINS,1)=0.0D0
+      ENDDO
+C
+      IF(NMEMO10S.EQ.1) THEN
+       DO IPOINS=1,NPOINS
+        TEMPIS(IPOINS,2)=1.0D0
+       ENDDO
+      ENDIF
+C
+      DO IPOINS=1,NPOINS
+       DO IFPCH=1,NFPCH
+        FPCHAS(IFPCH,IPOINS)=0.0D0
+       ENDDO
+      ENDDO
+C
+      IF(NPOROS.GT.0) THEN
+       DO IPOINS=1,NPOINS
+        DO IPREAT=NPRE1S+1,NPREAS
+         PREASS(IPREAT,IPOINS)=0.0D0
+        END DO
+       END DO
+      ENDIF              ! nporos.gt.0
+C
+C**** INITIALIZE ELPRE & ELVAR AND WRITE TO DATA-BASE 
+C
+      IF(NMEMOS.EQ.1) THEN
+       DO KPREVS=1,NPREVS
+        ELPRES(KPREVS)=0.0D0
+       ENDDO
+      ENDIF
+C
+      IF(NMEMO3S.EQ.1.OR.NMEMO4S.EQ.1.OR.NMEMO5S.EQ.0) THEN
+       DO 50 KSTATS=1,NSTATS
+   50  ELVARS(KSTATS)=0.0D0
+      ENDIF
+C
+      DO 100 IELEMS=1,NELEMS
+C
+       IF(NMEMOS.EQ.1)
+     .  CALL DATBASS(ELPRES,    2,    1)
+       IF(NMEMO3S.EQ.1.OR.NMEMO4S.EQ.1.OR.NMEMO5S.EQ.0)
+     .  CALL DATBASS(ELVARS,    3,    1)
+C
+  100 CONTINUE
+C        
+      RETURN
+      END

@@ -1,0 +1,30 @@
+      SUBROUTINE WMATRI(DVOLU,NDOFN,NEVAB,NNODE,PROPS,SHAPE,WSTIF,KSYMM)
+C***********************************************************************
+C
+C**** THIS ROUTINE EVALUATES THE ELEMENT MASS MATRIX
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      DIMENSION PROPS(*), SHAPE(*), WSTIF(*)
+C
+      DENSE=PROPS(12)
+C
+C**** CONSISTENT ELEMENT MASS MATRIX
+C
+      DO 10 INODE=1,NNODE
+      KEVAB=(INODE-1)*NDOFN
+C
+      DO 10 JNODE=INODE,NNODE
+      JEVAB=(JNODE-1)*NDOFN
+      CONST=DENSE*SHAPE(INODE)*SHAPE(JNODE)
+C
+      DO 10 IDOFN=1,NDOFN
+      IEVAB=KEVAB+IDOFN
+      JEVAB=JEVAB+1
+      KLOCA=(2*NEVAB-IEVAB)*(IEVAB-1)/2+JEVAB
+      IF(KSYMM.EQ.0) KLOCA=(IEVAB-1)*NEVAB+JEVAB  ! unsymmetric
+   10 WSTIF(KLOCA)=WSTIF(KLOCA)+CONST*DVOLU
+C
+      RETURN
+      END

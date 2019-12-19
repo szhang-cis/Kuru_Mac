@@ -1,0 +1,62 @@
+      SUBROUTINE WBOUND(NDIME,NEVAB,NNODE,
+     .                  SHAPE,WSTIF,DMATX,BMATX,
+     .                  KSYMM,EMATX)
+C***********************************************************************
+C
+C**** THIS ROUTINE EVALUATES THE CONSISTENT BOUNDARY ELEMENT MATRIX
+C     (FOR BOUNDARY AND INTERFACE ELEMENTS)
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      DIMENSION SHAPE(*),       WSTIF(*)
+      DIMENSION EMATX(NEVAB,*)
+      DIMENSION DMATX(NDIME,*), BMATX(NDIME,*)
+C
+C**** INITIALISES BMATX
+C
+      DO IDIME=1,NDIME
+       DO IEVAB=1,NEVAB
+        BMATX(IDIME,IEVAB)=0.0
+       ENDDO
+      ENDDO
+C
+C**** COMPUTES "B" CONTACT MATRIX
+C
+      NGASH=0
+C
+      DO INODE=1,NNODE
+       LGASH=NGASH+1
+       NGASH=LGASH
+       BMATX(1,LGASH)=SHAPE(INODE)
+C
+       IF(NDIME.GE.2)THEN
+        MGASH=LGASH+1
+        NGASH=MGASH
+        BMATX(2,MGASH)=SHAPE(INODE)
+       ENDIF
+C
+       IF(NDIME.EQ.3)THEN
+        NGASH=MGASH+1
+        BMATX(3,NGASH)=SHAPE(INODE)
+       ENDIF
+      ENDDO
+C
+C**** COMPUTE ONLY A FORTH PART OF ELEMENTAL CONTACT MATRIX
+C
+      DO IEVAB=1,NEVAB
+       INDEX=IEVAB                ! SYMMETRIC CASE
+       IF(KSYMM.EQ.0) INDEX=1     ! UNSYMMETRIC CASE
+       DO JEVAB=INDEX,NEVAB
+        EMATX(IEVAB,JEVAB)=0.0
+        DO IDIME=1,NDIME
+         DO JDIME=1,NDIME
+          EMATX(IEVAB,JEVAB)=EMATX(IEVAB,JEVAB)+BMATX(IDIME,IEVAB)*
+     .                       DMATX(IDIME,JDIME)*BMATX(JDIME,JEVAB)
+         ENDDO
+        ENDDO
+       ENDDO
+      ENDDO
+C
+      RETURN
+      END

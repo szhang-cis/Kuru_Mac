@@ -1,0 +1,60 @@
+      SUBROUTINE CONMTXS(ELDATS,ELPRES,ELVARS,ELMATS,LNODSS,MATNOS,
+     .                   PROELS,PROPSS,WORK1S)
+C***********************************************************************
+C
+C**** THIS ROUTINE SETS UP SOME CONSTANT MATRICES FOR FUTURE USE
+C     IT EVALUATES ONCE AND FOR ALL ( IF NECESSARY ) :
+C
+C         - MASS MATRIX              (IF KDYNA=1)
+C         - PERMEABILITY MATRIX      (IF KPORE=2)
+C         - FLUID COMPRESSIB. MATRIX (IF KPORE=2)
+C         - INITIAL COUPLING MATRIX  (IF KPORE=2)
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_oms.f'
+C
+      INCLUDE 'prob_oms.f'
+      INCLUDE 'inte_oms.f'
+      INCLUDE 'auxl_oms.f'
+C
+      DIMENSION MATNOS(NELEMS),        LNODSS(NNODES,NELEMS),
+     .          PROELS(NPRELS,NGRUPS), PROPSS(NPROPS,NMATSS),
+     .          ELDATS(NDATAS),        ELPRES(NPREVS),
+     .          ELVARS(NSTATS),        ELMATS(NMATXS),
+     .          WORK1S(*)
+C
+      IF(KDYNAS.EQ.0.AND.KPORES.NE.2) RETURN
+C
+      CALL CPUTIMS(TIME1S)
+C
+C**** LOOP ON ELEMENTS
+C
+      KERORS=0
+      DO 1000 IELEMS=1,NELEMS
+      LGRUPS=MATNOS(IELEMS)
+      LMATSS=INT(PROELS(1,LGRUPS))
+C
+C**** READ ELDAT FROM DATA BASE
+C
+      IF(NMEMO1S.EQ.0.OR.NMEMO2S.EQ.0)
+     . CALL DATBASS(ELDATS,    1,    2)
+C
+C**** COMPUTE MASS MATRIX IF NECESSARY
+C
+      IF(KDYNAS.NE.0) THEN
+       CALL ELMLIBS(LNODSS(1,IELEMS),PROELS(1,LGRUPS),PROPSS(1,LMATSS),
+     .               ELDATS,ELPRES,ELVARS,ELMATS,WORK1S,       2)
+       IF(NMEMO6S.EQ.0) CALL DATBASS(ELMATS(IMATXS(3)),    8,    1)
+      ENDIF
+C
+ 1000 CONTINUE
+C
+      CALL CPUTIMS(TIME2S)
+      CPUSTS=CPUSTS+(TIME2S-TIME1S)
+C
+      RETURN
+      END

@@ -1,0 +1,88 @@
+      SUBROUTINE STIPARS(DISPRS,IFFIXS,TLOADS,REFORS,PWORKS)
+C***********************************************************************
+C
+C**** THIS ROUTINE CALCULATES THE CURRENT STIFFNESS PARAMETER
+C     & SAVES SOME CONVERGED VALUES
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'
+      INCLUDE 'nued_om.f'
+C
+C**** MICROSTRUCTURAL VARIABLES
+C
+      INCLUDE 'prob_oms.f'
+      INCLUDE 'inte_oms.f'
+      INCLUDE 'auxl_oms.f'
+C
+      DIMENSION IFFIXS(*), DISPRS(*), TLOADS(NTOTVS,*), REFORS(NTOTVS)
+      DIMENSION PWORKS(NPOINS,3)
+C
+      STIOLS=STICUS
+c     FACPRS=FACTOS
+C
+      PROD1S=0.0
+      PROD2S=0.0
+      PROD3S=0.0
+C
+C**** STORE PREVIOUS VALUE OF TOTAL LOAD & ...
+C
+      DO 10 ITOTVS=1,NTOTVS
+C
+      DISINS=DISPRS(ITOTVS)        ! Increm. displ.
+      TOTLOS=TLOADS(ITOTVS,1)      ! Total load
+      IF(IFFIXS(ITOTVS).EQ.1) TOTLOS=TOTLOS-REFORS(ITOTVS) 
+C                                    ! Add reaction
+      DEFORS=TOTLOS-TLOADS(ITOTVS,2) ! Increm. load
+      TLOADS(ITOTVS,2)=TOTLOS
+C
+      PROD1S=PROD1S+DEFORS*DISINS
+      PROD2S=PROD2S+DEFORS*DEFORS
+      PROD3S=PROD3S+DISINS*DISINS
+C
+      IF(ITERME.GT.0) PWORKS(ITOTVS,2)=PWORKS(ITOTVS,1)
+C
+   10 CONTINUE
+C
+      IF(KDYNAS.EQ.1.OR.KPORES.EQ.2) RETURN
+C
+C**** COMPUTE CURRENT STIFFNESS PARAMETER AND ARC-LENGTH
+C
+      IF(KARCLS.EQ.4) THEN                      ! FOR DISPL. CONTROL
+        ARCLNS=DISPRS(NCDISS)
+      ELSE                                     ! FOR ARC-LENGTH
+        ARCLNS=DSQRT(PROD3S)
+      ENDIF
+C
+      IF(PROD1S.NE.0.0) THEN
+                               STICUS=PROD2S/PROD1S
+      ELSE
+                               STICUS=1.0D00
+      ENDIF
+      IF(ISTEPS.EQ.1)          STIINS=STICUS
+      IF(STIINS.NE.0.0)        STICUS=STICUS/STIINS
+      IF(ISTEPS.EQ.1)          STIOLS=STICUS
+      STICHS=DABS(STIOLS-STICUS)
+      IF(STIOLS.NE.0.0)        RATIOS=100.0*STICHS/STIOLS
+      IF(ABS(RATIOS).GE.100.0) RATIOS=999.9999*RATIOS/ABS(RATIOS)
+C
+      WRITE(LURESS,900) STICUS,STICHS,RATIOS
+C
+      IF(ISTEPS.EQ.1) THEN
+        PITERS=DITERS
+      ELSE
+        IF(LAUTOS.EQ.1) PITERS=FLOAT(IITERS)
+        IF(LAUTOS.EQ.2) PITERS=STICHS
+        IF(LAUTOS.EQ.3) PITERS=STICHS/STIOLS
+        IF(LAUTOS.EQ.4) PITERS=STICUS/STIOLS
+      ENDIF
+C
+      RETURN
+  900 FORMAT(/,132('='),/
+     .         5X,'CURRENT STIFF. PARAMETER =',F10.5,
+     .    2X,'***',2X,'STIFF. CHANGE =',F10.5,2X,'( ',F9.4,' % )',/,
+     .        132('='),/)
+      END

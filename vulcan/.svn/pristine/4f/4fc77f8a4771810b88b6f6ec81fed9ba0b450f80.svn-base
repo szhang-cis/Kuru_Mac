@@ -1,0 +1,42 @@
+#! /bin/bash
+
+EXPECTED_ARGS=2
+E_BADARGS=65
+
+if [ $# -lt $EXPECTED_ARGS ]
+then
+  echo "Usage: `basename $0` pos_filename problem_type [directory_name]"
+  exit $E_BADARGS
+fi
+
+if [ $# -ne 3 ] 
+then
+    CHOSENDIR="vtk"
+else
+    CHOSENDIR=$3
+fi
+
+if [ -d $CHOSENDIR ]
+then
+  echo "Directory `basename $CHOSENDIR` already exists, delete it if you want to continue."
+  exit $E_BADARGS
+fi
+
+mkdir $CHOSENDIR
+
+FILENAME=$1
+
+/usr/bin/vulcan-bin/interpara_for $2 $FILENAME
+
+NEWFILENAME=${FILENAME:0:${#FILENAME} - 4}'-pv.vtk'
+
+I=0
+for FILE in `ls *.vtt`
+do
+	FILENUM=$(printf "%03d" $I)
+	CHOPPED=$CHOSENDIR'/'${FILENAME:0:${#FILENAME} - 4}
+	cat $NEWFILENAME $FILE > $CHOPPED'_'$FILENUM'.vtk'
+	rm -r $FILE
+	((I = I + 1))
+done
+rm -r $NEWFILENAME

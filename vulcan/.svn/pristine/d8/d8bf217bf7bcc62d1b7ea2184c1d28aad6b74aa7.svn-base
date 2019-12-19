@@ -1,0 +1,3 @@
+      SUBROUTINE CPUTIMT3(RTIMET)
+      RETURN
+      END     

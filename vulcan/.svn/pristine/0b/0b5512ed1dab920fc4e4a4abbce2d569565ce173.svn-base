@@ -1,0 +1,187 @@
+      SUBROUTINE MICROM7(ROTET,DEROT,LIQUI,DELLS,
+     .                   TEMPG,DTEMG,SHAPE,FPCHL,
+     .                   ROTES,DEROS,LIQUS,DELSS,
+     .                   YOUNG,CCERO,CCEROM,CCEROP,
+     .                   IPLAT)
+C***********************************************************************
+C
+C**** THIS ROUTINE EVALUATES THE MECHANICAL PROPERTIES AS A FUNCTION OF
+C     THE MICROSTRUCTURAL VARIABLES FOR MODEL 7 (IPCMOM=7)
+C
+C     Note: the mechanical properties as a function of the
+C           microstructural are evaluated in micros7.f and transferred
+C           to the mechanical problem as NNUPO variables
+C
+C***********************************************************************
+      IMPLICIT REAL*8 (A-H,O-Z)
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'
+      INCLUDE 'nued_om.f'
+C
+C**** MECHANICAL VARIABLES
+C
+      INCLUDE 'prob_om.f'
+      INCLUDE 'inte_om.f'
+      INCLUDE 'auxl_om.f'
+C
+      DIMENSION SHAPE(*), FPCHL(NFPCH,*)
+      DIMENSION FPAUX(27)
+C
+C**** RECOVERS THE PHASE-CHANGE FUNCTION
+C
+      ILSPC=INT(VPLATM(IPLAT,1))
+      ISSPC=INT(VPLATM(IPLAT,2))
+      DELEX=VPLATM(IPLAT,3)
+      INDFC=INT(VPLATM(IPLAT,6))      ! index for fpchl
+C
+      IF(INTERC.EQ.1) THEN
+       DO INODL=1,NNODL
+        FPAUX(INODL)=FPCHL(INDFC,INODL)
+       ENDDO
+       CALL SMOMID(FPAUX,NDIME,NNODL,NQUTR)
+       DO INODL=1,NNODL
+        FPCHL(INDFC,INODL)=FPAUX(INODL)
+       ENDDO
+C
+       DO INODL=1,NNODL
+        FPAUX(INODL)=FPCHL(INDFC+NNUPTM,INODL)
+       ENDDO
+       CALL SMOMID(FPAUX,NDIME,NNODL,NQUTR)
+       DO INODL=1,NNODL
+        FPCHL(INDFC+NNUPTM,INODL)=FPAUX(INODL)
+       ENDDO
+      ENDIF
+C
+C**** CALCULATES THE PHASE-CHANGE FUNCTION AT GAUSS POINT
+C
+      IF(ILSPC.GT.0) THEN                 ! liquid-solid not used
+       ROTET=0.0D+00
+       DEROT=0.0D+00
+       LIQUI=1
+       DO INODE=1,NNODL
+        ROTET=ROTET+SHAPE(INODE)*FPCHL(INDFC,INODE)
+        DEROT=DEROT+SHAPE(INODE)*FPCHL(INDFC+NNUPTM,INODE)
+       ENDDO
+       ROTET=1.0D+00-ROTET
+       IF(ROTET.GT.0.0) LIQUI=0
+       DELLS=DELEX
+      ENDIF
+C
+      IF(ISSPC.GT.0) THEN                 ! ROTES=GHN (see micros7.f)
+       ROTES=0.0D+00
+       DEROS=0.0D+00
+       LIQUS=1
+       DO INODE=1,NNODL
+        ROTES=ROTES+SHAPE(INODE)*FPCHL(INDFC,INODE)
+        DEROS=DEROS+SHAPE(INODE)*FPCHL(INDFC+NNUPTM,INODE)
+       ENDDO
+c      ROTES=1.0D+00-ROTES
+c      IF(ROTES.GT.0.0) LIQUS=0
+       DELSS=DELEX
+      ENDIF
+C
+C**** MICROSTRUCTURAL MODEL
+C
+      IVERSI=INT(VPLATM(IPLAT,8))
+C
+      IF(IVERSI.EQ.1) THEN
+C
+C**** THERMAL-MECHANICAL-MICROSCOPICAL PROPERTIES (see idepros7.f)
+C
+      AM0=VPLATM(IPLAT,9)
+      AK=VPLATM(IPLAT,10)
+      VISC7=VPLATM(IPLAT,11)
+      UNIVC=VPLATM(IPLAT,12)
+      ENERA=VPLATM(IPLAT,13)
+      HENER=VPLATM(IPLAT,14)
+      CHININF=VPLATM(IPLAT,15)
+      CONTA=VPLATM(IPLAT,16)
+      CONTB=VPLATM(IPLAT,17)
+      IMECHMIC=INT(VPLATM(IPLAT,18))
+C
+      IF(IMECHMIC.EQ.1) THEN
+C
+C**** ASSIGNS MICROSTRUCTURE-DEPENDENT MECHANICAL PROPERTIES
+C
+       call runend('ERROR: version 1 of model 7 not implemented')
+      ENDIF         ! imechmic.eq.1
+      ENDIF         ! iversi.eq.1
+C
+      IF(IVERSI.EQ.2) THEN
+C
+C**** THERMAL-MECHANICAL-MICROSCOPICAL PROPERTIES (see idepros7.f)
+C
+      AKBAR=VPLATM(IPLAT,9)
+      ETA00=VPLATM(IPLAT,10)
+      ETABAR=VPLATM(IPLAT,11)
+      GHINF=VPLATM(IPLAT,12)
+      ALPHABAR=VPLATM(IPLAT,13)
+      AABAR=VPLATM(IPLAT,14)
+      UNIVC=VPLATM(IPLAT,15)
+      ENERA=VPLATM(IPLAT,16)
+      HENER=VPLATM(IPLAT,17)
+      CONTA=VPLATM(IPLAT,18)
+      CONTB=VPLATM(IPLAT,19)
+      ENETE=VPLATM(IPLAT,20)
+      FINFIN=VPLATM(IPLAT,21)
+      FINFINM=VPLATM(IPLAT,22)
+      GSETT=VPLATM(IPLAT,23)
+      TMAX=VPLATM(IPLAT,24)
+      TREF=VPLATM(IPLAT,25)
+      CONAE=VPLATM(IPLAT,26)
+      IMECHMIC=INT(VPLATM(IPLAT,27))
+C
+      IF(IMECHMIC.EQ.1) THEN
+C
+C**** RECOVERS THE ADDITIONAL MICROSTRUCTURAL VARIABLES
+C
+      IF(INTERC.EQ.1) THEN
+       DO INDFC=1,NNUPO
+        DO INODL=1,NNODL
+         FPAUX(INODL)=FPCHL(2*NNUPTM+INDFC,INODL)
+        ENDDO
+        CALL SMOMID(FPAUX,NDIME,NNODL,NQUTR)
+        DO INODL=1,NNODL
+         FPCHL(2*NNUPTM+INDFC,INODL)=FPAUX(INODL)
+        ENDDO
+       ENDDO
+      ENDIF
+C
+C**** CALCULATES THE ADDITIONAL MICROSTRUCTURAL VARIABLES AT GAUSS POINT
+C
+      FCN=0.0D+00                      ! compression strength
+      DO INODE=1,NNODL
+       FCN=FCN+SHAPE(INODE)*FPCHL(2*NNUPTM+1,INODE)
+      ENDDO
+C
+      FCMN=0.0D+00                     ! tension strength
+      DO INODE=1,NNODL
+       FCMN=FCMN+SHAPE(INODE)*FPCHL(2*NNUPTM+2,INODE)
+      ENDDO
+C
+      YOUNGN=0.0D+00                   ! Young modulus
+      DO INODE=1,NNODL
+       YOUNGN=YOUNGN+SHAPE(INODE)*FPCHL(2*NNUPTM+3,INODE)
+      ENDDO
+C
+C**** ASSIGNS MICROSTRUCTURE-DEPENDENT MECHANICAL PROPERTIES
+C
+C     YOUNG=initial value of E defined in input data
+C     FCNINI=initial value defined according to the initial E
+C     FCMNINI=initial value defined according to the initial E
+C
+      FCNINI=(YOUNG/CONAE)**2.0D0*FINFIN
+      CCEROM=FCNINI
+      IF(FCN.GT.FCNINI) CCEROM=FCN
+      FCMNINI=(YOUNG/CONAE)**(4.0D0/3.0D0)*FINFINM
+      CCEROP=FCMNINI
+      IF(FCMN.GT.FCMNINI) CCEROP=FCMN
+      IF(YOUNGN.GT.YOUNG) YOUNG=YOUNGN
+C
+      ENDIF         ! imechmic.eq.1
+      ENDIF         ! iversi.eq.2 
+C
+      RETURN
+      END

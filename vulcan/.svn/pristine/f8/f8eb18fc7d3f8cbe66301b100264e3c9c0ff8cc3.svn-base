@@ -1,0 +1,36 @@
+      SUBROUTINE ALTCONT(TGAUSX,TGAUST,GPCODT)
+C***********************************************************************
+C
+C**** THIS ROUTINE EVALUATES THE VARIABLE TO BE CONSIDERED FOR THE
+C     CALCULATION OF THE CONVECTION-RADIATION COEFFICIENT
+C
+C***********************************************************************
+      IMPLICIT REAL*8 (A-H,O-Z)
+C
+      INCLUDE 'prob_omt.f'
+      INCLUDE 'inte_omt.f'
+      INCLUDE 'auxl_omt.f'
+C
+      DIMENSION GPCODT(*)
+C
+      TGAUSX=TGAUST
+      NALTF= VRADH1(NRADH1+1,1)
+      IF(NALTF.EQ.0) RETURN
+C
+      IF(NALTF.EQ.1) THEN
+       TWOPIT=6.283185307179586D0
+       XC=VRADH1(NRADH1+2,1)
+       YC=VRADH1(NRADH1+2,2)
+       XX=GPCODT(1)-XC
+       YY=GPCODT(2)-YC
+       RR=DSQRT(XX*XX+YY*YY)
+       AT1=360.0D0/TWOPIT*DASIN( YY/RR)
+       AT2=360.0D0/TWOPIT*DASIN(-YY/RR)
+       IF(XX.GT.0.0D0.AND.YY.GT.0.0D0) TGAUSX=AT1
+       IF(XX.LT.0.0D0.AND.YY.GT.0.0D0) TGAUSX=180.0D0-AT1
+       IF(XX.LT.0.0D0.AND.YY.LT.0.0D0) TGAUSX=180.0D0+AT2
+       IF(XX.GT.0.0D0.AND.YY.LT.0.0D0) TGAUSX=360.0D0-AT2
+      ENDIF
+C
+      RETURN
+      END

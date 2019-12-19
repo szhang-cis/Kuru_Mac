@@ -104,7 +104,6 @@ def GetBases2D(C, Quadrature, info, bases_type="nodal", equally_spaced=False, is
             gBasisy[:,i] = dummy[:,1]
 
 
-
     class Domain(object):
         Bases = Basis
         gBasesx = gBasisx

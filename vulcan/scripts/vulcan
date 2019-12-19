@@ -1,0 +1,49 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from multiprocessing import Process, cpu_count
+import os, shutil, time, sys
+import daemon
+from vulcan import Vulcan
+
+
+def main():
+    if len (sys.argv) < 2:
+        print "Uso: vulcan tipo_problema archivo_dat (con extension)"
+        print "tipo_problema -> tfms"
+        sys.exit(1)
+    filename = os.path.abspath(sys.argv[2])
+    dat_directory = os.path.dirname(filename)
+    filename = os.path.splitext(os.path.basename(filename))[0] #Obtiene el nombre del archivo sin extension si
+    abs_file_list = []
+    for arg in sys.argv[1:]:
+        if os.path.splitext(arg)[1] == ".dat":
+            abs_file_list.append(os.path.abspath(arg))
+        else:
+            abs_file_list.append(arg)
+    try:
+        import setproctitle
+        setproctitle.setproctitle("Vulcan-"+filename)
+    except:
+        pass
+    if '-t' in sys.argv or '-T' in sys.argv:
+        try:
+            abs_file_list.remove('-t')
+            abs_file_list.remove('-T')
+        except ValueError:
+            pass
+        from vulcantui import InfoServer
+        b = InfoServer()
+        a = Vulcan(os.path.expanduser(os.path.join("~", "scratch")),abs_file_list)
+        a.run(b)
+    else:
+        with daemon.DaemonContext(stdout=sys.stdout,stderr=sys.stderr):
+            worker(filename, abs_file_list)
+        
+        
+def worker(filename, args):        
+      a = Vulcan(os.path.expanduser(os.path.join("~", "scratch")), args)
+      a.run()
+
+if __name__ == "__main__":
+    main()

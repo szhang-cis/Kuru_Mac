@@ -1,0 +1,366 @@
+      SUBROUTINE INPPRO(ITAPE,PROPS,VANIS,MATNO,PROEL,COORD,LNODS,INDEX)
+C***********************************************************************
+C
+C**** THIS ROUTINE READS THE MATERIAL PROPERTIES
+C
+C     Notes:
+C           NMATS: number of materials
+C           NGRUP: number of sets
+C           In general, NGRUP ge NMATS
+C
+C           INDEX=0 => material properties read at GENERAL_DATA level
+C           INDEX=1 => material properties read at INTERVAL_DATA level
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** MECHANICAL VARIABLES
+C
+      INCLUDE 'auxl_om.f'
+      INCLUDE 'prob_om.f'
+      INCLUDE 'inte_om.f'
+      INCLUDE 'inpo_om.f'
+C
+      DIMENSION PROPS(NPROP,*),     VANIS(NANIV,NANIC,NELEM),
+     .          MATNO(NELEM),       PROEL(NPREL,NGRUP),
+     .          COORD(NDIME,NPOIN), LNODS(NNODE,NELEM)
+C
+      PARAMETER(MCOMC=1)
+#ifdef restricted
+      PARAMETER(MCOMD=1)
+#else
+      PARAMETER(MCOMD=20)
+#endif
+      PARAMETER(MCOME=3)
+      CHARACTER*5 COMMC(MCOMC)
+      CHARACTER*5 COMMD(MCOMD)
+C
+      DATA COMMC/'COMPO'/
+#ifdef restricted
+      DATA COMMD/'SMIEN'/
+#else
+      DATA COMMD/'SMIEN','SMIET','SMIPN','SMIPT','SMIVN','SMIVT',
+     .           'SMOEN','SMOET','SMOPN','SMOPT','SMOVN','SMOVT',
+     .           'POLYM','BIOLO',
+     .           'CONTA','LINKI','DG_LI',
+     .           'SG_CA','G_SAN','DUAL_'/
+#endif
+
+C
+      IERR1=1
+      IF(ITAPE.NE.LUDAT) THEN
+       ITAPE=LUMAT                    ! external .mat file
+       IF(INDEX.EQ.0) THEN
+        OPEN(UNIT=LUMAT,FILE=CC1,STATUS='OLD',ERR=1000)
+       ENDIF                          ! index.eq.0
+      ENDIF
+      IERR1=0
+C
+ 1000 IF(IERR1.NE.0) THEN
+       IF(IERR1.EQ.1) THEN
+        WRITE(LURES,901)
+        CALL RUNEND('ERROR IN OPENING FILES')
+       ENDIF
+      ENDIF
+C
+      WRITE(LURES,900)
+C
+C**** INITIALIZATION
+C
+      IF(INDEX.EQ.0) THEN
+       DO IPROP=1,NPROP
+        DO IMATS=1,NMATS
+         PROPS(IPROP,IMATS)=0.0D0
+        ENDDO
+       ENDDO
+      ENDIF                        ! index.eq.0
+C
+C**** READ MATERIALS PROPERTIES
+C
+      DO IMATS=1,NMATS
+C
+       NPRIN=0
+       CALL LISTEN('INPPRO',NPRIN,ITAPE)
+C
+C**** LOOK FOR 'MATERIAL_DATA' CARD
+C
+       IF(INDEX.EQ.0) THEN
+        IF(WORDS(1).NE.'MATER')
+     .   CALL RUNEND('INPPRO: WRONG MATERIAL_DATA CARD')
+       ELSE
+        IF(WORDS(1).NE.'MATER') GO TO 2000
+       ENDIF
+C
+       IF(PARAM(1).EQ.0.0)
+     .  CALL RUNEND('INPPRO: WRONG MATERIAL NUMBER')
+C
+       NUMAT=INT(PARAM(1))
+C
+C**** CONTROLS REPEATED MATERIALS
+C
+       IF(INDEX.EQ.0) THEN
+        IF(PROPS(2,NUMAT).NE.0.0D0)
+     .   CALL RUNEND('ERROR IN MATERIAL NUMBER')
+       ENDIF
+C
+C**** DEALS WITH INCOMPRESSIBILITY CONDITION
+C
+       IF(KPROB.EQ.5) THEN        ! no material properties
+        CALL LISTEN('INPPRO',NPRIN,ITAPE)
+        IF(WORDS(1).NE.'END_M')
+     .   CALL RUNEND('ERROR IN INPPRO: END_MATERIAL CARD NOT FOUND')
+        GO TO 99
+       ENDIF
+C
+C**** LOOKS FOR UNI OR MULTI COMPOUND MATERIALS
+C
+       DO ICOMC=1,MCOMC
+        IF(WORDS(2).EQ.COMMC(ICOMC)) GOTO 200
+       ENDDO
+C
+C**** UNI-COMPOUND MATERIALS
+C
+       DO ICOMD=1,MCOMD
+        IF(WORDS(2).EQ.COMMD(ICOMD)) GOTO 100
+       ENDDO
+       CALL RUNEND('INPPRO: WRONG MATERIAL CARD')
+C
+  100  GOTO(101,102,103,104,105,106,107,108,109,110,
+     .      111,112,113,114,115,116,117,118,119,120), ICOMD
+C
+  101  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=IEN SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPIEN(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  102  CONTINUE
+       CALL RUNEND('INPPRO: IET model not implemented yet')
+       GOTO 99
+C
+  103  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=IPN SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPIPN(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  104  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=IPT SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPIPT(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  105  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=IVN SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPIVN(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  106  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=IVT SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPIVT(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  107  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=OEN SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPOEN(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  108  CALL RUNEND('INPPRO: OET model not implemented yet')
+       GOTO 99
+C
+  109  CALL RUNEND('INPPRO: OPN model not implemented yet')
+       GOTO 99
+C
+  110  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=OPT SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPOPT(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  111  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=OVN SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPOVN(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  112  CALL RUNEND('INPPRO: OVT model not implemented yet')
+       GOTO 99
+C
+  113  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=POL SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPPOL(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  114  CONTINUE                                        ! same as POLYMER
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=POL SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPPOL(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  115  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.4.AND.ITYPE.NE.32)
+     .    CALL RUNEND('ERROR=CONTACT WITH NTYPE NE 4 & 32')
+        ENDIF
+       ENDDO
+       CALL PROP04(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  116  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.3.AND.ITYPE.NE.32.AND.ITYPE.NE.33)
+     .    CALL RUNEND('ERROR=LINKING WITH NTYPE NE 3, 32 & 33')
+        ENDIF
+       ENDDO
+       CALL PROP03(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  117  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.3.AND.ITYPE.NE.32.AND.ITYPE.NE.33)
+     .    CALL RUNEND('ERROR=LINKING WITH NTYPE NE 3, 32 & 33')
+        ENDIF
+       ENDDO
+       CALL PROPDG(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  118  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=IVT1 SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPIVT1(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+C
+  119  CALL RUNEND('INPPRO: GREEN model not implemented yet')
+       GOTO 99
+c
+  120  CONTINUE
+       DO ISETS=1,NGRUP                  ! control
+        IMATC=INT(PROEL(1,ISETS))
+        IF(IMATC.EQ.NUMAT) THEN
+         ITYPE=INT(PROEL(5,ISETS))
+         IF(ITYPE.NE.30)
+     .    CALL RUNEND('ERROR=IVT1 SOLID WITH NTYPE NE 30')
+        ENDIF
+       ENDDO
+       CALL PROPIVT3(ITAPE,PROPS(1,NUMAT))
+       GOTO 99
+
+C***** MULTI-COMPOUND MATERIALS
+C
+  200  CONTINUE
+       call runend('composites not implemented yet')
+       IF(PARAM(1).LE.0.0D0)
+     .  CALL RUNEND('INPPRO: WRONG COMPOUNDS NUMBER')
+C
+       NPRIN=0
+       CALL LISTEN('INPPRO',NPRIN,ITAPE)
+C
+       IF(WORDS(1).NE.'COMPO')
+     .  CALL RUNEND('INPPRO: WRONG MATERIAL_DATA CARD')
+C
+       IF(PARAM(1).EQ.0.0D0)
+     .  CALL RUNEND('INPPRO: WRONG COMPOUND NUMBER')
+C
+c      DO ICOMD=1,MCOMD
+c       IF(WORDS(2).EQ.COMMD(ICOMD)) GOTO 300
+c      ENDDO
+c      CALL RUNEND('INPPRO: WRONG MATERIAL CARD')
+C
+   99  CONTINUE
+      ENDDO
+C
+C**** READS 'MATERIAL_SYSTEM_OF_COORDINATES' FOR ANISOTROPY
+C
+      CALL PROPANI(ITAPE,PROPS,VANIS,MATNO,PROEL,COORD,LNODS)
+C
+C**** LOOK FOR 'END_PROPERTIES' CARD
+C
+      NPRIN=0
+      JTAPE=LUDAT
+      CALL LISTEN('INPPRO',NPRIN,JTAPE)
+ 2000 IF(WORDS(1).NE.'END_P')
+     . CALL RUNEND('INPPRO: END_PROPERTIES CARD NOT FOUND')
+C
+      RETURN
+  900 FORMAT(//,6X,18HELEMENT PROPERTIES,/,6X,18('-'))
+  901 FORMAT(' ERROR IN OPENING PROPERTIES INPUT FILE 42 ')
+      END

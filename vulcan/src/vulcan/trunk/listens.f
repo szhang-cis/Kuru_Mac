@@ -1,0 +1,36 @@
+      SUBROUTINE LISTENS(SUBNAT,NPRINT,ITAPET)
+C***********************************************************************
+C
+C**** READS A STRING AND INTERPRETS IT AS WORDS AND PARAMETERS.
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_oms.f'
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'inpo_oms.f'
+C
+      CHARACTER SUBNAT*7
+C
+      GO TO (1,2,3,2,5,1,1,8), NMACHIS
+C
+    1 CALL LISTENS1(SUBNAT,NPRINT,ITAPET)
+      RETURN
+C
+    2 CALL LISTENS2(SUBNAT,NPRINT,ITAPET)
+      RETURN
+C
+    3 CALL LISTENS3(SUBNAT,NPRINT,ITAPET)
+      RETURN
+C
+    5 CALL LISTENS5(SUBNAT,NPRINT,ITAPET)
+      RETURN
+C
+    8 CALL LISTENS8(SUBNAT,NPRINT,ITAPET)
+      RETURN
+C
+      END

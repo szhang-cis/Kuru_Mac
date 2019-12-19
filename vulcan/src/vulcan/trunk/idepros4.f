@@ -1,0 +1,140 @@
+      SUBROUTINE IDEPROS4(PROPST,IPLAT,IA1)
+C***********************************************************************
+C
+C**** THIS ROUTINE ORDERS THE MICROSTRUCTURAL PROPERTIES OF MODEL
+C     NUMBER 4 (IPCMO=4) OF RATE PHASE-CHANGE FORMULATIONS
+C
+C***********************************************************************
+      IMPLICIT REAL*8 (A-H,O-Z)
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'auxl_omt.f'
+      INCLUDE 'prob_omt.f'
+C
+      DIMENSION PROPST(*)
+C
+      IA2=IA1+2         ! 2=ipcfo,ipcmo
+C
+      CA =  PROPST(IA2+ 1)
+      SIO=  PROPST(IA2+ 2)
+      PH =  PROPST(IA2+ 3)
+      CU =  PROPST(IA2+ 4)
+      QMO=  PROPST(IA2+ 5)
+      QG =  PROPST(IA2+ 6)
+      CR =  PROPST(IA2+ 7)
+C
+      AKSI= PROPST(IA2+ 8)
+      AKQM= PROPST(IA2+ 9)
+      IHELAC=DINT(PROPST(IA2+10))
+      IX0=0
+      IF(IHELAC.EQ.4) THEN                    ! Thermocalc
+       TEG= PROPST(IA2+11)
+       TEC= PROPST(IA2+12)
+       IX0=2
+      ENDIF
+C
+      INUCMX=INT(PROPST(IA2+11+IX0))
+      IF(INUCMX.EQ.1.OR.INUCMX.EQ.2) THEN     ! Su & Boeri nuc. models
+       ANUCB=PROPST(IA2+12+IX0)
+       ANUCC=PROPST(IA2+13+IX0)
+      ENDIF
+      INUCAX=INT(PROPST(IA2+14+IX0))
+      INUCON=INT(PROPST(IA2+15+IX0))
+      ANUCON=PROPST(IA2+16+IX0)
+C
+      IGROMX=INT(PROPST(IA2+17+IX0))
+      IF(IGROMX.EQ.1) THEN                    ! Boeri growth model
+       DIFCL=PROPST(IA2+18+IX0)
+       DIFCA=PROPST(IA2+19+IX0)
+       RNODA=PROPST(IA2+20+IX0)
+       RNODO=PROPST(IA2+21+IX0)
+       AUSGR=PROPST(IA2+22+IX0)
+       IX1=0
+      ENDIF
+      IF(IGROMX.EQ.2) THEN                    ! Sandra growth model
+       DIFCL=PROPST(IA2+18+IX0)
+       DIFCA=PROPST(IA2+19+IX0)
+       RNODO=PROPST(IA2+20+IX0)
+       AUSGR=PROPST(IA2+21+IX0)
+       FLLOWN=PROPST(IA2+22+IX0)
+       FLUPPN=PROPST(IA2+23+IX0)
+       IX1=1
+      ENDIF
+C
+      AWHIT=PROPST(IA2+23+IX0+IX1)
+      BWHIT=PROPST(IA2+24+IX0+IX1)
+C
+      IKMICX=INT(PROPST(IA2+25+IX0+IX1))
+      IX2=0
+      IF(IKMICX.EQ.1.OR.IKMICX.EQ.2.OR.IKMICX.EQ.3) THEN
+       IX2=3
+       BASKS=PROPST(IA2+26+IX0+IX1)
+       BASKM=PROPST(IA2+27+IX0+IX1)
+       BASKL=PROPST(IA2+28+IX0+IX1)
+      ENDIF
+C
+      IFPCDT=INT(PROPST(IA2+26+IX0+IX1+IX2))
+      IAFLOJ=INT(PROPST(IA2+27+IX0+IX1+IX2))
+C
+      VPLAT(IPLAT, 6)=CA
+      VPLAT(IPLAT, 7)=SIO
+      VPLAT(IPLAT, 8)=PH
+      VPLAT(IPLAT, 9)=CU
+      VPLAT(IPLAT,10)=QMO
+      VPLAT(IPLAT,11)=QG
+      VPLAT(IPLAT,12)=CR
+C
+      VPLAT(IPLAT,13)=AKSI
+      VPLAT(IPLAT,14)=AKQM
+      VPLAT(IPLAT,15)=FLOAT(IHELAC)
+      IF(IHELAC.EQ.4) THEN                    ! Thermocalc
+       VPLAT(IPLAT,16)=TEG
+       VPLAT(IPLAT,17)=TEC
+      ENDIF
+C
+      VPLAT(IPLAT,16+IX0)=FLOAT(INUCMX)
+      IF(INUCMX.EQ.1.OR.INUCMX.EQ.2) THEN     ! Su & Boeri nuc. models
+       VPLAT(IPLAT,17+IX0)=ANUCB
+       VPLAT(IPLAT,18+IX0)=ANUCC
+      ENDIF
+      VPLAT(IPLAT,19+IX0)=FLOAT(INUCAX)
+      VPLAT(IPLAT,20+IX0)=FLOAT(INUCON)
+      VPLAT(IPLAT,21+IX0)=ANUCON
+C
+      VPLAT(IPLAT,22+IX0)=FLOAT(IGROMX)
+      IF(IGROMX.EQ.1) THEN                    ! Boeri growth model
+       VPLAT(IPLAT,23+IX0)=DIFCL
+       VPLAT(IPLAT,24+IX0)=DIFCA
+       VPLAT(IPLAT,25+IX0)=RNODA
+       VPLAT(IPLAT,26+IX0)=RNODO
+       VPLAT(IPLAT,27+IX0)=AUSGR
+      ENDIF
+      IF(IGROMX.EQ.2) THEN                    ! Sandra growth model
+       VPLAT(IPLAT,23+IX0)=DIFCL
+       VPLAT(IPLAT,24+IX0)=DIFCA
+       VPLAT(IPLAT,25+IX0)=RNODO
+       VPLAT(IPLAT,26+IX0)=AUSGR
+       VPLAT(IPLAT,27+IX0)=FLLOWN
+       VPLAT(IPLAT,28+IX0)=FLUPPN
+      ENDIF
+C
+      VPLAT(IPLAT,28+IX0+IX1)=AWHIT
+      VPLAT(IPLAT,29+IX0+IX1)=BWHIT
+C
+      VPLAT(IPLAT,30+IX0+IX1)=FLOAT(IKMICX)
+      IF(IKMICX.EQ.1.OR.IKMICX.EQ.2.OR.IKMICX.EQ.3) THEN
+       VPLAT(IPLAT,31+IX0+IX1)=BASKS
+       VPLAT(IPLAT,32+IX0+IX1)=BASKM
+       VPLAT(IPLAT,33+IX0+IX1)=BASKL
+      ENDIF
+C
+      VPLAT(IPLAT,31+IX0+IX1+IX2)=FLOAT(IFPCDT)
+      VPLAT(IPLAT,32+IX0+IX1+IX2)=FLOAT(IAFLOJ)
+C
+      IMODE=27+IX0+IX1+IX2      ! imode=total number of prop. of model 4
+C
+      IA1=IA2+IMODE
+C
+      RETURN
+      END

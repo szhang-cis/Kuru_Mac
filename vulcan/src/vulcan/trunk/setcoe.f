@@ -1,0 +1,44 @@
+      SUBROUTINE SETCOE(NCRIT,PROPS)
+C***********************************************************************
+C
+C****THIS ROUTINE SETS COEFFICIENT OF THE BURLAND ELLIPSE FOR LATER USE
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+      DIMENSION PROPS(*)
+C
+      IF(NCRIT.GT.4) RETURN
+C
+      COHES=PROPS(13)
+      PHIRA=PROPS(14)*1.7453292519943296D-02
+C
+      SINPH=DSIN(PHIRA)
+      COSPH=DCOS(PHIRA)
+      DCOEF=1.
+      IF(PHIRA.GT.0.)DCOEF=COHES*COSPH/SINPH
+      PROPS(29)=SINPH
+      PROPS(30)=COSPH
+      PROPS(31)=DCOEF
+C
+      DENOM=(3.0-SINPH)/2.0
+      FINCL=3.0*SINPH/DENOM
+      CINTE=3.0*COHES*COSPH/DENOM
+C
+C***LINEAR PLASTIC MODEL
+C
+      IF(NCRIT.LE.2)  THEN
+        PROPS(33)=CINTE
+        PROPS(34)=FINCL
+      ENDIF
+C
+C***CAM CLAY
+C
+      IF(NCRIT.GT.2) THEN
+        RATIO=PROPS(34)
+        DIFFE=DABS(FINCL-RATIO)
+        IF(DIFFE.LE.0.1E-01) RATIO=FINCL
+        PROPS(35)=RATIO/FINCL
+      ENDIF
+C
+      RETURN
+      END

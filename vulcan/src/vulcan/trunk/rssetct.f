@@ -1,0 +1,111 @@
+      SUBROUTINE RSSETCT
+C***********************************************************************
+C
+C**** THIS ROUTINE CALCULATES  THE RECORD ADDRES FOR DIFFERENT ARRAYS
+C     STORED IN THE CONVERGED RESULTS AREA
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_omt.f'
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'prob_omt.f'
+C
+      GO TO (101,102,102,101,101,101,101,101), NMACHI
+C
+  101 CONTINUE
+      LENWDT=LENRCT/4
+      GO TO 1000
+C
+  102 CONTINUE
+      LENWDT=LENRCT
+      GO TO 1000
+C
+ 1000 CONTINUE
+C
+C**** EVALUATE FIRST RECORD FOR CONVERGED RESULTS AREA
+C
+      NRECGT=4
+C
+C............................................LPNTN(NPOIN)
+      NMRECT=((NPOINT-1)/LENWDT+1)*KRENUT
+      NRECGT=NRECGT+NMRECT
+C............................................LNODS(NNODE,NELEM)
+      NMRECT=(NNODET*NELEMT-1)/LENWDT+1
+      NRECGT=NRECGT+NMRECT
+C............................................MATNO(NELEM)
+      NMRECT=(NELEMT-1)/LENWDT+1
+      NRECGT=NRECGT+NMRECT
+C............................................PROEL(NPREL,NGRUP)
+      NMRECT=(NPRELT*NGRUPT*2-1)/LENWDT+1
+      NRECGT=NRECGT+NMRECT
+C............................................PROPS(NPROP,NMATS)
+      NMRECT=(NPROPT*NMATST*2-1)/LENWDT+1
+      NRECGT=NRECGT+NMRECT
+C
+      NRECCT=NRECGT+IDATPT(1,2)*NELEMT
+C
+C**** EVALUATE IDATCT
+C
+C.....[  < ELPRE(NPREV) > + < ELVAR(NSTAT) >  ]  x NELEM
+C
+      IDATCT(1)=6  ! heading (1 record ) + commons 'inte_omt.f' (1r) +
+                   ! common /ploter/ (4r)
+C
+C.....DISTOT(NTOTVT,1:3)
+C
+      IDATCT(2)=IDATCT(1)+(IDATPT(2,2)+IDATPT(3,2))*NELEMT
+C
+C.....DISPRT(NTOTVT,1:3)
+C
+      IIII3=(1+KDYNAT+NMEMO8)
+      NMRECT=((NTOTVT*IIII3)*2-1)/LENWDT+1
+      IDATCT(3)=IDATCT(2)+NMRECT
+C
+C.....HEADST(NPOINT,1:4)
+C
+      NMRECT=((NTOTVT*IIII3)*2-1)/LENWDT+1
+      IDATCT(4)=IDATCT(3)+NMRECT
+C
+C.....REFORT(NTOTVT)
+C
+      KPORETC=0
+      IF(KPORET.NE.0) KPORETC=1
+      NMRECT=((NPOINT*4)*2-1)/LENWDT+1
+      IDATCT(5)=IDATCT(4)+NMRECT*KPORETC
+C
+C.....TLOADT(NTOTVT,1:2)
+C
+      NMRECT=(NTOTVT*2-1)/LENWDT+1
+      IDATCT(6)=IDATCT(5)+NMRECT
+C
+C.....HTLODT(NHLODT,NSUBFT,NFUNCT)
+C
+      NMRECT=((NTOTVT*2)*2-1)/LENWDT+1
+      IDATCT(7)=IDATCT(6)+NMRECT
+C
+C.....IFFIXT(NTOTVT,1:4)
+C
+      NMRECT=(NHLODT*NSUBFT*NFUNCT*2-1)/LENWDT+1
+      IDATCT(8)=IDATCT(7)+NMRECT
+C
+C.....RLOADT(NTOTVT)
+C
+      KPORETA=1
+      IF(KPORET-1.GT.0) KPORETA=2          ! smoothing of water pressure
+      NMRECT=(NTOTVT*KPORETA*(1+NACTIT)-1)/LENWDT+1
+      IDATCT(9)=IDATCT(8)+NMRECT
+C
+C.....LAST RECORD
+C
+      NMRECT=(NTOTVT*2-1)/LENWDT+1
+      IDATCT(10)=IDATCT(9)+NMRECT
+C
+      NLENCT=IDATCT(10)
+C
+      RETURN
+      END

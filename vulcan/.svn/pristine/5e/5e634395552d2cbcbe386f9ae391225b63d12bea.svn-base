@@ -1,0 +1,98 @@
+      SUBROUTINE RSOPEN
+C***********************************************************************
+C
+C**** THIS ROUTINE OPENS THE FOLLOWING FILES:
+C
+C     - FILE  1  PROCESS DATA BASE FILE
+C     - FILE 11  RESTART DATA BASE FILE
+C     - FILE  7  OUTPUT FILE
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+      LOGICAL OPENFILE
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_om.f'
+C
+C**** MECHANICAL VARIABLES
+C
+      INCLUDE 'prob_om.f'
+      INCLUDE 'auxl_om.f'
+C
+      CALL CPUTIM(TIME1)
+C
+      GO TO (101,102,102,101,101,101,101,101), NMACHIM
+C
+  101 CONTINUE
+      LENRC=512
+      GO TO 1001
+C
+  102 CONTINUE
+      LENRC=512/4
+      GO TO 1001
+C
+ 1001 CONTINUE
+C
+      OPEN(UNIT=LUPRI,FILE=CF)
+      INQUIRE(UNIT=LUINF, OPENED=OPENFILE)
+      IF(.NOT.OPENFILE) THEN
+        OPEN(UNIT=LUINF,FILE=CT,STATUS='UNKNOWN',IOSTAT=IERR)
+      END IF
+C
+      IF(IREST.NE.0)  GOTO 100
+C***********************************************************************
+C
+C**** N E W   R U N  *** OPEN NEW RESTART AND OUTPUT FILES . . . . . 
+C
+C***********************************************************************
+      IEROR=1
+      IF(NMACHIM.NE.8) THEN
+       OPEN(UNIT=LURES,FILE=CG,STATUS='UNKNOWN',ERR=1000)
+      ENDIF
+      IEROR=2
+      IF(NDISKDM.EQ.0)
+     . OPEN(UNIT=LUDTS,FILE=CA,STATUS='UNKNOWN',ACCESS='DIRECT',
+     .      FORM='UNFORMATTED',RECL=LENRC,ERR=1000)
+      IEROR=3
+      IF(NFURESM.EQ.1) THEN
+       OPEN(UNIT=LUFAN,FILE=CO,STATUS='UNKNOWN',FORM='UNFORMATTED')
+       CLOSE(LUFAN)
+      ENDIF
+      IF(NFURESM.EQ.2)
+     . OPEN(UNIT=LURST,FILE=CK,STATUS='UNKNOWN',ACCESS='DIRECT',
+     .      FORM='UNFORMATTED',RECL=LENRC,ERR=1000)
+      IEROR=0
+      GOTO 1000
+C***********************************************************************
+C
+C**** R E S T A R T  R U N *** OPEN OLD RESTART AND OUTPUT FILES . . . .
+C
+C***********************************************************************
+ 100  CONTINUE
+      IEROR=1
+      OPEN(UNIT=LURES,FILE=CG,STATUS='UNKNOWN',ACCESS='APPEND',ERR=1000)
+      IEROR=2
+      IF(NDISKDM.EQ.0)
+     . OPEN(UNIT=LUDTS,FILE=CA,STATUS='UNKNOWN',ACCESS='DIRECT',
+     .      FORM='UNFORMATTED',RECL=LENRC,ERR=1000)
+      IEROR=3
+      OPEN(UNIT=LURST,FILE=CK,STATUS='OLD',ACCESS='DIRECT',
+     .     FORM='UNFORMATTED',RECL=LENRC,ERR=1000)
+      IEROR=0
+C
+ 1000 IF(IEROR.NE.0)THEN
+       IF(IEROR.EQ.1) WRITE(LUPRI,901)
+       IF(IEROR.EQ.2) WRITE(LURES,902)
+       IF(IEROR.EQ.3) WRITE(LURES,903)
+       CALL RUNEND('  ERROR IN OPENING FILES           ')
+      ENDIF
+C
+      CALL CPUTIM(TIME2)
+      CPURS=CPURS+(TIME2-TIME1)
+      RETURN
+C
+  901 FORMAT(' ERROR IN OPENING OUTPUT  FILE 7 ')     
+  902 FORMAT(' ERROR IN OPENING PROCESS FILE 1 ')     
+  903 FORMAT(' ERROR IN OPENING RESTART FILE 11')     
+      END

@@ -1,0 +1,287 @@
+      SUBROUTINE CHALEI(ELCODT,NDIMET,NNODLT,CHALE)
+C***********************************************************************
+C
+C**** THIS ROUTINE COMPUTES THE ELEMENTAL CHARACTERISTIC LENGTH
+C     ( ELEMENT NO. 5 )
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      DIMENSION ELCODT(NDIMET,*)
+C
+      GO TO (1,2,3),NDIMET
+C
+    1 CONTINUE
+      IF(NNODLT.EQ.2) THEN
+       CHALE=ELCODT(1,2)-ELCODT(1,1)
+      ENDIF
+C
+      IF(NNODLT.EQ.3) THEN
+       call runendt('chalei: 1D 3-noded not implemented yet')
+      ENDIF
+C
+      IF(CHALE.LT.0.0) CHALE=-CHALE
+      RETURN
+C
+    2 CONTINUE
+      IF(NNODLT.EQ.3) THEN
+       CHALZ=0.0
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,2)-ELCODT(IDIMET,1)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,3)-ELCODT(IDIMET,2)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,1)-ELCODT(IDIMET,3)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALE=CHALZ/3.0
+      ENDIF
+C
+      IF(NNODLT.EQ.4) THEN
+       CHALZ=0.0
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,2)-ELCODT(IDIMET,1)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,3)-ELCODT(IDIMET,2)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,4)-ELCODT(IDIMET,3)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,1)-ELCODT(IDIMET,4)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALE=CHALZ/4.0
+      ENDIF
+C
+      IF(NNODLT.EQ.6) THEN
+       call runendt('chalei: 2D 6-noded not implemented yet')
+      ENDIF
+C
+      IF(NNODLT.EQ.8) THEN
+       call runendt('chalei: 2D 8-noded not implemented yet')
+      ENDIF
+C
+      IF(NNODLT.EQ.9) THEN
+       call runendt('chalei: 2D 9-noded not implemented yet')
+      ENDIF
+C
+      IF(CHALE.LT.0.0) CHALE=-CHALE
+      RETURN
+C
+    3 CONTINUE
+C
+      IF(NNODLT.EQ.4) THEN
+       CHALZ=0.0
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,2)-ELCODT(IDIMET,1)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,3)-ELCODT(IDIMET,2)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,4)-ELCODT(IDIMET,3)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,1)-ELCODT(IDIMET,4)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,2)-ELCODT(IDIMET,4)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,1)-ELCODT(IDIMET,3)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALE=CHALZ/6.0
+      ENDIF
+C
+      IF(NNODLT.EQ.6) THEN
+       call runendt('chalei: 3D not implemented yet')
+      ENDIF
+C
+      IF(NNODLT.EQ.8) THEN
+       CHALZ=0.0
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,2)-ELCODT(IDIMET,1)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,3)-ELCODT(IDIMET,2)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,4)-ELCODT(IDIMET,3)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,1)-ELCODT(IDIMET,4)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,6)-ELCODT(IDIMET,5)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,7)-ELCODT(IDIMET,6)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,8)-ELCODT(IDIMET,7)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,5)-ELCODT(IDIMET,8)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,5)-ELCODT(IDIMET,1)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,6)-ELCODT(IDIMET,2)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,7)-ELCODT(IDIMET,3)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALY=0.0
+       DO IDIMET=1,NDIMET
+        CHALX=ELCODT(IDIMET,8)-ELCODT(IDIMET,4)
+        CHALY=CHALY+CHALX*CHALX
+       ENDDO
+       CHALY=DSQRT(CHALY)
+       CHALZ=CHALZ+CHALY
+C
+       CHALE=CHALZ/12.0
+      ENDIF
+C
+      IF(NNODLT.EQ.10) THEN
+       call runendt('chalei: 3D not implemented yet')
+      ENDIF
+C
+      IF(NNODLT.EQ.20) THEN
+       call runendt('chalei: 3D not implemented yet')
+      ENDIF
+C
+      IF(NNODLT.EQ.27) THEN
+       call runendt('chalei: 3D not implemented yet')
+      ENDIF
+C
+      IF(CHALE.LT.0.0) CHALE=-CHALE
+      RETURN
+C
+      END

@@ -1,0 +1,26 @@
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  "Fortran"
+  )
+# The set of files for implicit dependencies of each language:
+set(CMAKE_DEPENDS_CHECK_Fortran
+  "/media/skoll/FEM/simpact/src/curvas/histd.f90" "/media/skoll/FEM/simpact/bin/CMakeFiles/curvas.dir/histd.f90.o"
+  "/media/skoll/FEM/simpact/src/curvas/history.f90" "/media/skoll/FEM/simpact/bin/CMakeFiles/curvas.dir/history.f90.o"
+  "/media/skoll/FEM/simpact/src/curvas/stacpvt.f90" "/media/skoll/FEM/simpact/bin/CMakeFiles/curvas.dir/stacpvt.f90.o"
+  "/media/skoll/FEM/simpact/src/curvas/stadisp.f90" "/media/skoll/FEM/simpact/bin/CMakeFiles/curvas.dir/stadisp.f90.o"
+  "/media/skoll/FEM/simpact/src/curvas/stastre.f90" "/media/skoll/FEM/simpact/bin/CMakeFiles/curvas.dir/stastre.f90.o"
+  "/media/skoll/FEM/simpact/src/curvas/statcfr.f90" "/media/skoll/FEM/simpact/bin/CMakeFiles/curvas.dir/statcfr.f90.o"
+  )
+set(CMAKE_Fortran_COMPILER_ID "GNU")
+
+# The include file search paths:
+set(CMAKE_Fortran_TARGET_INCLUDE_PATH
+  )
+
+# Targets to which this target links.
+set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/media/skoll/FEM/simpact/lib/CMakeFiles/stampact.dir/DependInfo.cmake"
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "/media/skoll/FEM/simpact/lib")

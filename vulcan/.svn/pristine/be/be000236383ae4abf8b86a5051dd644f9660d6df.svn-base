@@ -1,0 +1,144 @@
+      SUBROUTINE SOLVERS(DISITS,REFORS,IFFIXS,IMPOSS,KPORES,KRESLS,
+     .                   LNODSS,NDOFNS,NELEMS,NEVABS,NNODES,NPOINS,
+     .                   NTOTVS,IPASSS,IITERS,WORK1S,miters,
+     .                   NPRELS,NGRUPS,NPROPS,NMATSS,
+     .                 NDATAS,NPREVS,NSTATS,NMATXS,NDIMES,NTOTVMS,NFPCH,
+     .                   MATNOS,PROELS,PROPSS,ELDATS,ELPRES,
+     .                   ELVARS,ELMATS,
+     .                   DISTOS,COORDS,
+     .                   ADVELS,TEMPIS,PREASS,TGAPSS,DISPLS,FPCHAS)
+C***********************************************************************
+C
+C**** THIS ROUTINE SOLVES THE SYSTEM OF EQUATIONS SELECTING THE
+C     THE APPROPRIATE SOLVER
+C
+C     KRESLT=1  ASSEMBLE & FACTORISE THE MATRIX (see algors.f)
+C     IPASST=1  (with no arc-length or displ. control; see esepas.f)
+C     KPASST=0  (see below)
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      INCLUDE 'auxl_oms.f'
+C
+      COMMON/SOLVERSA/KRENUS,KSOLVS,KSYMMS,NWIDTS,MITCGS,NBUFAS,NPRIRS
+      COMMON/SOLVERSB/TOLCGS,TOLC1S
+C
+c     COMMON/LOGUNT/LUDTST,LUSOLT,LUFROT,LUFRHT,LUDATT,LUPRIT,LUREST,
+c    .              LUSO2T,LUFR2T,LUPOST,LURSTT,LUBFGT,LUPIPT,LUPANT,
+c    .              LUGEOT,LUSETT,LUMATT,LUINIT,LULOAT,LUFIXT,LUADVT,
+c    .              LUACTS,LUFANS,
+c    .              LUCU1T,LUCU2T,LUCU3T,LUCU4T,LUCU5T,LUCU6T,LUCU7T,
+c    .              LUCU8T,LUCU9T,LUC10T
+      COMMON/LOGUNS/LUSOLS,LUFRHS,LUDATS,LUPRIS,LURESS,LUPOSS,
+     .              LUCU1S
+C
+      DIMENSION DISITS(*),        IFFIXS(*), 
+     .          LNODSS(NNODES,*), REFORS(*),
+     .          WORK1S(*)
+C
+      DIMENSION MATNOS(NELEMS),
+     .          PROELS(NPRELS,NGRUPS), PROPSS(NPROPS,NMATSS),
+     .          ELDATS(NDATAS),        ELPRES(NPREVS),
+     .          ELVARS(NSTATS),        ELMATS(NMATXS)
+      DIMENSION DISTOS(NTOTVS,3),      COORDS(NDIMES,NPOINS)
+      DIMENSION ADVELS(NTOTVS*NDIMES), TEMPIS(NPOINS,2)
+      DIMENSION PREASS(NPOINS),        TGAPSS(NPOINS)
+      DIMENSION DISPLS(NTOTVMS),       FPCHAS(NFPCH,NPOINS)
+C
+      CALL CPUTIMS(TIME1S)
+C
+      INRHSS=0
+      IF(IITERS.EQ.1) INRHSS=IMPOSS
+ctm   IF(NEWBOS.EQ.1) KPASSS=0
+      KPASSS=0
+ctm
+      IDSK2S=LUSOLS
+      IF(IPASSS.EQ.2) THEN
+       call runends('ipasss=2 not implemented - solvers')
+c      INRHSS=1
+c      IDSK2S=LUSO2S
+      ENDIF
+C
+C**** CALL THE PROFILE SOLVER
+C
+      IF(KSOLVS.EQ.0)
+     . call runends('skygras not implemented')
+c    . CALL SKYGRAS(DISITT,REFORT,LNODST,
+c    .              NDOFNT,NELEMT,NEVABT,NNODET,NPOINT,NTOTVT,
+c    .              IDSK2T,INRHST,IPASST,KPASST,KPORET,KRESLT,NEQNST,
+c    .              NLASTT,IFFIXT,
+c    .              WORK1T(ISOLVT( 1)),WORK1T(ISOLVT( 2)),
+c    .              WORK1T(ISOLVT( 3)),
+c    .              WORK1T(ISOLVT( 4)),WORK1T(ISOLVT( 5)),
+c    .              WORK1T(ISOLVT( 6)),
+c    .              WORK1T(ISOLVT( 7)),WORK1T(ISOLVT( 8)),
+c    .              WORK1T(ISOLVT( 9)),
+c    .              WORK1T(ISOLVT(10)),WORK1T(ISOLVT(11)),
+c    .              WORK1T(ISOLVT(12)),
+c    .              WORK1T(ISOLVT(13)),iitert,mitert,
+c    .              NPRELT,NGRUPT,NPROPT,NMATST,
+c    .              NDATAT,NPREVT,NSTATT,NMATXT,NDIMET,NTOTVM,NFPCH,
+c    .              MATNOT,PROELT,PROPST,ELDATT,ELPRET,
+c    .              ELVART,ELMATT,WORK1T,DISTOT,COORDT,
+c    .              ADVELT,TEMPIT,PREAST,TGAPST,DISPLT,FPCHAT)
+C
+C**** CALL THE FRONTAL SOLVER
+C
+      IF(KSOLVS.EQ.1) THEN
+c      IDSK3S=LUFROS
+c      IF(IPASSS.EQ.2) IDSK3S=LUFR2S
+       if(ipasss.eq.2) call runends('ipasss=2 not implemented')
+       CALL FRONTSS(DISITS,IDSK2S,IDSK3S,IFFIXS,IPASSS,LNODSS,KRESLS,
+     .              NDOFNS,NELEMS,NEVABS,NNODES,NPOINS,KPORES,REFORS,
+     .         WORK1S(ISOLVS(1)), WORK1S(ISOLVS(2)), WORK1S(ISOLVS(3)),
+     .         WORK1S(ISOLVS(4)), WORK1S(ISOLVS(5)), WORK1S(ISOLVS(6)),
+     .         WORK1S(ISOLVS(7)), WORK1S(ISOLVS(8)), WORK1S(ISOLVS(9)),
+     .         WORK1S(ISOLVS(10)),WORK1S(ISOLVS(11)),WORK1S(ISOLVS(12)),
+     .              KSYMMS,
+     .              NPRELS,NGRUPS,NPROPS,NMATSS,
+     .          NDATAS,NPREVS,NSTATS,NMATXS,NTOTVS,NDIMES,NTOTVMS,NFPCH,
+     .              MATNOS,PROELS,PROPSS,ELDATS,ELPRES,
+     .              ELVARS,ELMATS,WORK1S,DISTOS,COORDS,
+     .              ADVELS,TEMPIS,PREASS,TGAPSS,DISPLS,FPCHAS)
+      ENDIF
+C
+C**** CALL THE PCG SOLVER
+C
+      IF(KSOLVS.EQ.2)
+     . call runends('pcgsols not implemented')
+c    . CALL PCGSOLS(DISITT,IFFIXT,REFORT,LNODST,
+c    .              NDOFNT,NELEMT,NEVABT,NNODET,NPOINT,NTOTVT,
+c    .              INRHST,IPASST,KRESLT,
+c    .            WORK1T(ISOLVT(1)),WORK1T(ISOLVT(2)),WORK1T(ISOLVT(3)),
+c    .            WORK1T(ISOLVT(4)),WORK1T(ISOLVT(5)),WORK1T(ISOLVT(6)),
+c    .              NPRELT,NGRUPT,NPROPT,NMATST,
+c    .              NDATAT,NPREVT,NSTATT,NMATXT,NDIMET,NTOTVM,NFPCH,
+c    .              MATNOT,PROELT,PROPST,ELDATT,ELPRET,
+c    .              ELVART,ELMATT,WORK1T,DISTOT,COORDT,
+c    .              ADVELT,TEMPIT,PREAST,TGAPST,DISPLT,FPCHAT)
+C
+C**** CALL THE GMRES SOLVER (not implemented yet)
+C
+
+C
+C**** CALL THE EXPLICIT SOLVER
+C
+      IF(KSOLVT.EQ.4)
+     . call runends('explics not implemented')
+c    . CALL EXPLICS(DISITT,IFFIXT,REFORT,LNODST,
+c    .              NDOFNT,NELEMT,NEVABT,NNODET,NPOINT,NTOTVT,
+c    .              INRHST,IPASST,KRESLT,
+c    .            WORK1T(ISOLVT(1)),WORK1T(ISOLVT(2)),WORK1T(ISOLVT(3)),
+c    .            WORK1T(ISOLVT(4)),WORK1T(ISOLVT(5)),
+c    .              NPRELT,NGRUPT,NPROPT,NMATST,
+c    .              NDATAT,NPREVT,NSTATT,NMATXT,NDIMET,NTOTVM,NFPCH,
+c    .              MATNOT,PROELT,PROPST,ELDATT,ELPRET,
+c    .              ELVART,ELMATT,WORK1T,DISTOT,COORDT,
+c    .              ADVELT,TEMPIT,PREAST,TGAPST,DISPLT,FPCHAT)
+C
+      CALL CPUTIMS(TIME2S)
+      CPUSOS=CPUSOS+(TIME2S-TIME1S)
+C
+      RETURN
+      END

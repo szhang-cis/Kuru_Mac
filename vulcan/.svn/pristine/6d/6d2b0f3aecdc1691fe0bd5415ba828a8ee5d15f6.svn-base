@@ -1,0 +1,87 @@
+      SUBROUTINE STIPART(DISPRT,IFFIXT,TLOADT,REFORT,PWORKT)
+C***********************************************************************
+C
+C**** THIS ROUTINE CALCULATES THE CURRENT STIFFNESS PARAMETER
+C     & SAVES SOME CONVERGED VALUES
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'prob_omt.f'
+      INCLUDE 'inte_omt.f'
+      INCLUDE 'auxl_omt.f'
+C
+      DIMENSION IFFIXT(*), DISPRT(*), TLOADT(NTOTVT,*), REFORT(NTOTVT)
+      DIMENSION PWORKT(NPOINT,3)
+C
+      STIOLT=STICUT
+cc      FACPRT=FACTOT
+C
+      PROD1T=0.0
+      PROD2T=0.0
+      PROD3T=0.0
+C
+C**** STORE PREVIOUS VALUE OF TOTAL LOAD & ...
+C
+      DO 10 ITOTVT=1,NTOTVT
+C
+      DISINT=DISPRT(ITOTVT)        ! Increm. displ.
+      TOTLOT=TLOADT(ITOTVT,1)      ! Total load
+      IF(IFFIXT(ITOTVT).EQ.1) TOTLOT=TOTLOT-REFORT(ITOTVT) 
+C                                    ! Add reaction
+      DEFORT=TOTLOT-TLOADT(ITOTVT,2) ! Increm. load
+      TLOADT(ITOTVT,2)=TOTLOT
+C
+      PROD1T=PROD1T+DEFORT*DISINT
+      PROD2T=PROD2T+DEFORT*DEFORT
+      PROD3T=PROD3T+DISINT*DISINT
+C
+      IF(ITERME.GT.0) PWORKT(ITOTVT,2)=PWORKT(ITOTVT,1)
+C
+   10 CONTINUE
+C
+      IF(KDYNAT.EQ.1.OR.KPORET.EQ.2) RETURN
+C
+C**** COMPUTE CURRENT STIFFNESS PARAMETER AND ARC-LENGTH
+C
+      IF(KARCLT.EQ.4) THEN                      ! FOR DISPL. CONTROL
+        ARCLNT=DISPRT(NCDIST)
+      ELSE                                     ! FOR ARC-LENGTH
+        ARCLNT=DSQRT(PROD3T)
+      ENDIF
+C
+      IF(PROD1T.NE.0.0) THEN
+                               STICUT=PROD2T/PROD1T
+      ELSE
+                               STICUT=1.0D00
+      ENDIF
+      IF(ISTEPT.EQ.1)          STIINT=STICUT
+      IF(STIINT.NE.0.0)        STICUT=STICUT/STIINT
+      IF(ISTEPT.EQ.1)          STIOLT=STICUT
+      STICHT=DABS(STIOLT-STICUT)
+      IF(STIOLT.NE.0.0)        RATIOT=100.0*STICHT/STIOLT
+      IF(ABS(RATIOT).GE.100.0) RATIOT=999.9999*RATIOT/ABS(RATIOT)
+C
+      WRITE(LUREST,900) STICUT,STICHT,RATIOT
+C
+      IF(ISTEPT.EQ.1) THEN
+        PITERT=DITERT
+      ELSE
+        IF(LAUTOT.EQ.1) PITERT=FLOAT(IITERT)
+        IF(LAUTOT.EQ.2) PITERT=STICHT
+        IF(LAUTOT.EQ.3) PITERT=STICHT/STIOLT
+        IF(LAUTOT.EQ.4) PITERT=STICUT/STIOLT
+      ENDIF
+C
+      RETURN
+  900 FORMAT(/,132('='),/
+     .         5X,'CURRENT STIFF. PARAMETER =',F10.5,
+     .    2X,'***',2X,'STIFF. CHANGE =',F10.5,2X,'( ',F9.4,' % )',/,
+     .        132('='),/)
+      END

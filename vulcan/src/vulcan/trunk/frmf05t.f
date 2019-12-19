@@ -1,0 +1,72 @@
+      SUBROUTINE FRMF05T(PROPST,VELCMT,ELELMT,DVOLUT,SHAPET,EHISTT,
+     .                   ELDIST,DISIMT,ELELTT,SHAPDT,DVOLDT,GPCODT,
+     .                   POSGPT,ELCODT,WEIGPT,DERIDT,XJACMT,CARDDT,
+     .                   GPCDDT,ELEL1T,ELEL2T,HACHET,WHADEL,CENTRO,
+     .                   ADVEMT,TEINIT,FPCHLT,DVOLIT,
+     .                   LNODST,INPCCT)
+C***********************************************************************
+C
+C**** THIS ROUTINE CALCULATES THE "THERMAL DYNAMIC FORCES" DUE TO 
+C     PHASE-CHANGE FOR MULTIPHASED ELEMENTS
+C     ( ELEMENT  NO 5 )
+C    
+C***********************************************************************
+C     EHIST(1) = Density
+C     EHIST(2) = Temperature Derivative of Density
+C     EHIST(3) = Specific Heat coefficient)
+C     EHIST(4) = Temperature Derivative of the Specific Heat coefficient
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'   ! thermal-mechanical
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'prob_omt.f'
+      INCLUDE 'inte_omt.f'
+      INCLUDE 'auxl_omt.f'
+C
+      DIMENSION PROPST(*),        VELCMT(*),
+     .          ELELMT(*),        DVOLUT(*),
+     .          SHAPET(NNODLT,*), EHISTT(NHISTT,*),
+     .          ELDIST(NDOFCT,*), DISIMT(*),
+     .          ELELTT(*)
+      DIMENSION DVOLDT(*),        SHAPDT(NNODLT,*),
+     .          POSGPT(NDIMET,*)
+      DIMENSION GPCODT(NDIMET,*), ELCODT(NDIMET,*)
+      DIMENSION WEIGPT(*),        DERIDT(NDIMET,NNODLT,*),
+     .          XJACMT(NDIMET,*), CARDDT(NDIMET,NNODLT,*),
+     .          GPCDDT(NDIMET,*)
+      DIMENSION LNODST(*)
+      DIMENSION ELEL1T(*),        ELEL2T(*)
+      DIMENSION HACHET(NNODLT),   WHADEL(NNODLT,*),
+     .          CENTRO(NDIMET,*), ADVEMT(NDIMET,*),
+     .          TEINIT(NDOFCT,*), FPCHLT(NFPCH,*),
+     .          DVOLIT(*)
+C
+      GOTO(1,2,3), NDIMET
+C
+    1 CALL FRMF1DT(PROPST,VELCMT,ELELMT,DVOLUT,SHAPET,EHISTT,ELDIST,
+     .             DISIMT,ELELTT,SHAPDT,DVOLDT,GPCODT,POSGPT,ELCODT,
+     .             WEIGPT,DERIDT,XJACMT,CARDDT,GPCDDT,LNODST,ELEL1T,
+     .             ELEL2T,INPCCT,HACHET,WHADEL,CENTRO,ADVEMT,TEINIT,
+     .             FPCHLT,DVOLIT)
+      RETURN
+C
+    2 CALL FRMF2DT(PROPST,VELCMT,ELELMT,DVOLUT,SHAPET,EHISTT,ELDIST,
+     .             DISIMT,ELELTT,SHAPDT,DVOLDT,GPCODT,POSGPT,ELCODT,
+     .             WEIGPT,DERIDT,XJACMT,CARDDT,GPCDDT,LNODST,ELEL1T,
+     .             ELEL2T,INPCCT,HACHET,WHADEL,CENTRO,ADVEMT,TEINIT,
+     .             FPCHLT,DVOLIT)
+      RETURN
+C
+    3 CALL FRMF3DT(PROPST,VELCMT,ELELMT,DVOLUT,SHAPET,EHISTT,ELDIST,
+     .             DISIMT,ELELTT,SHAPDT,DVOLDT,GPCODT,POSGPT,ELCODT,
+     .             WEIGPT,DERIDT,XJACMT,CARDDT,GPCDDT,LNODST,ELEL1T,
+     .             ELEL2T,INPCCT,HACHET,WHADEL,CENTRO,ADVEMT,TEINIT,
+     .             FPCHLT,DVOLIT)
+      RETURN
+C
+      END

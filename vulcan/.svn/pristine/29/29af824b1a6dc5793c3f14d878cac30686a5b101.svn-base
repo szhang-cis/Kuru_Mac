@@ -1,0 +1,45 @@
+      SUBROUTINE ROTEMR(ROTET,DEROT,LIQUI,TEMPG,DTEMG)
+C***********************************************************************
+C
+C**** THIS ROUTINE EVALUATES THE SOLIDIFICATION VARIABLE (PHASE-CHANGE
+C     FUNCTION) INPUT IN THE MECHANICAL DATA FILE
+C
+C     Note: TEMPS & TEMPL are transferred from rotett.f by auxl_om.f
+C
+C***********************************************************************
+      IMPLICIT REAL*8 (A-H,O-Z)
+C
+C**** MECHANICAL VARIABLES
+C
+      INCLUDE 'prob_om.f'
+      INCLUDE 'inte_om.f'
+      INCLUDE 'auxl_om.f'
+C
+      IF(TEMPG.GE.TEMPL) THEN
+       ROTET=0.0D+00
+       DEROT=0.0D+00
+       LIQUI=1
+      ENDIF
+C
+      IF(TEMPG.LT.TEMPS) THEN
+       ROTET=1.0D+00
+       DEROT=0.0D+00
+       LIQUI=0
+      ENDIF
+C
+      IF(TEMPG.LT.TEMPL.AND.TEMPG.GE.TEMPS) THEN
+       AAMAY=(TEMPL*TEMPL*TEMPL-TEMPS*TEMPS*TEMPS)-3.00*TEMPS*TEMPS*
+     .       (TEMPL-TEMPS)-1.50*(TEMPL+TEMPS)*(TEMPL*TEMPL-TEMPS*TEMPS-
+     .       2.00*TEMPS*(TEMPL-TEMPS))
+       ALP11=-1.00/AAMAY
+       ALP22=-1.50*(TEMPL+TEMPS)*ALP11
+       ALP33=-3.00*ALP11*TEMPS*TEMPS-2.00*ALP22*TEMPS
+       ALP44=-ALP11*TEMPL*TEMPL*TEMPL-ALP22*TEMPL*TEMPL-ALP33*TEMPL
+       ROTET=ALP11*TEMPG*TEMPG*TEMPG+ALP22*TEMPG*TEMPG+ALP33*TEMPG+
+     .       ALP44
+       DEROT=3.0*ALP11*TEMPG*TEMPG+2.0*ALP22*TEMPG+ALP33
+       LIQUI=0
+      ENDIF
+C
+      RETURN
+      END

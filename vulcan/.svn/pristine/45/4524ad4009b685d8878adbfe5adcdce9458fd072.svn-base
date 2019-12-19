@@ -1,0 +1,153 @@
+      SUBROUTINE OUTPUT(DISTO,ELDAT,ELPRE,ELVAR,ELMAT,HEADS,IFFIX,
+     .                  LNODS,MATNO,PROEL,PROPS,TLOAD,REFOR,COORD,
+     .                  PWORK,TGAPS,PREAS,DISIT,INFRI,LACTI,
+     .                  SINI2,SINI3,WORK1)
+C***********************************************************************
+C
+C**** THIS ROUTINE OUTPUTS DISPLACEMENTS AND STRESSES
+C
+C       KPRI0 =0 DO NOT WRITE TO OUTPUT FILE
+C              1 WRITE TO OUTPUT FILES
+C       KPRI1 =0 DO NOT WRITE DISPLACEMENTS TO OUTPUT FILE
+C              1 WRITE DISPLACEMENTS TO OUTPUT FILES
+C       KPRI2 =0 DO NOT WRITE GAUSSIAN STRESSES TO OUTPUT FILE
+C              1 WRITE GAUSSIAN STRESSES TO OUTPUT FILES
+C       KPRI3 =0 DO NOT WRITE GAUSSIAN PRINCIPAL STRESSES TO OUTPUT FILE
+C              1 WRITE GAUSSIAN PRINCIPAL STRESSES TO OUTPUT FILES
+C       KPRI4 =0 DO NOT WRITE GAUSSIAN INTERNAL VARIABLES TO OUTPUT FILE
+C              1 WRITE GAUSSIAN INTERNAL VARIABLES TO OUTPUT FILES
+C       KPRI5 =0 DO NOT WRITE NODAL STRESSES
+C              1 WRITE NODAL STRESSES
+C       KPRI6 =0 DO NOT WRITE NODAL PRINCIPAL STRESSES
+C              1 WRITE NODAL PRINCIPAL STRESSES
+C       KPRI7 =0 DO NOT WRITE NODAL INTERNAL VARIABLES TO OUTPUT FILE
+C              1 WRITE NODAL INTERNAL VARIABLES TO OUTPUT FILES
+C       KPRI8 =0 DO NOT WRITE REACTIONS TO OUTPUT FILE
+C              1 WRITE REACTIONS TO OUTPUT FILES
+C       KPRI9 =0 DO NOT WRITE NODAL STRAINS
+C              1 WRITE NODAL STRAINS
+C       KPRI10=0 DO NOT WRITE NODAL PRINCIPAL STRAINS
+C              1 WRITE NODAL PRINCIPAL STRAINS
+C       KPRI11=0 DO NOT WRITE NORMAL GAP
+C              1 WRITE NORMAL GAP
+C       KPRI12=0 DO NOT WRITE HOMOGENIZED STRESS
+C              1 WRITE HOMOGENIZED STRESS
+C       KFEMV =0 DO NOT WRITE FOR POSTPROCESOR
+C              1 WRITE FOR POSTPROCESOR
+C       KPRIN =1 WRITE TO OUTPUT FILES DISPLACEMENTS AND STRESSES
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'
+C
+C**** MECHANICAL VARIABLES
+C
+      INCLUDE 'prob_om.f'
+      INCLUDE 'inte_om.f'
+      INCLUDE 'auxl_om.f'
+      INCLUDE 'inpo_om.f'
+C
+      DIMENSION MATNO(NELEM),       LNODS(NNODE,NELEM),
+     .          PROEL(NPREL,NGRUP), PROPS(NPROP,NMATS),
+     .          ELDAT(NDATA),       ELPRE(NPREV),
+     .          ELVAR(NSTAT),       ELMAT(NMATX),
+     .          WORK1(*)
+      DIMENSION DISTO(*),           HEADS(NPOIN,*), 
+     .          IFFIX(*),           TLOAD(*),
+     .          REFOR(NTOTV)
+      DIMENSION COORD(NDIME,NPOIN), PWORK(NPOIN),
+     .          TGAPS(NPOIN),       DISIT(*),
+     .          INFRI(NPOIN),       LACTI(NELEM),
+     .          PREAS(NPOIN)
+      DIMENSION SINI2(*),           SINI3(*)
+C
+      CALL CPUTIM(TIME1)
+C
+C**** IF NECESSARY PRINT OUT X-Y CURVES
+C
+      IF(NCHEK.EQ.0.AND.NCURV.NE.0.AND.NCKGLO.EQ.0)
+     . CALL PLOOUT(DISTO,ELVAR,TLOAD,eldat,matno,proel,props,REFOR,
+     .             WORK1(IGSMO(11)),WORK1(IGSMO(27)),      ! CARTD,ELDIS
+     .             WORK1(IGSMO(19)),WORK1(IGSMO(31)),      ! XJACM,XJACI
+     .             LNODS,
+     .             WORK1(IGSMO(17)),WORK1(IGSMO(18)),      ! POSGP,WEIGP
+     .             WORK1(IGSMO(16)),WORK1(IGSMO(14)),      ! DERIV,SHAPE
+     .             COORD,
+     .             WORK1(IGSMO(25)),WORK1(IGSMO(13)))      ! ELCOD,GPCOD
+C
+C**** CHECK IF THE RESULTS SHOULD BE PRINTOUT
+C
+      CALL OUTCEK(IITER,ISTEP,KPRIN,NCHEK,NOUTP,NSTEP,TLIMT,NCKGLO)
+C
+C**** PRINTOUT CONVERGENCE INFORMATION
+C
+      IF(IPRCO.GT.0) THEN                 ! no print initial conditions
+       WRITE(LURES,897) ITIME,ISTEP,IITER,NCHEK,NCKGLO
+C
+C**** PRINTOUT GENERAL TITLE
+C
+       IF(KPRI0.EQ.0.AND.KFEMV.EQ.1.AND.NCHEK.EQ.0.AND.NCKGLO.EQ.0)
+     .                               WRITE(LURES,885) ITIME,ISTEP,IITER
+       IF(KPRI0.EQ.1.AND.NCHEK.EQ.0.AND.NCKGLO.EQ.0)
+     .                               WRITE(LURES,890) ITIME,ISTEP,IITER
+       IF(KPRI0.EQ.1.AND.NCHEK.NE.0) WRITE(LURES,895) ITIME,ISTEP,IITER
+C
+C**** TO DEAL WITH COUPLED PROBLEMS
+C
+       IF(KPRI0.EQ.1.AND.NCHEK.EQ.0.AND.NCKGLO.EQ.1)
+     .                               WRITE(LURES,896) ITIME,ISTEP,IITER
+      ENDIF
+C
+C**** PERFORMS SMOOTHING OVER GAUSSIAN STRESSES IF NECESSARY
+C
+      IF(KSGAU.NE.0) THEN
+       IF(((KPRI5+KPRI6+KPRI7+KPRI9+KPRI10+KPRI12).GT.0).OR.
+     .                                                (KFEMV.EQ.1)) THEN
+        CALL OUTSMO(ELDAT,ELPRE,ELVAR,ELMAT,LNODS,MATNO,PROEL,PROPS,
+     .              COORD,DISTO,LACTI,
+     .              WORK1(IGSMO(1)),WORK1(IGSMO(2)),WORK1(IGSMO(3)),
+     .              WORK1(IGSMO(8)),                     !smstp
+     .              SINI2,SINI3,WORK1)
+       ENDIF
+      ENDIF
+C
+C**** PRINTOUT RESULTS TO RESULTS FILES
+C
+      IF(KPRI0.EQ.1.OR.KFEMV.EQ.1)
+     .  CALL OUTPRI(DISTO,ELDAT,ELPRE,ELVAR,ELMAT,HEADS,
+     .              LNODS,MATNO,PROEL,PROPS,
+     .              WORK1(IGSMO(1)),WORK1(IGSMO(2)),WORK1(IGSMO(8)),
+     .              IFFIX,REFOR,COORD,TGAPS,PREAS,DISIT,INFRI,
+     .              WORK1(IGSMO(3)),                     !accpn
+     .              WORK1)
+C
+      CALL CPUTIM(TIME2)
+      CPUOU=CPUOU+(TIME2-TIME1)
+C
+      RETURN
+  885 FORMAT(1H1,///,
+     .10X,'* * *  CONVERGED RESULTS STORED ONLY ON FILES * * *',//,
+     .        5X,'ITIME =',I5,   5X,'ISTEP =',I5,   5X,'IITER =',I5)
+  890 FORMAT(1H1,///,
+     .10X,'* * * CONVERGED RESULTS * * *',//,
+     .        5X,'ITIME =',I5,   5X,'ISTEP =',I5,   5X,'IITER =',I5)
+  895 FORMAT(//,
+     .10X,'* * * NOT-CONVERGED RESULTS * * *',//,
+     .        5X,'ITIME =',I5,   5X,'ISTEP =',I5,   5X,'IITER =',I5)
+C
+  896 FORMAT(//,
+     .10X,'* * * CONVERGED RESULTS - NOT-CONVERGED GLOBAL RESULTS * * *
+     .    ',//,5X,'ITIME =',I5,   5X,'ISTEP =',I5,   5X,'IITER =',I5)
+  897 FORMAT(//,
+     .'* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *',
+     .' * * * * * * *',//,
+     .10X,'* * * CONVERGENCE INFORMATION * * *',//,
+     .        3X,'ITIME =',I5,   3X,'ISTEP =',I5,   3X,'IITER =',I5,
+     .        3X,'NCHEK =',I5,   3X,'NCKGLO =',I5,//,
+     .'* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *',
+     .' * * * * * * *')
+C
+      END

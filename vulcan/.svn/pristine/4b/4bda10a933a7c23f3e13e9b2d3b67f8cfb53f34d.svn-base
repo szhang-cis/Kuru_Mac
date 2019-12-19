@@ -1,0 +1,233 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from multiprocessing import Process, cpu_count
+import os, shutil, time, sys
+import subprocess, errno
+
+class Vulcan(Process):
+    def __init__(self, res_directory, filename, Type):
+        Process.__init__(self)
+        self.pathToVulcan = "/usr/bin/vulcan-bin"
+        self.vulcan_type = Type
+        filename = filename.encode("utf-8")
+        res_directory = res_directory.encode("utf-8")
+        self.filename = os.path.abspath(filename)
+        dat_directory = os.path.dirname(self.filename)
+        filename = os.path.splitext(os.path.basename(filename))[0] #Obtiene el nombre del archivo sin extension sin directorios
+        res_directory = os.path.join(res_directory, filename)
+        self.allGood = False
+        self.env = {}        
+        self.env_temp = {}
+        self.env_res = {}
+        self.env_dat = {}
+        
+        self.env_res["FOR120"] = os.path.join(res_directory,filename+".tim") #false unit representing stdout
+        self.env['PATH'] = 'C:\\MinGW\\bin'
+        self.env['LD_LIBRARY_PATH'] = '/opt/intel/Compiler/11.1/069/lib/intel64'
+        if self.vulcan_type == "f":
+            filenameF = filename
+        if self.vulcan_type == "tm":
+            filenameM = filename[0]
+            filenameT = filename[1]
+            filenameC = filename[2]
+        else:
+            filenameM = filename
+            filenameT = filename
+        
+        if self.vulcan_type == "m" or self.vulcan_type == "tm":
+            self.vulcan_exec = os.path.join(self.pathToVulcan, "Vulcan-m.O2")
+            self.env_res["FOR001"] = os.path.join(res_directory,filenameM+".dts") #dts *
+            self.env_res["FOR002"] = os.path.join(res_directory,filenameM+".sol") #sol *
+            self.env_res["FOR003"] = os.path.join(res_directory,filenameM+".fro") #fro
+            self.env_res["FOR004"] = os.path.join(res_directory,filenameM+".frhk") #frhk
+            self.env_dat["FOR005"] = os.path.join(dat_directory,filenameM+".dat") #dat
+            self.env_res["FOR006"] = os.path.join(res_directory,filenameM+".pri") #pri
+            self.env_res["FOR007"] = os.path.join(res_directory,filenameM+".res") #res
+            self.env_res["FOR008"] = os.path.join(res_directory,filenameM+".sol2") #sol2 *
+            self.env_res["FOR009"] = os.path.join(res_directory,filenameM+".fro2") #fro2
+            self.env_res["FOR010"] = os.path.join(res_directory,filenameM+".pos") #pos
+            self.env_res["FOR011"] = os.path.join(res_directory,filenameM+".rst") #rst
+            self.env_res["FOR012"] = os.path.join(res_directory,filenameM+".bfgs") #bfgs
+            self.env_res["FOR013"] = os.path.join(res_directory,filenameM+".pipe") #pipe
+            self.env_res["FOR014"] = os.path.join(res_directory,filenameM+".pan") #pan
+            self.env_res["FOR039"] = os.path.join(res_directory,filenameM+".fan") #fan
+
+            self.env_dat["FOR040"] = os.path.join(dat_directory,filenameM+".geo") #geo
+            self.env_dat["FOR041"] = os.path.join(dat_directory,filenameM+".set") #set
+            self.env_dat["FOR042"] = os.path.join(dat_directory,filenameM+".mat") #mat
+            self.env_dat["FOR043"] = os.path.join(dat_directory,filenameM+".ini") #ini
+            self.env_dat["FOR044"] = os.path.join(dat_directory,filenameM+".loa") #loa
+            self.env_dat["FOR045"] = os.path.join(dat_directory,filenameM+".fix") #fix
+            self.env_dat["FOR046"] = os.path.join(dat_directory,filenameM+".ini1") #ini1
+            self.env_dat["FOR047"] = os.path.join(dat_directory,filenameM+".tun") #tun
+            self.env_dat["FOR048"] = os.path.join(dat_directory,filenameM+".con") #con
+            self.env_dat["FOR049"] = os.path.join(dat_directory,filenameM+".act") #act
+            
+            self.env_res["FOR060"] = os.path.join(res_directory,filenameM+".cur1") #cur1
+            self.env_res["FOR061"] = os.path.join(res_directory,filenameM+".cur2") #cur2
+            self.env_res["FOR062"] = os.path.join(res_directory,filenameM+".cur3") #cur3
+            self.env_res["FOR063"] = os.path.join(res_directory,filenameM+".cur4") #cur4
+            self.env_res["FOR064"] = os.path.join(res_directory,filenameM+".cur5") #cur5
+            self.env_res["FOR065"] = os.path.join(res_directory,filenameM+".cur6") #cur6
+            self.env_res["FOR066"] = os.path.join(res_directory,filenameM+".cur7") #cur7
+            self.env_res["FOR067"] = os.path.join(res_directory,filenameM+".cur8") #cur8
+            self.env_res["FOR068"] = os.path.join(res_directory,filenameM+".cur9") #cur9
+            self.env_res["FOR069"] = os.path.join(res_directory,filenameM+".cur10") #cur10
+
+        if self.vulcan_type == "t" or self.vulcan_type == "tm":
+            self.vulcan_exec = os.path.join(self.pathToVulcan, "Vulcan-t.O2")
+            self.env_res["FOR021"] = os.path.join(res_directory,filenameT+".dts") #dts  *
+            self.env_res["FOR022"] = os.path.join(res_directory,filenameT+".sol") #sol *
+            self.env_res["FOR023"] = os.path.join(res_directory,filenameT+".fro") #fro
+            self.env_res["FOR024"] = os.path.join(res_directory,filenameT+".frhk") #frhk
+            self.env_dat["FOR025"] = os.path.join(dat_directory,filenameT+".dat") #dat
+            self.env_res["FOR026"] = os.path.join(res_directory,filenameT+".pri") #pri
+            self.env_res["FOR027"] = os.path.join(res_directory,filenameT+".res") #res
+            self.env_res["FOR028"] = os.path.join(res_directory,filenameT+".sol2") #sol2 *
+            self.env_res["FOR029"] = os.path.join(res_directory,filenameT+".fro2") #fro2
+            self.env_res["FOR030"] = os.path.join(res_directory,filenameT+".pos") #pos
+            self.env_res["FOR031"] = os.path.join(res_directory,filenameT+".rst") #rst *
+            self.env_res["FOR032"] = os.path.join(res_directory,filenameT+".bfgs") #bfgs
+            self.env_res["FOR033"] = os.path.join(res_directory,filenameT+".pipe") #pipe
+            self.env_res["FOR034"] = os.path.join(res_directory,filenameT+".pan") #pan
+            self.env_res["FOR038"] = os.path.join(res_directory,filenameT+".fan") #fan
+            
+            self.env_dat["FOR050"] = os.path.join(dat_directory,filenameT+".geo") #geo
+            self.env_dat["FOR051"] = os.path.join(dat_directory,filenameT+".set") #set
+            self.env_dat["FOR052"] = os.path.join(dat_directory,filenameT+".mat") #mat
+            self.env_dat["FOR053"] = os.path.join(dat_directory,filenameT+".ini") #ini
+            self.env_dat["FOR054"] = os.path.join(dat_directory,filenameT+".loa") #loa
+            self.env_dat["FOR055"] = os.path.join(dat_directory,filenameT+".fix") #fix
+            self.env_dat["FOR056"] = os.path.join(dat_directory,filenameT+".adv") #adv
+            self.env_dat["FOR059"] = os.path.join(dat_directory,filenameT+".act") #act
+            self.env_dat["FOR082"] = os.path.join(dat_directory,filenameT+".str") #str
+            
+            self.env_res["FOR070"] = os.path.join(res_directory,filenameT+".cur1") #cur1
+            self.env_res["FOR071"] = os.path.join(res_directory,filenameT+".cur2") #cur2
+            self.env_res["FOR072"] = os.path.join(res_directory,filenameT+".cur3") #cur3
+            self.env_res["FOR073"] = os.path.join(res_directory,filenameT+".cur4") #cur4
+            self.env_res["FOR074"] = os.path.join(res_directory,filenameT+".cur5") #cur5
+            self.env_res["FOR075"] = os.path.join(res_directory,filenameT+".cur6") #cur6
+            self.env_res["FOR076"] = os.path.join(res_directory,filenameT+".cur7") #cur7
+            self.env_res["FOR077"] = os.path.join(res_directory,filenameT+".cur8") #cur8
+            self.env_res["FOR078"] = os.path.join(res_directory,filenameT+".cur9") #cur9
+            self.env_res["FOR079"] = os.path.join(res_directory,filenameT+".cur10") #cur10
+
+        if self.vulcan_type == "tm":
+            self.vulcan_exec = os.path.join(self.pathToVulcan, "Vulcan-tm.O2")
+            self.env_dat["FOR035"] = os.path.join(dat_directory,filenameC+".dat"), #res
+            self.env_dat["FOR036"] = os.path.join(dat_directory,filenameC+".res"), #dat
+       
+        if self.vulcan_type == "f" or self.vulcan_type == "tf":
+            self.vulcan_exec = os.path.join(self.pathToVulcan, "Vulcan-f.O2")
+#                            Assigns:
+# Temporary files:
+#
+            self.env_temp["FOR085"] = os.path.join(res_directory,filenameF+".dts") #dts  
+            self.env_temp["FOR086"] = os.path.join(res_directory,filenameF+".sc1") #solver file 1
+            self.env_temp["FOR087"] = os.path.join(res_directory,filenameF+".sc2") #solver file 2
+            self.env_temp["FOR088"] = os.path.join(res_directory,filenameF+".sc3") #solver file 3
+            self.env_temp["FOR089"] = os.path.join(res_directory,filenameF+".sc4") #solver file 4
+            self.env_temp["FOR099"] = os.path.join(res_directory,filenameF+".sc5") #solver file 5
+#
+# Permanent files:
+#
+            self.env_res["FOR120"] = os.path.join(res_directory,filenameF+".tim") #false unity representing stdout
+            self.env_dat["FOR092"] = os.path.join(dat_directory,filenameF+".dat") #dat
+            self.env_res["FOR093"] = os.path.join(res_directory,filenameF+".inc") #include file 
+            self.env_res["FOR094"] = os.path.join(res_directory,filenameF+".log") #include file 
+            self.env_res["FOR095"] = os.path.join(res_directory,filenameF+".res") #include file 
+            self.env_res["FOR096"] = os.path.join(res_directory,filenameF+".pos") #include file 
+            self.env_res["FOR097"] = os.path.join(res_directory,filenameF+".rst") #include file 
+            self.env_res["FOR098"] = os.path.join(res_directory,filenameF+".rsf") #include file 
+#
+# Variable Strategy open file:
+#
+            self.env_dat["FOR084"] = os.path.join(dat_directory,filenameF+".str")
+#
+# Frictional conditions file: 
+#
+            self.env_dat["FOR091"] = os.path.join(dat_directory,filenameF+".fri")
+#
+# Subincrementation of RHS file:
+#
+            self.env_dat["FOR080"] = os.path.join(dat_directory,filenameF+".rhs")
+#
+# Contour position output file: 
+#
+            self.env_res["FOR081"] = os.path.join(res_directory,filenameF+".con")
+#
+# Variable boundary contition file:
+#
+            self.env_dat["FOR057"] = os.path.join(dat_directory,filenameF+".vbo")
+#
+# Restart variable boundary contition file:
+#
+            self.env_dat["FOR058"] = os.path.join(dat_directory,filenameF+".rvb")
+#
+        self.dat_directory = dat_directory
+        self.res_directory = res_directory
+        self.filename = filename
+        
+        if os.path.isfile(os.path.join(dat_directory,filename+".dat")):
+            self.allGood = True
+            if os.path.isdir(self.res_directory):
+              for key, value in self.env_res.iteritems():
+               try:
+                  os.remove(value)
+               except OSError:
+                  continue
+#              shutil.rmtree(self.res_directory)
+            else:            
+               os.makedirs(self.res_directory)
+            shutil.copy((os.path.join(dat_directory,filename+".dat")),self.res_directory)
+            
+    def run(self):
+        if self.allGood:
+            self.env.update(self.env_temp) 
+            self.env.update(self.env_res) 
+            self.env.update(self.env_dat)
+            #print self.env['FOR060']
+            p = subprocess.Popen(self.vulcan_exec, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=self.env)
+            print "Ejecutando Vulcan PID:", os.getpid()
+            p.wait()
+            self.stdout = p.stdout
+            self.stderr = p.stderr
+            for key, item in self.env_temp.iteritems():
+              try:
+                 os.remove(item)
+              except OSError:
+                 continue
+            self.returnValue = p.returncode
+            tim = open(self.env['FOR120'],'w')
+            err = open(self.env['FOR120'][:-4]+".err",'w')
+            tim.writelines(self.stdout.readlines())
+            err.writelines(self.stderr.readlines())
+            tim.flush()            
+            tim.close()
+            err.flush()
+            err.close()
+        else:
+            print "No se ejecuta vulcan error de parametros"
+
+
+        
+        
+        
+if __name__ == "__main__":
+#    print cpu_count()
+    if len (sys.argv) < 3:
+      print "Uso: vulcan tipo_problema numero_casos archivos_dat (con extension)"
+      print "tipo_problema -> m: mecanico, t: termico, tm: termo-mecanico"
+      sys.exit(1)
+    num_casos = int(sys.argv[2])
+    for i in range(num_casos):
+        i += 3
+        filename = os.path.abspath(sys.argv[i])
+        dat_directory = os.path.dirname(filename)
+        filename = os.path.splitext(os.path.basename(filename))[0] #Obtiene el nombre del archivo sin extension si
+        a = Vulcan(os.path.expanduser(os.path.join("~", "scratch")),os.path.join(dat_directory,filename+".dat") ,\
+            sys.argv[1])
+        a.run()
+

@@ -1,0 +1,60 @@
+      SUBROUTINE CONMTXT(ELDATT,ELPRET,ELVART,ELMATT,LNODST,MATNOT,
+     .                   PROELT,PROPST,WORK1T)
+C***********************************************************************
+C
+C**** THIS ROUTINE SETS UP SOME CONSTANT MATRICES FOR FUTURE USE
+C     IT EVALUATES ONCE AND FOR ALL ( IF NECESSARY ) :
+C
+C         - MASS MATRIX              (IF KDYNA=1)
+C         - PERMEABILITY MATRIX      (IF KPORE=2)
+C         - FLUID COMPRESSIB. MATRIX (IF KPORE=2)
+C         - INITIAL COUPLING MATRIX  (IF KPORE=2)
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_omt.f'
+C
+      INCLUDE 'prob_omt.f'
+      INCLUDE 'inte_omt.f'
+      INCLUDE 'auxl_omt.f'
+C
+      DIMENSION MATNOT(NELEMT),        LNODST(NNODET,NELEMT),
+     .          PROELT(NPRELT,NGRUPT), PROPST(NPROPT,NMATST),
+     .          ELDATT(NDATAT),        ELPRET(NPREVT),
+     .          ELVART(NSTATT),        ELMATT(NMATXT),
+     .          WORK1T(*)
+C
+      IF(KDYNAT.EQ.0.AND.KPORET.NE.2) RETURN
+C
+      CALL CPUTIMT(TIME1T)
+C
+C**** LOOP ON ELEMENTS
+C
+      KERORT=0
+      DO 1000 IELEMT=1,NELEMT
+      LGRUPT=MATNOT(IELEMT)
+      LMATST=INT(PROELT(1,LGRUPT))
+C
+C**** READ ELDAT FROM DATA BASE
+C
+      IF(NMEMO1.EQ.0.OR.NMEMO2.EQ.0)
+     . CALL DATBAST(ELDATT,    1,    2)
+C
+C**** COMPUTE MASS MATRIX IF NECESSARY
+C
+      IF(KDYNAT.NE.0) THEN
+       CALL ELMLIBT(LNODST(1,IELEMT),PROELT(1,LGRUPT),PROPST(1,LMATST),
+     .               ELDATT,ELPRET,ELVART,ELMATT,DUMMYT,WORK1T,     2)
+       IF(NMEMO6.EQ.0) CALL DATBAST(ELMATT(IMATXT(3)),    8,    1)
+      ENDIF
+C
+ 1000 CONTINUE
+C
+      CALL CPUTIMT(TIME2T)
+      CPUSTT=CPUSTT+(TIME2T-TIME1T)
+C
+      RETURN
+      END

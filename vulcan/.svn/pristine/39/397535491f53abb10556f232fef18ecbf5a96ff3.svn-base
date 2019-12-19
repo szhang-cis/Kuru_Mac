@@ -1,0 +1,20 @@
+      SUBROUTINE EUTECT1(TEMP,TP,F,FP,XN,RM,DEL_TPO)
+      IMPLICIT REAL*8 (A-H,O-Z)
+C
+      COMMON/MICRO1/DENSI,CAPAC,CONDU,TE,ALATEH,A1,A2,AM1,AM2
+C      
+      GU=TE-TEMP    
+c      IF(TEMP.GT.TE) GOTO 101
+      XN1=A1*(GU**AM1)
+      DELXN=XN1-XN
+      DELR=A2*DEL_TPO*(GU**AM2)
+      FP=F
+      F=12.5664*(XN*((RM+DELR)**3)+DELXN*(DELR**3))/3.0
+      F=F*((1-FP)**3.0)
+      RM=(3.0*F/(12.5664*XN1))**0.333
+      XN=XN1
+      IF(F.GT.1)F=1.0
+      IF(F.LT.0.0)F=0.0
+c  101 END
+      RETURN
+      END

@@ -1,0 +1,71 @@
+      SUBROUTINE WINTER(DVOLU,NEVAB,NNODE,WSTIF,KSYMM,EMATX,FMATX,
+     .                  GMATX,HMATX,IMODEL)
+C***********************************************************************
+C
+C**** THIS ROUTINE EVALUATES THE CONSISTENT INTERFACE ELEMENT MATRIX
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      DIMENSION WSTIF(*)
+      DIMENSION EMATX(NNODE,*), FMATX(NEVAB,*), GMATX(NNODE,*),
+     .          HMATX(NNODE,*)
+C
+C**** INITIALISES F
+C
+      DO IEVAB=1,NEVAB
+       DO JEVAB=1,NEVAB
+        FMATX(IEVAB,JEVAB)=0.0
+       ENDDO
+      ENDDO
+C
+      DO INODE=1,NNODE
+       DO JNODE=1,NNODE
+        if(imodel.eq.0) then
+         FMATX(INODE,JNODE+2*NNODE)=-EMATX(INODE,JNODE)
+         FMATX(INODE+NNODE,JNODE+2*NNODE)=EMATX(INODE,JNODE)
+         FMATX(INODE+2*NNODE,JNODE+2*NNODE)=GMATX(INODE,JNODE)
+         IF(KSYMM.EQ.0) THEN         ! UNSYMMETRIC CASE (to be revised)
+          FMATX(INODE+2*NNODE,JNODE)=-EMATX(INODE,JNODE)
+          FMATX(INODE+2*NNODE,JNODE+NNODE)=EMATX(INODE,JNODE)
+         ENDIF
+        else
+
+         FMATX(INODE,JNODE+2*NNODE)=-HMATX(INODE,JNODE)
+         FMATX(INODE+NNODE,JNODE+2*NNODE)=HMATX(INODE,JNODE)
+
+c         FMATX(INODE+2*NNODE,JNODE)=EMATX(INODE,JNODE)
+c         FMATX(INODE+2*NNODE,JNODE+NNODE)=-EMATX(INODE,JNODE)
+         FMATX(INODE+2*NNODE,JNODE)=EMATX(JNODE,INODE)
+         FMATX(INODE+2*NNODE,JNODE+NNODE)=-EMATX(JNODE,INODE)
+
+
+         FMATX(INODE+2*NNODE,JNODE+2*NNODE)=GMATX(INODE,JNODE)
+
+c         IF(KSYMM.EQ.0) THEN         ! UNSYMMETRIC CASE
+c          FMATX(INODE+2*NNODE,JNODE)=-EMATX(INODE,JNODE)
+c          FMATX(INODE+2*NNODE,JNODE+NNODE)=EMATX(INODE,JNODE)
+c         ENDIF
+ 
+
+
+
+c         call runend('error in winter')
+c         IF(KSYMM.EQ.0) THEN         ! UNSYMMETRIC CASE
+c          call runend('error in winter')
+c          FMATX(INODE+NNODE,JNODE)=-EMATX(INODE,JNODE)
+c         ELSE                        ! SYMMETRIC CASE
+c          call runend('error in winter')
+c         ENDIF
+
+
+        endif
+       ENDDO
+      ENDDO
+C
+C**** ADD THE CONTRIBUTION TO THE INTERFACE MATRIX
+C
+      CALL SQTOTA(WSTIF,FMATX,DVOLU,NEVAB,KSYMM)
+C
+      RETURN
+      END

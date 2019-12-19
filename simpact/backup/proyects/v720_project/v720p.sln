@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "v720p", "v720p.vfproj", "{CCECFE6E-1655-4180-B063-D3638A8D67C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		release parallel|Win32 = release parallel|Win32
+		release parallel|x64 = release parallel|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCECFE6E-1655-4180-B063-D3638A8D67C0}.release parallel|Win32.ActiveCfg = release parallel 64|Win32
+		{CCECFE6E-1655-4180-B063-D3638A8D67C0}.release parallel|Win32.Build.0 = release parallel 64|Win32
+		{CCECFE6E-1655-4180-B063-D3638A8D67C0}.release parallel|x64.ActiveCfg = release parallel 64|x64
+		{CCECFE6E-1655-4180-B063-D3638A8D67C0}.release parallel|x64.Build.0 = release parallel 64|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

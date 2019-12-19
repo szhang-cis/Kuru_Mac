@@ -1,0 +1,30 @@
+      SUBROUTINE MODULM(WORKS,WORK1,IPRIN,LPRIN)
+C=======================================================================
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** MECHANICAL VARIABLES
+C
+      DIMENSION WORKS(LPRIN)
+      DIMENSION IPRIN(50)                        ! see note in vul-*m*.f
+      REAL*8, ALLOCATABLE, INTENT(INOUT) :: WORK1(:)
+      INCLUDE 'modulm0.inc'
+C
+      CALL MODULM0(
+     .     WORKS(IPRIN( 1)),WORKS(IPRIN( 2)),WORKS(IPRIN( 3)),
+     .     WORKS(IPRIN( 4)),WORKS(IPRIN( 5)),WORKS(IPRIN( 6)),
+     .     WORKS(IPRIN( 7)),WORKS(IPRIN( 8)),WORKS(IPRIN( 9)),
+     .     WORKS(IPRIN(10)),WORKS(IPRIN(11)),WORKS(IPRIN(12)),
+     .     WORKS(IPRIN(13)),WORKS(IPRIN(14)),WORKS(IPRIN(15)),
+     .     WORKS(IPRIN(16)),WORKS(IPRIN(17)),WORKS(IPRIN(18)),
+     .     WORKS(IPRIN(19)),WORKS(IPRIN(20)),WORKS(IPRIN(21)),
+     .     WORKS(IPRIN(22)),WORKS(IPRIN(23)),WORKS(IPRIN(24)),
+     .     WORKS(IPRIN(25)),WORKS(IPRIN(26)),WORKS(IPRIN(27)),
+     .     WORKS(IPRIN(28)),WORKS(IPRIN(29)),WORKS(IPRIN(30)),
+     .     WORKS(IPRIN(31)),WORKS(IPRIN(32)),WORKS(IPRIN(33)),
+     .     WORKS(IPRIN(34)),WORKS(IPRIN(35)),WORKS(IPRIN(36)),
+     .     WORKS(IPRIN(37)),
+     .     WORK1)
+C
+       RETURN
+C
+      END

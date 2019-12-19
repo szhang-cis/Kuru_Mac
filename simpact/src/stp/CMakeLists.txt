@@ -1,0 +1,165 @@
+########################################
+# Set up how to compile the source files
+########################################
+
+# Add the source files
+set (stp_src ${src_stp}/st_2_pos.f90
+  ${src_stp}/averag.f90
+  ${src_stp}/aves2d.f90
+  ${src_stp}/aves3d.f90
+  ${src_stp}/aveshl.f90
+  ${src_stp}/axes12.f90
+  ${src_stp}/axes14.f90
+  ${src_stp}/axes25.f90
+  ${src_stp}/bgraph.f90
+  ${src_stp}/cab_gid.f90
+  ${src_stp}/cab_gid_bin.f90
+  ${src_stp}/ch.f90
+  ${src_stp}/cpdir3d.f90
+  ${src_stp}/cpdirt.f90
+  ${src_stp}/elmdat.f90
+  ${src_stp}/findinv.f90
+  ${src_stp}/fldcv.f90
+  ${src_stp}/gaun12.f90
+  ${src_stp}/gaus12.f90
+  ${src_stp}/gausn1.f90
+  ${src_stp}/gausn2.f90
+  ${src_stp}/gausn3.f90
+  ${src_stp}/gausn5.f90
+  ${src_stp}/gausn6.f90
+  ${src_stp}/gausn8.f90
+  ${src_stp}/gausn9.f90
+  ${src_stp}/gauss1.f90
+  ${src_stp}/gauss2.f90
+  ${src_stp}/gauss3.f90
+  ${src_stp}/gauss5.f90
+  ${src_stp}/gauss6.f90
+  ${src_stp}/gauss8.f90
+  ${src_stp}/gauss9.f90
+  ${src_stp}/gauss9c.f90
+  ${src_stp}/gaussn.f90
+  ${src_stp}/gaussq.f90
+  ${src_stp}/gidbinmesh.f90
+  ${src_stp}/gidmesh.f90
+  ${src_stp}/gidres.f90
+  ${src_stp}/gidresbin.f90
+  ${src_stp}/inpd10.f90
+  ${src_stp}/inpd12.f90
+  ${src_stp}/inpda1.f90
+  ${src_stp}/inpda2.f90
+  ${src_stp}/inpda3.f90
+  ${src_stp}/inpda5.f90
+  ${src_stp}/inpda6.f90
+  ${src_stp}/inpda8.f90
+  ${src_stp}/inpda9.f90
+  ${src_stp}/inpddb.f90
+  ${src_stp}/inrotm.f90
+  ${src_stp}/inttoch.f90
+  ${src_stp}/jacob3.f90
+  ${src_stp}/jacob5.f90
+  ${src_stp}/lgst2d.f90
+  ${src_stp}/lgst3d.f90
+  ${src_stp}/number.f90
+  ${src_stp}/pcggib01.f90
+  ${src_stp}/pcggib02.f90
+  ${src_stp}/pcggib03.f90
+  ${src_stp}/pcggib05.f90
+  ${src_stp}/pcggib06.f90
+  ${src_stp}/pcggib08.f90
+  ${src_stp}/pcggib09.f90
+  ${src_stp}/pcggib12.f90
+  ${src_stp}/pcgi01.f90
+  ${src_stp}/pcgi02.f90
+  ${src_stp}/pcgi03.f90
+  ${src_stp}/pcgi05.f90
+  ${src_stp}/pcgi06.f90
+  ${src_stp}/pcgi08.f90
+  ${src_stp}/pcgi09.f90
+  ${src_stp}/pcgi10.f90
+  ${src_stp}/pcgi12.f90
+  ${src_stp}/pcmgib01.f90
+  ${src_stp}/pcmgib02.f90
+  ${src_stp}/pcmgib03.f90
+  ${src_stp}/pcmgib05.f90
+  ${src_stp}/pcmgib06.f90
+  ${src_stp}/pcmgib08.f90
+  ${src_stp}/pcmgib09.f90
+  ${src_stp}/pcmgib10.f90
+  ${src_stp}/pcmgib12.f90
+  ${src_stp}/pcte02.f90
+  ${src_stp}/pcte03.f90
+  ${src_stp}/pcte05.f90
+  ${src_stp}/pcte06.f90
+  ${src_stp}/pcte08.f90
+  ${src_stp}/pcte09.f90
+  ${src_stp}/pcte10.f90
+  ${src_stp}/pcte12.f90
+  ${src_stp}/presno.f90
+  ${src_stp}/prgaus.f90
+  ${src_stp}/prgi01.f90
+  ${src_stp}/prgi02.f90
+  ${src_stp}/prgi03.f90
+  ${src_stp}/prgi05.f90
+  ${src_stp}/prgi06.f90
+  ${src_stp}/prgi08.f90
+  ${src_stp}/Prgi09.f90
+  ${src_stp}/prgi09c.f90
+  ${src_stp}/prgi12.f90
+  ${src_stp}/prgib01.f90
+  ${src_stp}/prgib02.f90
+  ${src_stp}/prgib03.f90
+  ${src_stp}/prgib05.f90
+  ${src_stp}/prgib06.f90
+  ${src_stp}/prgib08.f90
+  ${src_stp}/prgib09.f90
+  ${src_stp}/prgib12.f90
+  ${src_stp}/prgidb.f90
+  ${src_stp}/proma2.f90
+  ${src_stp}/prtcob.f90
+  ${src_stp}/prtcob_spot.f90
+  ${src_stp}/prtcoo.f90
+  ${src_stp}/prtcoo_spot.f90
+  ${src_stp}/rdconf.f90
+  ${src_stp}/rdflc.f90
+  ${src_stp}/readbr.f90
+  ${src_stp}/readcs.f90
+  ${src_stp}/readcw.f90
+  ${src_stp}/readln.f90
+  ${src_stp}/readva.f90
+  ${src_stp}/runen2.f90
+  ${src_stp}/runend.f90
+  ${src_stp}/sgaus12.f90
+  ${src_stp}/shapes.f90
+  ${src_stp}/shapri.f90
+  ${src_stp}/smom05.f90
+  ${src_stp}/smom06.f90
+  ${src_stp}/smot05.f90
+  ${src_stp}/smot06.f90
+  ${src_stp}/smot08.f90
+  ${src_stp}/smotpr.f90
+  ${src_stp}/smotpr6.f90
+  ${src_stp}/spgaus.f90
+  ${src_stp}/stra14.f90
+  ${src_stp}/stran6.f90
+  ${src_stp}/surf03.f90
+  ${src_stp}/tecgetgv.f90
+  ${src_stp}/tecmesh.f90
+  ${src_stp}/tecres.f90
+  ${src_stp}/tecvar.f90
+  ${src_stp}/tr4to8.f90
+  ${src_stp}/vecpro.f90
+  ${src_stp}/vecuni.f90
+  ${src_stp}/wearin.f90
+  ${src_stp}/wridva.f90
+  ${src_stp}/wridva_spot.f90
+)
+
+# Define the executable in terms of the source files
+add_executable (${stpexe} ${stp_src})
+
+#####################################################
+# Add the needed libraries and special compiler flags
+#####################################################
+
+# This links simpact to the simpact library
+target_link_libraries (${stpexe} ${stampactlib})

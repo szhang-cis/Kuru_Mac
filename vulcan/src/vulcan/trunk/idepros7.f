@@ -1,0 +1,100 @@
+      SUBROUTINE IDEPROS7(PROPST,IPLAT,IA1)
+C***********************************************************************
+C
+C**** THIS ROUTINE ORDERS THE MICROSTRUCTURAL PROPERTIES OF MODEL
+C     NUMBER 7 (IPCMO=7) OF RATE PHASE-CHANGE FORMULATIONS
+C
+C***********************************************************************
+      IMPLICIT REAL*8 (A-H,O-Z)
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'auxl_omt.f'
+      INCLUDE 'prob_omt.f'
+C
+      DIMENSION PROPST(*)
+C
+      IA2=IA1+2         ! 2=ipcfo,ipcmo
+C
+      IVERSI=INT(PROPST(IA2+1))
+C
+      IF(IVERSI.EQ.1) THEN
+C
+C**** SOLIDUS-SOLIDUS PHASE-CHANGE
+C
+      AM0=PROPST(IA2+2)
+      AK=PROPST(IA2+3)
+      VISC7=PROPST(IA2+4)
+      UNIVC=PROPST(IA2+5)
+      ENERA=PROPST(IA2+6)
+      HENER=PROPST(IA2+7)
+      CHININF=PROPST(IA2+8)
+      CONTA=PROPST(IA2+9)
+      CONTB=PROPST(IA2+10)
+      IMECHMIC=INT(PROPST(IA2+11))
+C
+      VPLAT(IPLAT,6)=REAL(IVERSI)
+      VPLAT(IPLAT,7)=AM0
+      VPLAT(IPLAT,8)=AK
+      VPLAT(IPLAT,9)=VISC7
+      VPLAT(IPLAT,10)=UNIVC
+      VPLAT(IPLAT,11)=ENERA
+      VPLAT(IPLAT,12)=HENER
+      VPLAT(IPLAT,13)=CHININF
+      VPLAT(IPLAT,14)=CONTA
+      VPLAT(IPLAT,15)=CONTB
+      VPLAT(IPLAT,16)=REAL(IMECHMIC)
+      IMODE=11                  ! imode=total number of prop. of model 7
+      ENDIF                     ! iversi.eq.1
+C
+      IF(IVERSI.EQ.2) THEN
+C
+C**** SOLIDUS-SOLIDUS PHASE-CHANGE
+C
+      AKBAR=PROPST(IA2+2)
+      ETA00=PROPST(IA2+3)
+      ETABAR=PROPST(IA2+4)
+      GHINF=PROPST(IA2+5)
+      ALPHABAR=PROPST(IA2+6)
+      AABAR=PROPST(IA2+7)
+      UNIVC=PROPST(IA2+8)
+      ENERA=PROPST(IA2+9)
+      HENER=PROPST(IA2+10)
+      CONTA=PROPST(IA2+11)
+      CONTB=PROPST(IA2+12)
+      ENETE=PROPST(IA2+13)
+      FINFIN=PROPST(IA2+14)
+      FINFINM=PROPST(IA2+15)
+      GSETT=PROPST(IA2+16)     
+      TMAX=PROPST(IA2+17)
+      TREF=PROPST(IA2+18)      
+      CONAE=PROPST(IA2+19)
+      IMECHMIC=INT(PROPST(IA2+20))
+C
+      VPLAT(IPLAT,6)=REAL(IVERSI)
+      VPLAT(IPLAT,7)=AKBAR
+      VPLAT(IPLAT,8)=ETA00
+      VPLAT(IPLAT,9)=ETABAR
+      VPLAT(IPLAT,10)=GHINF
+      VPLAT(IPLAT,11)=ALPHABAR
+      VPLAT(IPLAT,12)=AABAR
+      VPLAT(IPLAT,13)=UNIVC
+      VPLAT(IPLAT,14)=ENERA
+      VPLAT(IPLAT,15)=HENER
+      VPLAT(IPLAT,16)=CONTA
+      VPLAT(IPLAT,17)=CONTB
+      VPLAT(IPLAT,18)=ENETE
+      VPLAT(IPLAT,19)=FINFIN
+      VPLAT(IPLAT,20)=FINFINM
+      VPLAT(IPLAT,21)=GSETT
+      VPLAT(IPLAT,22)=TMAX
+      VPLAT(IPLAT,23)=TREF
+      VPLAT(IPLAT,24)=CONAE
+      VPLAT(IPLAT,25)=REAL(IMECHMIC)
+      IMODE=20                  ! imode=total number of prop. of model 7
+      ENDIF                     ! iversi.eq.2 
+C
+      IA1=IA2+IMODE
+C
+      RETURN
+      END

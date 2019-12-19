@@ -1,0 +1,25 @@
+      SUBROUTINE CONTROT
+C***********************************************************************
+C
+C**** CONTROL ROUTINE FOR VULCAN
+C
+C***********************************************************************
+C
+C**** ESTABLISH THE CONTROL PARAMETERS
+C
+      CALL CONINPT
+C
+C**** ESTABLISH THE PROBLEM PARAMETERS
+C
+      CALL PROINPT
+C
+C**** ESTABLISH THE REMAINING PARAMETERS FOR PROBLEM
+C
+      CALL CONSETT
+C
+C**** CHECK ON MAXIMUM DIMENSION AND COMPATIBILITY OF INPUT PROBLEM
+C     OPTIONS
+C
+      CALL CONCEKT
+C
+      END

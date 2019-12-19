@@ -1,0 +1,1075 @@
+      SUBROUTINE PROPPOL(ITAPE,PROPS)
+C***********************************************************************
+C
+C**** THIS ROUTINE READS THE MATERIAL PROPERTIES FOR POLYMER SOLID MODEL
+C     (ASSUMED AS A VISCOPLASTIC MODEL WITH TEMPERATURE-DEPENDENT
+C     MATERIAL PROPERTIES)
+C     (ELEMENT NO. 30)
+C
+C**** OUTPUT (see pointe.f)
+C
+C     KPLA10: viscoelastic response
+C     KPLA11: fiber-reinforced response (not used in pointe.f; to be
+C                                                              removed?)
+C
+C     Note: only a viscoelastic response is implemented
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'
+C
+C**** MECHANICAL VARIABLES
+C
+      INCLUDE 'prob_om.f'
+      INCLUDE 'auxl_om.f'
+      INCLUDE 'inte_om.f'
+      INCLUDE 'inpo_om.f'
+C
+      DIMENSION PROPS(*)
+C
+      IF(LARGE.EQ.0)
+     . CALL RUNEND('ERROR: LARGE=0 FOR POLYMERS (proppol.f)')
+C
+C**** ESTABLISH SOME PARAMETERS
+C
+      PROPS(1)=0.0             ! isotropic
+      PROPS(2)=40.0            ! hyperelastic (viscoplastic)
+      PROPS(3)=2.0             ! temperature-dependent
+      PROPS(59)=3.0            ! solidification (not used!)
+C
+      PROPS(37)=0.0            ! non prescribed strains (see incstn.f)
+      PROPS(19)=0.0
+C
+      PROPS(21)=0.0            ! no external damping
+      PROPS(22)=0.0
+C
+C**** ESTABLISHES MODEL (defined by its free energy)
+C
+      IFREN=0
+      IF(WORDS(3).EQ.'MOONE') IFREN=51           ! Mooney-Rivlin
+      IF(WORDS(3).EQ.'YEOH_') IFREN=52           ! Yeoh
+      IF(WORDS(3).EQ.'OGDEN') IFREN=53           ! Ogden
+      IF(WORDS(3).EQ.'DELFI') IFREN=54           ! Delfino
+      IF(WORDS(3).EQ.'HOLZA') IFREN=55           ! Holzapfel
+      IF(WORDS(3).EQ.'MYOCA') IFREN=56           ! Myocardium
+      IF(WORDS(3).EQ.'GASSE') IFREN=57           ! Gasser
+      IF(WORDS(3).EQ.'KAN_M') IFREN=58           ! KAN model
+C
+C**** CONTROLS
+C
+      IF(IFREN.EQ.0)
+     . CALL RUNEND('ERROR: MODEL DEFINITION IS LACKING (proppol.f)')
+      PROPS(61)=FLOAT(IFREN)
+C
+      IF((IFREN.EQ.55.OR.IFREN.EQ.57).AND.
+     .   (NTYPE.EQ.1.OR.NTYPE.EQ.2.OR.NTYPE.EQ.5))
+     . CALL RUNEND('ERROR: HOLZAPFEL MODEL ONLY AVAILABLE FOR AX OR 3D')
+C
+      IFREM=0                      ! fibers resist tension & compression
+      IF(IFREN.EQ.55.OR.IFREN.EQ.56.OR.IFREN.EQ.57) THEN
+       IF(WORDS(4).EQ.'TENSI') IFREM=1           ! only tension
+      ENDIF
+      PROPS(58)=FLOAT(IFREM)
+C
+      IF(IFREN.EQ.56.AND.NTYPE.NE.4)
+     . CALL RUNEND('ERROR: MYOCARDIUM MODEL ONLY AVAILABLE FOR 3D')
+C
+      IF(IFREN.EQ.55.OR.IFREN.EQ.56.OR.IFREN.EQ.57) THEN
+       IF(NANIS.EQ.0)
+     .  CALL RUNEND('ERROR: ANISO. CARD MUST BE INPUT IN PROBLEM DATA')
+       IANIS=1
+       PROPS(1)=1.0D0                            ! anisotropic model
+      ENDIF
+C
+C**** READ & WRITE MATERIAL PROPERTIES
+C
+      NPRIN=0
+C
+C**** LOOK FOR 'DENSITY' CARD
+C
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+      IF(WORDS(1).EQ.'DENSI') THEN
+       NLINE=INT(PARAM(1))
+       IF(NLINE.GT.20)
+     .  CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN DENSITY')
+       NPRIN=1
+       DO LINEA=1,NLINE
+        CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+        PROPS(12)=PARAM(1)
+       ENDDO
+       WRITE(LURES,801) PROPS(12)
+       WRITE(LURES,899)
+       IGOTO=0
+      ELSE
+       IF(KDYNA.EQ.1) THEN
+        CALL RUNEND('PROPPOL: DENSITY CARD NOT FOUND')
+       ELSE
+        PROPS(12)=0.0D0
+        CALL RUNMEN('WARNING: ZERO DENSITY VALUE IS ASSUMED')
+        IGOTO=1
+       ENDIF
+      ENDIF
+C
+C**** LOOK FOR 'CONS1' CARD
+C
+      IF(IFREN.EQ.51.OR.IFREN.EQ.52.OR.IFREN.EQ.53.OR.IFREN.EQ.54.OR.
+     .   IFREN.EQ.55.OR.IFREN.EQ.56.OR.IFREN.EQ.57.OR.IFREN.EQ.58) THEN
+       NPRIN=0
+       IF(IGOTO.EQ.0) CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'CONS1') THEN
+        NPOI1=62
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS1')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,803)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: CONS1 CARD NOT FOUND')
+       ENDIF
+      ENDIF           ! ifren.eq.51....
+C
+C**** LOOK FOR 'CONS2' CARD
+C
+      IF(IFREN.EQ.51.OR.IFREN.EQ.52.OR.IFREN.EQ.53.OR.IFREN.EQ.54.OR.
+     .   IFREN.EQ.55.OR.IFREN.EQ.56.OR.IFREN.EQ.57.OR.IFREN.EQ.58) THEN
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'CONS2') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS2')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,805)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: CONS2 CARD NOT FOUND')
+       ENDIF
+      ENDIF           ! ifren.eq.51....
+C
+C**** LOOK FOR 'CONS3' CARD
+C
+      IF(IFREN.EQ.51.OR.IFREN.EQ.52.OR.IFREN.EQ.53.OR.
+     .   IFREN.EQ.55.OR.IFREN.EQ.56.OR.IFREN.EQ.57.OR.IFREN.EQ.58) THEN
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'CONS3') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS3')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,806)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: CONS3 CARD NOT FOUND')
+       ENDIF
+      ENDIF           ! ifren.eq.51....
+C
+C**** LOOK FOR 'EXPO1' CARD
+C
+      IF(IFREN.EQ.53) THEN
+       NPRIN=0
+       IF(IGOTO.EQ.0) CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'EXPO1') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN EXPO1')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,810)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: EXPO1 CARD NOT FOUND')
+       ENDIF
+C
+C**** LOOK FOR 'EXPO2' CARD
+C
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'EXPO2') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN EXPO2')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,811)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: EXPO2 CARD NOT FOUND')
+       ENDIF
+C
+C**** LOOK FOR 'EXPO3' CARD
+C
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'EXPO3') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN EXPO3')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,812)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: EXPO3 CARD NOT FOUND')
+       ENDIF
+      ENDIF           ! ifren.eq.53
+C
+C**** LOOK FOR 'CONS4' CARD
+C
+      IF(IFREN.EQ.56.OR.IFREN.EQ.57) THEN
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'CONS4') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS4')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,814)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: CONS4 CARD NOT FOUND')
+       ENDIF
+      ENDIF           ! ifren.eq.56.or.ifren.eq.57
+C
+C**** LOOK FOR 'CONS5' CARD
+C
+      IF(IFREN.EQ.56) THEN
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'CONS5') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS5')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,815)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: CONS5 CARD NOT FOUND')
+       ENDIF
+C
+C**** LOOK FOR 'CONS6' CARD
+C
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'CONS6') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS6')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,816)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: CONS6 CARD NOT FOUND')
+       ENDIF
+C
+C**** LOOK FOR 'CONS7' CARD
+C
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'CONS7') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS7')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,817)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: CONS7 CARD NOT FOUND')
+       ENDIF
+C
+C**** LOOK FOR 'CONS8' CARD
+C
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'CONS8') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS8')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,818)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: CONS8 CARD NOT FOUND')
+       ENDIF
+      ENDIF           ! ifren.eq.56
+C
+C**** LOOK FOR 'VOLUM' CARD
+C
+      IF(IFREN.EQ.51.OR.IFREN.EQ.52.OR.IFREN.EQ.53.OR.IFREN.EQ.54.OR.
+     .   IFREN.EQ.55.OR.IFREN.EQ.56.OR.IFREN.EQ.57.OR.IFREN.EQ.58) THEN
+       NPRIN=0
+       CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'VOLUM') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NMODI=INT(PARAM(1))
+        IF(NMODI.LE.0.OR.NMODI.GT.4)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF VOLUMETRIC TERM MODEL')
+        WRITE(LURES,813) NMODI
+        WRITE(LURES,899)
+        IGOTO=0
+       ELSE
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=1.0                     ! default
+        CALL RUNMEN('WARNING: VOLUMETRIC TERM MODEL 1 IS ADOPTED')
+        IGOTO=1
+       ENDIF
+C
+C**** LOOK FOR 'PENAL' CARD (used for all incompressibility models)
+C
+       NPRIN=0
+       IF(IGOTO.EQ.0) CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+       IF(WORDS(1).EQ.'PENAL') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NLINE=INT(PARAM(1))
+        IF(NLINE.GT.20)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN PENALTY')
+        NPRIN=1
+        DO LINEA=1,NLINE
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         DO I=1,2
+          NPOI2=NPOI2+1
+          PROPS(NPOI2)=PARAM(I)
+         ENDDO
+        ENDDO
+        WRITE(LURES,807)
+        DO IPROP=NPOI1+1,NPOI2,2
+         WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+        ENDDO
+        WRITE(LURES,899)
+       ELSE
+        CALL RUNEND('PROPPOL: PENALTY CARD NOT FOUND')
+       ENDIF
+      ENDIF           ! ifren.eq.51....
+C
+C**** LOOK FOR 'REFERENCE_TEMPERATURE' CARD
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+      IF(WORDS(1).EQ.'REFER') THEN
+       PROPS(11)=PARAM(1)
+      ELSE
+       CALL RUNEND('PROPPOL: REFERENCE TEMPERATURE CARD NOT FOUND')
+      ENDIF
+C
+C**** LOOK FOR 'THERMAL_DILATATION' CARD
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+      IF(WORDS(1).EQ.'THERM') THEN
+       NPOI1=NPOI2+1
+       NPOI2=NPOI1
+       PROPS(NPOI1)=PARAM(1)
+       NLINE=INT(PARAM(1))
+       IF(NLINE.GT.20)
+     .  CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN THERMAL DIL.')
+C
+       NPOI2=NPOI2+1
+       PROPS(NPOI2)=0.0                            ! nalpu
+       IF(WORDS(2).EQ.'TANGE') PROPS(NPOI2)=1.0    ! nalpu
+C
+       NPRIN=1
+       DO LINEA=1,NLINE
+        CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+        DO I=1,2
+         NPOI2=NPOI2+1
+         PROPS(NPOI2)=PARAM(I)
+        ENDDO
+       ENDDO
+       WRITE(LURES,808)
+       DO IPROP=NPOI1+2,NPOI2,2
+        WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+       ENDDO
+       WRITE(LURES,899)
+      ELSE
+       CALL RUNEND('PROPPOL: THERMAL_DILAT. CARD NOT FOUND')
+      ENDIF
+C
+C**** LOOK FOR 'TH_HD_FUNCTION' CARD (THERMAL HARDENING)
+C
+C     Note: only infinity values for thermal hardening function are
+C           allowed (i.e., elastic response)
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+      IF((WORDS(1).EQ.'HD_FU').OR.(WORDS(1).EQ.'TH_HD')) THEN
+       NPOI1=NPOI2+1
+       NPOI2=NPOI1
+       PROPS(NPOI1)=PARAM(1)
+       NLINE=INT(PARAM(1))
+       IF(NLINE.GT.20)
+     .  CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN TH. HD. FUNC.')
+       NPRIN=1
+       DO LINEA=1,NLINE
+        CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+        DO I=1,2
+         NPOI2=NPOI2+1
+         PROPS(NPOI2)=PARAM(I)
+        ENDDO
+       ENDDO
+       WRITE(LURES,809)
+       DO IPROP=NPOI1+1,NPOI2,2
+        WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+       ENDDO
+       WRITE(LURES,899)
+      ELSE
+       CALL RUNEND('PROPPOL: THERMAL HARDEN. CARD NOT FOUND')
+      ENDIF
+C
+C**** LOOK FOR 'VISCOELASTIC_RESPONSE' CARD
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+      IF(WORDS(1).EQ.'VISCO') THEN
+       IF(WORDS(2).EQ.'NUMBE') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NCHAI=INT(PARAM(1))
+        IF(NCHAI.GT.MCHAI)
+     .   CALL RUNEND('ERROR: INCREASE MCHAI IN auxl_om.f')
+        WRITE(LURES,819) NCHAI
+        KPLA10=1
+C
+        DO IN=1,NCHAI
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         IF(WORDS(1).EQ.'CHAIN') THEN
+          ICHAI=INT(PARAM(1))
+          IF(ICHAI.NE.IN)
+     .     CALL RUNEND('ERROR: WRONG CHAIN NUMBER')
+          WRITE(LURES,820) ICHAI
+C
+          CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+          IF(WORDS(1).EQ.'TAU_P') THEN
+           NPOI1=NPOI2+1
+           NPOI2=NPOI1
+           PROPS(NPOI1)=PARAM(1)
+           NLINE=INT(PARAM(1))
+           IF(NLINE.GT.20)
+     .      CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN TAU_P FUNC.')
+           IF(IN.EQ.1) NTAUX=NLINE
+           IF(NLINE.NE.NTAUX)
+     .      CALL RUNEND('ERROR: NUMBER OF TAU PARAM. MUST BE THE SAME')
+           NPRIN=1
+           DO LINEA=1,NLINE
+            CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+            DO I=1,2
+             NPOI2=NPOI2+1
+             PROPS(NPOI2)=PARAM(I)
+            ENDDO
+           ENDDO
+           WRITE(LURES,821)
+           DO IPROP=NPOI1+1,NPOI2,2
+            WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+           ENDDO
+           WRITE(LURES,899)
+          ELSE
+           CALL RUNEND('PROPPOL: TAU_PARAMETER CARD NOT FOUND')
+          ENDIF
+C
+          NPRIN=0
+          CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+          IF(WORDS(1).EQ.'BETA_') THEN
+           NPOI1=NPOI2+1
+           NPOI2=NPOI1
+           PROPS(NPOI1)=PARAM(1)
+           NLINE=INT(PARAM(1))
+           IF(NLINE.GT.20)
+     .      CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN BETA_P FUNC.')
+           IF(IN.EQ.1) NBETX=NLINE
+           IF(NLINE.NE.NBETX)
+     .      CALL RUNEND('ERROR: NUMBER OF BETA PARAM. MUST BE THE SAME')
+           NPRIN=1
+           DO LINEA=1,NLINE
+            CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+            DO I=1,2
+             NPOI2=NPOI2+1
+             PROPS(NPOI2)=PARAM(I)
+            ENDDO
+           ENDDO
+           WRITE(LURES,822)
+           DO IPROP=NPOI1+1,NPOI2,2
+            WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+           ENDDO
+           WRITE(LURES,899)
+          ELSE
+           CALL RUNEND('PROPPOL: BETA_PARAMETER CARD NOT FOUND')
+          ENDIF
+         ELSE
+          CALL RUNEND('PROPPOL: CHAIN NUMBER CARD NOT FOUND')
+         ENDIF
+        ENDDO
+       ELSE
+        CALL RUNEND('PROPPOL: NUMBER OF CHAINS CARD NOT FOUND')
+       ENDIF
+      ELSE
+       NPOI2=NPOI2+1
+       PROPS(NPOI2)=0.0D0
+       NCHAI=0
+       GO TO 1
+      ENDIF
+C
+C**** LOOK FOR 'FIBERS' CARD
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+    1 IF(WORDS(1).EQ.'FIBER') THEN
+       IF(WORDS(2).EQ.'NUMBE') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        NFIBN=INT(PARAM(1))
+        IF(NFIBN.GT.NANIV)
+     .   CALL RUNEND('ERROR: INCREASE NUMBER OF ANISOTROPIC VECTORS')
+        WRITE(LURES,829) NFIBN
+        KPLA11=1                  ! not used in pointe.f; to be removed?
+C
+        IF(NANIS.EQ.0)            ! control
+     .   CALL RUNEND('ERROR: ANISO. CARD MUST BE INPUT IN PROBLEM DATA')
+        IANIS=1
+        PROPS(1)=1.0D0            ! anisotropic model
+C
+        IF(WORDS(3).EQ.'MODEL') THEN
+         NPOI1=NPOI2+1
+         NPOI2=NPOI1
+         PROPS(NPOI1)=PARAM(2)
+         NFIBM=INT(PARAM(2))
+         IF(NFIBM.GT.2)
+     .    CALL RUNEND('ERROR: WRONG FIBER MODEL')
+         WRITE(LURES,830) NFIBM
+C
+         IF(NFIBM.EQ.1.OR.NFIBM.EQ.2) THEN
+C
+C**** LOOK FOR 'CONS1' CARD
+C
+          NPRIN=0
+          CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+          IF(WORDS(1).EQ.'CONS1') THEN
+           NPOI1=NPOI2+1
+           NPOI2=NPOI1
+           PROPS(NPOI1)=PARAM(1)
+           NLINE=INT(PARAM(1))
+           IF(NLINE.GT.20)
+     .      CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS1')
+           NPRIN=1
+           DO LINEA=1,NLINE
+            CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+            DO I=1,2
+             NPOI2=NPOI2+1
+             PROPS(NPOI2)=PARAM(I)
+            ENDDO
+           ENDDO
+           WRITE(LURES,803)
+           DO IPROP=NPOI1+1,NPOI2,2
+            WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+           ENDDO
+           WRITE(LURES,899)
+          ELSE
+           CALL RUNEND('PROPPOL: CONS1 CARD NOT FOUND')
+          ENDIF
+C
+C**** LOOK FOR 'CONS2' CARD
+C
+          NPRIN=0
+          CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+          IF(WORDS(1).EQ.'CONS2') THEN
+           NPOI1=NPOI2+1
+           NPOI2=NPOI1
+           PROPS(NPOI1)=PARAM(1)
+           NLINE=INT(PARAM(1))
+           IF(NLINE.GT.20)
+     .      CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS2')
+           NPRIN=1
+           DO LINEA=1,NLINE
+            CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+            DO I=1,2
+             NPOI2=NPOI2+1
+             PROPS(NPOI2)=PARAM(I)
+            ENDDO
+           ENDDO
+           WRITE(LURES,805)
+           DO IPROP=NPOI1+1,NPOI2,2
+            WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+           ENDDO
+           WRITE(LURES,899)
+          ELSE
+           CALL RUNEND('PROPPOL: CONS2 CARD NOT FOUND')
+          ENDIF
+C
+C**** LOOK FOR 'CONS3' CARD
+C
+          NPRIN=0
+          CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+          IF(WORDS(1).EQ.'CONS3') THEN
+           NPOI1=NPOI2+1
+           NPOI2=NPOI1
+           PROPS(NPOI1)=PARAM(1)
+           NLINE=INT(PARAM(1))
+           IF(NLINE.GT.20)
+     .      CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS3')
+           NPRIN=1
+           DO LINEA=1,NLINE
+            CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+            DO I=1,2
+             NPOI2=NPOI2+1
+             PROPS(NPOI2)=PARAM(I)
+            ENDDO
+           ENDDO
+           WRITE(LURES,806)
+           DO IPROP=NPOI1+1,NPOI2,2
+            WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+           ENDDO
+           WRITE(LURES,899)
+          ELSE
+           CALL RUNEND('PROPPOL: CONS3 CARD NOT FOUND')
+          ENDIF
+C
+C**** LOOK FOR 'CONS4' CARD
+C
+          NPRIN=0
+          CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+          IF(WORDS(1).EQ.'CONS4') THEN
+           NPOI1=NPOI2+1
+           NPOI2=NPOI1
+           PROPS(NPOI1)=PARAM(1)
+           NLINE=INT(PARAM(1))
+           IF(NLINE.GT.20)
+     .      CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS4')
+           NPRIN=1
+           DO LINEA=1,NLINE
+           CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+            DO I=1,2
+             NPOI2=NPOI2+1
+             PROPS(NPOI2)=PARAM(I)
+            ENDDO
+           ENDDO
+           WRITE(LURES,814)
+           DO IPROP=NPOI1+1,NPOI2,2
+            WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+           ENDDO
+           WRITE(LURES,899)
+          ELSE
+           CALL RUNEND('PROPPOL: CONS4 CARD NOT FOUND')
+          ENDIF
+         ENDIF         ! NFIBM=1,2
+C
+         IF(NFIBM.EQ.2) THEN
+C
+C**** LOOK FOR 'CONS5' CARD
+C
+          NPRIN=0
+          CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+          IF(WORDS(1).EQ.'CONS5') THEN
+           NPOI1=NPOI2+1
+           NPOI2=NPOI1
+           PROPS(NPOI1)=PARAM(1)
+           NLINE=INT(PARAM(1))
+           IF(NLINE.GT.20)
+     .      CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN CONS5')
+           NPRIN=1
+           DO LINEA=1,NLINE
+           CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+            DO I=1,2
+             NPOI2=NPOI2+1
+             PROPS(NPOI2)=PARAM(I)
+            ENDDO
+           ENDDO
+           WRITE(LURES,815)
+           DO IPROP=NPOI1+1,NPOI2,2
+            WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+           ENDDO
+           WRITE(LURES,899)
+          ELSE
+           CALL RUNEND('PROPPOL: CONS5 CARD NOT FOUND')
+          ENDIF
+         ENDIF         ! NFIBM=2
+C
+         IF(NFIBM.EQ.3) THEN
+
+         ENDIF         ! NFIBM=3
+C
+        ELSE
+         CALL RUNEND('PROPPOL: MODEL CARD NOT FOUND')
+        ENDIF
+       ELSE
+        CALL RUNEND('PROPPOL: NUMBER OF FIBER ANGLES CARD NOT FOUND')
+       ENDIF
+      ELSE
+       NPOI2=NPOI2+1
+       PROPS(NPOI2)=0.0D0
+       NFIBN=0
+       GO TO 2
+      ENDIF
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+    2 IF(WORDS(1).EQ.'ISOTR') THEN
+
+      ELSE
+       NPOI2=NPOI2+1
+       PROPS(NPOI2)=0.0D0                      ! no isotropic hardening
+       GO TO 3
+      ENDIF
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+    3 IF(WORDS(1).EQ.'KINEM') THEN
+
+      ELSE
+       NPOI2=NPOI2+1
+       PROPS(NPOI2)=0.0D0                      ! no kinematic hardening
+       GO TO 4
+      ENDIF
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+    4 IF(WORDS(1).EQ.'YIELD') THEN
+
+      ELSE
+       PROPS(36)=32.0D0                        ! yield function not used
+       PROPS(35)=0.0D0                         ! version not used
+       GO TO 5
+      ENDIF
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+    5 IF(WORDS(1).EQ.'FLOW_') THEN
+
+      ELSE
+       PROPS(52)=32.0D0                        ! flow potential not used
+       PROPS(51)=0.0D0                         ! version not used
+       GO TO 6
+      ENDIF
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+    6 IF(WORDS(1).EQ.'PHASE') THEN
+
+      ELSE
+       NPOI2=NPOI2+1
+       PROPS(NPOI2)=0.0D0                      ! no phase-change
+       GO TO 7
+      ENDIF
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+    7 IF(WORDS(1).EQ.'SHRIN') THEN
+
+      ELSE
+       NPOI2=NPOI2+1
+       PROPS(NPOI2)=0.0D0                      ! no shrinkage
+       GO TO 8
+      ENDIF
+C
+C**** LOOK FOR 'DAMAGE' CARD
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+    8 IF(WORDS(1).EQ.'DAMAG') THEN
+       IF(WORDS(2).EQ.'MODEL') THEN
+        NPOI1=NPOI2+1
+        NPOI2=NPOI1
+        PROPS(NPOI1)=PARAM(1)
+        IDAMG=INT(PARAM(1))
+        IF(IDAMG.LE.0.OR.IDAMG.GT.1)
+     .   CALL RUNEND('ERROR: WRONG NUMBER OF DAMAGE MODEL')
+        WRITE(LURES,840) IDAMG
+        KPLA3=1
+C
+        IF(IDAMG.EQ.1) THEN
+C
+C**** LOOK FOR 'E_MIN' CARD
+C
+         NPRIN=0
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         IF(WORDS(1).EQ.'E_MIN') THEN
+          NPOI1=NPOI2+1
+          NPOI2=NPOI1
+          PROPS(NPOI1)=PARAM(1)
+          NLINE=INT(PARAM(1))
+          IF(NLINE.GT.20)
+     .     CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN E_MIN')
+          NPRIN=1
+          DO LINEA=1,NLINE
+           CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+           DO I=1,2
+            NPOI2=NPOI2+1
+            PROPS(NPOI2)=PARAM(I)
+           ENDDO
+          ENDDO
+          WRITE(LURES,841)
+          DO IPROP=NPOI1+1,NPOI2,2
+           WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+          ENDDO
+          WRITE(LURES,899)
+         ELSE
+          CALL RUNEND('PROPPOL: E_MIN CARD NOT FOUND')
+         ENDIF
+C
+C**** LOOK FOR 'E_MAX' CARD
+C
+         NPRIN=0
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         IF(WORDS(1).EQ.'E_MAX') THEN
+          NPOI1=NPOI2+1
+          NPOI2=NPOI1
+          PROPS(NPOI1)=PARAM(1)
+          NLINE=INT(PARAM(1))
+          IF(NLINE.GT.20)
+     .     CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN E_MAX')
+          NPRIN=1
+          DO LINEA=1,NLINE
+           CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+           DO I=1,2
+            NPOI2=NPOI2+1
+            PROPS(NPOI2)=PARAM(I)
+           ENDDO
+          ENDDO
+          WRITE(LURES,842)
+          DO IPROP=NPOI1+1,NPOI2,2
+           WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+          ENDDO
+          WRITE(LURES,899)
+         ELSE
+          CALL RUNEND('PROPPOL: E_MAX CARD NOT FOUND')
+         ENDIF
+C
+C**** LOOK FOR 'E_MIN' CARD
+C
+         NPRIN=0
+         CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+         IF(WORDS(1).EQ.'ETA_P') THEN
+          NPOI1=NPOI2+1
+          NPOI2=NPOI1
+          PROPS(NPOI1)=PARAM(1)
+          NLINE=INT(PARAM(1))
+          IF(NLINE.GT.20)
+     .     CALL RUNEND('ERROR: WRONG NUMBER OF POINTS IN ETA_PARAMETER')
+          NPRIN=1
+          DO LINEA=1,NLINE
+           CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+           DO I=1,2
+            NPOI2=NPOI2+1
+            PROPS(NPOI2)=PARAM(I)
+           ENDDO
+          ENDDO
+          WRITE(LURES,843)
+          DO IPROP=NPOI1+1,NPOI2,2
+           WRITE(LURES,804) PROPS(IPROP),PROPS(IPROP+1)
+          ENDDO
+          WRITE(LURES,899)
+         ELSE
+          CALL RUNEND('PROPPOL: ETA_PARAMETER CARD NOT FOUND')
+         ENDIF
+        ENDIF          ! IDAMG=1
+C
+        IF(IDAMG.EQ.2) THEN
+
+        ENDIF          ! IDAMG=2
+C
+       ELSE
+        CALL RUNEND('PROPPOL: DAMAGE MODEL CARD NOT FOUND')
+       ENDIF
+      ELSE
+       NPOI2=NPOI2+1
+       PROPS(NPOI2)=0.0D0
+       IDAMG=0
+       GO TO 9
+      ENDIF
+C
+C**** LOOK FOR 'END_MATERIAL' CARD
+C
+      NPRIN=0
+      CALL LISTEN('PROPPOL',NPRIN,ITAPE)
+    9 IF(WORDS(1).NE.'END_M')
+     . CALL RUNEND('PROPPOL: END_MATERIAL CARD NOT FOUND   ')
+      WRITE(LURES,899)
+C
+C**** CONTROLS DIMENSION OF PROPS
+C
+      IF(NPOI2.GT.NPROP) THEN
+       WRITE(LURES,900) NPROP,NPOI2
+       CALL RUNEND('PROPPOL: TOO MANY PROPERTIES TO READ')
+      ENDIF
+C
+      RETURN
+  801 FORMAT(/,'  CONSTANT DENSITY VALUE=',E15.6,/)
+  803 FORMAT(/,'  CONSTANT 1        Vs.     TEMPERATURE',/)
+  804 FORMAT(E15.6,10X,E15.6)
+  805 FORMAT(/,'  CONSTANT 2        Vs.     TEMPERATURE',/)
+  806 FORMAT(/,'  CONSTANT 3        Vs.     TEMPERATURE',/)
+  807 FORMAT(/,'  PENALTY FOR INC.  Vs.     TEMPERATURE',/)
+  808 FORMAT(/,'  THERMAL DILAT.    Vs.     TEMPERATURE',/)
+  809 FORMAT(/,'  THERMAL HARDENING Vs.     TEMPERATURE',/)
+  810 FORMAT(/,'  EXPONENT 1        Vs.     TEMPERATURE',/)
+  811 FORMAT(/,'  EXPONENT 2        Vs.     TEMPERATURE',/)
+  812 FORMAT(/,'  EXPONENT 3        Vs.     TEMPERATURE',/)
+  813 FORMAT(/,'  VOLUMETRIC TERM MODEL=',I3,/)
+  814 FORMAT(/,'  CONSTANT 4        Vs.     TEMPERATURE',/)
+  815 FORMAT(/,'  CONSTANT 5        Vs.     TEMPERATURE',/)
+  816 FORMAT(/,'  CONSTANT 6        Vs.     TEMPERATURE',/)
+  817 FORMAT(/,'  CONSTANT 7        Vs.     TEMPERATURE',/)
+  818 FORMAT(/,'  CONSTANT 8        Vs.     TEMPERATURE',/)
+  819 FORMAT(/,'  VISCOELASTIC RESPONSE - NUMBER OF CHAINS=',I3,/)
+  820 FORMAT(/,'  CHAIN NUMBER=',I3,/)
+  821 FORMAT(/,'  TAU PARAMETER     Vs.     TEMPERATURE',/)
+  822 FORMAT(/,'  BETA PARAMETER    Vs.     TEMPERATURE',/)
+  829 FORMAT(/,'  FIBER-REINF. RESPONSE - NUMBER OF FIBER ANGLES=',I3,/)
+  830 FORMAT(/,'  NUMBER OF FIBER MODEL=',I3,/)
+  831 FORMAT(/,'  FIBER ANGLE - VOLUMETRIC FRACTION'/)
+  832 FORMAT(I3,10X,E15.6)
+  840 FORMAT(/,'  DAMAGE RESPONSE - MODEL=',I3,/)
+  841 FORMAT(/,'  STRAIN ENERGY AT INITIAL DAMAGE  Vs.  TEMPERATURE',/)
+  842 FORMAT(/,'  STRAIN ENERGY AT TOTAL DAMAGE    Vs.  TEMPERATURE',/)
+  843 FORMAT(/,'  ETA PARAMETER                    Vs.  TEMPERATURE',/)
+  899 FORMAT(/)
+  900 FORMAT(//,'TOO MANY MATERIAL PROPERTIES TO READ:',/,
+     .      20X,'NPROP =',I5,5X,'NUMBE =',I5,/)
+      END

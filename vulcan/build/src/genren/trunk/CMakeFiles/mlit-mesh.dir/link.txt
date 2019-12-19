@@ -1,0 +1,1 @@
+/usr/bin/gfortran    -O2 -fopenmp -cpp CMakeFiles/mlit-mesh.dir/mlit-mesh.f.o  -o mlit-mesh  

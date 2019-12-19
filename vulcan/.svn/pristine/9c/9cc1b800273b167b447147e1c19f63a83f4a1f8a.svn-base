@@ -1,0 +1,120 @@
+      SUBROUTINE WBOUNC(DVOLU,NDIME,NDOFN,NEVOB,NNODE,PROPS,
+     .                  SHAPE,WSTIF,DMATX,BMATX,ELDIS,NDOFC,KSYMM,
+     .                  EMATX,NEVAB,FMATX,IAUXY,LNODS)
+C***********************************************************************
+C
+C**** THIS ROUTINE EVALUATES THE CONSISTENT BOUNDARY ELEMENT MATRIX
+C     (FOR CONTACT ELEMENTS FOR NON-COINCIDENT MESHES)
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      DIMENSION PROPS(*),       SHAPE(*),       WSTIF(*),
+     .          ELDIS(NDOFC,*)
+      DIMENSION EMATX(NEVOB,*), FMATX(NEVAB,*), DMATX(NDIME,*),
+     .          BMATX(NDIME,*)
+      DIMENSION LNODS(*)
+C
+C**** INITIALISES F
+C
+C     Note: this operation is necessary because the non-zero components
+C           of the stiffness matrix are different, in general, for each
+C           integration point
+C
+      DO IEVAB=1,NEVAB
+       DO JEVAB=1,NEVAB
+        FMATX(IEVAB,JEVAB)=0.0D0
+       ENDDO
+      ENDDO
+C
+C**** INITIALISES BMATX
+C
+      DO IDIME=1,NDIME
+       DO IEVAB=1,NEVAB
+        BMATX(IDIME,IEVAB)=0.0D0
+       ENDDO
+      ENDDO
+C
+C**** COMPUTES "B" CONTACT MATRIX
+C
+      NGASH=0
+C
+      DO INODE=1,NNODE
+       LGASH=NGASH+1
+       NGASH=LGASH
+       BMATX(1,LGASH)=SHAPE(INODE)
+       BMATX(1,LGASH+NEVOB)=SHAPE(INODE+NNODE)
+C
+       IF(NDIME.GE.2)THEN
+        MGASH=LGASH+1
+        NGASH=MGASH
+        BMATX(2,MGASH)=SHAPE(INODE)
+        BMATX(2,MGASH+NEVOB)=SHAPE(INODE+NNODE)
+       ENDIF
+C
+       IF(NDIME.EQ.3)THEN
+        NGASH=MGASH+1
+        BMATX(3,NGASH)=SHAPE(INODE)
+        BMATX(3,NGASH+NEVOB)=SHAPE(INODE+NNODE)
+       ENDIF
+      ENDDO
+C
+C**** COMPUTES Nmaster^T C Nmaster
+C
+      DO IEVAB=1,NEVOB
+       INDEX=IEVAB                ! SYMMETRIC CASE
+       IF(KSYMM.EQ.0) INDEX=1     ! UNSYMMETRIC CASE
+       DO JEVAB=INDEX,NEVOB
+        EMATX(IEVAB,JEVAB)=0.0D0
+        DO IDIME=1,NDIME
+         DO JDIME=1,NDIME
+          EMATX(IEVAB,JEVAB)=EMATX(IEVAB,JEVAB)+BMATX(IDIME,IEVAB)*
+     .                       DMATX(IDIME,JDIME)*BMATX(JDIME,JEVAB)
+         ENDDO
+        ENDDO
+       ENDDO
+      ENDDO
+C
+C**** ADDS TO FMATX
+C
+      DO IEVAB=1,NEVOB
+       INDEX=IEVAB               ! SYMMETRIC CASE
+       IF(KSYMM.EQ.0) INDEX=1    ! UNSYMMETRIC CASE
+       DO JEVAB=INDEX,NEVOB
+        FMATX(IEVAB,JEVAB)=EMATX(IEVAB,JEVAB)
+       ENDDO
+      ENDDO
+C
+C**** COMPUTES Nmaster^T C Nslave
+C
+      DO IEVAB=1,NEVOB
+       INDEX=IEVAB                ! SYMMETRIC CASE
+       IF(KSYMM.EQ.0) INDEX=1     ! UNSYMMETRIC CASE
+       DO JEVAB=INDEX,NEVOB
+        EMATX(IEVAB,JEVAB)=0.0D0
+        DO IDIME=1,NDIME
+         DO JDIME=1,NDIME
+          EMATX(IEVAB,JEVAB)=EMATX(IEVAB,JEVAB)+BMATX(IDIME,IEVAB)*
+     .                       DMATX(IDIME,JDIME)*BMATX(JDIME,JEVAB+NEVOB)
+         ENDDO
+        ENDDO
+       ENDDO
+      ENDDO
+C
+C**** ADDS TO FMATX
+C
+      DO IEVAB=1,NEVOB
+       INDEX=IEVAB               ! SYMMETRIC CASE
+       IF(KSYMM.EQ.0) INDEX=1    ! UNSYMMETRIC CASE
+       DO JEVAB=INDEX,NEVOB
+        JEVAX=JEVAB+NEVOB+IAUXY*NDOFN
+        FMATX(IEVAB,JEVAX)=-EMATX(IEVAB,JEVAB)
+       ENDDO
+      ENDDO
+C
+C**** ADD THE CONTRIBUTION TO THE INTERFACE MATRIX
+C
+      CALL SQTOTA(WSTIF,FMATX,DVOLU,NEVAB,KSYMM)
+C
+      RETURN
+      END

@@ -1,0 +1,56 @@
+      SUBROUTINE PLEQUI(PREYS,DCAPA,CAPAP,HPREY,PROPS,GE,ERE0,
+     .                  ERE1,SIKMA,IND2,IND1)
+C*****************************************************************
+C
+C***  ESTA RUTINA CALCULA LA VARIABLE INTERNA:
+C               PREYS
+C
+C*****************************************************************
+      IMPLICIT REAL*8 (A-H,O-Z)
+
+      DIMENSION PROPS(*),GE(2),PREY(2),PEND(2)
+
+C***  OBTENCION DE LA TENSION EFECTIVA UNIAXIAL Y LA
+C***  PENDIENTE CONTRAPESADA
+C
+
+      DO 20 I=1,2
+      III59=INT(PROPS(59))
+      IF(III59.NE.4)THEN
+       NENDO=IND1+I
+       IND2 =IND2+5
+       NINDI=INT(PROPS(NENDO))
+       SIKPI=PROPS(IND2)
+       CAPPI=PROPS(IND2+1)
+       HARD0=PROPS(IND2+2)
+       NICUR=INT(PROPS(IND2+3))
+       TENOR=SIKMA
+      ELSE
+       IF(I.EQ.1)THEN
+        NINDI=4
+        SIKPI=1.0E-09
+        TENOR=1.0E-09
+        HARD0=0.0
+       ELSE
+        NINDI=6
+        SIKPI=SIKMA
+        TENOR=SIKMA
+        HARD0=0.0
+       ENDIF
+      ENDIF
+   20 CALL PLCURV(NINDI,PREY(I),PEND(I),CAPAP,GE(I),TENOR,
+     .            SIKPI,CAPPI,HARD0,NICUR)
+C
+C***  CALCULO DE LA TENSION EQUIVALENTE Y DE LA PENDIENTE
+C
+c      PREYS=PREYS+HPREY*DCAPA
+      PREYS=(ERE0*PREY(1))+(ERE1*PREY(2))
+C
+C***  CALCULO DE LA CORRESPONDIENTE FUNCION DE ESTADO
+C
+      HPREY=0.0
+      IF(PREY(1).NE.0.0.AND.PREY(2).NE.0.0) 
+     . HPREY=PREYS*((ERE0*PEND(1)/PREY(1))+(ERE1*PEND(2)/PREY(2)))
+C
+      RETURN
+      END

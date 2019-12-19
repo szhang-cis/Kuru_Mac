@@ -89,20 +89,31 @@ NeumannBoundary['InnerFaces'] = InnerFaces
 # fibre directions [thick,sms,co1,co2,co3,co4]
 fibre_direction = Directions(mesh)
 
-# Define hyperelastic material for mesh
-#material = ArterialWallMixture(ndim,
-#            mu3D=72.0,
-#            c1m=15.2,
-#            c2m=11.4,
-#            c1c=1136.0,
-#            c2c=11.2,
-#            kappa=72.0e3,
-#            anisotropic_orientations=fibre_direction)
+# Deposition Stretch
+Deposition = {}
+Deposition['Matrix'] = np.zeros((3,3),dtype=np.float64)
+Deposition['Fibre'] = np.ones((5),dtype=np.float64)
+Deposition['Matrix'][2,2] = 1.25
+Deposition['Matrix'][1,1] = 1.34
+Deposition['Matrix'][0,0] = 1.0/(1.25*1.34)
+Deposition['Fibre'][0] = 1.1
+Deposition['Fibre'][1:5] = 1.062
 
 # Define hyperelastic material for mesh
-material = NearlyIncompressibleNeoHookean(ndim,
-            mu=72.0*1.e9,
-            kappa=72.0e4*1.e9)
+material = ArterialWallMixture(ndim,
+            mu3D=72.0,
+            c1m=15.2,
+            c2m=11.4,
+            c1c=1136.0,
+            c2c=11.2,
+            kappa=72.0e3,
+            Deposition=Deposition,
+            anisotropic_orientations=fibre_direction)
+
+# Define hyperelastic material for mesh
+#material = NearlyIncompressibleNeoHookean(ndim,
+#            mu=72.0*1.e3,
+#            kappa=72.0e5*1.e3)
 
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
@@ -122,31 +133,13 @@ def Dirichlet_Function(mesh, DirichletBoundary):
 # Neumann Boundary Conditions
 def Neumann_Function(mesh, NeumannBoundary):
     boundary_flags = np.zeros(mesh.faces.shape[0],dtype=np.uint8)
-    boundary_data = np.zeros((mesh.faces.shape[0], 3))
+    boundary_data = np.zeros((mesh.faces.shape[0]))
     # Force magnitud
     mag = 13.3322e3
 
-    face = 0
     for idf in range(mesh.faces.shape[0]):
         if NeumannBoundary['InnerLogic'][idf]:
-            vertex = np.zeros(3)
-            distances = np.zeros(mesh.faces.shape[1])
-            coord = mesh.points[NeumannBoundary['InnerFaces'][face,:],:]
-            # center point in the surface
-            midpoint = np.sum(coord,axis=0)/mesh.faces.shape[1]
-            midpoint_mag = np.sqrt(np.square(midpoint[0]) + np.square(midpoint[2]))
-            # normal to surface
-            normal = midpoint/midpoint_mag
-            # area of the face
-            for i in range(NeumannBoundary['InnerFaces'].shape[1]):
-                vertex = coord[i,:] - midpoint
-                distances[i] = np.linalg.norm(vertex)
-            
-            semi_diagonal = max(distances)
-            area = 2.*semi_diagonal**2
-            boundary_data[idf,0] = normal[0]*mag
-            boundary_data[idf,2] = normal[2]*mag
-            face += 1
+            boundary_data[idf] = mag
 
     boundary_flags[NeumannBoundary['InnerLogic']] = True
 
@@ -163,7 +156,7 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        maximum_iteration_for_newton_raphson=50,
                        optimise=False,
                        print_incremental_log=True,
-                       number_of_load_increments=2)
+                       number_of_load_increments=5)
 
 #===============  COMPUTE SOLUTION  ======================
 # Call FEM solver for the current state

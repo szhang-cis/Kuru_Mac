@@ -1,0 +1,91 @@
+      SUBROUTINE SKYPROT(CSTIF,DISIT,LNODS,LNUEQ,NDOFN,NELEM,NEQNS,
+     .                   NEVAB,NNODE,NPOIN,REFOR,DISIM,FOREL,LOCAL,
+     .                   NPREL,NGRUP,NPROP,NMATS,
+     .                 NDATA,NPREV,NSTAT,NMATX,NDIME,NTOTV,NTOTVM,NFPCH,
+     .                   MATNO,PROEL,PROPS,ELDAT,ELPRE,
+     .                   ELVAR,ELMAT,WORK1,DISTO,COORD,
+     .                   ADVEL,TEMPI,PREAS,TGAPS,DISPL,FPCHA,LACTI)
+C***********************************************************************
+C
+C**** THIS ROUTINE PERFORMS THE MULTIPLICATION   K*d  TO COMPUTE THE RHS
+C                     ( IN COMPRESSED FORM )
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_omt.f'
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'auxl_omt.f'
+C
+      DIMENSION CSTIF(NEVAB,NEVAB), DISIM(*),   DISIT(*),   FOREL(*),
+     .          LNODS(NNODE,*),     LNUEQ(*),   REFOR(*),   LOCAL(*)
+C
+      DIMENSION MATNO(NELEM),
+     .          PROEL(NPREL,NGRUP), PROPS(NPROP,NMATS),
+     .          ELDAT(NDATA),       ELPRE(NPREV),
+     .          ELVAR(NSTAT),       ELMAT(NMATX)
+      DIMENSION DISTO(NTOTV,3),     COORD(NDIME,NPOIN)
+      DIMENSION ADVEL(NTOTV*NDIME), TEMPI(NPOIN,2)
+      DIMENSION PREAS(NPOIN),       TGAPS(NPOIN)
+      DIMENSION DISPL(NTOTVM),      FPCHA(NFPCH,NPOIN),
+     .          LACTI(NELEM)
+C
+      DO IEQNS=1,NEQNS
+       REFOR(IEQNS)=0.0
+      ENDDO
+C
+      DO 10 IELEMT=1,NELEM
+C
+C**** READ CSTIF FROM DATA BASE
+C 
+      IF(NMEMO7.EQ.0) THEN
+       CALL DATBAST(CSTIF,    6,    2)
+      ELSE
+       CALL STIFMST(ELDAT,ELPRE,ELVAR,ELMAT,LNODS,MATNO,PROEL,
+     .              PROPS,WORK1,DISTO(1,2),DISIT,COORD,
+     .              ADVEL,TEMPI(1,1),PREAS,TGAPS,DISTO(1,1),
+     .              TEMPI(1,2),DISPL,FPCHA,LACTI,CSTIF)
+      ENDIF
+C
+C**** GATHER DISIM < DISIT (compressed)
+C
+      DO IEVAB=1,NEVAB
+       INODE=(IEVAB-1)/NDOFN+1
+       IDOFN=IEVAB-(INODE-1)*NDOFN
+       IPOIN=LNODS(INODE,IELEMT)
+       ITOTV=(IPOIN-1)*NDOFN+IDOFN
+       IEQNS=LNUEQ(ITOTV)
+       IF(IEQNS.GT.0) THEN
+        DISIM(IEVAB)=DISIT(IEQNS)
+        LOCAL(IEVAB)=IEQNS
+       ELSE
+        DISIM(IEVAB)=0.0
+        LOCAL(IEVAB)=0
+       ENDIF
+       FOREL(IEVAB)=0.0
+      ENDDO
+C
+C**** PERFORM THE MULTIPLICATION K*d
+C
+      DO IEVAB=1,NEVAB
+       DO JEVAB=1,NEVAB
+        FOREL(IEVAB)=FOREL(IEVAB)+CSTIF(IEVAB,JEVAB)*DISIM(JEVAB)
+       ENDDO
+      ENDDO
+C
+C**** SCATTER FOREL > REFOR (compressed)
+C
+C$DIR NO_RECURRENCE
+      DO IEVAB=1,NEVAB
+       IEQNS=LOCAL(IEVAB)
+       IF(IEQNS.GT.0) REFOR(IEQNS)=REFOR(IEQNS)+FOREL(IEVAB)
+      ENDDO
+C
+   10 CONTINUE
+C
+      RETURN
+      END

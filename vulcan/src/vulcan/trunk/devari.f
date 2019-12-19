@@ -1,0 +1,66 @@
+      SUBROUTINE DEVARI(PROPS,ALENG,SIGMA,DELMU,CAPAD,
+     .                  PREYD,NSTRS,ANGFI,ANGSI,YIELD,
+     .                  ENELI,CAPAP,NSTR1,RETEN,RODEN,
+     .                  CCERO)
+C*****************************************************************
+C
+C***  ESTA RUTINA CALCULA LAS VARIABLES INTERNAS:
+C               CAPAD
+C               PREYD
+C               ANGFI
+C               ANGSI
+C
+C*****************************************************************
+      IMPLICIT REAL*8 (A-H,O-Z)
+
+      DIMENSION PROPS(*),SIGMA(*),
+     .          GE(2),PRSIG(3),SA(3),SB(3),SC(3)
+ 
+C***  CALCULO DE LAS TENSIONES PRINCIPALES Y LA FUNCION DE PESO
+
+      CALL PRINSI(SIGMA,PRSIG)
+
+      SUMA=0.0D00
+      SUMB=0.0D00
+      SUMC=0.0D00
+      DO 10 I=1,3
+      SA(I)=DABS(PRSIG(I))
+      SB(I)=0.5D00*(PRSIG(I)+SA(I))
+      SC(I)=0.5D00*(-PRSIG(I)+SA(I))
+      SUMA=SUMA+SA(I)
+      SUMB=SUMB+SB(I)
+   10 SUMC=SUMC+SC(I)
+      ERE0=SUMB/SUMA
+      ERE1=SUMC/SUMA
+C
+C***  CALCULO DE LA VARIABLE INTERNA DE ENDURECIMIENTO
+C 
+      SIKMA=PROPS(57)
+      III59=INT(PROPS(59))
+      IF(III59.EQ.2.OR.III59.EQ.3)SIKMA=CCERO
+      CALL DECAPA(ERE0,ERE1,SUMA,SUMB,SUMC,ALENG,HCAPA,CAPAD,DECAP,
+     .            PROPS,GE(1),GE(2),YIELD,ENELI,DELMU,RETEN,
+     .            SIKMA)
+C
+C***  CALCULO DE LA EVOLUCION DE LA TENSION EFECTIVA UNIAXIAL
+C
+      IND1=59    
+      IND2=58    
+      CALL PLEQUI(PREYD,DECAP,CAPAD,HPREY,PROPS,GE,ERE0,ERE1,
+     .            SIKMA,IND2,IND1)
+C
+C***  CALCULO DE LA EVOLUCION DE LA FRICCION INTERNA 
+C
+      HANGF=0.0D0
+c      IF(PROPS(44).EQ.1.0D0)
+c     .CALL PLANFI(ANGFI,DECAP,(CAPAD+CAPAP),HANGF,PROPS) ! revisar
+C
+C***  CALCULO DE LA EVOLUCION DE LA DILATANCIA INTERNA 
+C
+      HANGS=0.0D0
+c      IF(PROPS(44).EQ.1.0D0)
+c     .CALL PLANSI(ANGSI,DECAP,(CAPAD+CAPAP),HANGS,PROPS,ANGFI,HANGF)
+C    ! revisar
+C
+      RETURN
+      END

@@ -1,0 +1,101 @@
+      SUBROUTINE GMRESAT(CSTIF,XGMRE,GSTDI,YGMRE,BGMRE,NPOIN,
+     .                     JOB,LNUEQ,LNODS,UNKNW,RHSID,NDOFN,
+     .                   NELEM,NEVAB,NNODE,IPASS,NTOTV,KPRIM,
+     .                   NEQNS)
+C***********************************************************************
+C
+C**** THIS ROUTINE ASSEMBLES PERFORMS A*X FOR GMRES
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      INCLUDE 'auxl_omt.f'
+C
+      DIMENSION CSTIF(NEVAB,NEVAB), XGMRE(NEQNS), GSTDI(NEQNS),
+     .          YGMRE(NEQNS),       BGMRE(NEQNS), LNUEQ(*),
+     .          LNODS(NNODE,*),     UNKNW(NTOTV), RHSID(NTOTV)
+C
+C**** INITIALISE GLOBAL MATRIX  
+C
+      DO IEQNS=1,NEQNS
+       YGMRE(IEQNS)=0.0D0
+       IF(KPRIM.EQ.1) GSTDI(IEQNS)=0.0D0
+      END DO
+C
+C**** INITIALISE BGMRE 
+C
+      IF(KPRIM.EQ.1) THEN
+       DO IPOIN=1,NPOIN
+        IF(IPOIN.EQ.0) GO TO 2000
+        ITOTV=(IPOIN-1)*NDOFN
+        DO IDOFN=1,NDOFN
+         ITOTV=ITOTV+1
+         IDEST=LNUEQ(ITOTV)
+         IF(IDEST.GT.0) BGMRE(IDEST)=RHSID(ITOTV)
+        END DO
+ 2000   CONTINUE
+       END DO
+      END IF
+C
+C**** ASSEMBLE DIAGONAL GLOBAL MATRIX 
+C
+      DO 1000 IELEMT=1,NELEM
+C
+C**** READ CSTIF FROM DATA BASE
+C
+      IF(IPASS.EQ.1) THEN
+       CALL DATBAST(CSTIF,    6,    2)
+      ELSE                                            ! to be checked !!
+       call runendt('error in gmresat: ipass=2')
+       CALL DATBAST(CSTIF,    3,    2)
+      END IF
+C
+      DO 100 INODE=1,NNODE
+      IPOIN=LNODS(INODE,IELEMT)
+      IF(IPOIN.EQ.0) GO TO 1000
+      IEVAB=(INODE-1)*NDOFN
+      ITOTV=(IPOIN-1)*NDOFN
+C
+      DO 100 IDOFN=1,NDOFN
+      IEVAB=IEVAB+1
+      ITOTV=ITOTV+1
+      IDEST=LNUEQ(ITOTV)
+      IF(IDEST.GT.0) THEN
+C     IF(KPRIM.EQ.1) BGMRE(IDEST)=RHSID(ITOTV)
+C
+C**** LOOP THROUGH THE COLUMNS TO PERFORM THE ASSEMBLY
+C
+       DO 40 JNODE=1,NNODE
+       JPOIN=LNODS(JNODE,IELEMT)
+       IF(JPOIN.EQ.0) GO TO 200
+       JEVAB=(JNODE-1)*NDOFN
+       JTOTV=(JPOIN-1)*NDOFN
+       DO 40 JDOFN=1,NDOFN
+       JEVAB=JEVAB+1
+       JTOTV=JTOTV+1
+       JDEST=LNUEQ(JTOTV)
+       IF(JDEST.GT.0)
+     .  YGMRE(IDEST)=YGMRE(IDEST)+CSTIF(IEVAB,JEVAB)*XGMRE(JDEST)
+       IF(KPRIM.EQ.1.AND.JDEST.LT.0)       
+     .  BGMRE(IDEST)=BGMRE(IDEST)-CSTIF(IEVAB,JEVAB)*UNKNW(JTOTV)
+       IF(KPRIM.EQ.1.AND.JDEST.EQ.IDEST)
+     .  GSTDI(IDEST)=GSTDI(IDEST)+CSTIF(IEVAB,JEVAB)
+   40  CONTINUE
+  200  CONTINUE
+      ENDIF
+C
+  100 CONTINUE
+C
+ 1000 CONTINUE
+C
+      DO IDEST=1,NEQNS
+       IF(KPRIM.EQ.1)
+     .  BGMRE(IDEST)=BGMRE(IDEST)/GSTDI(IDEST)
+       YGMRE(IDEST)=YGMRE(IDEST)/GSTDI(IDEST)
+       IF(JOB.EQ.1) YGMRE(IDEST)=BGMRE(IDEST)-YGMRE(IDEST)
+      END DO
+C
+      IF(KPRIM.EQ.1) KPRIM=0
+C
+      RETURN
+      END

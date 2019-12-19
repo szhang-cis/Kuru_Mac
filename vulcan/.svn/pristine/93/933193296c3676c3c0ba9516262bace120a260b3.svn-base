@@ -1,0 +1,151 @@
+      SUBROUTINE ASELM2(MATNO,PROEL,PROPS,
+     .                  CSTIF,ESTIF,WSTIF,PSTIF,QSTIF,HSTIF)
+C***********************************************************************
+C
+C                                                                E E C
+C****THIS ROUTINE ASSEMBLES ELEMENTAL "EFFECTIVE" MATRIX   AS    E E C
+C    FOR COUPLED PROBLEMS                                        C C P
+C
+C***********************************************************************
+      IMPLICIT REAL*8 (A-H,O-Z)
+C
+      INCLUDE 'prob_om.f'
+      INCLUDE 'inte_om.f'
+      INCLUDE 'auxl_om.f'
+C
+      DIMENSION MATNO(*),           PROEL(NPREL,*),
+     .          PROPS(NPROP,*)
+      DIMENSION CSTIF(NEVAC,NEVAC), ESTIF(NKOVA),
+     .          WSTIF(NKOVA),       PSTIF(NKOND),
+     .          QSTIF(NKOND),       HSTIF(NEVAB,NNODE) 
+C
+C**** ASSEMBLE ELEMENTAL MATRIX
+C
+      IF(KDYNA.EQ.1) THEN
+        CTIM1= TALFA/(DTIME**2)
+        CTIM2= TBETA/ DTIME
+        CTIM3= 1.0
+      ENDIF
+      IF(KPORE.EQ.2) THEN
+        CTIM4=-WLUMP
+        CTIM5=-WLUMP*WLUMP
+        CTIM6= CTIM5*DTIME/TBETA
+      ENDIF
+C
+C**** LOOP OVER ELEMENTS
+C
+      DO 1000 IELEM=1,NELEM
+      LGRUP=MATNO(IELEM)
+      LMATS=INT(PROEL(1,LGRUP))
+C
+C**** READ MATRICES FROM DATA BASE
+C 
+                     CALL DATBAS(ESTIF,    7,    2)
+      IF(KDYNA.EQ.1) CALL DATBAS(WSTIF,    8,    2)
+      IF(KPORE.EQ.2) THEN
+                     CALL DATBAS(PSTIF,    9,    2)
+                     CALL DATBAS(QSTIF,   10,    2)
+                     CALL DATBAS(HSTIF,   11,    2)
+      ENDIF
+C
+C**** CHECK THE CORRECTNESS OF THE CONSTITUENT ELEMENTAL MATRICES
+C
+      ICHEK=0
+      IF(ICHEK.EQ.1) THEN
+        IF(KPROB.GE.1)
+     .    CALL TESTM1(ESTIF,IELEM,NEVAB)
+        IF(KDYNA.NE.0)
+     .    CALL TESTM1(WSTIF,IELEM,NEVAB)
+        IF(KPORE.EQ.2) THEN
+          CALL TESTM1(PSTIF,IELEM,NNODE)
+          CALL TESTM1(QSTIF,IELEM,NNODE)
+        ENDIF
+      ENDIF
+C
+C**** INITIALISE ASSEMBLED ELEMENTAL MATRIX
+C
+      DO 5 IEVAB=1,NEVAC
+      DO 5 JEVAB=1,NEVAC
+   5  CSTIF(IEVAB,JEVAB)=0.0
+C
+      CODA1=CTIM2*(PROPS(21,LMATS))
+      CODA2=CTIM2*(PROPS(22,LMATS))
+C
+      IKOND=0
+      IKOVA=0
+      DO 10 INODE=1,NNODE
+      IEVAB=(INODE-1)*NDOFN
+      IEVAC=(INODE-1)*NDOFC
+C
+      DO 11 IDOFN=1,NDOFN
+      IEVAB=IEVAB+1
+      IEVAC=IEVAC+1
+      INDEX=IDOFN
+      INDIX=INDEX
+C   
+      DO 20 JNODE=INODE,NNODE
+      JEVAB=(JNODE-1)*NDOFN
+      JEVAC=(JNODE-1)*NDOFC
+C
+      DO 21 JDOFN=INDEX,NDOFN
+      JEVAB=JEVAB+INDIX
+      JEVAC=JEVAC+INDIX
+      IKOVA=IKOVA+1
+      IF(KDYNA.EQ.1) THEN
+        CSTIF(IEVAC,JEVAC)=(CTIM1+CODA1)*WSTIF(IKOVA)+
+     .                     (CTIM3+CODA2)*ESTIF(IKOVA)
+      ELSE
+        CSTIF(IEVAC,JEVAC)=ESTIF(NKOVA)
+      ENDIF
+      CSTIF(JEVAC,IEVAC)=CSTIF(IEVAC,JEVAC)
+      INDIX=1
+   21 CONTINUE
+      INDEX=1
+C
+      IF(KPORE.NE.2)GOTO 20
+C
+      JEVAC=JEVAC+1
+      CSTIF(IEVAC,JEVAC)=CTIM4*HSTIF(IEVAB,JNODE)
+      CSTIF(JEVAC,IEVAC)=CSTIF(IEVAC,JEVAC)
+   20 CONTINUE
+C
+   11 CONTINUE
+C
+      IF(KPORE.NE.2)GOTO 10
+C
+      IEVAC=IEVAC+1
+      IKOND=IKOND+1
+      CSTIF(IEVAC,IEVAC)=CTIM5*QSTIF(IKOND)+
+     .                   CTIM6*PSTIF(IKOND)
+C
+      IF(IEVAC.EQ.NEVAC)GOTO 10
+C
+      INOD1=INODE+1
+      DO 30 JNODE=INOD1,NNODE
+      IEVAB=(JNODE-1)*NDOFN
+      JEVAC=(JNODE-1)*NDOFC
+C
+      DO 31 IDOFN=1,NDOFN      
+      IEVAB=IEVAB+1
+      JEVAC=JEVAC+1
+      CSTIF(IEVAC,JEVAC)=CTIM4*HSTIF(IEVAB,INODE)
+      CSTIF(JEVAC,IEVAC)=CSTIF(IEVAC,JEVAC)
+   31 CONTINUE
+C
+      JEVAC=JEVAC+1
+      IKOND=IKOND+1
+      CSTIF(IEVAC,JEVAC)=CTIM5*QSTIF(IKOND)+
+     .                   CTIM6*PSTIF(IKOND)
+      CSTIF(JEVAC,IEVAC)=CSTIF(IEVAC,JEVAC)
+C
+   30 CONTINUE
+   10 CONTINUE
+C
+C**** WRITE CSTIF TO DATA BASE
+C 
+      CALL DATBAS(CSTIF,    6,    1)
+C
+ 1000 CONTINUE
+C
+      RETURN
+      END

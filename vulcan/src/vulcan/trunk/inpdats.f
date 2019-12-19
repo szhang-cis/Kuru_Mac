@@ -1,0 +1,167 @@
+      SUBROUTINE INPDATS(ELDATS,ELPRES,ELVARS,ELMATS,LNODSS,MATNOS,
+     .                   PROELS,PROPSS,COORDS,WORK1S)
+C***********************************************************************
+C
+C**** THIS ROUTINE ACCEPTS MOST OF MICROSTRUCTURAL INPUT DATA
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_oms.f'
+C
+C**** MICROSTRUCTURAL VARIABLES
+C
+      INCLUDE 'prob_oms.f'
+      INCLUDE 'inte_oms.f'
+      INCLUDE 'auxl_oms.f'
+      INCLUDE 'inpo_oms.f'
+C
+      COMMON/LDFILES/ITAPES
+      COMMON/ERRORSS/NERORS
+      COMMON/FREEPAS/FPARAS(10)
+C
+      DIMENSION MATNOS(NELEMS),        LNODSS(NNODES,NELEMS),
+     .          PROELS(NPRELS,NGRUPS), PROPSS(NPROPS,NMATSS),
+     .          ELDATS(NDATAS),        ELPRES(NPREVS),
+     .          ELVARS(NSTATS),        ELMATS(NMATXS),
+     .          COORDS(NDIMES,NPOINS), WORK1S(*)
+C
+      PARAMETER (MCOMMS=6)
+      CHARACTER*5  COMMDS(MCOMMS)
+      DATA COMMDS/'GEOME','PROPE','GRAVI','SETS','FREE_','END_G'/
+C
+      DATA FPARAS/10*0.0/
+C
+C**** BEGIN
+C
+      CALL CPUTIMS(TIME1S)
+      WRITE(LURESS,900)
+C
+      IF(IEVFI.EQ.0) THEN
+C
+C**** LOOK FOR 'MICROSTRUCTURAL_PROPERTIES' CARD
+C
+       NPRINT=0
+       ITAPES=LUDATS
+       CALL LISTENS('INPDATS',NPRINT,ITAPES)
+       IF(WORDSS(1).NE.'MICRO')
+     .  CALL RUNENDS('INPDATS: WRONG MICROSTRUCTURAL DATA CARD')
+C
+C**** READ MATERIAL PROPERTIES
+C
+       CALL INPPROS(ITAPES,PROPSS,    0)
+       CALL POINTES
+C
+      ELSE          ! ievfi=1
+C
+C**** LOOK FOR 'GENERAL_DATA' CARD
+C
+       NPRINT=0
+       ITAPES=LUDATS
+       CALL LISTENS('INPDATS',NPRINT,ITAPES)
+       IF(WORDSS(1).NE.'GENER')
+     .  CALL RUNENDS('INPDATS:WRONG GENERAL_DATA CARD    ')
+C
+C**** READ NEW COMMAND
+C
+  100  NPRINT=0
+       ITAPES=LUDATS
+       CALL LISTENS('INPDATS',NPRINT,ITAPES)
+C
+C**** IDENTIFY COMMAND
+C
+       DO ICOMMS=1,MCOMMS
+        IF(WORDSS(1).EQ.COMMDS(ICOMMS)) GO TO 200
+       END DO
+       CALL RUNENDS('INPDATS:WRONG CARD                 ')
+C
+C**** EXECUTE APROPRIATE COMMAND
+C
+  200  IF(PARAMS(1).NE.0.0) ITAPES=INT(PARAMS(1))
+       GOTO (1,2,3,4,5,6), ICOMMS
+C
+C**** READ GEOMETRY
+C
+C     IBOEMS=0 > DOES NOT CHECK THE COORDINATES
+C     IBOEMS=1 > CHECK THE COORDINATES CONSIDERED INTO THE THERMAL
+C                CONTACT ("GAP") ELEMENTS
+C
+   1   INTERS=0
+       IF(WORDSS(2).EQ.'INTER') INTERS=1
+C
+       IBOEMS=0
+       IF(NMEMO1S.EQ.0) THEN         ! coordinates in an elemental array
+        CALL INPGEOS(WORK1S(ISTARS(1)),ELDATS,INTERS,ITAPES,LNODSS,
+     .               MATNOS,PROELS,IBOEMS)
+       ELSE                          ! coordinates in a global array
+        CALL INPGEOS(COORDS,ELDATS,INTERS,ITAPES,LNODSS,
+     .               MATNOS,PROELS,IBOEMS)
+       ENDIF
+       GO TO 100 ! Read next card
+C
+C**** READ MATERIAL PROPERTIES
+C
+   2   CALL INPPROS(ITAPES,PROPSS,    0)
+       GO TO 100 ! Read next card
+C
+C**** READ GRAVITY CONSTANT
+C
+   3   IF(PARAMS(1).NE.0.0) GRAVYS=PARAMS(1)
+       WRITE(LURESS,905) GRAVYS
+       GO TO 100 ! Read next card
+C
+C**** READ ELEMENT CHARACTERISTICS
+C
+   4   CALL INPSETS(ITAPES,PROELS)
+       IBOEMS=1
+       IF(NMEMO1S.EQ.0) THEN         ! coordinates in an elemental array
+        CALL INPGEOS(WORK1S(ISTARS(1)),ELDATS,INTERS,ITAPES,LNODSS,
+     .               MATNOS,PROELS,IBOEMS)
+       ELSE                          ! coordinates in a global array
+        CALL INPGEOS(COORDS,ELDATS,INTERS,ITAPES,LNODSS,
+     .               MATNOS,PROELS,IBOEMS)
+       ENDIF
+       GO TO 100 ! Read next card
+C
+C**** READ FREE PARAMETERS
+C
+   5   DO IIPARS=1,NNPARS
+        FPARAS(IIPARS)=PARAMS(IIPARS)
+       ENDDO
+       GO TO 100 ! Read next card
+C
+C**** END OF READING: PROCESS THE INPUT DATA
+C
+   6   CONTINUE
+C
+C**** LOOP ON ELEMENTS
+C
+       NERORS=0
+C
+       DO IELEMS=1,NELEMS
+        LGRUPS=MATNOS(IELEMS)
+        LMATSS=INT(PROELS(1,LGRUPS))
+C
+C**** CHECK ON INTEGRATION RULES
+C
+        CALL ELMLIBS(LNODSS(1,IELEMS),PROELS(1,LGRUPS),PROPSS(1,LMATSS),
+     .               ELDATS,ELPRES,ELVARS,ELMATS,WORK1S,       9)
+C
+       END DO                    ! END LOOP ON ELEMENTS
+C
+       CALL CPUTIMS(TIME2S)
+       CPUDAS=CPUDAS+(TIME2S-TIME1S)
+C
+       IF(NERORS.NE.0)
+     .  CALL RUNENDS('INPDATS:ERROR IN INTEGRATION RULE  ') 
+C
+      ENDIF         ! ievfi.eq.0
+C
+      RETURN
+C
+  900 FORMAT(1H1,///,10X,'ECHO OF INPUT DATA FOLLOWS :',/
+     .               10X,'=========================='/)
+  905 FORMAT(//,6X,  'GRAVITY CONSTANT VALUE =',F10.5)
+      END

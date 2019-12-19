@@ -1,0 +1,421 @@
+      SUBROUTINE PLYIEL(AVECT,ANGUL,NCRIV,NC42V,RETEN,ALFAT,GAMAT,CEPSI,
+     .                  PMEAN,VARJ2,VARJ3,DEVIA,STEFF,SMAXS,THETA,
+     .                  PROPS,A1COE,A2COE,A3COE,
+     .                  CCERO,CAPAP,YIELD,
+     .                  POROS,CPOE1,CPOE2,CLANK,
+     .                  CLAN1,CLAN2,CLAN3,CLAN4,CLAN5,CLAN6)
+C***********************************************************************
+C
+C**** THIS SUBROUTINE EVALUATES THE FLOW VECTOR 'g' AND/OR NORMAL
+C     VECTOR  'f'
+C      
+C     ANGUL:  ANGFI          ASSOCIATED FLUX TO "F" ---> VECTF(ISTR1)
+C             ANGSI          ASSOCIATED FLUX TO "G" ---> VECTG(ISTR1)
+C     
+C     NCRIV:  NCRIT          ASSOCIATED FLUX TO "F"
+C             NCRIP          ASSOCIATED FLUX TO "G"
+C
+C     COC21,COC22,COC23: coefficients for the consistent const. tensor
+C
+C     (Old form: DATA ROOT3,PIVAL/1.732050807568877,3.141592654/
+C                DATA TWOPI/6.283185307179586/ )
+C
+C***********************************************************************
+      IMPLICIT REAL*8 (A-H,O-Z)
+C
+      include 'auxl_om.f'
+      include 'prob_om.f'
+C
+      COMMON/CONSIS/COC21,COC22,COC23
+C
+      DIMENSION PROPS(*)
+C
+      DIMENSION AVECT(6), DEVIA(6), 
+     .          VECA1(6), VECA2(6), VECA3(6), VECA4(6)
+C
+      ROOT3=1.732050807568877D0
+      PIVAL=3.141592654D0
+      TWOPI=6.283185307179586D0
+C
+      IF(NCRIV.GE.31.AND.NCRIV.LE.35) THEN
+       IF(STEFF.EQ.0.0D0) RETURN
+      ENDIF
+C
+      TANTH=DTAN(THETA)
+      TANT3=DTAN(3.0D0*THETA)
+      SINTH=DSIN(THETA)
+      COSTH=DCOS(THETA)
+      COST3=DCOS(3.0D0*THETA)
+      VARDE=VARJ2/3.0D0
+C
+C**** CALCULATE VECTOR A1
+C
+      DO 5 ISTR1=1,NSTR1
+   5  VECA1(ISTR1)=0.0D0
+      VECA1(1)=1.0D0
+      VECA1(2)=1.0D0
+      VECA1(4)=1.0D0
+C
+C**** CALCULATE VECTOR A2
+C
+      DO 10 ISTR1=1,NSTR1
+      VECA2(ISTR1)=0.0D+00
+      IF(STEFF.NE.0.0D0) VECA2(ISTR1)=DEVIA(ISTR1)/(2.0D0*STEFF)
+   10 CONTINUE
+C
+      VECA2(3)=2.0D0*VECA2(3)
+      IF(NTYPE.EQ.4)THEN
+       VECA2(5)=2.0D0*VECA2(5)
+       VECA2(6)=2.0D0*VECA2(6)
+      ENDIF
+C
+C**** CALCULATE VECTOR A3
+C
+      IF(NTYPE.EQ.4) GO TO 20
+C
+C**** 1-D & 2-D CASES
+C
+      VECA3(1)= DEVIA(2)*DEVIA(4)+VARDE
+      VECA3(2)= DEVIA(1)*DEVIA(4)+VARDE
+      VECA3(3)=-2.0D0*DEVIA(3)*DEVIA(4)
+      VECA3(4)= DEVIA(1)*DEVIA(2)-DEVIA(3)*DEVIA(3)+VARDE
+      GO TO 30
+C
+C**** 3-D CASE
+C
+   20 CONTINUE
+      VECA3(1)= DEVIA(2)*DEVIA(4)-DEVIA(6)*DEVIA(6)+VARDE
+      VECA3(2)= DEVIA(1)*DEVIA(4)-DEVIA(5)*DEVIA(5)+VARDE
+      VECA3(3)=(DEVIA(5)*DEVIA(6)-DEVIA(4)*DEVIA(3))*2.0D0
+      VECA3(4)= DEVIA(1)*DEVIA(2)-DEVIA(3)*DEVIA(3)+VARDE
+      VECA3(5)=(DEVIA(3)*DEVIA(6)-DEVIA(2)*DEVIA(5))*2.0D0
+      VECA3(6)=(DEVIA(3)*DEVIA(5)-DEVIA(1)*DEVIA(6))*2.0D0
+C
+   30 CONTINUE
+C
+C**** CALCULATE (INITIALIZE) VECTOR A4
+C
+      VECA4(1)=0.0D0
+      VECA4(2)=0.0D0
+      VECA4(3)=0.0D0
+      VECA4(4)=0.0D0
+      IF(NTYPE.EQ.4) THEN
+       VECA4(5)=0.0D0
+       VECA4(6)=0.0D0
+      ENDIF
+C
+C**** INITIALIZES SOME PARAMETERS
+C
+      CONS1=0.0D0
+      CONS2=0.0D0
+      CONS3=0.0D0
+      CONS4=0.0D0
+C
+      COC21=0.0D0
+      COC22=0.0D0
+      COC23=0.0D0
+C
+      GO TO (31,32,33,34,35,36,37,38,39,40,41,42) (NCRIV-30)
+C
+C**** TRESCA
+C
+   31 CONS1=0.0D0
+      ABTHE=DABS(THETA*57.29577951308D0)
+      IF(ABTHE.LT.29.0D0) GO TO 140
+      CONS2=ROOT3
+      CONS3=0.0D0
+      CONS4=0.0D0
+      GO TO 60
+  140 CONS2=2.0D0*(COSTH+SINTH*TANT3)
+      CONS3=ROOT3*SINTH/(VARJ2*COST3)
+      GO TO 60
+C
+C**** VON MISES
+C
+   32 CONS1=0.0D0
+      CONS2=DSQRT(3.0D0*A1COE)
+      CONS3=0.0D0
+      CONS4=0.0D0
+C
+      IF(STEFF.NE.0.0D0) THEN
+       COC21=-1.0D0/(ROOT3*STEFF)
+       COC22=ROOT3/(2.0D0*STEFF)
+       COC23=-1.0D0/(2.0D0*ROOT3*STEFF)
+      ENDIF
+      GO TO 60
+C
+C**** MOHR-COULOMB & VERSION WITH "TENSION CUT-OFF"
+C
+   33 SNPHI=DSIN(ANGUL)
+      ANPHI=(PIVAL*0.25D0)+ANGUL*0.5D00
+      ALFA=RETEN/(DTAN(ANPHI)*DTAN(ANPHI))
+      CAPA1=(0.5D0*(1.0D0+ALFA))-(0.5D0*(1.0D0-ALFA)*SNPHI)
+      CAPA2=1.0D+23
+      CAPA3=-((0.5D0*(1.0D0-ALFA))-(0.5D0*(1.0D0+ALFA)*SNPHI))
+      IF(SNPHI.NE.0.0D0)
+     .CAPA2=(0.5D0*(1.0D0+ALFA))+(0.5D0*(-1.0+ALFA)/SNPHI)
+      CFL=2.0D0*DTAN(ANPHI)/DCOS(ANGUL)
+      CONS1=CFL*(CAPA3)/3.0D0
+      ABTHE=DABS(THETA*57.29577951308D0)
+      IF(ABTHE.LT.29.0D0) GO TO 50
+      CONS3=0.0D0
+      CONS4=0.0D0
+      PLUMI=1.0D0
+      IF(THETA.GT.0.0D0) PLUMI=-1.0D0
+      CONS2=0.5D0*CFL*(CAPA1*ROOT3+PLUMI*(CAPA2)*SNPHI/ROOT3)
+      GO TO 60
+   50 CONS2=CFL*COSTH*((CAPA1)*(1.0D0+TANTH*TANT3)+(CAPA2)*SNPHI*
+     .            (TANT3-TANTH)/ROOT3)
+      CONS3=CFL*((CAPA1)*ROOT3*SINTH+(CAPA2)*SNPHI*COSTH)/
+     .      (2.0D0*VARJ2*COST3)
+      GO TO 60
+C
+C**** DRUCKER-PRAGER
+C
+   34 SNPHI=DSIN(ANGUL)
+      IF(PROPS(55).EQ.0.0D0) THEN
+       CFL=-ROOT3*(3.0D0-SNPHI)/(3.0D0*SNPHI-3.0D0)
+       CONS1=2.0D0*CFL*SNPHI/(ROOT3*(3.0D0-SNPHI))
+      ELSE
+       CFL=-ROOT3*(3.0D0+SNPHI)/(SNPHI-3.0D0)
+       CONS1=2.0D0*CFL*SNPHI/(ROOT3*(3.0D0+SNPHI))
+      ENDIF
+      CONS2=CFL
+      CONS3=0.0D0
+      CONS4=0.0D0
+      GO TO 60
+C
+C**** LUBLINER'S THEORY
+C
+   35 BETAT=((1.0D0-ALFAT)*RETEN)-(1.0D0+ALFAT)
+      CFL=1.0D0/(1.0D0-ALFAT)
+      IF(SMAXS)110,105,120
+  105 DELTA=(1.0D0-CEPSI)*BETAT+CEPSI*GAMAT
+      GOTO 130
+  110 DELTA=GAMAT
+      GOTO 130
+  120 DELTA=BETAT
+C
+  130 CONTINUE
+      SINTP=DSIN(THETA+TWOPI/3.0D0) 
+      ABTHE=DABS(THETA*57.29577951308D0)
+      CONS1=CFL*(ALFAT+DELTA/3.0D0)
+      COST3=DCOS(3.0D0*THETA)
+      TANT3=DTAN(3.0D0*THETA)
+C
+      IF(ABTHE.LT.29.0D0)THEN
+       COSTP=DCOS(THETA+TWOPI/3.0D0)
+       CONS2=CFL*(ROOT3+(2.0D0*DELTA*(SINTP-TANT3*COSTP)/ROOT3))
+       CONS3=CFL*(-DELTA*COSTP/(VARJ2*COST3))
+      ELSE
+       IF((THETA*57.29577951308D0).GE.29.0D0)THEN
+        CONS2=CFL*(ROOT3+2.0D0*DELTA/(3.0D0*ROOT3))
+        CONS3=CFL*(-DELTA/(6.0D0*VARJ2))
+       ELSE
+        CONS2=CFL*(ROOT3+4.0D0*DELTA/(3.0D0*ROOT3))
+        CONS3=CFL*(DELTA/(3.0D0*VARJ2))
+       END IF
+      END IF
+      CONS4=0.0D0
+      GOTO 60
+C
+C**** ABOUAF'S MODEL
+C
+   36 DENOM=DSQRT((3.0D0*A1COE*VARJ2)+(A2COE*(3.0D0*PMEAN)**2.0D0))
+      CONS1=0.0D0
+      CONS2=0.0D0
+      CONS3=0.0D0
+      IF(DENOM.NE.0.0D0)THEN
+       CONS1=A2COE*(3.0D0*PMEAN)/DENOM
+       CONS2=3.0D0*A1COE*DSQRT(VARJ2)/DENOM
+      ENDIF
+      CONS4=0.0D0
+      GO TO 60
+C
+C**** WEBER-BROWN'S MODEL
+C
+   37 CONTINUE
+      CONS1=0.0D0
+      CONS2=0.0D0
+      CONS3=0.0D0
+      DENOM=0.0D0
+      IF(A2COE.NE.0.0D0)DENOM=
+     .             A2COE*DSQRT((1.0D0/A2COE)*(3.0D0*VARJ2+(A1COE/6.0D0)*
+     .                                            (PMEAN*3.0D0)**2.0D0))
+      IF(DENOM.NE.0.0D0)THEN
+       CONS1=A1COE*(PMEAN*3.0D0)/(6.0D0*DENOM)
+       CONS2=3.0D0*DSQRT(VARJ2)/(DENOM)
+      ENDIF
+      CONS4=0.0D0
+      GO TO 60
+C
+C**** SG CAST IRON
+C
+   38 CONS1=0.0D0
+      CONS2=DSQRT(3.0D0*A1COE)
+      CONS3=0.0D0
+      CONS4=0.0D0
+      GO TO 60
+C
+C**** GREEN SAND
+C
+   39 CONS1=0.0D0
+      CONS2=DSQRT(3.0D0*A1COE)
+      CONS3=0.0D0
+      CONS4=0.0D0
+      GO TO 60
+C
+C**** GREEN SAND
+C
+   40 CONS1=0.0D0
+      CONS2=DSQRT(3.0D0*A1COE)
+      CONS3=0.0D0
+      CONS4=0.0D0
+      GO TO 60
+C
+C**** GURSON
+C
+   41 PREYS=A3COE*CCERO+A2COE*CAPAP          ! as in pltoha.f
+      IFVER=INT(PROPS(35))
+      IF(IFVER.EQ.4) THEN
+       IF(CAPAP.EQ.0.0D0) PREYS=CCERO
+      ENDIF
+C
+      Q1PAM=1.0D+00
+      Q2PAM=1.0D+00
+      IF(IPORO.EQ.4) THEN
+       Q1PAM=CPOE1
+       Q2PAM=CPOE2
+      ENDIF
+      WWWAU=(3.0D+00*PMEAN*Q2PAM)/(2.0D+00*PREYS)
+      WWWGG=1.0D+00+Q1PAM*Q1PAM*POROS*POROS-
+     .                                  2.0D+00*Q1PAM*POROS*DCOSH(WWWAU)
+C
+      CONS1=Q1PAM*Q2PAM*YIELD*POROS/(2.0D0*PREYS*WWWGG)*DSINH(WWWAU)
+      CONS2=DSQRT(3.0D0*A1COE/WWWGG)
+      CONS3=0.0D0
+      CONS4=0.0D0
+      GO TO 60
+C
+C**** HILL 48
+C
+   42 CONS1=0.0D0
+      CONS2=0.0D0
+      CONS3=0.0D0
+      CONS4=1.0D0
+C
+      ISOTR=INT(PROPS(1))   ! 0=isotropic; 1=orthotropic
+      IF(ISOTR.EQ.0) THEN   ! only for plane stress problems
+       A1=2.0D0*CLANK/(1.0D0+CLANK)
+       A2=A1*(1.0D0+2.0D0*CLANK)
+       VARJ2H=(DEVIA(1)+PMEAN)*(DEVIA(1)+PMEAN)+
+     .        (DEVIA(2)+PMEAN)*(DEVIA(2)+PMEAN)-
+     .     A1*(DEVIA(1)+PMEAN)*(DEVIA(2)+PMEAN)+
+     .     A2*(DEVIA(3)*DEVIA(3))
+C
+       IF(VARJ2H.NE.0.0D0) THEN
+        VECA4(1)=(2.0D0*(DEVIA(1)+PMEAN)-A1*(DEVIA(2)+PMEAN))/
+     .                                             (2.0D0*DSQRT(VARJ2H))
+        VECA4(2)=(2.0D0*(DEVIA(2)+PMEAN)-A1*(DEVIA(1)+PMEAN))/
+     .                                             (2.0D0*DSQRT(VARJ2H))
+        VECA4(3)=2.0D0*(2.0D0*A2*DEVIA(3))/
+     .                                             (2.0D0*DSQRT(VARJ2H))
+        VECA4(4)=-VECA4(1)-VECA4(2)
+       ENDIF
+      ENDIF
+      IF(ISOTR.EQ.1) THEN
+       IF(NC42V.EQ.1) THEN
+        AFP=CLAN1
+        AGP=CLAN2
+        AHP=CLAN3
+        ANP=CLAN4
+       ENDIF
+       IF(NC42V.EQ.2) THEN
+        AFP=0.5D0*(1.0D0/(CLAN2*CLAN2)+1.0D0/(CLAN3*CLAN3)-
+     .             1.0D0/(CCERO*CCERO))*CCERO*CCERO
+        AGP=0.5D0*(1.0D0/(CCERO*CCERO)+1.0D0/(CLAN3*CLAN3)-
+     .             1.0D0/(CLAN2*CLAN2))*CCERO*CCERO
+        AHP=0.5D0*(1.0D0/(CCERO*CCERO)+1.0D0/(CLAN2*CLAN2)-
+     .             1.0D0/(CLAN3*CLAN3))*CCERO*CCERO
+        ANP=0.5D0*(1.0D0/(CLAN1*CLAN1)-1.0D0/(CLAN3*CLAN3))*CCERO*CCERO
+       ENDIF
+       IF(NC42V.EQ.3) THEN
+        AFP=CLAN1/(CLAN3*(1.0D0+CLAN1))
+        AGP=1.0D0/(1.0D0+CLAN1)
+        AHP=CLAN1/(1.0D0+CLAN1)
+        ANP=(0.5D0+CLAN2)/(1.0D0+CLAN1)*(CLAN1/CLAN3+1.0D0)
+       ENDIF
+       IF(NTYPE.EQ.1) THEN  ! plane stress
+        VARJ2H=AFP*(DEVIA(2)+PMEAN)*(DEVIA(2)+PMEAN)+
+     .         AGP*(DEVIA(1)+PMEAN)*(DEVIA(1)+PMEAN)+
+     .         AHP*(DEVIA(1)-DEVIA(2))*(DEVIA(1)-DEVIA(2))+
+     .         2.0D0*ANP*DEVIA(3)*DEVIA(3)
+C
+        IF(VARJ2H.NE.0.0D0) THEN
+         VECA4(1)=1.0D0/DSQRT(VARJ2H)*((AGP+AHP)*(DEVIA(1)+PMEAN)-
+     .                                       AHP*(DEVIA(2)+PMEAN))
+         VECA4(2)=1.0D0/DSQRT(VARJ2H)*((AFP+AHP)*(DEVIA(2)+PMEAN)-
+     .                                       AHP*(DEVIA(1)+PMEAN))
+         VECA4(3)=2.0D0/DSQRT(VARJ2H)*ANP*DEVIA(3)
+         VECA4(4)=1.0D0/DSQRT(VARJ2H)*(-AGP*(DEVIA(1)+PMEAN)-
+     .                                  AFP*(DEVIA(2)+PMEAN))
+        ENDIF
+       ENDIF
+       IF(NTYPE.EQ.3) THEN  ! axisymmetry
+        VARJ2H=AFP*(DEVIA(4)+PMEAN)*(DEVIA(4)+PMEAN)+
+     .         AGP*(DEVIA(1)+PMEAN)*(DEVIA(1)+PMEAN)+
+     .         AHP*(DEVIA(1)-DEVIA(4))*(DEVIA(1)-DEVIA(4))
+C
+        IF(VARJ2H.NE.0.0D0) THEN
+         VECA4(1)=1.0D0/DSQRT(VARJ2H)*((AGP+AHP)*(DEVIA(1)+PMEAN)-
+     .                                       AHP*(DEVIA(4)+PMEAN))
+         VECA4(2)=1.0D0/DSQRT(VARJ2H)*(-AGP*(DEVIA(1)+PMEAN)-
+     .                                  AFP*(DEVIA(4)+PMEAN))
+         VECA4(3)=0.0D0
+         VECA4(4)=1.0D0/DSQRT(VARJ2H)*((AFP+AHP)*(DEVIA(4)+PMEAN)-
+     .                                       AHP*(DEVIA(1)+PMEAN))
+        ENDIF
+       ENDIF
+       IF(NTYPE.EQ.4) THEN  ! 3D
+        IF(NC42V.EQ.1) THEN
+         AMP=CLAN5
+         ALP=CLAN6
+        ENDIF
+        IF(NC42V.EQ.2.OR.NC42V.EQ.3) THEN
+         AMP=0.5D0*(AFP+4.0D0*AGP+AHP)
+         ALP=0.5D0*(4.0D0*AFP+AGP+AHP)
+        ENDIF
+        VARJ2H=AFP*(DEVIA(2)-DEVIA(4))*(DEVIA(2)-DEVIA(4))+
+     .         AGP*(DEVIA(4)-DEVIA(1))*(DEVIA(4)-DEVIA(1))+
+     .         AHP*(DEVIA(1)-DEVIA(2))*(DEVIA(1)-DEVIA(2))+
+     .         2.0D0*ALP*DEVIA(6)*DEVIA(6)+
+     .         2.0D0*AMP*DEVIA(5)*DEVIA(5)+
+     .         2.0D0*ANP*DEVIA(3)*DEVIA(3)
+C
+        IF(VARJ2H.NE.0.0D0) THEN
+         VECA4(1)=1.0D0/DSQRT(VARJ2H)*((AGP+AHP)*(DEVIA(1)+PMEAN)-
+     .                                       AHP*(DEVIA(2)+PMEAN)-
+     .                                       AGP*(DEVIA(4)+PMEAN))
+         VECA4(2)=1.0D0/DSQRT(VARJ2H)*((AFP+AHP)*(DEVIA(2)+PMEAN)-
+     .                                       AHP*(DEVIA(1)+PMEAN)-
+     .                                       AFP*(DEVIA(4)+PMEAN))
+         VECA4(3)=2.0D0/DSQRT(VARJ2H)*ANP*DEVIA(3)
+         VECA4(4)=1.0D0/DSQRT(VARJ2H)*((AFP+AGP)*(DEVIA(4)+PMEAN)-
+     .                                       AGP*(DEVIA(1)+PMEAN)-
+     .                                       AFP*(DEVIA(2)+PMEAN))
+         VECA4(5)=2.0D0/DSQRT(VARJ2H)*AMP*DEVIA(5)
+         VECA4(6)=2.0D0/DSQRT(VARJ2H)*ALP*DEVIA(6)
+        ENDIF
+       ENDIF
+      ENDIF
+      GO TO 60
+C
+C**** COMPUTATION OF VECTOR 'f' or 'g'
+C
+   60 CONTINUE
+      DO 70 ISTR1=1,NSTR1
+   70 AVECT(ISTR1)=CONS1*VECA1(ISTR1)+CONS2*VECA2(ISTR1)+
+     .             CONS3*VECA3(ISTR1)+CONS4*VECA4(ISTR1)
+C
+      RETURN
+      END

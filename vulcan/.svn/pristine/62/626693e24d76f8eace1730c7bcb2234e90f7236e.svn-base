@@ -1,0 +1,20 @@
+SVN:
+Comandos Básicos
+  svn up o svn update:
+    Actualiza el repositorio a la copia remota actual.
+    Es recomendable usarlo antes de comenzar a trabajar,
+    si hay conflictos lo resuelve con diff
+  svn ci o svn commit:
+    Envía los cambios hechos en la copia local al servidor.
+    Se usa una vez que los cambios realizados funcionan adecuadamente.
+  svn co o svn checkout:
+    Se usa para traer la copia completa del servidor remoto,
+    se hace sólo la primera vez porque inicializa la copia local.
+  svn add
+    Se usa para agregar archivos o carpetas a la copia local,
+    requiere ejecutar svn ci para enviar los cambios.
+  svn revert archivo
+  Para revertir los ultimos cambios hechos, recupera un archivo del último commit
+
+linea de svn para comenzar a trabajar con vulcan:
+svn co svn+ssh://usuario@mankeke.mine.nu/srv/svn/vulcan

@@ -1,0 +1,124 @@
+      SUBROUTINE ZEROTET(ELPRET,ELVART,DISTOT,HEADST,TLOADT,RLOADT,
+     .                   REFORT,DISPLT,PWORKT,PREAST,TGAPST,TEMPIT,
+     .                   ADVELT,FPCHAT,LACTIT)
+C***********************************************************************
+C
+C**** THIS ROUTINE INITIALISES VARIOUS ARRAYS TO ZERO
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_omt.f'
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'prob_omt.f'
+      INCLUDE 'inte_omt.f'
+      INCLUDE 'auxl_omt.f'
+C
+      DIMENSION DISTOT(*),             HEADST(*),
+     .          TLOADT(*),             RLOADT(*),
+     .          REFORT(*)
+      DIMENSION ELPRET(NPREVT),        ELVART(NSTATT)
+      DIMENSION DISPLT(NTOTVM),        PWORKT(NPOINT,3)
+      DIMENSION PREAST(NPREAT,NPOINT), TGAPST(NPOINT)
+      DIMENSION TEMPIT(NPOINT,2),      ADVELT(NTOTVT*NDIMET),
+     .          FPCHAT(NFPCH,NPOINT),  LACTIT(NELEMT)
+C
+      DO 20 INDEXT=1,NTOTVT*2
+      REFORT(INDEXT)=0.0D0
+   20 TLOADT(INDEXT)=0.0D0
+C
+      DO 30 INDEXT=1,NTOTVT*3
+   30 DISTOT(INDEXT)=0.0D0
+C
+      IF(KPORET.NE.0) THEN
+       DO 40 INDEXT=1,NPOINT*4
+   40  HEADST(INDEXT)=0.0D0
+      ENDIF
+C
+      DO ITOTVT=1,NTOTVT
+       RLOADT(ITOTVT)=0.0D0
+      END DO
+C
+      IF(ITERME.GT.0) THEN
+       DO ITOTV=1,NTOTVM
+        DISPLT(ITOTV)=0.0D0
+       END DO
+C
+       DO IPOINT=1,NPOINT
+        DO I=1,2
+         PWORKT(IPOINT,I)=0.0D0
+        END DO
+        IF(NITERC.EQ.2.OR.NITERC.EQ.3) PWORKT(IPOINT,3)=0.0D0
+        IF(NPRE1T.GT.0) PREAST(1,IPOINT)=0.0D0           ! see addprit.f
+        IF(NMEMO11.EQ.0) TGAPST(IPOINT)=0.0D0
+       END DO
+      ENDIF                !iterme.gt.0
+C
+      IF(ICONVT.EQ.1) THEN
+       DO INDEXT=1,NTOTVT*NDIMET
+        ADVELT(INDEXT)=0.0D0
+       ENDDO
+      ENDIF           !iconvt.eq.1
+C
+      DO IPOINT=1,NPOINT
+       TEMPIT(IPOINT,1)=0.0D0
+      ENDDO
+C
+      IF(NMEMO10.EQ.1) THEN
+       DO IPOINT=1,NPOINT
+        TEMPIT(IPOINT,2)=1.0D0
+       ENDDO
+      ENDIF
+C
+      DO IPOINT=1,NPOINT
+       DO IFPCH=1,NFPCH
+        FPCHAT(IFPCH,IPOINT)=0.0D0
+       ENDDO
+      ENDDO
+C
+      IF(NPOROT.GT.0) THEN
+       DO IPOINT=1,NPOINT
+        DO IPREAT=NPRE1T+1,NPREAT
+         PREAST(IPREAT,IPOINT)=0.0D0
+        END DO
+       END DO
+      ENDIF              ! nporot.gt.0
+C
+      IF(NACTIT.EQ.1) THEN
+       DO IELEMT=1,NELEMT
+        LACTIT(IELEMT)=0
+       ENDDO
+      ENDIF
+C
+C**** INITIALIZE ELPRE & ELVAR AND WRITE TO DATA-BASE 
+C
+      IF(NMEMO.EQ.1) THEN
+       DO KPREVT=1,NPREVT
+        ELPRET(KPREVT)=0.0D0
+       ENDDO
+      ENDIF
+C
+      IF(NMEMO3.EQ.1.OR.NMEMO4.EQ.1.OR.NMEMO5.EQ.0) THEN
+       DO 50 KSTATT=1,NSTATT
+   50  ELVART(KSTATT)=0.0D0
+      ENDIF
+C
+      DO 100 IELEMT=1,NELEMT
+C
+       IF(NMEMO.EQ.1)
+     .  CALL DATBAST(ELPRET,    2,    1)
+       IF(NMEMO3.EQ.1.OR.NMEMO4.EQ.1.OR.NMEMO5.EQ.0)
+     .  CALL DATBAST(ELVART,    3,    1)
+C
+  100 CONTINUE
+C        
+      RETURN
+      END

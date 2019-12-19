@@ -1,0 +1,101 @@
+      SUBROUTINE OUTGAUT(ELDATT,ELPRET,ELVART,ELMATT,
+     .                   LNODST,MATNOT,PROELT,PROPST,COORDT,DISPLT,
+     .                   WORK1T)
+C***********************************************************************
+C
+C**** THIS ROUTINE OUTPUTS GAUSSIAN VARIABLES TO OUTPUT AND POST. FILES
+C
+C       KPRI2=0  DO NOT WRITE GAUSSIAN STRESSES TO OUTPUT FILE
+C             1  WRITE GAUSSIAN STRESSES TO OUTPUT FILES
+C       KPRI3=0  DO NOT WRITE GAUSSIAN PRINCIPAL STRESSES TO OUTPUT FILE
+C             1  WRITE GAUSSIAN PRINCIPAL STRESSES TO OUTPUT FILES
+C       KPRI4=0  DO NOT WRITE GAUSS QUANTITIES TO OUTPUT FILE
+C             1  WRITE GAUSS QUANTITIES TO OUTPUT FILES
+C       KFEMV=0  DO NOT WRITE TO POSTPROCESSOR FILE
+C             1  WRITE TO POSTPROCESSOR FILE
+C
+C***********************************************************************
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C**** ADDITIONAL PARAMETERS
+C
+      INCLUDE 'addi_omt.f'
+C
+C**** COUPLING VARIABLES
+C
+      INCLUDE 'nuec_om.f'          ! thermal-mechanical
+C
+C**** THERMAL VARIABLES
+C
+      INCLUDE 'prob_omt.f'
+      INCLUDE 'inte_omt.f'
+      INCLUDE 'auxl_omt.f'
+      INCLUDE 'inpo_omt.f'
+C
+      DIMENSION MATNOT(NELEMT),        LNODST(NNODET,NELEMT),
+     .          PROELT(NPRELT,NGRUPT), PROPST(NPROPT,NMATST),
+     .          ELDATT(NDATAT),        ELPRET(NPREVT),
+     .          ELVART(NSTATT),        ELMATT(NMATXT)
+      DIMENSION COORDT(NDIMET,NPOINT), DISPLT(NTOTVM)
+      DIMENSION WORK1T(*)
+C
+C**** OUTPUT GAUSSIAN VARIABLES
+C
+      IF(IPRCOT.GT.0) THEN
+       IF((KPRI2T+KPRI3T+KPRI4T).GT.0) WRITE(LUREST,955)
+      ENDIF
+C
+C**** LOOP OVER THE ELEMENTS
+C
+      DO IELEMT=1,NELEMT
+       IF(IPRCOT.GT.0) THEN
+        LGRUPT=MATNOT(IELEMT)
+        LMATST=INT(PROELT(1,LGRUPT))
+        NNODLT=INT(PROELT(2,LGRUPT))
+C
+C**** READ ELDATT & ELVART FROM DATA BASE
+C
+        IF(NMEMO1.EQ.0.OR.NMEMO2.EQ.0)
+     .   CALL DATBAST(ELDATT, 1, 2)
+C
+        IF(NMEMO3.EQ.1.OR.NMEMO4.EQ.1)
+     .   CALL DATBAST(ELVART,    3,    2)    ! current
+C
+C**** GATHER NODAL COORDINATES
+C
+        IF(NMEMO1.EQ.1) THEN    ! coordinates in a global array
+         CALL GATHER(COORDT,NDIMET,NPOINT,WORK1T(IGSMOT(16)),NDIMET,
+     .               NNODLT,LNODST(1,IELEMT))
+        ENDIF
+C
+        IF((KPRI2T+KPRI3T+KPRI4T).GT.0) THEN
+         IF(ITERME.GT.0) THEN          ! bidirectional coupled
+          IF(ITERMD.EQ.1) THEN         ! deformed shape
+C
+C**** SCALAR GATHER OPERATIONS ( DISPLT ---> WORK1T(IGSMOT(30)) )
+C
+           CALL GATHER(DISPLT,NDOFCM,NPOINT,WORK1T(IGSMOT(30)),NDOFCM,
+     .                 NNODLT,
+     .                 LNODST(1,IELEMT))
+          ENDIF                        ! itermd.eq.1
+         ENDIF                         ! iterme.gt.0
+C
+C**** CALL THE ELEMENT PROCESSOR TO WRITE TO OUTPUT FILE
+C
+         CALL ELMLIBT(LNODST(1,IELEMT),PROELT(1,LGRUPT),
+     .                PROPST(1,LMATST),
+     .                ELDATT,ELPRET,ELVART,ELMATT,DUMMYT,WORK1T,    12)
+        ENDIF        ! kpri2t+kpri3t+...
+       ENDIF         ! iprcot.gt.0
+C
+C**** WRITE TO POSTPROCESSOR FILE
+C
+       IF(KPPCGT.NE.0) THEN
+        IF(KFEMVT.NE.0)
+     .   WRITE(LUPOST) (SNGL(ELVART(JSTATT)),JSTATT=1,NSTATT)
+       ENDIF
+      ENDDO
+C
+      RETURN
+  955 FORMAT(//,5X,' INFORMATION AT GAUSSIAN INTEGRATION POINTS')
+      END

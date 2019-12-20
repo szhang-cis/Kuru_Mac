@@ -82,17 +82,6 @@ class BoundaryCondition(object):
 
         self.compound_dirichlet_bcs = compound_dirichlet_bcs
 
-        # NODAL FORCES GENERATED BASED ON DIRICHLET OR NEUMANN ARE NOT
-        # IMPLEMENTED AS PART OF BOUNDARY CONDITION YET. THIS ESSENTIALLY
-        # MEANS SAVING MULTIPLE RHS VALUES
-        # self.dirichlet_forces = None
-        # self.neumann_forces = None
-
-        # # THE FOLLOWING MEMBERS ARE NOT UPDATED, TO REDUCE MEMORY FOOTPRINT
-        # self.external_nodal_forces = None
-        # self.internal_traction_forces = None
-        # self.residual = None
-
         # STORE A COPY OF SELF AT THE START TO RESET TO AT THE END
         self.__save_state__()
         # FOR INTERNAL PURPOSES WHEN WE DO NOT WANT TO REST
@@ -236,7 +225,7 @@ class BoundaryCondition(object):
 
         if self.columns_in.shape[0] == 0:
             warn("Dirichlet boundary conditions have been applied on the entire mesh")
-        if self.columns_in.shape[0] == 0:
+        if self.columns_out.shape[0] == 0:
             warn("No Dirichlet boundary conditions have been applied. The system is unconstrained")
 
         if self.save_dirichlet_data:
@@ -246,8 +235,9 @@ class BoundaryCondition(object):
                 'applied_dirichlet':self.applied_dirichlet}
             savemat(self.filename,diri_dict, do_compression=True)
 
-    def ComputeNeumannForces(self, mesh, material, function_spaces, compute_traction_forces=True, compute_body_forces=False):
-        """Compute/assemble traction and body forces"""
+    def ComputeNeumannForces(self, mesh, material, function_spaces, Eulerx,
+            compute_follower_forces=True, compute_body_forces=False):
+        """Compute/assemble traction (follower) and body forces"""
 
         if self.neumann_flags is None:
             return np.zeros((mesh.points.shape[0]*material.nvar,1),dtype=np.float64)
@@ -293,8 +283,8 @@ class BoundaryCondition(object):
 
             t_tassembly = time()
             if self.analysis_type == "static":
-                F = AssembleForces(self, mesh, material, function_spaces,
-                    compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces)
+                F = AssembleForces(self, mesh, material, function_spaces, Eulerx,
+                    compute_follower_forces=compute_follower_forces, compute_body_forces=compute_body_forces)
             elif self.analysis_type == "dynamic":
                 if self.neumann_flags.ndim==2:
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY
@@ -304,17 +294,17 @@ class BoundaryCondition(object):
                     for step in range(self.neumann_flags.shape[1]):
                         self.neumann_flags = tmp_flags[:,step]
                         self.applied_neumann = tmp_data[:,:,step]
-                        F[:,step] = AssembleForces(self, mesh, material, function_spaces,
-                            compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
+                        F[:,step] = AssembleForces(self, mesh, material, function_spaces, Eulerx,
+                            compute_follower_forces=compute_follower_forces, compute_body_forces=compute_body_forces).flatten()
 
                     self.neumann_flags = tmp_flags
                     self.applied_neumann = tmp_data
                 else:
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY
-                    F = AssembleForces(self, mesh, material, function_spaces,
+                    F = AssembleForces(self, mesh, material, function_spaces, Eulerx,
                             compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
 
-            print("Assembled external traction forces. Time elapsed is {} seconds".format(time()-t_tassembly))
+            #print("Assembled external traction forces. Time elapsed is {} seconds".format(time()-t_tassembly))
 
 
         elif self.neumann_data_applied_at == 'node':

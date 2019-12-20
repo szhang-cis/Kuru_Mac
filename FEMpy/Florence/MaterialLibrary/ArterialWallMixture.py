@@ -36,7 +36,7 @@ class ArterialWallMixture(Material):
         #self.has_low_level_dispatcher = True
         self.has_low_level_dispatcher = False
 
-    def Hessian(self,StrainTensors,ElectricFieldx=0,elem=0,gcounter=0):
+    def Hessian(self,StrainTensors,growth_remodeling=None,elem=0,gcounter=0):
 
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
@@ -45,26 +45,13 @@ class ArterialWallMixture(Material):
             print(F)
             print(J)
             exit('Deformation Gradient is negative at element: '+str(elem)+' gauss: '+str(gcounter))
-        # Directional vector for element
-        Axial = self.anisotropic_orientations[5][elem][:,None]
-        Axial = np.dot(I,Axial)[:,0]
-        Tangential = self.anisotropic_orientations[1][elem][:,None]
-        Tangential = np.dot(I,Tangential)[:,0]
-        Normal = self.anisotropic_orientations[0][elem][:,None]
-        Normal = np.dot(I,Normal)[:,0]
-        Rotation = np.eye(3,3,dtype=np.float64)
-        for i in range(3):
-            Rotation[0,i] = Normal[i]
-            Rotation[1,i] = Tangential[i]
-            Rotation[2,i] = Axial[i]
 
         fraction = [0.23,0.15,0.062,0.248,0.248,0.062]
 
         #ELASTIN
         kappa = self.kappa*fraction[0]*1050.0
         mu3D = self.mu3D*fraction[0]*1050.0
-        Gh_ela = self.Deposition['Matrix']
-        Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
+        Gh_ela = I
         F_ela = np.dot(F,Gh_ela)
         F_ela_e = np.dot(F_ela,I)
         J_ela_e = np.linalg.det(F_ela_e)
@@ -82,7 +69,6 @@ class ArterialWallMixture(Material):
             N = self.anisotropic_orientations[key][elem][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
-            FN = np.dot(self.Deposition['Fibre'][key-1],FN)
             if key is 1:
                 c1 = self.c1m*fraction[1]*1050.0
                 c2 = self.c2m
@@ -123,7 +109,7 @@ class ArterialWallMixture(Material):
 
         return H_Voigt
 
-    def CauchyStress(self,StrainTensors,ElectricFieldx=0,elem=0,gcounter=0):
+    def CauchyStress(self,StrainTensors,growth_remodeling=None,elem=0,gcounter=0):
 
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
@@ -132,26 +118,13 @@ class ArterialWallMixture(Material):
             print(F)
             print(J)
             exit('Deformation Gradient is negative at element: '+str(elem)+' gauss: '+str(gcounter))
-        # Directional vector for element
-        Axial = self.anisotropic_orientations[5][elem][:,None]
-        Axial = np.dot(I,Axial)[:,0]
-        Tangential = self.anisotropic_orientations[1][elem][:,None]
-        Tangential = np.dot(I,Tangential)[:,0]
-        Normal = self.anisotropic_orientations[0][elem][:,None]
-        Normal = np.dot(I,Normal)[:,0]
-        Rotation = np.eye(3,3,dtype=np.float64)
-        for i in range(3):
-            Rotation[0,i] = Normal[i]
-            Rotation[1,i] = Tangential[i]
-            Rotation[2,i] = Axial[i]
 
         fraction = [0.23,0.15,0.062,0.248,0.248,0.062]
 
         #ELASTIN
         kappa = self.kappa*fraction[0]*1050.0
         mu3D = self.mu3D*fraction[0]*1050.0
-        Gh_ela = self.Deposition['Matrix']
-        Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
+        Gh_ela = I
         F_ela = np.dot(F,Gh_ela)
         F_ela_e = np.dot(F_ela,I)
         J_ela_e = np.linalg.det(F_ela_e)
@@ -170,7 +143,6 @@ class ArterialWallMixture(Material):
             N = self.anisotropic_orientations[key][elem][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
-            FN = np.dot(self.Deposition['Fibre'][key-1],FN)
             if key is 1:
                 c1 = self.c1m*fraction[1]*1050.0
                 c2 = self.c2m

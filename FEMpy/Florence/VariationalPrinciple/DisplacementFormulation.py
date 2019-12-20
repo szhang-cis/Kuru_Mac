@@ -37,14 +37,17 @@ class DisplacementFormulation(VariationalPrinciple):
             function_spaces=function_spaces, compute_post_quadrature=compute_post_quadrature,
             equally_spaced_bases=equally_spaced_bases, quadrature_degree=quadrature_degree)
 
-    def GetElementalMatrices(self, elem, function_space, mesh, material, fem_solver, Eulerx, TotalPot):
+    def GetElementalMatrices(self, elem, function_space, mesh, material, fem_solver, Eulerx):
 
         massel=[]; f = []
         # GET THE FIELDS AT THE ELEMENT LEVEL
         LagrangeElemCoords = mesh.points[mesh.elements[elem,:],:]
         EulerElemCoords = Eulerx[mesh.elements[elem,:],:]
         # GET DEPOSITION-STRETCH AND GROWTH-REMODELING FIELDS AT ELEMENT LEVEL (JOANDLAUBRIE)
-        ElemGrowthRemodeling = material.GrowthRemodeling[mesh.elements[elem,:],:]
+        if hasattr(material,'GrowthRemodeling'):
+            ElemGrowthRemodeling = material.GrowthRemodeling[mesh.elements[elem,:],:]
+        else:
+            ElemGrowthRemodeling = None
 
 
         # COMPUTE THE STIFFNESS MATRIX
@@ -97,7 +100,10 @@ class DisplacementFormulation(VariationalPrinciple):
         F = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
 
         # MAPPING DEPOSITION-STRETCH AND GROWTH-REMODELING VALUES (JOANDLAUBRIE)
-        material.growth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
+        if ElemGrowthRemodeling is not None:
+            growth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
+        else:
+            growth_remodeling = None
 
         # COMPUTE REMAINING KINEMATIC MEASURES
         StrainTensors = KinematicMeasures(F, fem_solver.analysis_nature)
@@ -121,12 +127,11 @@ class DisplacementFormulation(VariationalPrinciple):
         for counter in range(AllGauss.shape[0]):
 
             # COMPUTE THE HESSIAN AT THIS GAUSS POINT
-            H_Voigt = material.Hessian(StrainTensors,None,elem,counter)
-
+            H_Voigt = material.Hessian(StrainTensors,growth_remodeling,elem,counter)
             # COMPUTE CAUCHY STRESS TENSOR
             CauchyStressTensor = []
             if fem_solver.requires_geometry_update:
-                CauchyStressTensor = material.CauchyStress(StrainTensors,None,elem,counter)
+                CauchyStressTensor = material.CauchyStress(StrainTensors,growth_remodeling,elem,counter)
 
             # COMPUTE THE TANGENT STIFFNESS MATRIX
             BDB_1, t = self.ConstitutiveStiffnessIntegrand(B, SpatialGradient[counter,:,:],

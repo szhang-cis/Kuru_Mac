@@ -19,18 +19,21 @@ from .RHSAssemblyNative import RHSAssemblyNative
 
 __all__ = ['Assemble', 'AssembleForces', 'AssembleExplicit', 'AssembleMass', 'AssembleForm']
 
-def Assemble(fem_solver, function_space, formulation, mesh, material, Eulerx, Eulerp):
+#----------------------------------------------------------------------------------------------------------------#
+#------------------------------- ASSEMBLY ROUTINE FOR INTERNAL TRACTION FORCES ----------------------------------#
+#----------------------------------------------------------------------------------------------------------------#
+def Assemble(fem_solver, function_space, formulation, mesh, material, Eulerx):
 
     if fem_solver.has_low_level_dispatcher:
-        return LowLevelAssembly(fem_solver, function_space, formulation, mesh, material, Eulerx, Eulerp)
+        return LowLevelAssembly(fem_solver, function_space, formulation, mesh, material, Eulerx)
     else:
         if mesh.nelem <= 600000:
-            return AssemblySmall(fem_solver, function_space, formulation, mesh, material, Eulerx, Eulerp)
+            return AssemblySmall(fem_solver, function_space, formulation, mesh, material, Eulerx)
         elif mesh.nelem > 600000:
             print("Larger than memory system. Dask on disk parallel assembly is turned on")
-            return OutofCoreAssembly(fem_solver, function_space, formulation, mesh, material, Eulerx, Eulerp)
+            return OutofCoreAssembly(fem_solver, function_space, formulation, mesh, material, Eulerx)
 
-def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Eulerx, Eulerp):
+def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Eulerx):
 
     t_assembly = time()
 
@@ -66,7 +69,6 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
         if fem_solver.analysis_type !='static' and fem_solver.is_mass_computed is False:
             V_mass=np.zeros(indices.shape[0],dtype=np.float64)
 
-
     T = np.zeros((mesh.points.shape[0]*nvar,1),np.float64)
 
     mass, F = [], []
@@ -77,7 +79,7 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
     if fem_solver.parallel:
         # COMPUATE ALL LOCAL ELEMENTAL MATRICES (STIFFNESS, MASS, INTERNAL & EXTERNAL TRACTION FORCES)
         ParallelTuple = parmap.map(formulation,np.arange(0,nelem,dtype=np.int32),
-            function_space, mesh, material, fem_solver, Eulerx, Eulerp, processes= int(multiprocessing.cpu_count()/2))
+            function_space, mesh, material, fem_solver, Eulerx, processes= int(multiprocessing.cpu_count()/2))
 
     for elem in range(nelem):
 
@@ -88,10 +90,10 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
             I_mass_elem = ParallelTuple[elem][5]; J_mass_elem = ParallelTuple[elem][6]; V_mass_elem = ParallelTuple[elem][6]
 
         else:
-            # COMPUATE ALL LOCAL ELEMENTAL MATRICES (STIFFNESS, MASS, INTERNAL & EXTERNAL TRACTION FORCES )
+            # COMPUATE ALL LOCAL ELEMENTAL MATRICES (STIFFNESS, MASS, INTERNAL TRACTION FORCES )
             I_stiff_elem, J_stiff_elem, V_stiff_elem, t, f, \
             I_mass_elem, J_mass_elem, V_mass_elem = formulation.GetElementalMatrices(elem,
-                function_space, mesh, material, fem_solver, Eulerx, Eulerp)
+                function_space, mesh, material, fem_solver, Eulerx)
 
         if fem_solver.recompute_sparsity_pattern:
             # SPARSE ASSEMBLY - STIFFNESS MATRIX
@@ -172,22 +174,24 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
 
     return stiffness, T, F, mass
 
+#----------------------------------------------------------------------------------------------------------------#
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL TRACTION FORCES ----------------------------------#
 #----------------------------------------------------------------------------------------------------------------#
 
-def AssembleForces(boundary_condition, mesh, material, function_spaces, compute_traction_forces=True, compute_body_forces=False):
+def AssembleForces(boundary_condition, mesh, material, function_spaces, Eulerx,
+        compute_follower_forces=True, compute_body_forces=False):
 
     Ft = np.zeros((mesh.points.shape[0]*material.nvar,1))
     Fb = np.zeros((mesh.points.shape[0]*material.nvar,1))
 
-    if compute_traction_forces:
-        Ft = AssembleExternalTractionForces(boundary_condition, mesh, material, function_spaces[-1])
+    if compute_follower_forces:
+        Ft = AssembleFollowerForces(boundary_condition, mesh, material, function_spaces[-1], Eulerx)
     if compute_body_forces:
         Fb = AssembleBodyForces(boundary_condition, mesh, material, function_spaces[0])
 
     return Ft + Fb
 
-def AssembleExternalTractionForces(boundary_condition, mesh, material, function_space):
+def AssembleFollowerForces(boundary_condition, mesh, material, function_space, Eulerx):
 
     nvar = material.nvar
     ndim = material.ndim
@@ -212,10 +216,10 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
     F = np.zeros((mesh.points.shape[0]*nvar,1))
     for face in range(faces.shape[0]):
         if boundary_condition.neumann_flags[face] == True:
-            direction1 = np.einsum("ij,ik->jk",function_space.gBasesx,mesh.points[faces[face,:],:])
-            direction2 = np.einsum("ij,ik->jk",function_space.gBasesy,mesh.points[faces[face,:],:])
+            direction1 = np.einsum("i,ik->k",function_space.gBasesx[:,0],Eulerx[faces[face,:],:])
+            direction2 = np.einsum("i,ik->k",function_space.gBasesy[:,0],Eulerx[faces[face,:],:])
             normal = np.cross(direction1,direction2)
-            ElemTraction = boundary_condition.applied_neumann[face]*normal[0,:]
+            ElemTraction = boundary_condition.applied_neumann[face]*normal
             external_traction = np.einsum("ijk,j,k->ik",N,ElemTraction,function_space.AllGauss[:,0]).sum(axis=1)
             RHSAssemblyNative(F,np.ascontiguousarray(external_traction[:,None]),face,nvar,nodeperelem,faces)
 

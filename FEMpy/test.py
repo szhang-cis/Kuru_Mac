@@ -89,16 +89,6 @@ NeumannBoundary['InnerFaces'] = InnerFaces
 # fibre directions [thick,sms,co1,co2,co3,co4]
 fibre_direction = Directions(mesh)
 
-# Deposition Stretch
-Deposition = {}
-Deposition['Matrix'] = np.zeros((3,3),dtype=np.float64)
-Deposition['Fibre'] = np.ones((5),dtype=np.float64)
-Deposition['Matrix'][2,2] = 1.25
-Deposition['Matrix'][1,1] = 1.34
-Deposition['Matrix'][0,0] = 1.0/(1.25*1.34)
-Deposition['Fibre'][0] = 1.1
-Deposition['Fibre'][1:5] = 1.062
-
 # Define hyperelastic material for mesh
 material = ArterialWallMixture(ndim,
             mu3D=72.0,
@@ -107,7 +97,6 @@ material = ArterialWallMixture(ndim,
             c1c=1136.0,
             c2c=11.2,
             kappa=72.0e3,
-            Deposition=Deposition,
             anisotropic_orientations=fibre_direction)
 
 # Define hyperelastic material for mesh
@@ -156,7 +145,7 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        maximum_iteration_for_newton_raphson=50,
                        optimise=False,
                        print_incremental_log=True,
-                       number_of_load_increments=5)
+                       number_of_load_increments=1)
 
 #===============  COMPUTE SOLUTION  ======================
 # Call FEM solver for the current state

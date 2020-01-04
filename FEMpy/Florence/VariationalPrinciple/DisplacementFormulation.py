@@ -92,11 +92,11 @@ class DisplacementFormulation(VariationalPrinciple):
         B = np.zeros((nodeperelem*nvar,material.H_VoigtSize),dtype=np.float64)
 
         # COMPUTE KINEMATIC MEASURES AT ALL INTEGRATION POINTS USING EINSUM (AVOIDING THE FOR LOOP)
-        # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
+        # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ngauss x ndim x ndim)]
         ParentGradientX = np.einsum('ijk,jl->kil', Jm, LagrangeElemCoords)
-        # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N)]
+        # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N) (ngauss x ndim x nodesperelem)]
         MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
-        # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N)]
+        # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N) (ngauss x ndim x ndim)]
         F = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
 
         # MAPPING DEPOSITION-STRETCH AND GROWTH-REMODELING VALUES (JOANDLAUBRIE)
@@ -110,9 +110,9 @@ class DisplacementFormulation(VariationalPrinciple):
 
         # UPDATE/NO-UPDATE GEOMETRY
         if fem_solver.requires_geometry_update:
-            # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
+            # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ngauss x ndim x ndim)]
             ParentGradientx = np.einsum('ijk,jl->kil',Jm, EulerELemCoords)
-            # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N)]
+            # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N) (ngauss x nodesperelem x ndim)]
             SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx),Jm)
             # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE)
             detJ = np.einsum('i,i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)),np.abs(StrainTensors['J']))
@@ -153,7 +153,7 @@ class DisplacementFormulation(VariationalPrinciple):
     def ConstitutiveStiffnessIntegrand(self, B, SpatialGradient, CauchyStressTensor, H_Voigt,
         requires_geometry_update=True):
         """Applies to displacement based formulation"""
-
+        # SpatialGradient(ndim x nodesperelem) and B(nodesperelem*nvar,H_VoigtSize)
         SpatialGradient = SpatialGradient.T.copy()
         FillConstitutiveB(B,SpatialGradient,self.ndim,self.nvar)
 

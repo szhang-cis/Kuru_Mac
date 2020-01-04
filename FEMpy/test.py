@@ -145,6 +145,7 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        maximum_iteration_for_newton_raphson=50,
                        optimise=False,
                        print_incremental_log=True,
+                       has_moving_boundary=True,
                        number_of_load_increments=1)
 
 #===============  COMPUTE SOLUTION  ======================

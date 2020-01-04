@@ -4,7 +4,7 @@ import gc #, os, sys
 from warnings import warn
 from time import time
 import numpy as np
-from scipy.sparse import coo_matrix #, csc_matrix, csr_matrix
+from scipy.sparse import coo_matrix, csr_matrix, csc_matrix
 
 #from ._LowLevelAssembly_ import _LowLevelAssembly_, _LowLevelAssemblyExplicit_, _LowLevelAssemblyLaplacian_
 #from ._LowLevelAssembly_ import _LowLevelAssembly_Par_, _LowLevelAssemblyExplicit_Par_
@@ -17,23 +17,23 @@ from .RHSAssemblyNative import RHSAssemblyNative
 #import multiprocessing
 #import Florence.ParallelProcessing.parmap as parmap
 
-__all__ = ['Assemble', 'AssembleForces', 'AssembleExplicit', 'AssembleMass', 'AssembleForm']
+__all__ = ['Assemble', 'AssembleForces']
 
 #----------------------------------------------------------------------------------------------------------------#
 #------------------------------- ASSEMBLY ROUTINE FOR INTERNAL TRACTION FORCES ----------------------------------#
 #----------------------------------------------------------------------------------------------------------------#
-def Assemble(fem_solver, function_space, formulation, mesh, material, Eulerx):
+def Assemble(fem_solver, function_spaces, formulation, mesh, material, boundary_condition, Eulerx):
 
     if fem_solver.has_low_level_dispatcher:
-        return LowLevelAssembly(fem_solver, function_space, formulation, mesh, material, Eulerx)
+        return LowLevelAssembly(fem_solver, function_spaces[0], formulation, mesh, material, Eulerx)
     else:
         if mesh.nelem <= 600000:
-            return AssemblySmall(fem_solver, function_space, formulation, mesh, material, Eulerx)
+            return AssemblySmall(fem_solver, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)
         elif mesh.nelem > 600000:
             print("Larger than memory system. Dask on disk parallel assembly is turned on")
-            return OutofCoreAssembly(fem_solver, function_space, formulation, mesh, material, Eulerx)
+            return OutofCoreAssembly(fem_solver, function_spaces[0], formulation, mesh, material, Eulerx)
 
-def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Eulerx):
+def AssemblySmall(fem_solver, function_spaces, formulation, mesh, material, boundary_condition, Eulerx):
 
     t_assembly = time()
 
@@ -58,6 +58,10 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
         J_stiffness=np.zeros(int((nvar*nodeperelem)**2*nelem),dtype=np.int32)
         V_stiffness=np.zeros(int((nvar*nodeperelem)**2*nelem),dtype=np.float64)
 
+        #I_tangent=np.zeros(int((nvar*nodeperelem)**2*nelem),dtype=np.int32)
+        #J_tangent=np.zeros(int((nvar*nodeperelem)**2*nelem),dtype=np.int32)
+        #V_tangent=np.zeros(int((nvar*nodeperelem)**2*nelem),dtype=np.float64)
+        I_tangent=[]; J_tangent=[]; V_tangent=[]
         I_mass=[]; J_mass=[]; V_mass=[]
         if fem_solver.analysis_type !='static' and fem_solver.is_mass_computed is False:
             # ALLOCATE VECTORS FOR SPARSE ASSEMBLY OF MASS MATRIX - CHANGE TYPES TO INT64 FOR DoF > 1e09
@@ -72,6 +76,7 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
     T = np.zeros((mesh.points.shape[0]*nvar,1),np.float64)
 
     mass, F = [], []
+    tangent = []
     if fem_solver.has_moving_boundary:
         F = np.zeros((mesh.points.shape[0]*nvar,1),np.float64)
 
@@ -79,7 +84,7 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
     if fem_solver.parallel:
         # COMPUATE ALL LOCAL ELEMENTAL MATRICES (STIFFNESS, MASS, INTERNAL & EXTERNAL TRACTION FORCES)
         ParallelTuple = parmap.map(formulation,np.arange(0,nelem,dtype=np.int32),
-            function_space, mesh, material, fem_solver, Eulerx, processes= int(multiprocessing.cpu_count()/2))
+            function_spaces[0], mesh, material, fem_solver, Eulerx, processes= int(multiprocessing.cpu_count()/2))
 
     for elem in range(nelem):
 
@@ -93,7 +98,7 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
             # COMPUATE ALL LOCAL ELEMENTAL MATRICES (STIFFNESS, MASS, INTERNAL TRACTION FORCES )
             I_stiff_elem, J_stiff_elem, V_stiff_elem, t, f, \
             I_mass_elem, J_mass_elem, V_mass_elem = formulation.GetElementalMatrices(elem,
-                function_space, mesh, material, fem_solver, Eulerx)
+                function_spaces[0], mesh, material, fem_solver, Eulerx)
 
         if fem_solver.recompute_sparsity_pattern:
             # SPARSE ASSEMBLY - STIFFNESS MATRIX
@@ -123,17 +128,10 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
                     V_mass[data_global_indices[elem*local_capacity:(elem+1)*local_capacity]] \
                     += V_mass_elem[data_local_indices[elem*local_capacity:(elem+1)*local_capacity]]
 
-        if fem_solver.has_moving_boundary:
-            # RHS ASSEMBLY
-            # for iterator in range(0,nvar):
-            #     F[mesh.elements[elem,:]*nvar+iterator,0]+=f[iterator::nvar,0]
-            RHSAssemblyNative(F,f,elem,nvar,nodeperelem,mesh.elements)
-
         # INTERNAL TRACTION FORCE ASSEMBLY
         # for iterator in range(0,nvar):
             # T[mesh.elements[elem,:]*nvar+iterator,0]+=t[iterator::nvar,0]
         RHSAssemblyNative(T,t,elem,nvar,nodeperelem,mesh.elements)
-
 
     if fem_solver.parallel:
         del ParallelTuple
@@ -144,16 +142,23 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
             shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])),dtype=np.float64).tocsr()
 
         # GET STORAGE/MEMORY DETAILS
-        fem_solver.spmat = stiffness.data.nbytes/1024./1024.
-        fem_solver.ijv = (I_stiffness.nbytes + J_stiffness.nbytes + V_stiffness.nbytes)/1024./1024.
+        #fem_solver.spmat = stiffness.data.nbytes/1024./1024.
+        #fem_solver.ijv = (I_stiffness.nbytes + J_stiffness.nbytes + V_stiffness.nbytes)/1024./1024.
 
-        del I_stiffness, J_stiffness, V_stiffness
-        gc.collect()
+        #del I_stiffness, J_stiffness, V_stiffness
+        #gc.collect()
 
+        print("Before compute Stiffness Neumann Forces")
+        I_tangent,J_tangent,V_tangent = ComputeForcesStiffness(boundary_condition, mesh, material, function_spaces, Eulerx, fem_solver)
+        print("Just after compute Stiffness Neumann Forces and before buil sparse Stiffness Neumann Forces")
+        tangent = csr_matrix((V_tangent,(I_tangent,J_tangent)),shape=((nvar*mesh.points.shape[0],
+            nvar*mesh.points.shape[0])),dtype=np.float64)
+        print("control")
+        stiffness = stiffness - tangent
+        print("control2")
         if fem_solver.analysis_type != 'static' and fem_solver.is_mass_computed==False:
             mass = csr_matrix((V_mass,(I_mass,J_mass)),shape=((nvar*mesh.points.shape[0],
                 nvar*mesh.points.shape[0])),dtype=np.float64)
-
             fem_solver.is_mass_computed = True
 
     else:
@@ -164,14 +169,17 @@ def AssemblySmall(fem_solver, function_space, formulation, mesh, material, Euler
         fem_solver.spmat = stiffness.data.nbytes/1024./1024.
         fem_solver.ijv = (indptr.nbytes + indices.nbytes + V_stiffness.nbytes)/1024./1024.
 
+        V_tangent = ComputeForcesStiffness(boundary_condition, mesh, material, function_spaces, Eulerx, fem_solver)
+        tangent = csr_matrix((V_tangent,indices,indptr),
+            shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])))
+        stiffness -= tangent
         if fem_solver.analysis_type != 'static' and fem_solver.is_mass_computed==False:
             mass = csr_matrix((V_mass,indices,indptr),
                 shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])))
-
             fem_solver.is_mass_computed = True
 
     fem_solver.assembly_time = time() - t_assembly
-
+    print("puta")
     return stiffness, T, F, mass
 
 #----------------------------------------------------------------------------------------------------------------#
@@ -184,10 +192,10 @@ def AssembleForces(boundary_condition, mesh, material, function_spaces, Eulerx,
     Ft = np.zeros((mesh.points.shape[0]*material.nvar,1))
     Fb = np.zeros((mesh.points.shape[0]*material.nvar,1))
 
-    if compute_follower_forces:
-        Ft = AssembleFollowerForces(boundary_condition, mesh, material, function_spaces[-1], Eulerx)
     if compute_body_forces:
         Fb = AssembleBodyForces(boundary_condition, mesh, material, function_spaces[0])
+    if compute_follower_forces:
+        Ft = AssembleFollowerForces(boundary_condition, mesh, material, function_spaces[-1], Eulerx)
 
     return Ft + Fb
 
@@ -199,28 +207,186 @@ def AssembleFollowerForces(boundary_condition, mesh, material, function_space, E
 
     if ndim == 2:
         faces = mesh.edges
-        nodeperelem = mesh.edges.shape[1]
+        nodeperface = mesh.edges.shape[1]
     else:
         faces = mesh.faces
-        nodeperelem = mesh.faces.shape[1]
+        nodeperface = mesh.faces.shape[1]
 
     if boundary_condition.is_applied_neumann_shape_functions_computed is False:
-        N = np.zeros((nodeperelem*nvar,nvar,ngauss))
-        for i in range(nvar):
-            N[i::nvar,i,:] = function_space.Bases
+        N = np.zeros((nodeperface*ndim,ndim,ngauss))
+        for i in range(ndim):
+            N[i::ndim,i,:] = function_space.Bases
         boundary_condition.__Nt__ = N
         boundary_condition.is_applied_neumann_shape_functions_computed = True
     else:
         N = boundary_condition.__Nt__
 
-    F = np.zeros((mesh.points.shape[0]*nvar,1))
+    F = np.zeros((mesh.points.shape[0]*ndim,1))
     for face in range(faces.shape[0]):
         if boundary_condition.neumann_flags[face] == True:
-            direction1 = np.einsum("i,ik->k",function_space.gBasesx[:,0],Eulerx[faces[face,:],:])
-            direction2 = np.einsum("i,ik->k",function_space.gBasesy[:,0],Eulerx[faces[face,:],:])
-            normal = np.cross(direction1,direction2)
-            ElemTraction = boundary_condition.applied_neumann[face]*normal
-            external_traction = np.einsum("ijk,j,k->ik",N,ElemTraction,function_space.AllGauss[:,0]).sum(axis=1)
-            RHSAssemblyNative(F,np.ascontiguousarray(external_traction[:,None]),face,nvar,nodeperelem,faces)
+            # mapping tangential vector [\partial\vec{x}/ \partial\zeta (ngauss x ndim)]
+            tangential1 = np.einsum("ij,ik->jk",function_space.gBasesx,Eulerx[faces[face,:],:])
+            # mapping tangential vector [\partial\vec{x}/ \partial\eta (ngauss x ndim)]
+            tangential2 = np.einsum("ij,ik->jk",function_space.gBasesy,Eulerx[faces[face,:],:])
+            # mapping normal (ngauss x ndim)
+            normal = np.cross(tangential1,tangential2)
+            # Gauss quadrature of follower load (traction)
+            f = np.einsum("ijk,kj,k->ik",N,normal,function_space.AllGauss[:,0]).sum(axis=1)
+            f = boundary_condition.applied_neumann[face]*f
+            RHSAssemblyNative(F,np.ascontiguousarray(f[:,None]),face,nvar,nodeperface,faces)
 
     return F
+
+def ComputeForcesStiffness(boundary_condition, mesh, material, function_spaces, Eulerx, fem_solver):
+    """Compute/assemble traction (follower)"""
+
+    if boundary_condition.neumann_flags is None:
+        return np.zeros((mesh.points.shape[0]*material.nvar,1),dtype=np.float64)
+
+    nvar = material.nvar
+    ndim = mesh.InferSpatialDimension()
+
+    if boundary_condition.neumann_flags.shape[0] == mesh.points.shape[0]:
+        boundary_condition.neumann_data_applied_at = "node"
+        raise ValueError("Neumann forces applied at nodes")
+
+    if not isinstance(function_spaces,tuple):
+        raise ValueError("Boundary functional spaces not available for computing Neumman stiffness")
+    else:
+        # CHECK IF A FUNCTION SPACE FOR BOUNDARY EXISTS - SAFEGAURDS AGAINST FORMULATIONS THAT DO NO PROVIDE ONE
+        has_boundary_spaces = False
+        for fs in function_spaces:
+            if ndim == 3 and fs.ndim == 2:
+                has_boundary_spaces = True
+                break
+            elif ndim == 2 and fs.ndim == 1:
+                has_boundary_spaces = True
+                break
+        if not has_boundary_spaces:
+            from Florence import QuadratureRule, FunctionSpace
+            # COMPUTE BOUNDARY FUNCTIONAL SPACES
+            p = mesh.InferPolynomialDegree()
+            bquadrature = QuadratureRule(optimal=3, norder=2*p+1,
+                mesh_type=mesh.boundary_element_type, is_flattened=False)
+            bfunction_space = FunctionSpace(mesh.CreateDummyLowerDimensionalMesh(),
+                bquadrature, p=p, equally_spaced=mesh.IsEquallySpaced, use_optimal_quadrature=False)
+            function_spaces = (function_spaces[0],bfunction_space)
+
+    local_size = function_spaces[-1].Bases.shape[0]*nvar
+    boundary_condition.local_rows = np.repeat(np.arange(0,local_size),local_size,axis=0)
+    boundary_condition.local_columns = np.tile(np.arange(0,local_size),local_size)
+    boundary_condition.local_size = local_size
+    print("Into the ComputeForcesStiffness")
+    if boundary_condition.analysis_type == "static":
+        if fem_solver.recompute_sparsity_pattern:
+            I_tangent,J_tangent,V_tangent = AssembleStiffnessForces(boundary_condition, mesh, material,
+                function_spaces[-1], Eulerx, fem_solver)
+            return I_tangent,J_tangent,V_tangent
+        else:
+            V_tangent = AssembleStiffnessForces(boundary_condition, mesh, material, function_spaces[-1], Eulerx, fem_solver)
+            return V_tangent
+    elif boundary_condition.analysis_type == "dynamic":
+        raise ValueError("Not well implemented yet")
+
+
+def AssembleStiffnessForces(boundary_condition, mesh, material, function_space, Eulerx, fem_solver):
+
+    nvar = material.nvar
+    ndim = material.ndim
+    nelem = mesh.nelem
+    nodeperelem = mesh.elements.shape[1]
+    ngauss = function_space.AllGauss.shape[0]
+    ndof = nodeperelem*nvar
+    local_capacity = ndof*ndof
+
+    if fem_solver.recompute_sparsity_pattern is False:
+        indices, indptr = fem_solver.indices, fem_solver.indptr
+        if fem_solver.squeeze_sparsity_pattern is False:
+            data_global_indices = fem_solver.data_global_indices
+            data_local_indices = fem_solver.data_local_indices
+
+    if fem_solver.recompute_sparsity_pattern:
+        # ALLOCATE VECTORS FOR SPARSE ASSEMBLY OF STIFFNESS MATRIX - CHANGE TYPES TO INT64 FOR DoF > 1e09
+        I_tangent=np.zeros(int((nvar*nodeperelem)**2*nelem),dtype=np.int32)
+        J_tangent=np.zeros(int((nvar*nodeperelem)**2*nelem),dtype=np.int32)
+        V_tangent=np.zeros(int((nvar*nodeperelem)**2*nelem),dtype=np.float64)
+    else:
+        V_tangent=np.zeros(indices.shape[0],dtype=np.float64)
+
+    if ndim == 2:
+        faces = mesh.edges
+        nodeperface = mesh.edges.shape[1]
+    else:
+        faces = mesh.faces
+        nodeperface = mesh.faces.shape[1]
+
+    for face in range(faces.shape[0]):
+        if boundary_condition.neumann_flags[face] == True:
+            # Compute stiffness_matrix and force_vector
+            I_stiff_face, J_stiff_face, V_stiff_face = GetFaceMatrices(face,function_space,faces,boundary_condition,material,Eulerx)
+
+            if fem_solver.recompute_sparsity_pattern:
+                # SPARSE ASSEMBLY - STIFFNESS MATRIX
+                SparseAssemblyNative(I_stiff_face,J_stiff_face,V_stiff_face,I_tangent,J_tangent,V_tangent,
+                    face,nvar,nodeperface,faces)
+            else:
+                if fem_solver.squeeze_sparsity_pattern:
+                    # SPARSE ASSEMBLY - STIFFNESS MATRIX
+                    raise ValueError("This way of follower load is not well done yet")
+                    #SparseAssemblyNativeCSR_RecomputeDataIndex(mesh,V_stiff_face,indices,indptr,V_tangent,face,ndim)
+                else:
+                    # SPARSE ASSEMBLY - STIFFNESS MATRIX
+                    V_tangent[data_global_indices[face*local_capacity:(face+1)*local_capacity]] \
+                        += V_stiff_face[data_local_indices[face*local_capacity:(face+1)*local_capacity]]
+
+    if fem_solver.recompute_sparsity_pattern:
+        return I_tangent,J_tangent,V_tangent
+    else:
+        return V_tangent
+
+def GetFaceMatrices(face, function_space, faces, boundary_condition, material, Eulerx):
+
+    nvar = material.nvar
+    ndim = material.ndim
+    ngauss = function_space.AllGauss.shape[0]
+    nodeperface = faces.shape[1]
+    EulerElemCoords = Eulerx[faces[face,:],:]
+    alternating = np.zeros((3,3,3),dtype=np.float64)
+    alternating[0,1,2]=1.
+    alternating[2,0,1]=1.
+    alternating[1,2,0]=1.
+    alternating[2,1,0]=-1.
+    alternating[0,2,1]=-1.
+    alternating[1,0,2]=-1.
+
+    N = np.zeros((nodeperface*ndim,ndim,ngauss))
+    gNx = np.zeros((nodeperface*ndim,ndim,ngauss))
+    gNy = np.zeros((nodeperface*ndim,ndim,ngauss))
+    for i in range(ndim):
+        N[i::ndim,i,:] = function_space.Bases
+        gNx[i::ndim,i,:] = function_space.gBasesx
+        gNy[i::ndim,i,:] = function_space.gBasesy
+
+    # mapping tangential vector [\partial\vec{x}/ \partial\zeta (ngauss x ndim)]
+    tangential1 = np.einsum("ij,ik->jk",function_space.gBasesx,EulerElemCoords)
+    # mapping tangential vector [\partial\vec{x}/ \partial\eta (ngauss x ndim)]
+    tangential2 = np.einsum("ij,ik->jk",function_space.gBasesy,EulerElemCoords)
+    # mapping normal (ngauss x ndim)
+    normal = np.einsum("ijk,lj,lk->li",alternating,tangential1,tangential2)
+
+    # Gauss quadrature of follower load (stiffness)
+    cross1 = np.einsum("ijk,ljm,nkm->lnim",alternating,gNy,N)-np.einsum("ijk,ljm,nkm->lnim",alternating,N,gNy)
+    cross2 = np.einsum("ijk,ljm,nkm->lnim",alternating,gNx,N)-np.einsum("ijk,ljm,nkm->lnim",alternating,N,gNx)
+    quadrature1 = np.einsum("ij,klji,i->kli",tangential1,cross1,function_space.AllGauss[:,0]).sum(axis=2)
+    quadrature2 = np.einsum("ij,klji,i->kli",tangential2,cross2,function_space.AllGauss[:,0]).sum(axis=2)
+    stiffness = 0.5*(quadrature1-quadrature2)
+
+    stiffness = boundary_condition.applied_neumann[face]*stiffness
+
+    I_stiff_face = boundary_condition.local_rows
+    J_stiff_face = boundary_condition.local_columns
+    V_stiff_face = stiffness.ravel()
+
+    return I_stiff_face, J_stiff_face, V_stiff_face
+
+

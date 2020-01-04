@@ -281,11 +281,11 @@ class BoundaryCondition(object):
                     function_spaces = (function_spaces[0],bfunction_space)
                     # raise ValueError("Boundary functional spaces not available for computing Neumman and body forces")
 
-            t_tassembly = time()
             if self.analysis_type == "static":
                 F = AssembleForces(self, mesh, material, function_spaces, Eulerx,
                     compute_follower_forces=compute_follower_forces, compute_body_forces=compute_body_forces)
             elif self.analysis_type == "dynamic":
+                raise ValueError("Not well implemented yet")
                 if self.neumann_flags.ndim==2:
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY
                     tmp_flags = np.copy(self.neumann_flags)
@@ -303,9 +303,6 @@ class BoundaryCondition(object):
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY
                     F = AssembleForces(self, mesh, material, function_spaces, Eulerx,
                             compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
-
-            #print("Assembled external traction forces. Time elapsed is {} seconds".format(time()-t_tassembly))
-
 
         elif self.neumann_data_applied_at == 'node':
             # A DIRICHLET TYPE METHODOLGY FOR APPLYING NEUMANN BOUNDARY CONDITONS (i.e. AT NODES)

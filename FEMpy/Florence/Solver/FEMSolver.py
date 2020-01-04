@@ -504,6 +504,8 @@ class FEMSolver(object):
         NeumannForces = boundary_condition.ComputeNeumannForces(mesh, material, function_spaces, Eulerx,
             compute_follower_forces=True, compute_body_forces=self.add_self_weight)
 
+        print("Assembled external traction forces. Time elapsed is {} seconds".format(time()-tAssembly))
+
         # ADOPT A DIFFERENT PATH FOR INCREMENTAL LINEAR ELASTICITY
         if formulation.fields == "mechanics" and self.analysis_nature != "nonlinear":
             if self.analysis_type == "static":
@@ -515,7 +517,7 @@ class FEMSolver(object):
 
         # ASSEMBLE STIFFNESS MATRIX AND TRACTION FORCES FOR THE FIRST TIME (INTERNAL ENERGY)
         if self.analysis_type == "static":
-            K, TractionForces, _, _ = Assemble(self, function_spaces[0], formulation, mesh, material, Eulerx)
+            K, TractionForces, _, _ = Assemble(self, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)
         else:
             if self.reduce_quadrature_for_quads_hexes:
                 fspace = function_spaces[0] if (mesh.element_type=="hex" or mesh.element_type=="quad") else function_spaces[1]
@@ -526,17 +528,17 @@ class FEMSolver(object):
 
             if self.analysis_subtype != "explicit":
                 # COMPUTE BOTH STIFFNESS AND MASS USING HIGHER QUADRATURE RULE
-                K, TractionForces, _, M = Assemble(self, fspace, formulation, mesh, material, Eulerx)
+                K, TractionForces, _, M = Assemble(self, fspace, formulation, mesh, material, boundary_condition, Eulerx)
             else:
                 # lmesh = mesh.ConvertToLinearMesh()
                 # COMPUTE BOTH STIFFNESS AND MASS USING HIGHER QUADRATURE RULE
                 TractionForces, _, M = AssembleExplicit(self, fspace, formulation, mesh, material, Eulerx)
 
+        print(K)
         if self.analysis_nature == 'nonlinear':
             print('Finished all pre-processing stage. Time elapsed was', time()-tAssembly, 'seconds')
         else:
             print('Finished the assembly stage. Time elapsed was', time()-tAssembly, 'seconds')
-
 
         if self.analysis_type != 'static':
             if self.analysis_subtype != "explicit":
@@ -697,7 +699,7 @@ class FEMSolver(object):
             Eulerx += dU[:,:formulation.ndim]
 
             # RE-ASSEMBLE - COMPUTE STIFFNESS AND INTERNAL TRACTION FORCES
-            K, TractionForces = Assemble(self, function_spaces[0], formulation, mesh, material, Eulerx)[:2]
+            K, TractionForces = Assemble(self, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)[:2]
             NeumannForces = boundary_condition.ComputeNeumannForces(mesh, material, function_spaces, Eulerx,
                 compute_follower_forces=True, compute_body_forces=self.add_self_weight)
             NodalForces = LoadFactorInc*NeumannForces

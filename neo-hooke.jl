@@ -2,56 +2,50 @@
 using LinearAlgebra
 
 # Calculate stresses in a thin-walled tube
-function ThinWalled(pressure,Variable)
-   stretch_t = Variable[1]
-   stretch_r = Variable[2]
-   R=0.010
-   H=0.00141
+function ThinWalled(pressure,stretch)
+   stretch_t = stretch
+   stretch_r = 1.0/stretch
    #geometry
-   r=R #*stretch_t
-   h=H #*stretch_r
+   r=0.010*stretch_t
+   h=0.00141*stretch_r
    #stresses in tube
    stress_t = pressure*r/h
-   stress_r = -pressure/2.0
+   #stress_r = -pressure/2.0
    #stress_z = pressure*r/(2.0*h)
-   return stress_t,stress_r
+   return stress_t #,stress_r
 end
 
 # Calculate stresses with anisotropic model
-function NeoHookean(Variable)
+function NeoHookean(stretch,pressure)
    # Variable to stretch
-   stretch_t = Variable[1]
-   stretch_r = Variable[2]
+   stretch_t = stretch
+   stretch_r = 1.0/stretch
    # parameter of hyperelastic model
    density = 1050.0
-   mu = 72.0*density
-   kappa = 72.0e3*density
-   # avrebation of some parameters
-   J = stretch_t*stretch_r
-   I1 = stretch_r^2 + stretch_t^2 + 1.0
+   mu = 144.0*density
    # stresses
-   stress_t = mu*(stretch_t^2-I1/3.0)*J^(-5.0/3.0) + 2.0*kappa*(J-1.0)
-   stress_r = mu*(stretch_r^2-I1/3.0)*J^(-5.0/3.0) + 2.0*kappa*(J-1.0)
+   stress_t = mu*(stretch_t^2-stretch_r^2) - pressure/2.0
+   #stress_r = mu*(stretch_r^2-I1/3.0)*J^(-5.0/3.0) + 2.0*kappa*(J-1.0)
+   #stress_r = -pressure/2.0
    #stress_z = mu*(1.0-I1/3.0)*J^(-5.0/3.0) + 2.0*kappa*(J-1.0)
-   return stress_t,stress_r
+   return stress_t #,stress_r
 end
 
 # Compute circumferential residual function
-function ResidualFunction(pressure,Variable,fcount)
+function ResidualFunction(pressure,stretch)
    #call function to compute the stresses
-   ThinStress_t,ThinStress_r = ThinWalled(pressure,Variable)
-   HookStress_t,HookStress_r = NeoHookean(Variable)
+   ThinStress_t = ThinWalled(pressure,stretch)
+   HookStress_t = NeoHookean(stretch,pressure)
    #compute the residual
-   if fcount==1
-      Residual = HookStress_t - ThinStress_t
-   else
-      Residual = HookStress_r - ThinStress_r
-   end
+   Residual = HookStress_t - ThinStress_t
+   #else
+   #   Residual = HookStress_r - ThinStress_r
+   #end
    return Residual
 end
 
 # Ridders method for numeric derivatives
-function DRidders(pressure,Variable,xcount,fcount)
+function DRidders(pressure,stretch)
   """
   Returns the derivative of a function func at a point x by Ridders method of polynomial
   extrapolation. The value h is input as an estimated initial stepsize; it need not be small,
@@ -72,31 +66,21 @@ function DRidders(pressure,Variable,xcount,fcount)
   end
   dfridr=0.0
   a = zeros(Float64,NTAB,NTAB)
-  stretch_pos = zeros(Float64,2)
-  stretch_neg = zeros(Float64,2)
   hh=h
-  for i in 1:2
-     stretch_pos[i] = Variable[i]
-     stretch_neg[i] = Variable[i]
-  end
-  stretch_pos[xcount] += hh
-  stretch_neg[xcount] -= hh
-  func_pos = ResidualFunction(pressure,stretch_pos,fcount)
-  func_neg = ResidualFunction(pressure,stretch_neg,fcount)
+  stretch_pos = stretch + hh
+  stretch_neg = stretch - hh
+  func_pos = ResidualFunction(pressure,stretch_pos)
+  func_neg = ResidualFunction(pressure,stretch_neg)
   a[1,1] = (func_pos-func_neg)/(2.0*hh)
   err=BIG
   # Successive columns in the Neville tableau will go to smaller stepsizes and higher orders of extrapolation.
   for i in 2:NTAB
     hh=hh/CON
     # Try new, smaller stepsize.
-    for i in 1:2
-       stretch_pos[i] = Variable[i]
-       stretch_neg[i] = Variable[i]
-    end
-    stretch_pos[xcount] += hh
-    stretch_neg[xcount] -= hh
-    func_pos = ResidualFunction(pressure,stretch_pos,fcount)
-    func_neg = ResidualFunction(pressure,stretch_neg,fcount)
+    stretch_pos = stretch + hh
+    stretch_neg = stretch - hh
+    func_pos = ResidualFunction(pressure,stretch_pos)
+    func_neg = ResidualFunction(pressure,stretch_neg)
     a[1,i] = (func_pos-func_neg)/(2.0*hh)
     fac=CON2
     # Compute extrapolations of various orders, requiring no new function evaluations.
@@ -122,23 +106,17 @@ function DRidders(pressure,Variable,xcount,fcount)
 end
 
 # Evaluation of the function
-function FunctionEval(pressure,Variable)
+function FunctionEval(pressure,stretch)
   """
   Function with the aim to get the values of the function and derivative at x.
   """
-  func = zeros(Float64,2)
-  df = zeros(Float64,2,2)
-  for fcount in 1:2
-     func[fcount] = ResidualFunction(pressure,Variable,fcount)
-     for xcount in 1:2
-        df[fcount,xcount] = DRidders(pressure,Variable,xcount,fcount)
-     end
-  end
+  func = ResidualFunction(pressure,stretch)
+  df = DRidders(pressure,stretch)
   return func,df
 end
 
 # Newton-Raphson method
-function NewtonRaphson(pressure,Variable)
+function NewtonRaphson(pressure,stretch)
   """
   Using the Newton-Raphson method, find the root of a function known to lie close to x. 
   The root rtnewt will be refined until its accuracy is known within +/- xacc. funcd
@@ -147,21 +125,15 @@ function NewtonRaphson(pressure,Variable)
   """
   # Set to maximum number of iterations.
   JMAX=20
-  #res = zeros(Float64,2)
-  res,_ = FunctionEval(pressure,Variable)
-  res_norm = norm(res)
+  res,_ = FunctionEval(pressure,stretch)
   # Initial guess.
-  rtnewt=Variable
+  rtnewt=stretch
   for j in 1:JMAX
-    dx = zeros(Float64,2)
     func,df = FunctionEval(pressure,rtnewt)
-    df_inv = inv(df)
-    mul!(dx,df_inv,func) #func/df
+    dx = func/df
     rtnewt -= dx
-    func_norm = norm(func)
     # Convergence.
-    if abs(func_norm/res_norm)<1.e-5
-      #print('Iterations: '+str(j))
+    if abs(func/res)<1.e-5
       return rtnewt
     end
   end
@@ -172,15 +144,16 @@ end
 # Test of the Solution method with derivatives from Ridders method
 number_of_increments=1
 # initial guess
-error=1.0
-Variable = [1.1,0.9]
+stretch = 1.0
 # incremental solution
 for Inc in 1:number_of_increments
-   global Variable
+   global stretch
    #global residual_norm
    factor=Inc/number_of_increments
    pressure=13.332e3*factor
-   solution = NewtonRaphson(pressure,Variable)
-   println("Increment $Inc, Solution= $solution")
+   solution = NewtonRaphson(pressure,stretch)
+   stretch = solution
+   radius = 10.0*stretch
+   println("Increment=$Inc, Pressure=$pressure, Stretch=$stretch, Radius=$radius")
 end
 

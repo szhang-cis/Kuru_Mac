@@ -37,7 +37,7 @@ class NearlyIncompressibleNeoHookean(Material):
         self.has_low_level_dispatcher = False
 
 
-    def Hessian(self, StrainTensors, ElectricFieldx=0, elem=0, gcounter=0):
+    def Hessian(self, StrainTensors, growth_remodeling=None, elem=0, gcounter=0):
         """Hessian split into isochoroic and volumetric parts"""
 
         I = StrainTensors['I']
@@ -52,7 +52,6 @@ class NearlyIncompressibleNeoHookean(Material):
             1./6.*trace(b)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)) ) +\
             2.*kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
         # VOLUMETRIC
-        #H_Voigt += self.pressure[elem]*(einsum('ij,kl',I,I) - (einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
 
         H_Voigt = Voigt(H_Voigt,1)
 
@@ -61,7 +60,7 @@ class NearlyIncompressibleNeoHookean(Material):
         return H_Voigt
 
 
-    def CauchyStress(self,StrainTensors,ElectricFieldx,elem=0,gcounter=0):
+    def CauchyStress(self,StrainTensors,growth_remodeling=None,elem=0,gcounter=0):
 
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
@@ -70,6 +69,5 @@ class NearlyIncompressibleNeoHookean(Material):
         mu = self.mu
         kappa = self.kappa
         stress = mu*J**(-5./3.)*(b - 1./3.*trace(b)*I) + 2.*kappa*(J-1.)*I
-        #stress += self.pressure[elem]*I
 
         return stress

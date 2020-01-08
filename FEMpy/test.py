@@ -58,8 +58,8 @@ total_density = 1050.0
 
 # Define hyperelastic material for mesh
 material = NearlyIncompressibleNeoHookean(ndim,
-            mu=72.0*total_density,
-            kappa=72.0e3*total_density)
+            mu=144.0*total_density,
+            kappa=1440.0*total_density)
 
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
@@ -103,7 +103,7 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        optimise=False,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=3)
+                       number_of_load_increments=1)
 
 #=================  SOLUTION  =======================
 # Call the solver

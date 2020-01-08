@@ -81,9 +81,9 @@ DirichletBoundary['SymmetryZ'] = Symmetry_Z
 DirichletBoundary['SymmetryX'] = Symmetry_X
 
 InnerFaces = np.array(InnerFaces,copy=True)
-NeumannBoundary = {}
-NeumannBoundary['InnerLogic'] = InnerSurface
-NeumannBoundary['InnerFaces'] = InnerFaces
+PressureBoundary = {}
+PressureBoundary['InnerLogic'] = InnerSurface
+PressureBoundary['InnerFaces'] = InnerFaces
 
 #===============  MATERIAL DEFINITION  ====================
 # Total initial density
@@ -105,7 +105,7 @@ Deposition['Matrix'] = np.zeros((3,3),dtype=np.float64)
 Deposition['Fibre'] = np.ones((5),dtype=np.float64)
 Deposition['Matrix'][2,2] = 1.25
 Deposition['Matrix'][1,1] = 1.34
-Deposition['Matrix'][0,0] = 1.0/(1.25*1.34)
+Deposition['Matrix'][0,0] = 1./(1.25*1.34)
 Deposition['Fibre'][0] = 1.1
 Deposition['Fibre'][1:5] = 1.062
 
@@ -119,7 +119,7 @@ material = ArterialWallMixture_(ndim,
             c2m=11.4,
             c1c=1136.0,
             c2c=11.2,
-            kappa=72.0e3,
+            kappa=72.0e6,
             anisotropic_orientations=fibre_direction,
             Deposition=Deposition,
             GrowthRemodeling=GrowthRemodeling)
@@ -144,24 +144,24 @@ def Dirichlet_Function(mesh, DirichletBoundary):
 
     return boundary_data
 
-# Neumann Boundary Conditions
-def Neumann_Function(mesh, NeumannBoundary):
+# Pressure Boundary Conditions
+def Pressure_Function(mesh, PressureBoundary):
     boundary_flags = np.zeros(mesh.faces.shape[0],dtype=np.uint8)
     boundary_data = np.zeros((mesh.faces.shape[0]))
     # Force magnitud
     mag = 13.3322e3
 
     for idf in range(mesh.faces.shape[0]):
-        if NeumannBoundary['InnerLogic'][idf]:
+        if PressureBoundary['InnerLogic'][idf]:
             boundary_data[idf] = mag
 
-    boundary_flags[NeumannBoundary['InnerLogic']] = True
+    boundary_flags[PressureBoundary['InnerLogic']] = True
 
     return boundary_flags, boundary_data
 
 boundary_condition = BoundaryCondition()
 boundary_condition.SetDirichletCriteria(Dirichlet_Function, mesh, DirichletBoundary)
-boundary_condition.SetNeumannCriteria(Neumann_Function, mesh, NeumannBoundary)
+boundary_condition.SetPressureCriteria(Pressure_Function, mesh, PressureBoundary)
 
 #===============  SOLVER DEFINITION  ======================
 fem_solver = FEMSolver(analysis_nature="nonlinear",
@@ -170,6 +170,7 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        maximum_iteration_for_newton_raphson=50,
                        optimise=False,
                        print_incremental_log=True,
+                       has_moving_boundary=True,
                        number_of_load_increments=1)
 
 #=================  HOMEOSTATIC SOLUTION  =======================
@@ -178,7 +179,7 @@ print('=====================================')
 print('==  COMPUTE HOMEOSTATIC STATE  ==')
 print('=====================================')
 # Call the solver for Homeostatic computation
-for Iter in range(5):
+for Iter in range(1):
     print('Iterarion ',Iter)
     # Call FEM solver for the current state
     solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
@@ -189,27 +190,27 @@ for Iter in range(5):
     dmesh_bounds = dmesh.Bounds
     distortion = np.sqrt(dmesh_bounds[0,0]**2+dmesh_bounds[0,1]**2+dmesh_bounds[0,2]**2)/0.010
     print('Distortion: '+str(distortion))
-    if distortion<0.05: break
+    #if distortion<0.05: break
     # GET DEFOMATION GRADIENT AT NODES TO COMPUTE A NEW ELASTIN DEPOSITION STRETCH
-    solution.StressRecovery()
-    DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
+    #solution.StressRecovery()
+    #DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
     # Compute Deposition Stretch at Gauss points
-    Deposition['Matrix'] = PrestrainGradient(Deposition['Matrix'], DeformationGradient, mesh)
+    #Deposition['Matrix'] = PrestrainGradient(Deposition['Matrix'], DeformationGradient, mesh)
     #print(DepositionStretch['ela'])
-    material.Deposition['Matrix']=Deposition['Matrix']
+    #material.Deposition['Matrix']=Deposition['Matrix']
 # Write Homeostatic state to paraview
 solution.WriteVTK('GandR_0',quantity=0)
 print('... Homeostatic step finished')
 # HOMEOSTATIC POSTPROCESS
-solution.StressRecovery()
-DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
-Stress_H = solution.recovered_fields['FibreStress'][-1,:,:]
-FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
-Softness = solution.recovered_fields['Softness'][-1,:,:]
+#solution.StressRecovery()
+#DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
+#Stress_H = solution.recovered_fields['FibreStress'][-1,:,:]
+#FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
+#Softness = solution.recovered_fields['Softness'][-1,:,:]
 # Update mesh coordinates
-TotalDisplacements = solution.sol[:,:,-1]
-euler_x = mesh.points + TotalDisplacements
-
+#TotalDisplacements = solution.sol[:,:,-1]
+#euler_x = mesh.points + TotalDisplacements
+"""
 #=================  REMODELING SOLUTION  =======================
 print('=====================================')
 print('==  COMPUTE GROWTH AND REMODELING  ==')
@@ -245,4 +246,4 @@ while time<total_time:
     # Update mesh coordinates
     TotalDisplacements = solution.sol[:,:,-1]
     euler_x = mesh.points + TotalDisplacements
-
+"""

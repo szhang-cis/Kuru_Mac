@@ -1,0 +1,2 @@
+#GNUPLOT
+plot 'stress.dat'

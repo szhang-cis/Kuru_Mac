@@ -479,6 +479,9 @@ class FEMSolver(object):
             self.LaunchDaskDistributedClient()
         #---------------------------------------------------------------------------#
 
+        # INITIATE DATA FOR THE ANALYSIS
+        NodalForces, Residual = np.zeros((mesh.points.shape[0]*formulation.nvar,1),dtype=np.float64), \
+            np.zeros((mesh.points.shape[0]*formulation.nvar,1),dtype=np.float64)
         # SET NON-LINEAR PARAMETERS
         self.NRConvergence = { 'Increment_'+str(Increment) : [] for Increment in range(self.number_of_load_increments) }
 
@@ -501,10 +504,8 @@ class FEMSolver(object):
         Eulerx = np.copy(mesh.points)
 
         # FIND PURE NEUMANN (EXTERNAL) NODAL FORCE VECTOR
-        NeumannForces = boundary_condition.ComputeNeumannForces(mesh, material, function_spaces, Eulerx,
-            compute_follower_forces=True, compute_body_forces=self.add_self_weight)
-
-        print("Assembled external traction forces. Time elapsed is {} seconds".format(time()-tAssembly))
+        NeumannForces = boundary_condition.ComputeNeumannForces(mesh, material, function_spaces,
+            compute_traction_forces=True, compute_body_forces=self.add_self_weight)
 
         # ADOPT A DIFFERENT PATH FOR INCREMENTAL LINEAR ELASTICITY
         if formulation.fields == "mechanics" and self.analysis_nature != "nonlinear":
@@ -517,7 +518,7 @@ class FEMSolver(object):
 
         # ASSEMBLE STIFFNESS MATRIX AND TRACTION FORCES FOR THE FIRST TIME (INTERNAL ENERGY)
         if self.analysis_type == "static":
-            K, TractionForces, _, _ = Assemble(self, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)
+            K, TractionForces, _ = Assemble(self, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)
         else:
             if self.reduce_quadrature_for_quads_hexes:
                 fspace = function_spaces[0] if (mesh.element_type=="hex" or mesh.element_type=="quad") else function_spaces[1]
@@ -528,13 +529,12 @@ class FEMSolver(object):
 
             if self.analysis_subtype != "explicit":
                 # COMPUTE BOTH STIFFNESS AND MASS USING HIGHER QUADRATURE RULE
-                K, TractionForces, _, M = Assemble(self, fspace, formulation, mesh, material, boundary_condition, Eulerx)
+                K, TractionForces, M = Assemble(self, fspace, formulation, mesh, material, boundary_condition, Eulerx)
             else:
                 # lmesh = mesh.ConvertToLinearMesh()
                 # COMPUTE BOTH STIFFNESS AND MASS USING HIGHER QUADRATURE RULE
                 TractionForces, _, M = AssembleExplicit(self, fspace, formulation, mesh, material, Eulerx)
 
-        print(K)
         if self.analysis_nature == 'nonlinear':
             print('Finished all pre-processing stage. Time elapsed was', time()-tAssembly, 'seconds')
         else:
@@ -545,16 +545,19 @@ class FEMSolver(object):
                 if self.analysis_nature == "nonlinear":
                     structural_integrator = NonlinearImplicitStructuralDynamicIntegrator()
                     TotalDisp = structural_integrator.Solver(function_spaces, formulation, solver,
-                        K, M, NeumannForces, mesh, TotalDisp, Eulerx, material, boundary_condition, self)
+                        K, M, NeumannForces, NodalForces, Residual,
+                        mesh, TotalDisp, Eulerx, material, boundary_condition, self)
                 elif self.analysis_nature == "linear":
                     boundary_condition.ConvertStaticsToDynamics(mesh, self.number_of_load_increments)
                     structural_integrator = LinearImplicitStructuralDynamicIntegrator()
                     TotalDisp = structural_integrator.Solver(function_spaces, formulation, solver,
-                        K, M, NeumannForces, mesh, TotalDisp, Eulerx, material, boundary_condition, self)
+                        K, M, NeumannForces, NodalForces, Residual,
+                        mesh, TotalDisp, Eulerx, material, boundary_condition, self)
             else:
                 structural_integrator = ExplicitStructuralDynamicIntegrator()
                 TotalDisp = structural_integrator.Solver(function_spaces, formulation, solver,
-                    TractionForces, M, NeumannForces, mesh, TotalDisp, Eulerx, material, boundary_condition, self)
+                    TractionForces, M, NeumannForces, NodalForces, Residual,
+                    mesh, TotalDisp, Eulerx, material, boundary_condition, self)
 
         else:
             if self.nonlinear_iterative_technique == "newton_raphson" or \
@@ -562,11 +565,13 @@ class FEMSolver(object):
                 self.nonlinear_iterative_technique == "line_search_newton_raphson" or \
                 self.nonlinear_iterative_technique == "snes":
                 TotalDisp = self.StaticSolver(function_spaces, formulation, solver,
-                    K,NeumannForces, mesh, TotalDisp, Eulerx, material, boundary_condition)
+                    K, NeumannForces, NodalForces, Residual,
+                    mesh, TotalDisp, Eulerx, material, boundary_condition)
             elif self.nonlinear_iterative_technique == "arc_length":
                 from FEMSolverArcLength import StaticSolverArcLength
                 TotalDisp = StaticSolverArcLength(self,function_spaces, formulation, solver,
-                    K,NeumannForces, mesh, TotalDisp, Eulerx, material, boundary_condition)
+                    K, NeumannForces, NodalForces, Residual,
+                    mesh, TotalDisp, Eulerx, material, boundary_condition)
             else:
                 raise RuntimeError("Iterative technique for nonlinear solver not understood")
 
@@ -577,30 +582,26 @@ class FEMSolver(object):
         return self.__makeoutput__(mesh, TotalDisp, formulation, function_spaces, material)
 
     def StaticSolver(self, function_spaces, formulation, solver, K,
-            NeumannForces, mesh, TotalDisp, Eulerx, material, boundary_condition):
-
-        # INITIATE DATA FOR THE ANALYSIS
-        NodalForces, Residual = np.zeros((mesh.points.shape[0]*formulation.nvar,1),dtype=np.float64), \
-            np.zeros((mesh.points.shape[0]*formulation.nvar,1),dtype=np.float64)
+            NeumannForces, NodalForces, Residual,
+            mesh, TotalDisp, Eulerx, material, boundary_condition):
 
         LoadIncrement = self.number_of_load_increments
         LoadFactor = 1./LoadIncrement
-        LoadFactorInc = 0.
         AppliedDirichletInc = np.zeros(boundary_condition.applied_dirichlet.shape[0],dtype=np.float64)
 
+        LoadFactorAdd = 0.0
         for Increment in range(LoadIncrement):
 
             # CHECK ADAPTIVE LOAD FACTOR
             if self.load_factor is not None:
                 LoadFactor = self.load_factor[Increment]
 
-            # APPLY INCREMENTAL NEUMANN BOUNDARY CONDITIONS
-            LoadFactorInc += LoadFactor
-            NeumannForces = boundary_condition.ComputeNeumannForces(mesh, material, function_spaces, Eulerx,
-                compute_follower_forces=True, compute_body_forces=self.add_self_weight)
-            DeltaF = LoadFactorInc*NeumannForces - NodalForces
-            NodalForces = LoadFactorInc*NeumannForces
-            # OBTAIN INCREMENTAL RESIDUAL - CONTRIBUTION FROM BOTH DIRICHLET AND NEUMANN
+            LoadFactorAdd += LoadFactor
+            boundary_condition.pressure_increment = LoadFactorAdd
+            # APPLY NEUMANN BOUNDARY CONDITIONS
+            DeltaF = LoadFactor*NeumannForces
+            NodalForces += DeltaF
+            # OBRTAIN INCREMENTAL RESIDUAL - CONTRIBUTION FROM BOTH NEUMANN AND DIRICHLET
             Residual = -boundary_condition.ApplyDirichletGetReducedMatrices(K,np.zeros_like(Residual),
                 boundary_condition.applied_dirichlet,LoadFactor=LoadFactor,only_residual=True)
             Residual -= DeltaF
@@ -674,7 +675,6 @@ class FEMSolver(object):
 
         Tolerance = self.newton_raphson_tolerance
         LoadIncrement = self.number_of_load_increments
-        LoadFactorInc = float(Increment+1)/float(LoadIncrement)
         Iter = 0
         self.iterative_norm_history = []
 
@@ -700,9 +700,6 @@ class FEMSolver(object):
 
             # RE-ASSEMBLE - COMPUTE STIFFNESS AND INTERNAL TRACTION FORCES
             K, TractionForces = Assemble(self, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)[:2]
-            NeumannForces = boundary_condition.ComputeNeumannForces(mesh, material, function_spaces, Eulerx,
-                compute_follower_forces=True, compute_body_forces=self.add_self_weight)
-            NodalForces = LoadFactorInc*NeumannForces
 
             # FIND THE RESIDUAL
             Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] -\
@@ -727,7 +724,7 @@ class FEMSolver(object):
                 break
 
             # BREAK BASED ON INCREMENTAL SOLUTION - KEEP IT AFTER UPDATE
-            if norm(dU) <=  self.newton_raphson_solution_tolerance:
+            if norm(dU) <=  self.newton_raphson_solution_tolerance and Iter!=0:
                 print("Incremental solution within tolerance i.e. norm(dU): {}".format(norm(dU)))
                 break
 

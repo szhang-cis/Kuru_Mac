@@ -71,7 +71,11 @@ class BoundaryCondition(object):
         self.dirichlet_flags = None
         self.neumann_flags = None
         self.applied_neumann = None
+        self.pressure_flags = None
+        self.applied_pressure = None
+        self.pressure_increment = 1.0
         self.is_applied_neumann_shape_functions_computed = False
+        self.is_applied_pressure_shape_functions_computed = False
         self.is_body_force_shape_functions_computed = False
 
         self.make_loading = make_loading # "ramp" or "constant"
@@ -126,6 +130,29 @@ class BoundaryCondition(object):
                     "should return one flag and one data array".format(func.__name__))
             self.neumann_flags = tups[0]
             self.applied_neumann = tups[1]
+            return tups
+
+    def SetPressureCriteria(self, func, *args, **kwargs):
+        """Applies user defined Neumann data to self
+        """
+
+        if "apply" in kwargs.keys():
+            del kwargs["apply"]
+            self.has_step_wise_pressure_loading = True
+            self.step_wise_pressure_data = {'func':func, 'args': args, 'kwargs': kwargs}
+            tups = func(0, *args, **kwargs)
+        else:
+            tups = func(*args, **kwargs)
+
+        if not isinstance(tups,tuple):
+            raise ValueError("User-defined Pressure criterion function {} "
+                "should return one flag and one data array".format(func.__name__))
+        else:
+            if len(tups) !=2:
+                raise ValueError("User-defined Pressure criterion function {} "
+                    "should return one flag and one data array".format(func.__name__))
+            self.pressure_flags = tups[0]
+            self.applied_pressure = tups[1]
             return tups
 
     def GetDirichletBoundaryConditions(self, formulation, mesh, material=None, solver=None, fem_solver=None):
@@ -224,9 +251,9 @@ class BoundaryCondition(object):
         self.columns_in = np.delete(np.arange(0,nvar*mesh.points.shape[0]),self.columns_out)
 
         if self.columns_in.shape[0] == 0:
-            warn("Dirichlet boundary conditions have been applied on the entire mesh")
-        if self.columns_out.shape[0] == 0:
             warn("No Dirichlet boundary conditions have been applied. The system is unconstrained")
+        if self.columns_out.shape[0] == 0:
+            warn("Dirichlet boundary conditions have been applied on the entire mesh")
 
         if self.save_dirichlet_data:
             from scipy.io import savemat
@@ -235,9 +262,8 @@ class BoundaryCondition(object):
                 'applied_dirichlet':self.applied_dirichlet}
             savemat(self.filename,diri_dict, do_compression=True)
 
-    def ComputeNeumannForces(self, mesh, material, function_spaces, Eulerx,
-            compute_follower_forces=True, compute_body_forces=False):
-        """Compute/assemble traction (follower) and body forces"""
+    def ComputeNeumannForces(self, mesh, material, function_spaces, compute_traction_forces=True, compute_body_forces=False):
+        """Compute/assemble traction and body forces"""
 
         if self.neumann_flags is None:
             return np.zeros((mesh.points.shape[0]*material.nvar,1),dtype=np.float64)
@@ -281,11 +307,11 @@ class BoundaryCondition(object):
                     function_spaces = (function_spaces[0],bfunction_space)
                     # raise ValueError("Boundary functional spaces not available for computing Neumman and body forces")
 
+            t_tassembly = time()
             if self.analysis_type == "static":
-                F = AssembleForces(self, mesh, material, function_spaces, Eulerx,
-                    compute_follower_forces=compute_follower_forces, compute_body_forces=compute_body_forces)
+                F = AssembleForces(self, mesh, material, function_spaces,
+                    compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces)
             elif self.analysis_type == "dynamic":
-                raise ValueError("Not well implemented yet")
                 if self.neumann_flags.ndim==2:
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY
                     tmp_flags = np.copy(self.neumann_flags)
@@ -294,15 +320,18 @@ class BoundaryCondition(object):
                     for step in range(self.neumann_flags.shape[1]):
                         self.neumann_flags = tmp_flags[:,step]
                         self.applied_neumann = tmp_data[:,:,step]
-                        F[:,step] = AssembleForces(self, mesh, material, function_spaces, Eulerx,
-                            compute_follower_forces=compute_follower_forces, compute_body_forces=compute_body_forces).flatten()
+                        F[:,step] = AssembleForces(self, mesh, material, function_spaces,
+                            compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
 
                     self.neumann_flags = tmp_flags
                     self.applied_neumann = tmp_data
                 else:
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY
-                    F = AssembleForces(self, mesh, material, function_spaces, Eulerx,
+                    F = AssembleForces(self, mesh, material, function_spaces,
                             compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
+
+            print("Assembled external traction forces. Time elapsed is {} seconds".format(time()-t_tassembly))
+
 
         elif self.neumann_data_applied_at == 'node':
             # A DIRICHLET TYPE METHODOLGY FOR APPLYING NEUMANN BOUNDARY CONDITONS (i.e. AT NODES)

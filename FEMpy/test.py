@@ -8,39 +8,6 @@ sys.path.append(os.path.join(os.path.expanduser("~/femme"),"FEMpy"))
 #import Florence
 from Florence import *
 
-def Directions(mesh):
-    """
-        Routine dedicated to compute the fibre direction of components in integration point for 
-        the Material in Florence and for the auxiliar routines in this script.
-    """
-    ndim = mesh.InferSpatialDimension()
-    direction = np.zeros((6,mesh.nelem,ndim),dtype=np.float64)
-    # Geometric definitions per element
-    center = np.zeros((mesh.nelem,ndim),dtype=np.float64)
-    tangential = np.zeros((mesh.nelem,ndim),dtype=np.float64)
-    divider = mesh.elements.shape[1]
-    directrix = [0.,1.,0.]
-    # Loop throught the element in the mesh
-    for elem in range(mesh.nelem):
-        # Geometric definitions per element
-        center[elem,:] = np.sum(mesh.points[mesh.elements[elem,:],:],axis=0)/divider
-        tangential[elem,:] = np.cross(directrix,center[elem,:])
-        tangential[elem,:] = tangential[elem,:]/np.linalg.norm(tangential[elem,:])
-        direction[0][elem,:] = np.cross(tangential[elem,:],directrix)
-        direction[0][elem,:] = direction[0][elem,:]/np.linalg.norm(direction[0][elem,:])
-        # Define the anisotropic orientations
-        direction[1][elem,:]=tangential[elem,:]
-        direction[2][elem,:]=tangential[elem,:]
-        direction[3][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) + \
-            np.multiply(tangential[elem,:],np.sin(np.pi/4))
-        direction[4][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) - \
-            np.multiply(tangential[elem,:],np.sin(np.pi/4))
-        direction[5][elem,:]=directrix
-
-    return direction
-#============================================================
-#===============  HOMOGENIZED CMT  ==========================
-#============================================================
 ProblemPath = os.getcwd()
 mesh_file = ProblemPath + '/Quarter_Ring.msh'
 
@@ -81,28 +48,18 @@ DirichletBoundary['SymmetryZ'] = Symmetry_Z
 DirichletBoundary['SymmetryX'] = Symmetry_X
 
 InnerFaces = np.array(InnerFaces,copy=True)
-NeumannBoundary = {}
-NeumannBoundary['InnerLogic'] = InnerSurface
-NeumannBoundary['InnerFaces'] = InnerFaces
+PressureBoundary = {}
+PressureBoundary['InnerLogic'] = InnerSurface
+PressureBoundary['InnerFaces'] = InnerFaces
 
 #===============  MATERIAL DEFINITION  ====================
-# fibre directions [thick,sms,co1,co2,co3,co4]
-fibre_direction = Directions(mesh)
+# Total initial density
+total_density = 1050.0
 
 # Define hyperelastic material for mesh
-material = ArterialWallMixture(ndim,
-            mu3D=72.0,
-            c1m=15.2,
-            c2m=11.4,
-            c1c=1136.0,
-            c2c=11.2,
-            kappa=72.0e3,
-            anisotropic_orientations=fibre_direction)
-
-# Define hyperelastic material for mesh
-#material = NearlyIncompressibleNeoHookean(ndim,
-#            mu=72.0*1.e3,
-#            kappa=72.0e5*1.e3)
+material = NearlyIncompressibleNeoHookean(ndim,
+            mu=72.0*total_density,
+            kappa=72.0e3*total_density)
 
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
@@ -119,24 +76,24 @@ def Dirichlet_Function(mesh, DirichletBoundary):
 
     return boundary_data
 
-# Neumann Boundary Conditions
-def Neumann_Function(mesh, NeumannBoundary):
+# Pressure Boundary Conditions
+def Pressure_Function(mesh, PressureBoundary):
     boundary_flags = np.zeros(mesh.faces.shape[0],dtype=np.uint8)
     boundary_data = np.zeros((mesh.faces.shape[0]))
     # Force magnitud
     mag = 13.3322e3
 
     for idf in range(mesh.faces.shape[0]):
-        if NeumannBoundary['InnerLogic'][idf]:
+        if PressureBoundary['InnerLogic'][idf]:
             boundary_data[idf] = mag
 
-    boundary_flags[NeumannBoundary['InnerLogic']] = True
+    boundary_flags[PressureBoundary['InnerLogic']] = True
 
     return boundary_flags, boundary_data
 
 boundary_condition = BoundaryCondition()
 boundary_condition.SetDirichletCriteria(Dirichlet_Function, mesh, DirichletBoundary)
-boundary_condition.SetNeumannCriteria(Neumann_Function, mesh, NeumannBoundary)
+boundary_condition.SetPressureCriteria(Pressure_Function, mesh, PressureBoundary)
 
 #===============  SOLVER DEFINITION  ======================
 fem_solver = FEMSolver(analysis_nature="nonlinear",
@@ -146,11 +103,12 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        optimise=False,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=1)
+                       number_of_load_increments=3)
 
-#===============  COMPUTE SOLUTION  ======================
-# Call FEM solver for the current state
+#=================  SOLUTION  =======================
+# Call the solver
 solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
     material=material, boundary_condition=boundary_condition)
-# Write Homeostatic state to paraview
-solution.WriteVTK('HiperElastic',quantity=0)
+# Write to paraview
+solution.WriteVTK('Hiperelastic',quantity=0)
+

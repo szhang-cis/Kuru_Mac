@@ -12,7 +12,7 @@ class NearlyIncompressibleNeoHookean(Material):
     """Material model for nearly incompressible neo-Hookean with the following internal energy:
 
         W(C) = mu/2*J**(-2/3)*(C:I)     # for isochoric part
-        U(J) = k/2*(J-1)**2             # for volumetric part
+        U(J) = k*(J-1)**2             # for volumetric part
 
         """
 

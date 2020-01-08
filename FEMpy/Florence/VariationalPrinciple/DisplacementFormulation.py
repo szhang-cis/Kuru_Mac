@@ -39,7 +39,7 @@ class DisplacementFormulation(VariationalPrinciple):
 
     def GetElementalMatrices(self, elem, function_space, mesh, material, fem_solver, Eulerx):
 
-        massel=[]; f = []
+        massel=[]
         # GET THE FIELDS AT THE ELEMENT LEVEL
         LagrangeElemCoords = mesh.points[mesh.elements[elem,:],:]
         EulerElemCoords = Eulerx[mesh.elements[elem,:],:]
@@ -66,12 +66,11 @@ class DisplacementFormulation(VariationalPrinciple):
             else:
                 massel = self.GetLocalMass(function_space,material,LagrangeElemCoords,EulerElemCoords,fem_solver,elem)
 
-
         I_stiff_elem, J_stiff_elem, V_stiff_elem = self.FindIndices(stiffnessel)
         if fem_solver.analysis_type != 'static' and fem_solver.is_mass_computed is False:
             I_mass_elem, J_mass_elem, V_mass_elem = self.FindIndices(massel)
 
-        return I_stiff_elem, J_stiff_elem, V_stiff_elem, t, f, I_mass_elem, J_mass_elem, V_mass_elem
+        return I_stiff_elem, J_stiff_elem, V_stiff_elem, t, I_mass_elem, J_mass_elem, V_mass_elem
 
     def GetLocalStiffness(self, function_space, material, LagrangeElemCoords, EulerELemCoords, ElemGrowthRemodeling, fem_solver, elem=0):
         """Get stiffness matrix of the system"""

@@ -8,6 +8,34 @@ sys.path.append(os.path.join(os.path.expanduser("~/femme"),"FEMpy"))
 #import Florence
 from Florence import *
 
+def Directions(mesh):
+    """
+        Routine dedicated to compute the fibre direction of components in integration point for 
+        the Material in Florence and for the auxiliar routines in this script.
+    """
+    ndim = mesh.InferSpatialDimension()
+    direction = np.zeros((2,mesh.nelem,ndim),dtype=np.float64)
+    # Geometric definitions per element
+    center = np.zeros((mesh.nelem,ndim),dtype=np.float64)
+    tangential = np.zeros((mesh.nelem,ndim),dtype=np.float64)
+    divider = mesh.elements.shape[1]
+    directrix = [0.,1.,0.]
+    # Loop throught the element in the mesh
+    for elem in range(mesh.nelem):
+        # Geometric definitions per element
+        center[elem,:] = np.sum(mesh.points[mesh.elements[elem,:],:],axis=0)/divider
+        tangential[elem,:] = np.cross(directrix,center[elem,:])
+        tangential[elem,:] = tangential[elem,:]/np.linalg.norm(tangential[elem,:])
+        # Define the anisotropic orientations
+        direction[0][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) + \
+            np.multiply(tangential[elem,:],np.sin(np.pi/4))
+        direction[1][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) - \
+            np.multiply(tangential[elem,:],np.sin(np.pi/4))
+
+    return direction
+#============================================================
+#===============  HOMOGENIZED CMT  ==========================
+#============================================================
 ProblemPath = os.getcwd()
 mesh_file = ProblemPath + '/Quarter_Ring.msh'
 
@@ -54,12 +82,20 @@ PressureBoundary['InnerFaces'] = InnerFaces
 
 #===============  MATERIAL DEFINITION  ====================
 # Total initial density
-total_density = 1050.0
+total_density = 525.0
+
+# fibre directions [thick,sms,co1,co2,co3,co4]
+fibre_direction = Directions(mesh)
 
 # Define hyperelastic material for mesh
-material = NearlyIncompressibleNeoHookean(ndim,
-            mu=144.0*total_density,
-            kappa=1440.0*total_density)
+material = AnisotropicFungQuadratic(ndim,
+            mu=72.0*total_density,
+            kappa=72.0*total_density*33.0,
+            k1=568.0*total_density,
+            k2=11.2,
+            anisotropic_orientations=fibre_direction)
+
+# kappa/mu=33 give nu=0.485 (Poisson's ratio)
 
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
@@ -103,12 +139,12 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        optimise=False,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=1)
+                       number_of_load_increments=3)
 
 #=================  SOLUTION  =======================
 # Call the solver
 solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
     material=material, boundary_condition=boundary_condition)
 # Write to paraview
-solution.WriteVTK('Hiperelastic',quantity=0)
-
+solution.WriteVTK('FungQ',quantity=0)
+print(solution.sol[:,:,-1])

@@ -44,8 +44,8 @@ class DisplacementFormulation(VariationalPrinciple):
         LagrangeElemCoords = mesh.points[mesh.elements[elem,:],:]
         EulerElemCoords = Eulerx[mesh.elements[elem,:],:]
         # GET DEPOSITION-STRETCH AND GROWTH-REMODELING FIELDS AT ELEMENT LEVEL (JOANDLAUBRIE)
-        if hasattr(material,'GrowthRemodeling'):
-            ElemGrowthRemodeling = material.GrowthRemodeling[mesh.elements[elem,:],:]
+        if hasattr(material,'growth_remodeling'):
+            ElemGrowthRemodeling = material.growth_remodeling[mesh.elements[elem,:],:]
         else:
             ElemGrowthRemodeling = None
 

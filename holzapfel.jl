@@ -31,10 +31,19 @@ function NeoHookean(stretch,pressure)
    stretch_t = stretch
    stretch_r = 1.0/stretch
    # parameter of hyperelastic model
-   density = 1050.0
-   mu = 144.0*density
+   density = 525.0
+   mu = 72.0*density
+   k1 = 568.0*density
+   k2 = 11.2
+   fibre = zeros(Float64,2)
+   fibre[1] = pi/4.0
+   fibre[2] = -pi/4.0
    # stresses
-   stress_t = mu*(stretch_t^2-stretch_r^2) #- pressure #/2.0
+   stress_t = mu*(stretch_t^2-stretch_r^2)
+   for i in 1:2
+      I4 = (cos(fibre[i]))^2 + (stretch_t*sin(fibre[i]))^2
+      stress_t += 2.0*k1*(I4-1.0)*exp(k2*(I4-1.0)^2)*(stretch_t*sin(fibre[i]))^2
+   end
    #stress_r = mu*(stretch_r^2-I1/3.0)*J^(-5.0/3.0) + 2.0*kappa*(J-1.0)
    #stress_r = -pressure/2.0
    #stress_z = mu*(1.0-I1/3.0)*J^(-5.0/3.0) + 2.0*kappa*(J-1.0)

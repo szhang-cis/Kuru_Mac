@@ -5,7 +5,7 @@ from __future__ import print_function
 #import numpy as np
 #import numpy.linalg as la
 from warnings import warn
-#from Florence import QuadratureRule, FunctionSpace
+from Florence import FunctionSpace, QuadratureRule
 #from Florence.Base import JacobianError, IllConditionedError
 #from Florence.Utils import PWD, RSWD
 
@@ -79,6 +79,184 @@ class PostProcess(object):
 
     def SetFEMSolver(self,fem_solver):
         self.fem_solver = fem_solver
+
+    def StressRecovery(self, steps=None, average_derived_quantities=True):
+
+        """
+            steps:          [list,np.1darray] for which time steps/increments the data should
+                            be recovered
+        """
+
+        if self.mesh is None:
+            raise ValueError("Mesh not set for post-processing")
+        if self.sol is None:
+            raise ValueError("Solution not set for post-processing")
+        if self.formulation is None:
+            raise ValueError("formulation not set for post-processing")
+        if self.material is None:
+            raise ValueError("material not set for post-processing")
+        if self.fem_solver is None:
+            raise ValueError("FEM solver not set for post-processing")
+
+        if self.sol.shape[1] > self.nvar:
+            return
+
+        det = np.linalg.det
+        inv = np.linalg.inv
+
+        mesh = self.mesh
+        fem_solver = self.fem_solver
+        formulation = self.formulation
+        material = self.material
+
+        # GET THE UNDERLYING LINEAR MESH
+        # lmesh = mesh.GetLinearMesh()
+        C = mesh.InferPolynomialDegree() - 1
+        ndim = mesh.InferSpatialDimension()
+
+        elements = mesh.elements
+        points = mesh.points
+        nelem = elements.shape[0]; npoint = points.shape[0]
+        nodeperelem = elements.shape[1]
+
+        # GET QUADRATURE
+        norder = 2*C
+        if norder == 0:
+            norder=1
+        # quadrature = QuadratureRule(qtype="gauss", norder=norder, mesh_type=mesh.element_type, optimal=3)
+        # Domain = FunctionSpace(mesh, quadrature, p=C+1)
+        Domain = FunctionSpace(mesh, p=C+1, evaluate_at_nodes=True)
+        Jm = Domain.Jm
+        AllGauss = Domain.AllGauss
+        Bases = Domain.Bases  #JOANDLAUBRIE
+
+        # requires_geometry_update = fem_solver.requires_geometry_update
+        requires_geometry_update = True # ALWAYS TRUE FOR THIS ROUTINE
+        TotalDisp = self.sol[:,:]
+
+        if hasattr(self,"number_of_load_increments"):
+            LoadIncrement = self.number_of_load_increments
+        else:
+            LoadIncrement = fem_solver.number_of_load_increments
+        increments = range(LoadIncrement)
+        if steps is not None:
+            LoadIncrement = len(steps)
+            increments = steps
+
+        # COMPUTE THE COMMON/NEIGHBOUR NODES ONCE
+        all_nodes = np.unique(elements)
+        Elss, Poss = mesh.GetNodeCommonality()[:2]
+
+        F = np.zeros((nelem,nodeperelem,ndim,ndim))
+        CauchyStressTensor = np.zeros((nelem,nodeperelem,ndim,ndim))
+        # DEFINE CONSTITUENT STRESSES FOR GROWTH-REMODELING PROBLEM
+        FibreStress = np.zeros((nelem,nodeperelem,5))  # 5-fibres
+        Softness = np.zeros((nelem,nodeperelem,5))  # 5-fibres
+
+        MainDict = {}
+        MainDict['F'] = np.zeros((LoadIncrement,npoint,ndim,ndim))
+        MainDict['CauchyStress'] = np.zeros((LoadIncrement,npoint,ndim,ndim))
+        MainDict['FibreStress'] = np.zeros((LoadIncrement,npoint,5))
+        MainDict['Softness'] = np.zeros((LoadIncrement,npoint,5))
+
+        for incr, Increment in enumerate(increments):
+            if TotalDisp.ndim == 3:
+                Eulerx = points + TotalDisp[:,:ndim,Increment]
+            else:
+                Eulerx = points + TotalDisp[:,:ndim]
+
+            # LOOP OVER ELEMENTS
+            for elem in range(nelem):
+                # GET THE FIELDS AT THE ELEMENT LEVEL
+                LagrangeElemCoords = points[elements[elem,:],:]
+                EulerELemCoords = Eulerx[elements[elem,:],:]
+                # GROWTH-REMODELING VALUES FOR THIS ELEMENT
+                ElemGrowthRemodeling = material.growth_remodeling[elements[elem,:],:]
+
+                if material.has_low_level_dispatcher:
+
+                    # GET LOCAL KINEMATICS
+                    SpatialGradient, F[elem,:,:,:], detJ = _KinematicMeasures_(Jm, AllGauss[:,0], LagrangeElemCoords,
+                        EulerELemCoords, requires_geometry_update)
+
+                    if self.formulation.fields == "electro_mechanics":
+                        # GET ELECTRIC FIELD
+                        ElectricFieldx[elem,:,:] = - np.einsum('ijk,j',SpatialGradient,ElectricPotentialElem)
+                        # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
+                        _D_dum ,CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:], ElectricFieldx[elem,:,:], elem=elem)
+                        ElectricDisplacementx[elem,:,:] = _D_dum[:,:,0]
+                    elif self.formulation.fields == "mechanics":
+                        # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
+                        CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
+
+                else:
+                    # GAUSS LOOP IN VECTORISED FORM
+                    ParentGradientX = np.einsum('ijk,jl->kil', Jm, LagrangeElemCoords)
+                    # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N)]
+                    MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
+                    # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N)]
+                    F[elem,:,:,:] = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
+                    # COMPUTE REMAINING KINEMATIC MEASURES
+                    StrainTensors = KinematicMeasures(F[elem,:,:,:], fem_solver.analysis_nature)
+                    # GROWTH-REMODELING VALUES AT GAUSS POINTS OR NODES (JOANDLAUBRIE)
+                    growth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
+
+                    # GEOMETRY UPDATE IS A MUST
+                    # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
+                    ParentGradientx = np.einsum('ijk,jl->kil',Jm,EulerELemCoords)
+                    # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N)]
+                    SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx),Jm)
+                    # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE)
+                    detJ = np.einsum('i,i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)),
+                        np.abs(StrainTensors['J']))
+
+                    # LOOP OVER GAUSS POINTS
+                    for counter in range(AllGauss.shape[0]):
+
+                        if material.energy_type == "enthalpy":
+                            # COMPUTE CAUCHY STRESS TENSOR
+                            CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,
+                                growth_remodeling,elem,counter)
+
+                        elif material.energy_type == "internal_energy":
+                            # COMPUTE CAUCHY STRESS TENSOR (JOANDLAUBRIE)
+                            CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,
+                                growth_remodeling,elem,counter)
+                            FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
+                                StrainTensors,growth_remodeling,elem,counter)
+
+
+            if average_derived_quantities:
+                for inode in all_nodes:
+                    # Els, Pos = np.where(elements==inode)
+                    Els, Pos = Elss[inode], Poss[inode]
+                    ncommon_nodes = Els.shape[0]
+                    for uelem in range(ncommon_nodes):
+                        MainDict['F'][incr,inode,:,:] += F[Els[uelem],Pos[uelem],:,:]
+                        MainDict['CauchyStress'][incr,inode,:,:] += CauchyStressTensor[Els[uelem],Pos[uelem],:,:]
+                        MainDict['FibreStress'][incr,inode,:] += FibreStress[Els[uelem],Pos[uelem],:]
+                        MainDict['Softness'][incr,inode,:] += Softness[Els[uelem],Pos[uelem],:]
+
+                    # AVERAGE OUT
+                    MainDict['F'][incr,inode,:,:] /= ncommon_nodes
+                    MainDict['CauchyStress'][incr,inode,:,:] /= ncommon_nodes
+                    MainDict['FibreStress'][incr,inode,:] /= ncommon_nodes
+                    MainDict['Softness'][incr,inode,:] /= ncommon_nodes
+
+            else:
+                for inode in all_nodes:
+                    # Els, Pos = np.where(elements==inode)
+                    Els, Pos = Elss[inode], Poss[inode]
+                    ncommon_nodes = Els.shape[0]
+                    uelem = 0
+                    MainDict['F'][incr,inode,:,:] = F[Els[uelem],Pos[uelem],:,:]
+                    MainDict['CauchyStress'][incr,inode,:,:] = CauchyStressTensor[Els[uelem],Pos[uelem],:,:]
+                    MainDict['FibreStress'][incr,inode,:] = FibreStress[Els[uelem],Pos[uelem],:]
+                    MainDict['Softness'][incr,inode,:] = Softness[Els[uelem],Pos[uelem],:]
+
+
+        self.recovered_fields = MainDict
+        return
 
     def QuantityNamer(self, num, print_name=True):
         """Returns the quantity (for augmented solution i.e. primary and recovered variables)

@@ -8,7 +8,7 @@ from Florence.FunctionSpace import Hex, HexES
 
 #from Florence.QuadratureRules.FeketePointsTri import *
 #from Florence.QuadratureRules.FeketePointsTet import *
-#from Florence.QuadratureRules.GaussLobattoPoints import *
+from Florence.QuadratureRules.GaussLobattoPoints import *
 #from Florence.QuadratureRules.EquallySpacedPoints import *
 
 

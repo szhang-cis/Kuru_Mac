@@ -38,6 +38,44 @@ def Directions(mesh):
         direction[5][elem,:]=directrix
 
     return direction
+
+def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,Softness):
+    """
+        This are the rates of Growth and Remodeling.
+        Forward Euler.
+    """
+    den0_tot = 1050.0
+    # Elastin degradation [days]
+    L_dam = 0.010
+    t_dam = 40.0
+    D_max = 0.5
+    T_ela = 101.0*365.25
+    den0_e = 1050.0*0.23
+    # Fribres turnover and remodeling
+    turnover = 101.0
+    gain = 0.01/turnover
+    for node in range(mesh.nnode):
+        AxialCoord = mesh.points[node,1]
+        # Update elastin density
+        elastin_rate = -GrowthRemodeling[node][0]/T_ela - \
+            (D_max/t_dam)*np.multiply(np.exp(-0.5*(AxialCoord/L_dam)**2 - time/t_dam),den0_e)
+        GrowthRemodeling[node][0] += Delta_t*elastin_rate
+        den_tot = GrowthRemodeling[node][0]
+        for key in [1,2,3,4,5]:
+            # fibres density rates
+            DeltaStress = FibreStress[node][key-1] - Stress_H[node][key-1]
+            density_rate = gain*np.multiply(GrowthRemodeling[node][key],
+                np.divide(DeltaStress,Stress_H[node][key-1]))
+            GrowthRemodeling[node][key] += Delta_t*density_rate
+            # fibres remodeling rates
+            lambda_r_dot = np.divide(density_rate,GrowthRemodeling[node][key]) + 1./turnover
+            remodeling_rate = np.multiply(np.multiply(lambda_r_dot,DeltaStress),Softness[node][key-1])
+            GrowthRemodeling[node][key+5] += Delta_t*remodeling_rate
+            den_tot += GrowthRemodeling[node][key]
+        GrowthRemodeling[node][11] = den_tot/den0_tot
+
+    return GrowthRemodeling
+
 #============================================================
 #===============  HOMOGENIZED CMT  ==========================
 #============================================================
@@ -86,49 +124,41 @@ PressureBoundary['InnerLogic'] = InnerSurface
 PressureBoundary['InnerFaces'] = InnerFaces
 
 #===============  MATERIAL DEFINITION  ====================
+# Deposition Stretches
+deposition_stretch = {}
+deposition_stretch['Elastin'] = np.eye(3,3,dtype=np.float64)
+deposition_stretch['Elastin'][2,2] = 1.25
+deposition_stretch['Elastin'][1,1] = 1.34
+deposition_stretch['Elastin'][0,0] = 1.0/(1.34*1.25)
+deposition_stretch['Muscle'] = 1.1
+deposition_stretch['Collagen'] = 1.062
+
 # Total initial density
-total_density = 1050.0
-# Growth and remodeling variables (densities, remodeling in fibres and growth)
-GrowthRemodeling = np.zeros((mesh.nnode,12),dtype=np.float64)
-# denstities[ela,smc,co1,co2,co3,co4], remodeling[smc,co1,co2,co3,co4], growth
-GrowthRemodeling[:,0] = 0.23*total_density
-GrowthRemodeling[:,1] = 0.15*total_density
-GrowthRemodeling[:,2] = 0.062*total_density
-GrowthRemodeling[:,3] = 0.248*total_density
-GrowthRemodeling[:,4] = 0.248*total_density
-GrowthRemodeling[:,5] = 0.062*total_density
-GrowthRemodeling[:,6:12] = 1.0
-    
-# Deposition Stretch
-Deposition = {}
-Deposition['Matrix'] = np.zeros((3,3),dtype=np.float64)
-Deposition['Fibre'] = np.ones((5),dtype=np.float64)
-Deposition['Matrix'][2,2] = 1.25
-Deposition['Matrix'][1,1] = 1.34
-Deposition['Matrix'][0,0] = 1./(1.25*1.34)
-Deposition['Fibre'][0] = 1.1
-Deposition['Fibre'][1:5] = 1.062
+growth_remodeling = np.zeros((mesh.nnode,12),dtype=np.float64)
+growth_remodeling[:,0] = 241.5
+growth_remodeling[:,1] = 157.5
+growth_remodeling[:,2] = 65.1
+growth_remodeling[:,3] = 260.4
+growth_remodeling[:,4] = 260.4
+growth_remodeling[:,5] = 62.1
+growth_remodeling[:,6:12] = 1.0
 
 # fibre directions [thick,sms,co1,co2,co3,co4]
 fibre_direction = Directions(mesh)
 
 # Define hyperelastic material for mesh
-material = ArterialWallMixture_(ndim,
-            mu3D=72.0,
-            c1m=15.2,
-            c2m=11.4,
-            c1c=1136.0,
-            c2c=11.2,
-            kappa=72.0e6,
+material = ArterialWallMixtureGR(ndim,
+            mu=72.0,
+            kappa=72.0*33.0,
+            k1m=7.6,
+            k2m=11.4,
+            k1c=568.0,
+            k2c=11.2,
             anisotropic_orientations=fibre_direction,
-            Deposition=Deposition,
-            GrowthRemodeling=GrowthRemodeling)
+            deposition_stretch=deposition_stretch,
+            growth_remodeling=growth_remodeling)
 
-# Define hyperelastic material for mesh
-#material = NearlyIncompressibleNeoHookean(ndim,
-#            mu=72.0*1.e3,
-#            kappa=72.0e5*1.e3)
-
+# kappa/mu=33 => nu=0.485 (Poisson's ratio)
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
 
@@ -174,48 +204,35 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        number_of_load_increments=1)
 
 #=================  HOMEOSTATIC SOLUTION  =======================
-# Homeostatic step solution
 print('=====================================')
 print('==  COMPUTE HOMEOSTATIC STATE  ==')
 print('=====================================')
 # Call the solver for Homeostatic computation
-for Iter in range(1):
-    print('Iterarion ',Iter)
-    # Call FEM solver for the current state
-    solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
-        material=material, boundary_condition=boundary_condition)
-    # Check the error displacement
-    dmesh = Mesh()
-    dmesh.points = solution.sol[:,:,-1]
-    dmesh_bounds = dmesh.Bounds
-    distortion = np.sqrt(dmesh_bounds[0,0]**2+dmesh_bounds[0,1]**2+dmesh_bounds[0,2]**2)/0.010
-    print('Distortion: '+str(distortion))
-    #if distortion<0.05: break
-    # GET DEFOMATION GRADIENT AT NODES TO COMPUTE A NEW ELASTIN DEPOSITION STRETCH
-    #solution.StressRecovery()
-    #DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
-    # Compute Deposition Stretch at Gauss points
-    #Deposition['Matrix'] = PrestrainGradient(Deposition['Matrix'], DeformationGradient, mesh)
-    #print(DepositionStretch['ela'])
-    #material.Deposition['Matrix']=Deposition['Matrix']
+solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
+    material=material, boundary_condition=boundary_condition)
+# Check the error displacement
+dmesh = Mesh()
+dmesh.points = solution.sol[:,:,-1]
+dmesh_bounds = dmesh.Bounds
+distortion = np.sqrt(dmesh_bounds[0,0]**2+dmesh_bounds[0,1]**2+dmesh_bounds[0,2]**2)/0.010
+print('Distortion: '+str(distortion))
 # Write Homeostatic state to paraview
-solution.WriteVTK('GandR_0',quantity=0)
+solution.WriteVTK('ForwardEuler_0',quantity=0)
 print('... Homeostatic step finished')
 # HOMEOSTATIC POSTPROCESS
-#solution.StressRecovery()
+solution.StressRecovery()
 #DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
-#Stress_H = solution.recovered_fields['FibreStress'][-1,:,:]
-#FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
-#Softness = solution.recovered_fields['Softness'][-1,:,:]
+Stress_H = solution.recovered_fields['FibreStress'][-1,:,:]
+FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
+Softness = solution.recovered_fields['Softness'][-1,:,:]
 # Update mesh coordinates
-#TotalDisplacements = solution.sol[:,:,-1]
-#euler_x = mesh.points + TotalDisplacements
-"""
+TotalDisplacements = solution.sol[:,:,-1]
+euler_x = mesh.points + TotalDisplacements
+
 #=================  REMODELING SOLUTION  =======================
 print('=====================================')
 print('==  COMPUTE GROWTH AND REMODELING  ==')
 print('=====================================')
-#print(mesh.points[mesh.elements,:])
 # Growth and Remodeling steps [10 days]
 total_time = 5500
 time = 0.0
@@ -228,22 +245,20 @@ while time<total_time:
     print('==== STEP: '+str(step)+' |8===D| TIME: '+str(time)+' days ====')
     print('*** Compute Solution')
     #**** compute of G&R at t_n **** F_{gr}(t_{n+1})
-    GrowthRemodeling = GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,Softness)
-    material.GrowthRemodeling = GrowthRemodeling
-    #print(GrowthRemodeling)
+    growth_remodeling = GetGrowthRemodeling(time,Delta_t,mesh,growth_remodeling,Stress_H,FibreStress,Softness)
+    material.growth_remodeling = growth_remodeling
     #**** compute mechanical equilibrium at t_{n+1} **** F(t_{n+1})
     solution = fem_solver.Solve(formulation=formulation, mesh=mesh, material=material,
-           boundary_condition=boundary_condition, Eulerx=euler_x)
+            boundary_condition=boundary_condition, Eulerx=euler_x)
     # Check Residual
-    if np.isnan(fem_solver1.norm_residual) or fem_solver1.norm_residual>1e06:
+    if np.isnan(fem_solver.norm_residual) or fem_solver.norm_residual>1e06:
         exit('MODEL DID NOT CONVERGE!')
-
     #**** STEPS POSTPROCESS ****
-    solution.WriteVTK('GandR_'+str(step),quantity=0)
+    solution.WriteVTK('ForwardEuler_'+str(step),quantity=0)
     solution.StressRecovery()
     FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
     Softness = solution.recovered_fields['Softness'][-1,:,:]
     # Update mesh coordinates
     TotalDisplacements = solution.sol[:,:,-1]
     euler_x = mesh.points + TotalDisplacements
-"""
+

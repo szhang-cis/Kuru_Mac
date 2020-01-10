@@ -30,11 +30,54 @@ function NeoHookean(stretch,pressure)
    # Variable to stretch
    stretch_t = stretch
    stretch_r = 1.0/stretch
-   # parameter of hyperelastic model
-   density = 1050.0
-   mu = 144.0*density
+   # densities
+   density = zeros(Float64,6)
+   density[1] = 241.5
+   density[2] = 157.5
+   density[3] = 65.1
+   density[4] = 260.4
+   density[5] = 260.4
+   density[6] = 65.1
+   # model parameters
+   mu = 72.0
+   k1m = 7.6
+   k2m = 11.4
+   k1c = 568.0
+   k2c = 11.2
+   # fibre directions
+   fibre = zeros(Float64,5)
+   fibre[1] = pi/2.0
+   fibre[2] = pi/2.0
+   fibre[3] = pi/4.0
+   fibre[4] = -pi/4.0
+   fibre[5] = 0.0
+   # deposition stretches
+   gz = 1.25
+   gt = 1.34
+   gr = 1.0/(1.25*1.34)
+   gm = 1.10
+   gc = 1.062
    # stresses
-   stress_t = mu*(stretch_t^2-stretch_r^2) #- pressure #/2.0
+   stress_t = mu*density[1]*((gt*stretch_t)^2-(gr*stretch_r)^2)
+   for i in 1:5
+      if i==1
+         I4 = gm^2*((cos(fibre[i]))^2 + (stretch_t*sin(fibre[i]))^2)
+	 k1=k1m
+	 k2=k2m
+	 den0=1050.0
+	 s_act=54.0e3*density[2]
+	 lambdaM=1.4
+	 lambdaA=1.0
+	 lambda0=0.8
+	 stress_t += s_act/den0*(1.0-(lambdaM-lambdaA)^2/(lambdaM-lambda0)^2)*(sin(fibre[1]))^2/I4
+      	 stress_t += 2.0*k1*density[i+1]*(I4-1.0)*exp(k2*(I4-1.0)^2)*(gm*stretch_t*sin(fibre[i]))^2
+      else
+         I4 = gc^2*((cos(fibre[i]))^2 + (stretch_t*sin(fibre[i]))^2)
+	 k1=k1c
+	 k2=k2c
+         stress_t += 2.0*k1*density[i+1]*(I4-1.0)*exp(k2*(I4-1.0)^2)*(gc*stretch_t*sin(fibre[i]))^2
+      end
+   end
    #stress_r = mu*(stretch_r^2-I1/3.0)*J^(-5.0/3.0) + 2.0*kappa*(J-1.0)
    #stress_r = -pressure/2.0
    #stress_z = mu*(1.0-I1/3.0)*J^(-5.0/3.0) + 2.0*kappa*(J-1.0)

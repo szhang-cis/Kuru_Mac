@@ -497,6 +497,38 @@ class Mesh(object):
             self.GetBoundaryEdgesQuad()
             self.GetEdgesQuad()
 
+    def GetNodeCommonality(self):
+        """Finds the elements sharing a node.
+            The return values are linked lists [list of numpy of arrays].
+            Each numpy array within the list gives the elements that contain a given node.
+            As a result the size of the linked list is nnode
+
+            outputs:
+                els:                        [list of numpy arrays] element numbers containing nodes
+                pos:                        [list of numpy arrays] elemental positions of the nodes
+                res_flat:                   [list of numpy arrays] position of nodes in the
+                                            flattened element connectivity.
+        """
+
+        self.__do_essential_memebers_exist__()
+
+        elements = self.elements.ravel()
+        idx_sort = np.argsort(elements)
+        sorted_elements = elements[idx_sort]
+        vals, idx_start = np.unique(sorted_elements, return_index=True)
+
+        # Sets of indices
+        flat_pos = np.split(idx_sort, idx_start[1:])
+        els = np.split(idx_sort // int(self.elements.shape[1]), idx_start[1:])
+        pos = np.split(idx_sort %  int(self.elements.shape[1]), idx_start[1:])
+
+        # In case one wants to return only the duplicates i.e. filter keeping only items occurring more than once
+        # vals, idx_start, count = np.unique(sorted_elements, return_counts=True, return_index=True)
+        # vals = vals[count > 1]
+        # res = filter(lambda x: x.size > 1, res)
+
+        return els, pos, flat_pos
+
     def Read(self, filename=None, element_type="tri", reader_type=None, reader_type_format=None,
         reader_type_version=None, order=0, read_surface_info=False, **kwargs):
         """Convenience mesh reader method to dispatch call to subsequent apporpriate methods"""

@@ -11,8 +11,8 @@ from Florence.Tensor import trace, Voigt
 class NearlyIncompressibleNeoHookean(Material):
     """Material model for nearly incompressible neo-Hookean with the following internal energy:
 
-        W(C) = mu/2*J**(-2/3)*(C:I)     # for isochoric part
-        U(J) = k*(J-1)**2             # for volumetric part
+        W(C) = mu/2*J**(-2/3)*(C:I-3)     # for isochoric part
+        U(J) = k/2*(J-1)**2               # for volumetric part
 
         """
 
@@ -50,8 +50,7 @@ class NearlyIncompressibleNeoHookean(Material):
         H_Voigt = 2*mu*J**(-5./3.)*(1./9.*trace(b)*einsum('ij,kl',I,I) - \
             1./3.*(einsum('ij,kl',b,I) + einsum('ij,kl',I,b)) +\
             1./6.*trace(b)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)) ) +\
-            2.*kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
-        # VOLUMETRIC
+            kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
 
         H_Voigt = Voigt(H_Voigt,1)
 
@@ -68,6 +67,6 @@ class NearlyIncompressibleNeoHookean(Material):
 
         mu = self.mu
         kappa = self.kappa
-        stress = mu*J**(-5./3.)*(b - 1./3.*trace(b)*I) + 2.*kappa*(J-1.)*I
+        stress = mu*J**(-5./3.)*(b - 1./3.*trace(b)*I) + kappa*(J-1.)*I
 
         return stress

@@ -1,3 +1,5 @@
-# femme
+# kuru
 
-Will see if it is possible to simplify Florence and center it in my Growth and Remodeling problem.
+This is a Finite-Element code to solve my tesis problem about Growth and Remodeling of aneurysms on the Aorta artery. The code is mainly base on Florence.
+
+- I have added a some routines in Assembly to get effect of follower loads (pressure).

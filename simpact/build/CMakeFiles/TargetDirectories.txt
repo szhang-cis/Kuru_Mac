@@ -1,8 +1,0 @@
-/media/skoll/FEM/simpact/build/CMakeFiles/edit_cache.dir
-/media/skoll/FEM/simpact/build/CMakeFiles/rebuild_cache.dir
-/media/skoll/FEM/simpact/lib/CMakeFiles/rebuild_cache.dir
-/media/skoll/FEM/simpact/lib/CMakeFiles/edit_cache.dir
-/media/skoll/FEM/simpact/lib/CMakeFiles/stampact.dir
-/media/skoll/FEM/simpact/bin/CMakeFiles/edit_cache.dir
-/media/skoll/FEM/simpact/bin/CMakeFiles/rebuild_cache.dir
-/media/skoll/FEM/simpact/bin/CMakeFiles/curvas.dir

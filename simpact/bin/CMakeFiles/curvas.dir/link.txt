@@ -1,1 +1,0 @@
-/usr/bin/gfortran     CMakeFiles/curvas.dir/history.f90.o CMakeFiles/curvas.dir/histd.f90.o CMakeFiles/curvas.dir/stacpvt.f90.o CMakeFiles/curvas.dir/stadisp.f90.o CMakeFiles/curvas.dir/stastre.f90.o CMakeFiles/curvas.dir/statcfr.f90.o  -o curvas  ../lib/libstampact.a 

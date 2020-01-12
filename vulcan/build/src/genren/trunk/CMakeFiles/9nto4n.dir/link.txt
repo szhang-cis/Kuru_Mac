@@ -1,1 +1,0 @@
-/usr/bin/gfortran    -O2 -fopenmp -cpp CMakeFiles/9nto4n.dir/9nto4n.f.o  -o 9nto4n  

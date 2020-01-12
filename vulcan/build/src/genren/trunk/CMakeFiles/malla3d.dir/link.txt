@@ -1,1 +1,0 @@
-/usr/bin/gfortran    -O2 -fopenmp -cpp CMakeFiles/malla3d.dir/malla3d.f.o  -o malla3d  

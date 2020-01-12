@@ -1,3 +1,0 @@
-      SUBROUTINE ASSIFIC1
-      RETURN
-      END

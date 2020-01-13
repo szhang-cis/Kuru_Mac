@@ -4,9 +4,10 @@ import sys, os
 import numpy as np
 from numpy import einsum
 # Build a path for python to Florence
-sys.path.append(os.path.join(os.path.expanduser("~/femme"),"FEMpy"))
+#sys.path.append(os.path.join(os.path.expanduser("~/kuru")))
+sys.path.append(os.path.expanduser("~/kuru"))
 #import Florence
-from Florence import *
+from Kuru import *
 
 def Directions(mesh):
     """
@@ -53,7 +54,7 @@ def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,
     den0_e = 1050.0*0.23
     # Fribres turnover and remodeling
     turnover = 101.0
-    gain = 0.01/turnover
+    gain = 0.05/turnover
     for node in range(mesh.nnode):
         AxialCoord = mesh.points[node,1]
         # Update elastin density
@@ -79,8 +80,8 @@ def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,
 #============================================================
 #===============  HOMOGENIZED CMT  ==========================
 #============================================================
-ProblemPath = os.getcwd()
-mesh_file = ProblemPath + '/Quarter_Ring.msh'
+ProblemPath = os.path.dirname(os.getcwd())
+mesh_file = ProblemPath + '/Quarter_Cylinder.msh'
 
 #===============  MESH PROCESING  ==========================
 # Build mesh with Florence tools from GMSH mesh
@@ -194,7 +195,7 @@ boundary_condition.SetDirichletCriteria(Dirichlet_Function, mesh, DirichletBound
 boundary_condition.SetPressureCriteria(Pressure_Function, mesh, PressureBoundary)
 
 #===============  SOLVER DEFINITION  ======================
-fem_solver = FEMSolver(analysis_nature="nonlinear",
+fem_solver_h = FEMSolver(analysis_nature="nonlinear",
                        analysis_type="static",
                        break_at_stagnation=False,
                        maximum_iteration_for_newton_raphson=50,
@@ -203,12 +204,21 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        has_moving_boundary=True,
                        number_of_load_increments=1)
 
+fem_solver_gr = FEMSolver(analysis_nature="nonlinear",
+                       analysis_type="static",
+                       break_at_stagnation=False,
+                       maximum_iteration_for_newton_raphson=50,
+                       optimise=False,
+                       print_incremental_log=True,
+                       has_moving_boundary=True,
+                       number_of_load_increments=4)
+
 #=================  HOMEOSTATIC SOLUTION  =======================
 print('=====================================')
 print('==  COMPUTE HOMEOSTATIC STATE  ==')
 print('=====================================')
 # Call the solver for Homeostatic computation
-solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
+solution = fem_solver_h.Solve(formulation=formulation, mesh=mesh,
     material=material, boundary_condition=boundary_condition)
 # Check the error displacement
 dmesh = Mesh()
@@ -236,7 +246,7 @@ print('=====================================')
 # Growth and Remodeling steps [10 days]
 total_time = 5500
 time = 0.0
-Delta_t = 10.0
+Delta_t = 40.0
 step = 0
 while time<total_time:
     # prepare for next step
@@ -248,10 +258,10 @@ while time<total_time:
     growth_remodeling = GetGrowthRemodeling(time,Delta_t,mesh,growth_remodeling,Stress_H,FibreStress,Softness)
     material.growth_remodeling = growth_remodeling
     #**** compute mechanical equilibrium at t_{n+1} **** F(t_{n+1})
-    solution = fem_solver.Solve(formulation=formulation, mesh=mesh, material=material,
+    solution = fem_solver_gr.Solve(formulation=formulation, mesh=mesh, material=material,
             boundary_condition=boundary_condition, Eulerx=euler_x)
     # Check Residual
-    if np.isnan(fem_solver.norm_residual) or fem_solver.norm_residual>1e06:
+    if np.isnan(fem_solver_gr.norm_residual) or fem_solver_gr.norm_residual>1e06:
         exit('MODEL DID NOT CONVERGE!')
     #**** STEPS POSTPROCESS ****
     solution.WriteVTK('ForwardEuler_'+str(step),quantity=0)

@@ -619,8 +619,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__Florence__Tensor__LinAlg
-#define __PYX_HAVE_API__Florence__Tensor__LinAlg
+#define __PYX_HAVE__Kuru__Tensor__LinAlg
+#define __PYX_HAVE_API__Kuru__Tensor__LinAlg
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -903,7 +903,7 @@ typedef struct {
 } __Pyx_BufFmt_Context;
 
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":776
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":776
  * # in Cython to enable them only on the right systems.
  * 
  * ctypedef npy_int8       int8_t             # <<<<<<<<<<<<<<
@@ -912,7 +912,7 @@ typedef struct {
  */
 typedef npy_int8 __pyx_t_5numpy_int8_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":777
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":777
  * 
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t             # <<<<<<<<<<<<<<
@@ -921,7 +921,7 @@ typedef npy_int8 __pyx_t_5numpy_int8_t;
  */
 typedef npy_int16 __pyx_t_5numpy_int16_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":778
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":778
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t             # <<<<<<<<<<<<<<
@@ -930,7 +930,7 @@ typedef npy_int16 __pyx_t_5numpy_int16_t;
  */
 typedef npy_int32 __pyx_t_5numpy_int32_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":779
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":779
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t
  * ctypedef npy_int64      int64_t             # <<<<<<<<<<<<<<
@@ -939,7 +939,7 @@ typedef npy_int32 __pyx_t_5numpy_int32_t;
  */
 typedef npy_int64 __pyx_t_5numpy_int64_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":783
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":783
  * #ctypedef npy_int128     int128_t
  * 
  * ctypedef npy_uint8      uint8_t             # <<<<<<<<<<<<<<
@@ -948,7 +948,7 @@ typedef npy_int64 __pyx_t_5numpy_int64_t;
  */
 typedef npy_uint8 __pyx_t_5numpy_uint8_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":784
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":784
  * 
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t             # <<<<<<<<<<<<<<
@@ -957,7 +957,7 @@ typedef npy_uint8 __pyx_t_5numpy_uint8_t;
  */
 typedef npy_uint16 __pyx_t_5numpy_uint16_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":785
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":785
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t             # <<<<<<<<<<<<<<
@@ -966,7 +966,7 @@ typedef npy_uint16 __pyx_t_5numpy_uint16_t;
  */
 typedef npy_uint32 __pyx_t_5numpy_uint32_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":786
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":786
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t
  * ctypedef npy_uint64     uint64_t             # <<<<<<<<<<<<<<
@@ -975,7 +975,7 @@ typedef npy_uint32 __pyx_t_5numpy_uint32_t;
  */
 typedef npy_uint64 __pyx_t_5numpy_uint64_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":790
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":790
  * #ctypedef npy_uint128    uint128_t
  * 
  * ctypedef npy_float32    float32_t             # <<<<<<<<<<<<<<
@@ -984,7 +984,7 @@ typedef npy_uint64 __pyx_t_5numpy_uint64_t;
  */
 typedef npy_float32 __pyx_t_5numpy_float32_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":791
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":791
  * 
  * ctypedef npy_float32    float32_t
  * ctypedef npy_float64    float64_t             # <<<<<<<<<<<<<<
@@ -993,7 +993,7 @@ typedef npy_float32 __pyx_t_5numpy_float32_t;
  */
 typedef npy_float64 __pyx_t_5numpy_float64_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":800
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":800
  * # The int types are mapped a bit surprising --
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t             # <<<<<<<<<<<<<<
@@ -1002,7 +1002,7 @@ typedef npy_float64 __pyx_t_5numpy_float64_t;
  */
 typedef npy_long __pyx_t_5numpy_int_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":801
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":801
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t             # <<<<<<<<<<<<<<
@@ -1011,7 +1011,7 @@ typedef npy_long __pyx_t_5numpy_int_t;
  */
 typedef npy_longlong __pyx_t_5numpy_long_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":802
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":802
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t
  * ctypedef npy_longlong   longlong_t             # <<<<<<<<<<<<<<
@@ -1020,7 +1020,7 @@ typedef npy_longlong __pyx_t_5numpy_long_t;
  */
 typedef npy_longlong __pyx_t_5numpy_longlong_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":804
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":804
  * ctypedef npy_longlong   longlong_t
  * 
  * ctypedef npy_ulong      uint_t             # <<<<<<<<<<<<<<
@@ -1029,7 +1029,7 @@ typedef npy_longlong __pyx_t_5numpy_longlong_t;
  */
 typedef npy_ulong __pyx_t_5numpy_uint_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":805
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":805
  * 
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t             # <<<<<<<<<<<<<<
@@ -1038,7 +1038,7 @@ typedef npy_ulong __pyx_t_5numpy_uint_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":806
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":806
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t
  * ctypedef npy_ulonglong  ulonglong_t             # <<<<<<<<<<<<<<
@@ -1047,7 +1047,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":808
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":808
  * ctypedef npy_ulonglong  ulonglong_t
  * 
  * ctypedef npy_intp       intp_t             # <<<<<<<<<<<<<<
@@ -1056,7 +1056,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
  */
 typedef npy_intp __pyx_t_5numpy_intp_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":809
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":809
  * 
  * ctypedef npy_intp       intp_t
  * ctypedef npy_uintp      uintp_t             # <<<<<<<<<<<<<<
@@ -1065,7 +1065,7 @@ typedef npy_intp __pyx_t_5numpy_intp_t;
  */
 typedef npy_uintp __pyx_t_5numpy_uintp_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":811
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":811
  * ctypedef npy_uintp      uintp_t
  * 
  * ctypedef npy_double     float_t             # <<<<<<<<<<<<<<
@@ -1074,7 +1074,7 @@ typedef npy_uintp __pyx_t_5numpy_uintp_t;
  */
 typedef npy_double __pyx_t_5numpy_float_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":812
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":812
  * 
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t             # <<<<<<<<<<<<<<
@@ -1083,7 +1083,7 @@ typedef npy_double __pyx_t_5numpy_float_t;
  */
 typedef npy_double __pyx_t_5numpy_double_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":813
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":813
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t
  * ctypedef npy_longdouble longdouble_t             # <<<<<<<<<<<<<<
@@ -1092,14 +1092,14 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "Florence/Tensor/LinAlg.pyx":19
+/* "Kuru/Tensor/LinAlg.pyx":19
  * 
  * Integer = np.int32
  * ctypedef np.int32_t Integer_t             # <<<<<<<<<<<<<<
  * 
  * 
  */
-typedef __pyx_t_5numpy_int32_t __pyx_t_8Florence_6Tensor_6LinAlg_Integer_t;
+typedef __pyx_t_5numpy_int32_t __pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t;
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -1127,7 +1127,7 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 
 /*--- Type declarations ---*/
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":815
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":815
  * ctypedef npy_longdouble longdouble_t
  * 
  * ctypedef npy_cfloat      cfloat_t             # <<<<<<<<<<<<<<
@@ -1136,7 +1136,7 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
  */
 typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":816
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":816
  * 
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t             # <<<<<<<<<<<<<<
@@ -1145,7 +1145,7 @@ typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":817
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":817
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t
  * ctypedef npy_clongdouble clongdouble_t             # <<<<<<<<<<<<<<
@@ -1154,7 +1154,7 @@ typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
  */
 typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":819
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":819
  * ctypedef npy_clongdouble clongdouble_t
  * 
  * ctypedef npy_cdouble     complex_t             # <<<<<<<<<<<<<<
@@ -1711,35 +1711,35 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 
 /* Module declarations from 'libcpp.vector' */
 
-/* Module declarations from 'Florence.Tensor.LinAlg' */
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *); /*proto*/
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *); /*proto*/
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const *); /*proto*/
-static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const *); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double const *, double const *); /*proto*/
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double const *, double const *); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *, double const *); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *, double const *); /*proto*/
+/* Module declarations from 'Kuru.Tensor.LinAlg' */
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_inverse(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_inv2(double *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_inv3(double *); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_inverse_transpose(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_invT2(double *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_invT3(double *); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_determinant(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
+static CYTHON_INLINE double __pyx_f_4Kuru_6Tensor_6LinAlg_det2(double const *); /*proto*/
+static CYTHON_INLINE double __pyx_f_4Kuru_6Tensor_6LinAlg_det3(double const *); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_dgemm(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_dgemm2(double const *, double const *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_dgemm3(double const *, double const *); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_daxpy(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_daxpy2(double const *, double const *); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_daxpy3(double const *, double const *); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_py_double(double *, Py_ssize_t); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_tuple_double(double *, Py_ssize_t); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_py_double___5b_2_5d_(double (*)[2], Py_ssize_t); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_tuple_double___5b_2_5d_(double (*)[2], Py_ssize_t); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_py_double___5b_3_5d_(double (*)[3], Py_ssize_t); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_tuple_double___5b_3_5d_(double (*)[3], Py_ssize_t); /*proto*/
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_8Florence_6Tensor_6LinAlg_Integer_t = { "Integer_t", NULL, sizeof(__pyx_t_8Florence_6Tensor_6LinAlg_Integer_t), { 0 }, 0, IS_UNSIGNED(__pyx_t_8Florence_6Tensor_6LinAlg_Integer_t) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_8Florence_6Tensor_6LinAlg_Integer_t), 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t = { "Integer_t", NULL, sizeof(__pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t), { 0 }, 0, IS_UNSIGNED(__pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t), 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "Florence.Tensor.LinAlg"
-extern int __pyx_module_is_main_Florence__Tensor__LinAlg;
-int __pyx_module_is_main_Florence__Tensor__LinAlg = 0;
+#define __Pyx_MODULE_NAME "Kuru.Tensor.LinAlg"
+extern int __pyx_module_is_main_Kuru__Tensor__LinAlg;
+int __pyx_module_is_main_Kuru__Tensor__LinAlg = 0;
 
-/* Implementation of 'Florence.Tensor.LinAlg' */
+/* Implementation of 'Kuru.Tensor.LinAlg' */
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
@@ -1777,8 +1777,8 @@ static const char __pyx_k_LinAlg_pyx[] = "LinAlg.pyx";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
+static const char __pyx_k_Kuru_Tensor_LinAlg[] = "Kuru.Tensor.LinAlg";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_Florence_Tensor_LinAlg[] = "Florence.Tensor.LinAlg";
 static const char __pyx_k_matrices_are_not_aligned[] = "matrices are not aligned";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
@@ -1795,11 +1795,11 @@ static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
 static PyObject *__pyx_n_s_A;
 static PyObject *__pyx_n_s_B;
-static PyObject *__pyx_n_s_Florence_Tensor_LinAlg;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
 static PyObject *__pyx_n_s_ImportError;
 static PyObject *__pyx_n_s_Integer;
+static PyObject *__pyx_n_s_Kuru_Tensor_LinAlg;
 static PyObject *__pyx_kp_s_LinAlg_pyx;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
@@ -1842,12 +1842,12 @@ static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_warn;
 static PyObject *__pyx_n_s_warnings;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_A); /* proto */
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_2inverse(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A); /* proto */
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_4inverse_transpose(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A); /* proto */
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_6determinant(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A); /* proto */
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_8dgemm(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_B); /* proto */
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_10daxpy(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_b); /* proto */
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_A); /* proto */
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_2inverse(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A); /* proto */
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_4inverse_transpose(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A); /* proto */
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_6determinant(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A); /* proto */
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_8dgemm(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_B); /* proto */
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_10daxpy(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_b); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_tuple_;
@@ -1862,7 +1862,7 @@ static PyObject *__pyx_tuple__9;
 static PyObject *__pyx_codeobj__10;
 /* Late includes */
 
-/* "Florence/Tensor/LinAlg.pyx":29
+/* "Kuru/Tensor/LinAlg.pyx":29
  * 
  * # REVERSE Cuthill-McKee PERMUTATION FOR SPARSE MATRICES
  * def symrcm(A):             # <<<<<<<<<<<<<<
@@ -1871,24 +1871,24 @@ static PyObject *__pyx_codeobj__10;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_1symrcm(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
-static char __pyx_doc_8Florence_6Tensor_6LinAlg_symrcm[] = "Reverse Cuthill-McKee algorithm for sparse csr_matrix and csc_matrix.\n        The return value of symrcm(A) is a permutation vector (1D array) such\n        that A(r,r) has its non-zero elements closer to the diagonal. Applying\n        this permutation to matrices can be beneficial for the efficiency of the\n        linear solvers.\n    ";
-static PyMethodDef __pyx_mdef_8Florence_6Tensor_6LinAlg_1symrcm = {"symrcm", (PyCFunction)__pyx_pw_8Florence_6Tensor_6LinAlg_1symrcm, METH_O, __pyx_doc_8Florence_6Tensor_6LinAlg_symrcm};
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_1symrcm(PyObject *__pyx_self, PyObject *__pyx_v_A) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_1symrcm(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
+static char __pyx_doc_4Kuru_6Tensor_6LinAlg_symrcm[] = "Reverse Cuthill-McKee algorithm for sparse csr_matrix and csc_matrix.\n        The return value of symrcm(A) is a permutation vector (1D array) such\n        that A(r,r) has its non-zero elements closer to the diagonal. Applying\n        this permutation to matrices can be beneficial for the efficiency of the\n        linear solvers.\n    ";
+static PyMethodDef __pyx_mdef_4Kuru_6Tensor_6LinAlg_1symrcm = {"symrcm", (PyCFunction)__pyx_pw_4Kuru_6Tensor_6LinAlg_1symrcm, METH_O, __pyx_doc_4Kuru_6Tensor_6LinAlg_symrcm};
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_1symrcm(PyObject *__pyx_self, PyObject *__pyx_v_A) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("symrcm (wrapper)", 0);
-  __pyx_r = __pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(__pyx_self, ((PyObject *)__pyx_v_A));
+  __pyx_r = __pyx_pf_4Kuru_6Tensor_6LinAlg_symrcm(__pyx_self, ((PyObject *)__pyx_v_A));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_A) {
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_A) {
   PyArrayObject *__pyx_v_ind = 0;
   PyArrayObject *__pyx_v_ptr = 0;
-  __pyx_t_8Florence_6Tensor_6LinAlg_Integer_t __pyx_v_num_rows;
+  __pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t __pyx_v_num_rows;
   PyArrayObject *__pyx_v_order = 0;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_ind;
   __Pyx_Buffer __pyx_pybuffer_ind;
@@ -1902,7 +1902,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   PyArrayObject *__pyx_t_2 = NULL;
   PyArrayObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  __pyx_t_8Florence_6Tensor_6LinAlg_Integer_t __pyx_t_5;
+  __pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
   PyArrayObject *__pyx_t_8 = NULL;
@@ -1924,7 +1924,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   __pyx_pybuffernd_order.data = NULL;
   __pyx_pybuffernd_order.rcbuffer = &__pyx_pybuffer_order;
 
-  /* "Florence/Tensor/LinAlg.pyx":37
+  /* "Kuru/Tensor/LinAlg.pyx":37
  *     """
  * 
  *     cdef np.ndarray[Integer_t] ind = A.indices             # <<<<<<<<<<<<<<
@@ -1937,7 +1937,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   __pyx_t_2 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_ind.rcbuffer->pybuffer, (PyObject*)__pyx_t_2, &__Pyx_TypeInfo_nn___pyx_t_8Florence_6Tensor_6LinAlg_Integer_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_ind.rcbuffer->pybuffer, (PyObject*)__pyx_t_2, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_ind = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_ind.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 37, __pyx_L1_error)
     } else {__pyx_pybuffernd_ind.diminfo[0].strides = __pyx_pybuffernd_ind.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_ind.diminfo[0].shape = __pyx_pybuffernd_ind.rcbuffer->pybuffer.shape[0];
@@ -1947,7 +1947,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   __pyx_v_ind = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "Florence/Tensor/LinAlg.pyx":38
+  /* "Kuru/Tensor/LinAlg.pyx":38
  * 
  *     cdef np.ndarray[Integer_t] ind = A.indices
  *     cdef np.ndarray[Integer_t] ptr = A.indptr             # <<<<<<<<<<<<<<
@@ -1960,7 +1960,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   __pyx_t_3 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_ptr.rcbuffer->pybuffer, (PyObject*)__pyx_t_3, &__Pyx_TypeInfo_nn___pyx_t_8Florence_6Tensor_6LinAlg_Integer_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_ptr.rcbuffer->pybuffer, (PyObject*)__pyx_t_3, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_ptr = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_ptr.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 38, __pyx_L1_error)
     } else {__pyx_pybuffernd_ptr.diminfo[0].strides = __pyx_pybuffernd_ptr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_ptr.diminfo[0].shape = __pyx_pybuffernd_ptr.rcbuffer->pybuffer.shape[0];
@@ -1970,7 +1970,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   __pyx_v_ptr = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "Florence/Tensor/LinAlg.pyx":39
+  /* "Kuru/Tensor/LinAlg.pyx":39
  *     cdef np.ndarray[Integer_t] ind = A.indices
  *     cdef np.ndarray[Integer_t] ptr = A.indptr
  *     cdef Integer_t num_rows = A.shape[0]             # <<<<<<<<<<<<<<
@@ -1986,7 +1986,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_num_rows = __pyx_t_5;
 
-  /* "Florence/Tensor/LinAlg.pyx":40
+  /* "Kuru/Tensor/LinAlg.pyx":40
  *     cdef np.ndarray[Integer_t] ptr = A.indptr
  *     cdef Integer_t num_rows = A.shape[0]
  *     cdef np.ndarray[Integer_t] order = np.zeros(num_rows,dtype=Integer)             # <<<<<<<<<<<<<<
@@ -2020,7 +2020,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   __pyx_t_8 = ((PyArrayObject *)__pyx_t_7);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_order.rcbuffer->pybuffer, (PyObject*)__pyx_t_8, &__Pyx_TypeInfo_nn___pyx_t_8Florence_6Tensor_6LinAlg_Integer_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_order.rcbuffer->pybuffer, (PyObject*)__pyx_t_8, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_order = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_order.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 40, __pyx_L1_error)
     } else {__pyx_pybuffernd_order.diminfo[0].strides = __pyx_pybuffernd_order.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_order.diminfo[0].shape = __pyx_pybuffernd_order.rcbuffer->pybuffer.shape[0];
@@ -2030,7 +2030,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   __pyx_v_order = ((PyArrayObject *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "Florence/Tensor/LinAlg.pyx":43
+  /* "Kuru/Tensor/LinAlg.pyx":43
  * 
  *     # cdef vector[int] order = reverse_cuthill_mckee(&ind[0], &ptr[0], num_rows, order)
  *     reverse_cuthill_mckee(&ind[0], &ptr[0], num_rows, &order[0])             # <<<<<<<<<<<<<<
@@ -2067,9 +2067,9 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
     __Pyx_RaiseBufferIndexError(__pyx_t_10);
     __PYX_ERR(0, 43, __pyx_L1_error)
   }
-  reverse_cuthill_mckee((&(*__Pyx_BufPtrStrided1d(__pyx_t_8Florence_6Tensor_6LinAlg_Integer_t *, __pyx_pybuffernd_ind.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_ind.diminfo[0].strides))), (&(*__Pyx_BufPtrStrided1d(__pyx_t_8Florence_6Tensor_6LinAlg_Integer_t *, __pyx_pybuffernd_ptr.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_ptr.diminfo[0].strides))), __pyx_v_num_rows, (&(*__Pyx_BufPtrStrided1d(__pyx_t_8Florence_6Tensor_6LinAlg_Integer_t *, __pyx_pybuffernd_order.rcbuffer->pybuffer.buf, __pyx_t_12, __pyx_pybuffernd_order.diminfo[0].strides))));
+  reverse_cuthill_mckee((&(*__Pyx_BufPtrStrided1d(__pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t *, __pyx_pybuffernd_ind.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_ind.diminfo[0].strides))), (&(*__Pyx_BufPtrStrided1d(__pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t *, __pyx_pybuffernd_ptr.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_ptr.diminfo[0].strides))), __pyx_v_num_rows, (&(*__Pyx_BufPtrStrided1d(__pyx_t_4Kuru_6Tensor_6LinAlg_Integer_t *, __pyx_pybuffernd_order.rcbuffer->pybuffer.buf, __pyx_t_12, __pyx_pybuffernd_order.diminfo[0].strides))));
 
-  /* "Florence/Tensor/LinAlg.pyx":44
+  /* "Kuru/Tensor/LinAlg.pyx":44
  *     # cdef vector[int] order = reverse_cuthill_mckee(&ind[0], &ptr[0], num_rows, order)
  *     reverse_cuthill_mckee(&ind[0], &ptr[0], num_rows, &order[0])
  *     return order             # <<<<<<<<<<<<<<
@@ -2081,7 +2081,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   __pyx_r = ((PyObject *)__pyx_v_order);
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":29
+  /* "Kuru/Tensor/LinAlg.pyx":29
  * 
  * # REVERSE Cuthill-McKee PERMUTATION FOR SPARSE MATRICES
  * def symrcm(A):             # <<<<<<<<<<<<<<
@@ -2103,7 +2103,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_order.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_ptr.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.symrcm", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.symrcm", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -2119,7 +2119,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":60
+/* "Kuru/Tensor/LinAlg.pyx":60
  * @boundscheck(False)
  * @wraparound(False)
  * cpdef inverse(np.ndarray[double,ndim=2] A):             # <<<<<<<<<<<<<<
@@ -2127,8 +2127,8 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_symrcm(CYTHON_UNUSED PyObjec
  *     if ndim == 2:
  */
 
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_3inverse(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_v_A, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_3inverse(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_v_A, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_ndim;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
   __Pyx_Buffer __pyx_pybuffer_A;
@@ -2152,7 +2152,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
   }
   __pyx_pybuffernd_A.diminfo[0].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_A.diminfo[0].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_A.diminfo[1].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_A.diminfo[1].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[1];
 
-  /* "Florence/Tensor/LinAlg.pyx":61
+  /* "Kuru/Tensor/LinAlg.pyx":61
  * @wraparound(False)
  * cpdef inverse(np.ndarray[double,ndim=2] A):
  *     cdef int ndim = A.shape[0]             # <<<<<<<<<<<<<<
@@ -2161,7 +2161,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
  */
   __pyx_v_ndim = (__pyx_v_A->dimensions[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":62
+  /* "Kuru/Tensor/LinAlg.pyx":62
  * cpdef inverse(np.ndarray[double,ndim=2] A):
  *     cdef int ndim = A.shape[0]
  *     if ndim == 2:             # <<<<<<<<<<<<<<
@@ -2171,7 +2171,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
   switch (__pyx_v_ndim) {
     case 2:
 
-    /* "Florence/Tensor/LinAlg.pyx":63
+    /* "Kuru/Tensor/LinAlg.pyx":63
  *     cdef int ndim = A.shape[0]
  *     if ndim == 2:
  *         return inv2(&A[0,0])             # <<<<<<<<<<<<<<
@@ -2181,13 +2181,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_1 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_3 = __pyx_f_8Florence_6Tensor_6LinAlg_inv2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_2, __pyx_pybuffernd_A.diminfo[1].strides)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_4Kuru_6Tensor_6LinAlg_inv2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_2, __pyx_pybuffernd_A.diminfo[1].strides)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":62
+    /* "Kuru/Tensor/LinAlg.pyx":62
  * cpdef inverse(np.ndarray[double,ndim=2] A):
  *     cdef int ndim = A.shape[0]
  *     if ndim == 2:             # <<<<<<<<<<<<<<
@@ -2197,7 +2197,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
     break;
     case 3:
 
-    /* "Florence/Tensor/LinAlg.pyx":65
+    /* "Kuru/Tensor/LinAlg.pyx":65
  *         return inv2(&A[0,0])
  *     elif ndim == 3:
  *         return inv3(&A[0,0])             # <<<<<<<<<<<<<<
@@ -2207,13 +2207,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_4 = 0;
     __pyx_t_5 = 0;
-    __pyx_t_3 = __pyx_f_8Florence_6Tensor_6LinAlg_inv3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_5, __pyx_pybuffernd_A.diminfo[1].strides)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_4Kuru_6Tensor_6LinAlg_inv3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_5, __pyx_pybuffernd_A.diminfo[1].strides)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":64
+    /* "Kuru/Tensor/LinAlg.pyx":64
  *     if ndim == 2:
  *         return inv2(&A[0,0])
  *     elif ndim == 3:             # <<<<<<<<<<<<<<
@@ -2223,7 +2223,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
     break;
     default:
 
-    /* "Florence/Tensor/LinAlg.pyx":67
+    /* "Kuru/Tensor/LinAlg.pyx":67
  *         return inv3(&A[0,0])
  *     else:
  *         warn("inverse of matrices > (3x3) falls back to numpy.linalg. Use that instead")             # <<<<<<<<<<<<<<
@@ -2249,7 +2249,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "Florence/Tensor/LinAlg.pyx":68
+    /* "Kuru/Tensor/LinAlg.pyx":68
  *     else:
  *         warn("inverse of matrices > (3x3) falls back to numpy.linalg. Use that instead")
  *         return np.linalg.inv(A)             # <<<<<<<<<<<<<<
@@ -2286,7 +2286,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
     break;
   }
 
-  /* "Florence/Tensor/LinAlg.pyx":60
+  /* "Kuru/Tensor/LinAlg.pyx":60
  * @boundscheck(False)
  * @wraparound(False)
  * cpdef inverse(np.ndarray[double,ndim=2] A):             # <<<<<<<<<<<<<<
@@ -2305,7 +2305,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.inverse", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.inverse", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -2317,13 +2317,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse(PyArrayObject *__pyx_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_3inverse(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_3inverse(PyObject *__pyx_self, PyObject *__pyx_v_A) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_3inverse(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_3inverse(PyObject *__pyx_self, PyObject *__pyx_v_A) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("inverse (wrapper)", 0);
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_A), __pyx_ptype_5numpy_ndarray, 1, "A", 0))) __PYX_ERR(0, 60, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8Florence_6Tensor_6LinAlg_2inverse(__pyx_self, ((PyArrayObject *)__pyx_v_A));
+  __pyx_r = __pyx_pf_4Kuru_6Tensor_6LinAlg_2inverse(__pyx_self, ((PyArrayObject *)__pyx_v_A));
 
   /* function exit code */
   goto __pyx_L0;
@@ -2334,7 +2334,7 @@ static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_3inverse(PyObject *__pyx_sel
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_2inverse(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A) {
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_2inverse(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
   __Pyx_Buffer __pyx_pybuffer_A;
   PyObject *__pyx_r = NULL;
@@ -2351,7 +2351,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_2inverse(CYTHON_UNUSED PyObj
   }
   __pyx_pybuffernd_A.diminfo[0].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_A.diminfo[0].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_A.diminfo[1].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_A.diminfo[1].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[1];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8Florence_6Tensor_6LinAlg_inverse(((PyArrayObject *)__pyx_v_A), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4Kuru_6Tensor_6LinAlg_inverse(((PyArrayObject *)__pyx_v_A), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2366,7 +2366,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_2inverse(CYTHON_UNUSED PyObj
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.inverse", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.inverse", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -2377,7 +2377,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_2inverse(CYTHON_UNUSED PyObj
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":70
+/* "Kuru/Tensor/LinAlg.pyx":70
  *         return np.linalg.inv(A)
  * 
  * cdef inline inv2(double *A):             # <<<<<<<<<<<<<<
@@ -2385,7 +2385,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_2inverse(CYTHON_UNUSED PyObj
  *     cdef double A1_2 = A[1]
  */
 
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__pyx_v_A) {
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_inv2(double *__pyx_v_A) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A2_1;
@@ -2398,7 +2398,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("inv2", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":71
+  /* "Kuru/Tensor/LinAlg.pyx":71
  * 
  * cdef inline inv2(double *A):
  *     cdef double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -2407,7 +2407,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":72
+  /* "Kuru/Tensor/LinAlg.pyx":72
  * cdef inline inv2(double *A):
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -2416,7 +2416,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":73
+  /* "Kuru/Tensor/LinAlg.pyx":73
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]
  *     cdef double A2_1 = A[2]             # <<<<<<<<<<<<<<
@@ -2425,7 +2425,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
  */
   __pyx_v_A2_1 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":74
+  /* "Kuru/Tensor/LinAlg.pyx":74
  *     cdef double A1_2 = A[1]
  *     cdef double A2_1 = A[2]
  *     cdef double A2_2 = A[3]             # <<<<<<<<<<<<<<
@@ -2434,7 +2434,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
  */
   __pyx_v_A2_2 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":78
+  /* "Kuru/Tensor/LinAlg.pyx":78
  *     cdef double invA[2][2]
  * 
  *     invA[0][0] = A2_2/(A1_1*A2_2 - A1_2*A2_1)             # <<<<<<<<<<<<<<
@@ -2448,7 +2448,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
   }
   ((__pyx_v_invA[0])[0]) = (__pyx_v_A2_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":79
+  /* "Kuru/Tensor/LinAlg.pyx":79
  * 
  *     invA[0][0] = A2_2/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[0][1] = -A1_2/(A1_1*A2_2 - A1_2*A2_1)             # <<<<<<<<<<<<<<
@@ -2463,7 +2463,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
   }
   ((__pyx_v_invA[0])[1]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":80
+  /* "Kuru/Tensor/LinAlg.pyx":80
  *     invA[0][0] = A2_2/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[0][1] = -A1_2/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[1][0] = -A2_1/(A1_1*A2_2 - A1_2*A2_1)             # <<<<<<<<<<<<<<
@@ -2478,7 +2478,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
   }
   ((__pyx_v_invA[1])[0]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":81
+  /* "Kuru/Tensor/LinAlg.pyx":81
  *     invA[0][1] = -A1_2/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[1][0] = -A2_1/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[1][1] = A1_1/(A1_1*A2_2 - A1_2*A2_1)             # <<<<<<<<<<<<<<
@@ -2492,7 +2492,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
   }
   ((__pyx_v_invA[1])[1]) = (__pyx_v_A1_1 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":83
+  /* "Kuru/Tensor/LinAlg.pyx":83
  *     invA[1][1] = A1_1/(A1_1*A2_2 - A1_2*A2_1)
  * 
  *     return invA             # <<<<<<<<<<<<<<
@@ -2506,7 +2506,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":70
+  /* "Kuru/Tensor/LinAlg.pyx":70
  *         return np.linalg.inv(A)
  * 
  * cdef inline inv2(double *A):             # <<<<<<<<<<<<<<
@@ -2517,7 +2517,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.inv2", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.inv2", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2525,7 +2525,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":86
+/* "Kuru/Tensor/LinAlg.pyx":86
  * 
  * 
  * cdef inline inv3(double *A):             # <<<<<<<<<<<<<<
@@ -2533,7 +2533,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv2(double *__
  *     cdef double A1_2 = A[1]
  */
 
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__pyx_v_A) {
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_inv3(double *__pyx_v_A) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A1_3;
@@ -2551,7 +2551,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("inv3", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":87
+  /* "Kuru/Tensor/LinAlg.pyx":87
  * 
  * cdef inline inv3(double *A):
  *     cdef double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -2560,7 +2560,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":88
+  /* "Kuru/Tensor/LinAlg.pyx":88
  * cdef inline inv3(double *A):
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -2569,7 +2569,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":89
+  /* "Kuru/Tensor/LinAlg.pyx":89
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]
  *     cdef double A1_3 = A[2]             # <<<<<<<<<<<<<<
@@ -2578,7 +2578,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  */
   __pyx_v_A1_3 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":90
+  /* "Kuru/Tensor/LinAlg.pyx":90
  *     cdef double A1_2 = A[1]
  *     cdef double A1_3 = A[2]
  *     cdef double A2_1 = A[3]             # <<<<<<<<<<<<<<
@@ -2587,7 +2587,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  */
   __pyx_v_A2_1 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":91
+  /* "Kuru/Tensor/LinAlg.pyx":91
  *     cdef double A1_3 = A[2]
  *     cdef double A2_1 = A[3]
  *     cdef double A2_2 = A[4]             # <<<<<<<<<<<<<<
@@ -2596,7 +2596,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  */
   __pyx_v_A2_2 = (__pyx_v_A[4]);
 
-  /* "Florence/Tensor/LinAlg.pyx":92
+  /* "Kuru/Tensor/LinAlg.pyx":92
  *     cdef double A2_1 = A[3]
  *     cdef double A2_2 = A[4]
  *     cdef double A2_3 = A[5]             # <<<<<<<<<<<<<<
@@ -2605,7 +2605,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  */
   __pyx_v_A2_3 = (__pyx_v_A[5]);
 
-  /* "Florence/Tensor/LinAlg.pyx":93
+  /* "Kuru/Tensor/LinAlg.pyx":93
  *     cdef double A2_2 = A[4]
  *     cdef double A2_3 = A[5]
  *     cdef double A3_1 = A[6]             # <<<<<<<<<<<<<<
@@ -2614,7 +2614,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  */
   __pyx_v_A3_1 = (__pyx_v_A[6]);
 
-  /* "Florence/Tensor/LinAlg.pyx":94
+  /* "Kuru/Tensor/LinAlg.pyx":94
  *     cdef double A2_3 = A[5]
  *     cdef double A3_1 = A[6]
  *     cdef double A3_2 = A[7]             # <<<<<<<<<<<<<<
@@ -2623,7 +2623,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  */
   __pyx_v_A3_2 = (__pyx_v_A[7]);
 
-  /* "Florence/Tensor/LinAlg.pyx":95
+  /* "Kuru/Tensor/LinAlg.pyx":95
  *     cdef double A3_1 = A[6]
  *     cdef double A3_2 = A[7]
  *     cdef double A3_3 = A[8]             # <<<<<<<<<<<<<<
@@ -2632,7 +2632,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  */
   __pyx_v_A3_3 = (__pyx_v_A[8]);
 
-  /* "Florence/Tensor/LinAlg.pyx":99
+  /* "Kuru/Tensor/LinAlg.pyx":99
  *     cdef double invA[3][3]
  * 
  *     invA[0][0] = (A2_2*A3_3 - A2_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -2647,7 +2647,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   }
   ((__pyx_v_invA[0])[0]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":100
+  /* "Kuru/Tensor/LinAlg.pyx":100
  * 
  *     invA[0][0] = (A2_2*A3_3 - A2_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[0][1] = -(A1_2*A3_3 - A1_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -2662,7 +2662,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   }
   ((__pyx_v_invA[0])[1]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":101
+  /* "Kuru/Tensor/LinAlg.pyx":101
  *     invA[0][0] = (A2_2*A3_3 - A2_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[0][1] = -(A1_2*A3_3 - A1_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[0][2] = (A1_2*A2_3 - A1_3*A2_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -2677,7 +2677,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   }
   ((__pyx_v_invA[0])[2]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":102
+  /* "Kuru/Tensor/LinAlg.pyx":102
  *     invA[0][1] = -(A1_2*A3_3 - A1_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[0][2] = (A1_2*A2_3 - A1_3*A2_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][0] = -(A2_1*A3_3 - A2_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -2692,7 +2692,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   }
   ((__pyx_v_invA[1])[0]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":103
+  /* "Kuru/Tensor/LinAlg.pyx":103
  *     invA[0][2] = (A1_2*A2_3 - A1_3*A2_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][0] = -(A2_1*A3_3 - A2_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][1] = (A1_1*A3_3 - A1_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -2707,7 +2707,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   }
   ((__pyx_v_invA[1])[1]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":104
+  /* "Kuru/Tensor/LinAlg.pyx":104
  *     invA[1][0] = -(A2_1*A3_3 - A2_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][1] = (A1_1*A3_3 - A1_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][2] = -(A1_1*A2_3 - A1_3*A2_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -2722,7 +2722,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   }
   ((__pyx_v_invA[1])[2]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":105
+  /* "Kuru/Tensor/LinAlg.pyx":105
  *     invA[1][1] = (A1_1*A3_3 - A1_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][2] = -(A1_1*A2_3 - A1_3*A2_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][0] = (A2_1*A3_2 - A2_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -2737,7 +2737,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   }
   ((__pyx_v_invA[2])[0]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":106
+  /* "Kuru/Tensor/LinAlg.pyx":106
  *     invA[1][2] = -(A1_1*A2_3 - A1_3*A2_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][0] = (A2_1*A3_2 - A2_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][1] = -(A1_1*A3_2 - A1_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -2752,7 +2752,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   }
   ((__pyx_v_invA[2])[1]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":107
+  /* "Kuru/Tensor/LinAlg.pyx":107
  *     invA[2][0] = (A2_1*A3_2 - A2_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][1] = -(A1_1*A3_2 - A1_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][2] = (A1_1*A2_2 - A1_2*A2_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -2767,7 +2767,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   }
   ((__pyx_v_invA[2])[2]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":109
+  /* "Kuru/Tensor/LinAlg.pyx":109
  *     invA[2][2] = (A1_1*A2_2 - A1_2*A2_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  * 
  *     return invA             # <<<<<<<<<<<<<<
@@ -2781,7 +2781,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":86
+  /* "Kuru/Tensor/LinAlg.pyx":86
  * 
  * 
  * cdef inline inv3(double *A):             # <<<<<<<<<<<<<<
@@ -2792,7 +2792,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.inv3", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.inv3", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2800,7 +2800,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":117
+/* "Kuru/Tensor/LinAlg.pyx":117
  * @boundscheck(False)
  * @wraparound(False)
  * cpdef inverse_transpose(np.ndarray[double,ndim=2] A):             # <<<<<<<<<<<<<<
@@ -2808,8 +2808,8 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inv3(double *__
  *     if ndim == 2:
  */
 
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_5inverse_transpose(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObject *__pyx_v_A, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_5inverse_transpose(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_inverse_transpose(PyArrayObject *__pyx_v_A, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_ndim;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
   __Pyx_Buffer __pyx_pybuffer_A;
@@ -2833,7 +2833,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
   }
   __pyx_pybuffernd_A.diminfo[0].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_A.diminfo[0].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_A.diminfo[1].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_A.diminfo[1].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[1];
 
-  /* "Florence/Tensor/LinAlg.pyx":118
+  /* "Kuru/Tensor/LinAlg.pyx":118
  * @wraparound(False)
  * cpdef inverse_transpose(np.ndarray[double,ndim=2] A):
  *     cdef int ndim = A.shape[0]             # <<<<<<<<<<<<<<
@@ -2842,7 +2842,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
  */
   __pyx_v_ndim = (__pyx_v_A->dimensions[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":119
+  /* "Kuru/Tensor/LinAlg.pyx":119
  * cpdef inverse_transpose(np.ndarray[double,ndim=2] A):
  *     cdef int ndim = A.shape[0]
  *     if ndim == 2:             # <<<<<<<<<<<<<<
@@ -2852,7 +2852,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
   switch (__pyx_v_ndim) {
     case 2:
 
-    /* "Florence/Tensor/LinAlg.pyx":120
+    /* "Kuru/Tensor/LinAlg.pyx":120
  *     cdef int ndim = A.shape[0]
  *     if ndim == 2:
  *         return invT2(&A[0,0])             # <<<<<<<<<<<<<<
@@ -2862,13 +2862,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_1 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_3 = __pyx_f_8Florence_6Tensor_6LinAlg_invT2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_2, __pyx_pybuffernd_A.diminfo[1].strides)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_4Kuru_6Tensor_6LinAlg_invT2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_2, __pyx_pybuffernd_A.diminfo[1].strides)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":119
+    /* "Kuru/Tensor/LinAlg.pyx":119
  * cpdef inverse_transpose(np.ndarray[double,ndim=2] A):
  *     cdef int ndim = A.shape[0]
  *     if ndim == 2:             # <<<<<<<<<<<<<<
@@ -2878,7 +2878,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
     break;
     case 3:
 
-    /* "Florence/Tensor/LinAlg.pyx":122
+    /* "Kuru/Tensor/LinAlg.pyx":122
  *         return invT2(&A[0,0])
  *     elif ndim == 3:
  *         return invT3(&A[0,0])             # <<<<<<<<<<<<<<
@@ -2888,13 +2888,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_4 = 0;
     __pyx_t_5 = 0;
-    __pyx_t_3 = __pyx_f_8Florence_6Tensor_6LinAlg_invT3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_5, __pyx_pybuffernd_A.diminfo[1].strides)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_4Kuru_6Tensor_6LinAlg_invT3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_5, __pyx_pybuffernd_A.diminfo[1].strides)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":121
+    /* "Kuru/Tensor/LinAlg.pyx":121
  *     if ndim == 2:
  *         return invT2(&A[0,0])
  *     elif ndim == 3:             # <<<<<<<<<<<<<<
@@ -2904,7 +2904,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
     break;
     default:
 
-    /* "Florence/Tensor/LinAlg.pyx":124
+    /* "Kuru/Tensor/LinAlg.pyx":124
  *         return invT3(&A[0,0])
  *     else:
  *         warn("inverse transpose of matrices > (3x3) falls back to numpy.linalg. Use that instead")             # <<<<<<<<<<<<<<
@@ -2930,7 +2930,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "Florence/Tensor/LinAlg.pyx":125
+    /* "Kuru/Tensor/LinAlg.pyx":125
  *     else:
  *         warn("inverse transpose of matrices > (3x3) falls back to numpy.linalg. Use that instead")
  *         return np.linalg.inv(A).T             # <<<<<<<<<<<<<<
@@ -2970,7 +2970,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
     break;
   }
 
-  /* "Florence/Tensor/LinAlg.pyx":117
+  /* "Kuru/Tensor/LinAlg.pyx":117
  * @boundscheck(False)
  * @wraparound(False)
  * cpdef inverse_transpose(np.ndarray[double,ndim=2] A):             # <<<<<<<<<<<<<<
@@ -2989,7 +2989,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.inverse_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.inverse_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -3001,13 +3001,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(PyArrayObje
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_5inverse_transpose(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_5inverse_transpose(PyObject *__pyx_self, PyObject *__pyx_v_A) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_5inverse_transpose(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_5inverse_transpose(PyObject *__pyx_self, PyObject *__pyx_v_A) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("inverse_transpose (wrapper)", 0);
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_A), __pyx_ptype_5numpy_ndarray, 1, "A", 0))) __PYX_ERR(0, 117, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8Florence_6Tensor_6LinAlg_4inverse_transpose(__pyx_self, ((PyArrayObject *)__pyx_v_A));
+  __pyx_r = __pyx_pf_4Kuru_6Tensor_6LinAlg_4inverse_transpose(__pyx_self, ((PyArrayObject *)__pyx_v_A));
 
   /* function exit code */
   goto __pyx_L0;
@@ -3018,7 +3018,7 @@ static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_5inverse_transpose(PyObject 
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_4inverse_transpose(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A) {
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_4inverse_transpose(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
   __Pyx_Buffer __pyx_pybuffer_A;
   PyObject *__pyx_r = NULL;
@@ -3035,7 +3035,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_4inverse_transpose(CYTHON_UN
   }
   __pyx_pybuffernd_A.diminfo[0].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_A.diminfo[0].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_A.diminfo[1].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_A.diminfo[1].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[1];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose(((PyArrayObject *)__pyx_v_A), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4Kuru_6Tensor_6LinAlg_inverse_transpose(((PyArrayObject *)__pyx_v_A), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3050,7 +3050,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_4inverse_transpose(CYTHON_UN
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.inverse_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.inverse_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -3061,7 +3061,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_4inverse_transpose(CYTHON_UN
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":127
+/* "Kuru/Tensor/LinAlg.pyx":127
  *         return np.linalg.inv(A).T
  * 
  * cdef inline invT2(double *A):             # <<<<<<<<<<<<<<
@@ -3069,7 +3069,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_4inverse_transpose(CYTHON_UN
  *     cdef double A1_2 = A[1]
  */
 
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *__pyx_v_A) {
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_invT2(double *__pyx_v_A) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A2_1;
@@ -3082,7 +3082,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("invT2", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":128
+  /* "Kuru/Tensor/LinAlg.pyx":128
  * 
  * cdef inline invT2(double *A):
  *     cdef double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -3091,7 +3091,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":129
+  /* "Kuru/Tensor/LinAlg.pyx":129
  * cdef inline invT2(double *A):
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -3100,7 +3100,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":130
+  /* "Kuru/Tensor/LinAlg.pyx":130
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]
  *     cdef double A2_1 = A[2]             # <<<<<<<<<<<<<<
@@ -3109,7 +3109,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
  */
   __pyx_v_A2_1 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":131
+  /* "Kuru/Tensor/LinAlg.pyx":131
  *     cdef double A1_2 = A[1]
  *     cdef double A2_1 = A[2]
  *     cdef double A2_2 = A[3]             # <<<<<<<<<<<<<<
@@ -3118,7 +3118,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
  */
   __pyx_v_A2_2 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":135
+  /* "Kuru/Tensor/LinAlg.pyx":135
  *     cdef double invA[2][2]
  * 
  *     invA[0][0] = A2_2/(A1_1*A2_2 - A1_2*A2_1)             # <<<<<<<<<<<<<<
@@ -3132,7 +3132,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
   }
   ((__pyx_v_invA[0])[0]) = (__pyx_v_A2_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":136
+  /* "Kuru/Tensor/LinAlg.pyx":136
  * 
  *     invA[0][0] = A2_2/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[1][0] = -A1_2/(A1_1*A2_2 - A1_2*A2_1)             # <<<<<<<<<<<<<<
@@ -3147,7 +3147,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
   }
   ((__pyx_v_invA[1])[0]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":137
+  /* "Kuru/Tensor/LinAlg.pyx":137
  *     invA[0][0] = A2_2/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[1][0] = -A1_2/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[0][1] = -A2_1/(A1_1*A2_2 - A1_2*A2_1)             # <<<<<<<<<<<<<<
@@ -3162,7 +3162,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
   }
   ((__pyx_v_invA[0])[1]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":138
+  /* "Kuru/Tensor/LinAlg.pyx":138
  *     invA[1][0] = -A1_2/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[0][1] = -A2_1/(A1_1*A2_2 - A1_2*A2_1)
  *     invA[1][1] = A1_1/(A1_1*A2_2 - A1_2*A2_1)             # <<<<<<<<<<<<<<
@@ -3176,7 +3176,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
   }
   ((__pyx_v_invA[1])[1]) = (__pyx_v_A1_1 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":140
+  /* "Kuru/Tensor/LinAlg.pyx":140
  *     invA[1][1] = A1_1/(A1_1*A2_2 - A1_2*A2_1)
  * 
  *     return invA             # <<<<<<<<<<<<<<
@@ -3190,7 +3190,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":127
+  /* "Kuru/Tensor/LinAlg.pyx":127
  *         return np.linalg.inv(A).T
  * 
  * cdef inline invT2(double *A):             # <<<<<<<<<<<<<<
@@ -3201,7 +3201,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.invT2", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.invT2", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3209,7 +3209,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":143
+/* "Kuru/Tensor/LinAlg.pyx":143
  * 
  * 
  * cdef inline invT3(double *A):             # <<<<<<<<<<<<<<
@@ -3217,7 +3217,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT2(double *_
  *     cdef double A1_2 = A[1]
  */
 
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *__pyx_v_A) {
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_invT3(double *__pyx_v_A) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A1_3;
@@ -3235,7 +3235,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("invT3", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":144
+  /* "Kuru/Tensor/LinAlg.pyx":144
  * 
  * cdef inline invT3(double *A):
  *     cdef double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -3244,7 +3244,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":145
+  /* "Kuru/Tensor/LinAlg.pyx":145
  * cdef inline invT3(double *A):
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -3253,7 +3253,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":146
+  /* "Kuru/Tensor/LinAlg.pyx":146
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]
  *     cdef double A1_3 = A[2]             # <<<<<<<<<<<<<<
@@ -3262,7 +3262,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  */
   __pyx_v_A1_3 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":147
+  /* "Kuru/Tensor/LinAlg.pyx":147
  *     cdef double A1_2 = A[1]
  *     cdef double A1_3 = A[2]
  *     cdef double A2_1 = A[3]             # <<<<<<<<<<<<<<
@@ -3271,7 +3271,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  */
   __pyx_v_A2_1 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":148
+  /* "Kuru/Tensor/LinAlg.pyx":148
  *     cdef double A1_3 = A[2]
  *     cdef double A2_1 = A[3]
  *     cdef double A2_2 = A[4]             # <<<<<<<<<<<<<<
@@ -3280,7 +3280,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  */
   __pyx_v_A2_2 = (__pyx_v_A[4]);
 
-  /* "Florence/Tensor/LinAlg.pyx":149
+  /* "Kuru/Tensor/LinAlg.pyx":149
  *     cdef double A2_1 = A[3]
  *     cdef double A2_2 = A[4]
  *     cdef double A2_3 = A[5]             # <<<<<<<<<<<<<<
@@ -3289,7 +3289,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  */
   __pyx_v_A2_3 = (__pyx_v_A[5]);
 
-  /* "Florence/Tensor/LinAlg.pyx":150
+  /* "Kuru/Tensor/LinAlg.pyx":150
  *     cdef double A2_2 = A[4]
  *     cdef double A2_3 = A[5]
  *     cdef double A3_1 = A[6]             # <<<<<<<<<<<<<<
@@ -3298,7 +3298,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  */
   __pyx_v_A3_1 = (__pyx_v_A[6]);
 
-  /* "Florence/Tensor/LinAlg.pyx":151
+  /* "Kuru/Tensor/LinAlg.pyx":151
  *     cdef double A2_3 = A[5]
  *     cdef double A3_1 = A[6]
  *     cdef double A3_2 = A[7]             # <<<<<<<<<<<<<<
@@ -3307,7 +3307,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  */
   __pyx_v_A3_2 = (__pyx_v_A[7]);
 
-  /* "Florence/Tensor/LinAlg.pyx":152
+  /* "Kuru/Tensor/LinAlg.pyx":152
  *     cdef double A3_1 = A[6]
  *     cdef double A3_2 = A[7]
  *     cdef double A3_3 = A[8]             # <<<<<<<<<<<<<<
@@ -3316,7 +3316,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  */
   __pyx_v_A3_3 = (__pyx_v_A[8]);
 
-  /* "Florence/Tensor/LinAlg.pyx":156
+  /* "Kuru/Tensor/LinAlg.pyx":156
  *     cdef double invA[3][3]
  * 
  *     invA[0][0] = (A2_2*A3_3 - A2_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -3331,7 +3331,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   }
   ((__pyx_v_invA[0])[0]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":157
+  /* "Kuru/Tensor/LinAlg.pyx":157
  * 
  *     invA[0][0] = (A2_2*A3_3 - A2_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[0][1] = -(A2_1*A3_3 - A2_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -3346,7 +3346,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   }
   ((__pyx_v_invA[0])[1]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":158
+  /* "Kuru/Tensor/LinAlg.pyx":158
  *     invA[0][0] = (A2_2*A3_3 - A2_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[0][1] = -(A2_1*A3_3 - A2_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[0][2] = (A2_1*A3_2 - A2_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -3361,7 +3361,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   }
   ((__pyx_v_invA[0])[2]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":159
+  /* "Kuru/Tensor/LinAlg.pyx":159
  *     invA[0][1] = -(A2_1*A3_3 - A2_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[0][2] = (A2_1*A3_2 - A2_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][0] = -(A1_2*A3_3 - A1_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -3376,7 +3376,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   }
   ((__pyx_v_invA[1])[0]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":160
+  /* "Kuru/Tensor/LinAlg.pyx":160
  *     invA[0][2] = (A2_1*A3_2 - A2_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][0] = -(A1_2*A3_3 - A1_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][1] = (A1_1*A3_3 - A1_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -3391,7 +3391,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   }
   ((__pyx_v_invA[1])[1]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":161
+  /* "Kuru/Tensor/LinAlg.pyx":161
  *     invA[1][0] = -(A1_2*A3_3 - A1_3*A3_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][1] = (A1_1*A3_3 - A1_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][2] = -(A1_1*A3_2 - A1_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -3406,7 +3406,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   }
   ((__pyx_v_invA[1])[2]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":162
+  /* "Kuru/Tensor/LinAlg.pyx":162
  *     invA[1][1] = (A1_1*A3_3 - A1_3*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[1][2] = -(A1_1*A3_2 - A1_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][0] = (A1_2*A2_3 - A1_3*A2_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -3421,7 +3421,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   }
   ((__pyx_v_invA[2])[0]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":163
+  /* "Kuru/Tensor/LinAlg.pyx":163
  *     invA[1][2] = -(A1_1*A3_2 - A1_2*A3_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][0] = (A1_2*A2_3 - A1_3*A2_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][1] = -(A1_1*A2_3 - A1_3*A2_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -3436,7 +3436,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   }
   ((__pyx_v_invA[2])[1]) = (__pyx_t_2 / __pyx_t_1);
 
-  /* "Florence/Tensor/LinAlg.pyx":164
+  /* "Kuru/Tensor/LinAlg.pyx":164
  *     invA[2][0] = (A1_2*A2_3 - A1_3*A2_2)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][1] = -(A1_1*A2_3 - A1_3*A2_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  *     invA[2][2] = (A1_1*A2_2 - A1_2*A2_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)             # <<<<<<<<<<<<<<
@@ -3451,7 +3451,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   }
   ((__pyx_v_invA[2])[2]) = (__pyx_t_1 / __pyx_t_2);
 
-  /* "Florence/Tensor/LinAlg.pyx":166
+  /* "Kuru/Tensor/LinAlg.pyx":166
  *     invA[2][2] = (A1_1*A2_2 - A1_2*A2_1)/(A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1)
  * 
  *     return invA             # <<<<<<<<<<<<<<
@@ -3465,7 +3465,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":143
+  /* "Kuru/Tensor/LinAlg.pyx":143
  * 
  * 
  * cdef inline invT3(double *A):             # <<<<<<<<<<<<<<
@@ -3476,7 +3476,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.invT3", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.invT3", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3484,7 +3484,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":171
+/* "Kuru/Tensor/LinAlg.pyx":171
  * @boundscheck(False)
  * @wraparound(False)
  * cpdef determinant(np.ndarray[double,ndim=2] A):             # <<<<<<<<<<<<<<
@@ -3492,8 +3492,8 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_invT3(double *_
  *     if ndim == 2:
  */
 
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_7determinant(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__pyx_v_A, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_7determinant(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_determinant(PyArrayObject *__pyx_v_A, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_ndim;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
   __Pyx_Buffer __pyx_pybuffer_A;
@@ -3517,7 +3517,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
   }
   __pyx_pybuffernd_A.diminfo[0].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_A.diminfo[0].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_A.diminfo[1].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_A.diminfo[1].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[1];
 
-  /* "Florence/Tensor/LinAlg.pyx":172
+  /* "Kuru/Tensor/LinAlg.pyx":172
  * @wraparound(False)
  * cpdef determinant(np.ndarray[double,ndim=2] A):
  *     cdef int ndim = A.shape[0]             # <<<<<<<<<<<<<<
@@ -3526,7 +3526,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
  */
   __pyx_v_ndim = (__pyx_v_A->dimensions[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":173
+  /* "Kuru/Tensor/LinAlg.pyx":173
  * cpdef determinant(np.ndarray[double,ndim=2] A):
  *     cdef int ndim = A.shape[0]
  *     if ndim == 2:             # <<<<<<<<<<<<<<
@@ -3536,7 +3536,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
   switch (__pyx_v_ndim) {
     case 2:
 
-    /* "Florence/Tensor/LinAlg.pyx":174
+    /* "Kuru/Tensor/LinAlg.pyx":174
  *     cdef int ndim = A.shape[0]
  *     if ndim == 2:
  *         return det2(&A[0,0])             # <<<<<<<<<<<<<<
@@ -3546,13 +3546,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_1 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_f_8Florence_6Tensor_6LinAlg_det2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_2, __pyx_pybuffernd_A.diminfo[1].strides))))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_f_4Kuru_6Tensor_6LinAlg_det2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_2, __pyx_pybuffernd_A.diminfo[1].strides))))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":173
+    /* "Kuru/Tensor/LinAlg.pyx":173
  * cpdef determinant(np.ndarray[double,ndim=2] A):
  *     cdef int ndim = A.shape[0]
  *     if ndim == 2:             # <<<<<<<<<<<<<<
@@ -3562,7 +3562,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
     break;
     case 3:
 
-    /* "Florence/Tensor/LinAlg.pyx":176
+    /* "Kuru/Tensor/LinAlg.pyx":176
  *         return det2(&A[0,0])
  *     elif ndim == 3:
  *         return det3(&A[0,0])             # <<<<<<<<<<<<<<
@@ -3572,13 +3572,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_4 = 0;
     __pyx_t_5 = 0;
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_f_8Florence_6Tensor_6LinAlg_det3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_5, __pyx_pybuffernd_A.diminfo[1].strides))))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_f_4Kuru_6Tensor_6LinAlg_det3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_5, __pyx_pybuffernd_A.diminfo[1].strides))))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":175
+    /* "Kuru/Tensor/LinAlg.pyx":175
  *     if ndim == 2:
  *         return det2(&A[0,0])
  *     elif ndim == 3:             # <<<<<<<<<<<<<<
@@ -3588,7 +3588,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
     break;
     default:
 
-    /* "Florence/Tensor/LinAlg.pyx":178
+    /* "Kuru/Tensor/LinAlg.pyx":178
  *         return det3(&A[0,0])
  *     else:
  *         warn("determinant of matrices > (3x3) falls back to numpy.linalg. Use that instead")             # <<<<<<<<<<<<<<
@@ -3614,7 +3614,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "Florence/Tensor/LinAlg.pyx":179
+    /* "Kuru/Tensor/LinAlg.pyx":179
  *     else:
  *         warn("determinant of matrices > (3x3) falls back to numpy.linalg. Use that instead")
  *         return np.linalg.det(A)             # <<<<<<<<<<<<<<
@@ -3651,7 +3651,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
     break;
   }
 
-  /* "Florence/Tensor/LinAlg.pyx":171
+  /* "Kuru/Tensor/LinAlg.pyx":171
  * @boundscheck(False)
  * @wraparound(False)
  * cpdef determinant(np.ndarray[double,ndim=2] A):             # <<<<<<<<<<<<<<
@@ -3670,7 +3670,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.determinant", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.determinant", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -3682,13 +3682,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_determinant(PyArrayObject *__
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_7determinant(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_7determinant(PyObject *__pyx_self, PyObject *__pyx_v_A) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_7determinant(PyObject *__pyx_self, PyObject *__pyx_v_A); /*proto*/
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_7determinant(PyObject *__pyx_self, PyObject *__pyx_v_A) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("determinant (wrapper)", 0);
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_A), __pyx_ptype_5numpy_ndarray, 1, "A", 0))) __PYX_ERR(0, 171, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8Florence_6Tensor_6LinAlg_6determinant(__pyx_self, ((PyArrayObject *)__pyx_v_A));
+  __pyx_r = __pyx_pf_4Kuru_6Tensor_6LinAlg_6determinant(__pyx_self, ((PyArrayObject *)__pyx_v_A));
 
   /* function exit code */
   goto __pyx_L0;
@@ -3699,7 +3699,7 @@ static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_7determinant(PyObject *__pyx
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_6determinant(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A) {
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_6determinant(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
   __Pyx_Buffer __pyx_pybuffer_A;
   PyObject *__pyx_r = NULL;
@@ -3716,7 +3716,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_6determinant(CYTHON_UNUSED P
   }
   __pyx_pybuffernd_A.diminfo[0].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_A.diminfo[0].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_A.diminfo[1].strides = __pyx_pybuffernd_A.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_A.diminfo[1].shape = __pyx_pybuffernd_A.rcbuffer->pybuffer.shape[1];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8Florence_6Tensor_6LinAlg_determinant(((PyArrayObject *)__pyx_v_A), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4Kuru_6Tensor_6LinAlg_determinant(((PyArrayObject *)__pyx_v_A), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3731,7 +3731,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_6determinant(CYTHON_UNUSED P
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.determinant", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.determinant", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -3742,7 +3742,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_6determinant(CYTHON_UNUSED P
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":182
+/* "Kuru/Tensor/LinAlg.pyx":182
  * 
  * 
  * cdef inline double det2(const double *A):             # <<<<<<<<<<<<<<
@@ -3750,7 +3750,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_6determinant(CYTHON_UNUSED P
  *     cdef double A1_2 = A[1]
  */
 
-static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const *__pyx_v_A) {
+static CYTHON_INLINE double __pyx_f_4Kuru_6Tensor_6LinAlg_det2(double const *__pyx_v_A) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A2_1;
@@ -3759,7 +3759,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("det2", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":183
+  /* "Kuru/Tensor/LinAlg.pyx":183
  * 
  * cdef inline double det2(const double *A):
  *     cdef double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -3768,7 +3768,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const 
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":184
+  /* "Kuru/Tensor/LinAlg.pyx":184
  * cdef inline double det2(const double *A):
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -3777,7 +3777,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const 
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":185
+  /* "Kuru/Tensor/LinAlg.pyx":185
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]
  *     cdef double A2_1 = A[2]             # <<<<<<<<<<<<<<
@@ -3786,7 +3786,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const 
  */
   __pyx_v_A2_1 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":186
+  /* "Kuru/Tensor/LinAlg.pyx":186
  *     cdef double A1_2 = A[1]
  *     cdef double A2_1 = A[2]
  *     cdef double A2_2 = A[3]             # <<<<<<<<<<<<<<
@@ -3795,7 +3795,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const 
  */
   __pyx_v_A2_2 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":188
+  /* "Kuru/Tensor/LinAlg.pyx":188
  *     cdef double A2_2 = A[3]
  * 
  *     return A1_1*A2_2 - A1_2*A2_1             # <<<<<<<<<<<<<<
@@ -3805,7 +3805,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const 
   __pyx_r = ((__pyx_v_A1_1 * __pyx_v_A2_2) - (__pyx_v_A1_2 * __pyx_v_A2_1));
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":182
+  /* "Kuru/Tensor/LinAlg.pyx":182
  * 
  * 
  * cdef inline double det2(const double *A):             # <<<<<<<<<<<<<<
@@ -3819,7 +3819,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const 
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":191
+/* "Kuru/Tensor/LinAlg.pyx":191
  * 
  * 
  * cdef inline double det3(const double *A):             # <<<<<<<<<<<<<<
@@ -3827,7 +3827,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det2(double const 
  *     cdef double A1_2 = A[1]
  */
 
-static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const *__pyx_v_A) {
+static CYTHON_INLINE double __pyx_f_4Kuru_6Tensor_6LinAlg_det3(double const *__pyx_v_A) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A1_3;
@@ -3841,7 +3841,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("det3", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":192
+  /* "Kuru/Tensor/LinAlg.pyx":192
  * 
  * cdef inline double det3(const double *A):
  *     cdef double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -3850,7 +3850,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":193
+  /* "Kuru/Tensor/LinAlg.pyx":193
  * cdef inline double det3(const double *A):
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -3859,7 +3859,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":194
+  /* "Kuru/Tensor/LinAlg.pyx":194
  *     cdef double A1_1 = A[0]
  *     cdef double A1_2 = A[1]
  *     cdef double A1_3 = A[2]             # <<<<<<<<<<<<<<
@@ -3868,7 +3868,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  */
   __pyx_v_A1_3 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":195
+  /* "Kuru/Tensor/LinAlg.pyx":195
  *     cdef double A1_2 = A[1]
  *     cdef double A1_3 = A[2]
  *     cdef double A2_1 = A[3]             # <<<<<<<<<<<<<<
@@ -3877,7 +3877,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  */
   __pyx_v_A2_1 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":196
+  /* "Kuru/Tensor/LinAlg.pyx":196
  *     cdef double A1_3 = A[2]
  *     cdef double A2_1 = A[3]
  *     cdef double A2_2 = A[4]             # <<<<<<<<<<<<<<
@@ -3886,7 +3886,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  */
   __pyx_v_A2_2 = (__pyx_v_A[4]);
 
-  /* "Florence/Tensor/LinAlg.pyx":197
+  /* "Kuru/Tensor/LinAlg.pyx":197
  *     cdef double A2_1 = A[3]
  *     cdef double A2_2 = A[4]
  *     cdef double A2_3 = A[5]             # <<<<<<<<<<<<<<
@@ -3895,7 +3895,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  */
   __pyx_v_A2_3 = (__pyx_v_A[5]);
 
-  /* "Florence/Tensor/LinAlg.pyx":198
+  /* "Kuru/Tensor/LinAlg.pyx":198
  *     cdef double A2_2 = A[4]
  *     cdef double A2_3 = A[5]
  *     cdef double A3_1 = A[6]             # <<<<<<<<<<<<<<
@@ -3904,7 +3904,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  */
   __pyx_v_A3_1 = (__pyx_v_A[6]);
 
-  /* "Florence/Tensor/LinAlg.pyx":199
+  /* "Kuru/Tensor/LinAlg.pyx":199
  *     cdef double A2_3 = A[5]
  *     cdef double A3_1 = A[6]
  *     cdef double A3_2 = A[7]             # <<<<<<<<<<<<<<
@@ -3913,7 +3913,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  */
   __pyx_v_A3_2 = (__pyx_v_A[7]);
 
-  /* "Florence/Tensor/LinAlg.pyx":200
+  /* "Kuru/Tensor/LinAlg.pyx":200
  *     cdef double A3_1 = A[6]
  *     cdef double A3_2 = A[7]
  *     cdef double A3_3 = A[8]             # <<<<<<<<<<<<<<
@@ -3922,7 +3922,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  */
   __pyx_v_A3_3 = (__pyx_v_A[8]);
 
-  /* "Florence/Tensor/LinAlg.pyx":202
+  /* "Kuru/Tensor/LinAlg.pyx":202
  *     cdef double A3_3 = A[8]
  * 
  *     return A1_1*A2_2*A3_3 - A1_1*A2_3*A3_2 - A1_2*A2_1*A3_3 + A1_2*A2_3*A3_1 + A1_3*A2_1*A3_2 - A1_3*A2_2*A3_1             # <<<<<<<<<<<<<<
@@ -3932,7 +3932,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
   __pyx_r = (((((((__pyx_v_A1_1 * __pyx_v_A2_2) * __pyx_v_A3_3) - ((__pyx_v_A1_1 * __pyx_v_A2_3) * __pyx_v_A3_2)) - ((__pyx_v_A1_2 * __pyx_v_A2_1) * __pyx_v_A3_3)) + ((__pyx_v_A1_2 * __pyx_v_A2_3) * __pyx_v_A3_1)) + ((__pyx_v_A1_3 * __pyx_v_A2_1) * __pyx_v_A3_2)) - ((__pyx_v_A1_3 * __pyx_v_A2_2) * __pyx_v_A3_1));
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":191
+  /* "Kuru/Tensor/LinAlg.pyx":191
  * 
  * 
  * cdef inline double det3(const double *A):             # <<<<<<<<<<<<<<
@@ -3946,7 +3946,7 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":218
+/* "Kuru/Tensor/LinAlg.pyx":218
  * #----------------------------------------------------------------------------------------------------
  * 
  * cpdef dgemm(np.ndarray[double,ndim=2] A, np.ndarray[double,ndim=2] B):             # <<<<<<<<<<<<<<
@@ -3954,8 +3954,8 @@ static CYTHON_INLINE double __pyx_f_8Florence_6Tensor_6LinAlg_det3(double const 
  *         int ndim1 = A.shape[1]
  */
 
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_9dgemm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_B, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_9dgemm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_B, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_ndim1;
   int __pyx_v_ndim2;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
@@ -3997,7 +3997,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
   }
   __pyx_pybuffernd_B.diminfo[0].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_B.diminfo[0].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_B.diminfo[1].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_B.diminfo[1].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[1];
 
-  /* "Florence/Tensor/LinAlg.pyx":220
+  /* "Kuru/Tensor/LinAlg.pyx":220
  * cpdef dgemm(np.ndarray[double,ndim=2] A, np.ndarray[double,ndim=2] B):
  *     cdef:
  *         int ndim1 = A.shape[1]             # <<<<<<<<<<<<<<
@@ -4006,7 +4006,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
  */
   __pyx_v_ndim1 = (__pyx_v_A->dimensions[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":221
+  /* "Kuru/Tensor/LinAlg.pyx":221
  *     cdef:
  *         int ndim1 = A.shape[1]
  *         int ndim2 = B.shape[0]             # <<<<<<<<<<<<<<
@@ -4015,7 +4015,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
  */
   __pyx_v_ndim2 = (__pyx_v_B->dimensions[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":223
+  /* "Kuru/Tensor/LinAlg.pyx":223
  *         int ndim2 = B.shape[0]
  * 
  *     if ndim1 != ndim2:             # <<<<<<<<<<<<<<
@@ -4025,7 +4025,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
   __pyx_t_1 = ((__pyx_v_ndim1 != __pyx_v_ndim2) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "Florence/Tensor/LinAlg.pyx":224
+    /* "Kuru/Tensor/LinAlg.pyx":224
  * 
  *     if ndim1 != ndim2:
  *         raise ValueError("matrices are not aligned")             # <<<<<<<<<<<<<<
@@ -4038,7 +4038,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 224, __pyx_L1_error)
 
-    /* "Florence/Tensor/LinAlg.pyx":223
+    /* "Kuru/Tensor/LinAlg.pyx":223
  *         int ndim2 = B.shape[0]
  * 
  *     if ndim1 != ndim2:             # <<<<<<<<<<<<<<
@@ -4047,7 +4047,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
  */
   }
 
-  /* "Florence/Tensor/LinAlg.pyx":226
+  /* "Kuru/Tensor/LinAlg.pyx":226
  *         raise ValueError("matrices are not aligned")
  * 
  *     if ndim1 == 2:             # <<<<<<<<<<<<<<
@@ -4057,7 +4057,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
   switch (__pyx_v_ndim1) {
     case 2:
 
-    /* "Florence/Tensor/LinAlg.pyx":227
+    /* "Kuru/Tensor/LinAlg.pyx":227
  * 
  *     if ndim1 == 2:
  *         return dgemm2(&A[0,0], &B[0,0])             # <<<<<<<<<<<<<<
@@ -4095,13 +4095,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
       __PYX_ERR(0, 227, __pyx_L1_error)
     }
-    __pyx_t_2 = __pyx_f_8Florence_6Tensor_6LinAlg_dgemm2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_3, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_4, __pyx_pybuffernd_A.diminfo[1].strides))), (&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_B.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_B.diminfo[0].strides, __pyx_t_7, __pyx_pybuffernd_B.diminfo[1].strides)))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_4Kuru_6Tensor_6LinAlg_dgemm2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_3, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_4, __pyx_pybuffernd_A.diminfo[1].strides))), (&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_B.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_B.diminfo[0].strides, __pyx_t_7, __pyx_pybuffernd_B.diminfo[1].strides)))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":226
+    /* "Kuru/Tensor/LinAlg.pyx":226
  *         raise ValueError("matrices are not aligned")
  * 
  *     if ndim1 == 2:             # <<<<<<<<<<<<<<
@@ -4111,7 +4111,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
     break;
     case 3:
 
-    /* "Florence/Tensor/LinAlg.pyx":229
+    /* "Kuru/Tensor/LinAlg.pyx":229
  *         return dgemm2(&A[0,0], &B[0,0])
  *     elif ndim1 == 3:
  *         return dgemm3(&A[0,0], &B[0,0])             # <<<<<<<<<<<<<<
@@ -4149,13 +4149,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
       __PYX_ERR(0, 229, __pyx_L1_error)
     }
-    __pyx_t_2 = __pyx_f_8Florence_6Tensor_6LinAlg_dgemm3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_9, __pyx_pybuffernd_A.diminfo[1].strides))), (&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_B.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_B.diminfo[0].strides, __pyx_t_11, __pyx_pybuffernd_B.diminfo[1].strides)))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_4Kuru_6Tensor_6LinAlg_dgemm3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_9, __pyx_pybuffernd_A.diminfo[1].strides))), (&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_B.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_B.diminfo[0].strides, __pyx_t_11, __pyx_pybuffernd_B.diminfo[1].strides)))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":228
+    /* "Kuru/Tensor/LinAlg.pyx":228
  *     if ndim1 == 2:
  *         return dgemm2(&A[0,0], &B[0,0])
  *     elif ndim1 == 3:             # <<<<<<<<<<<<<<
@@ -4165,7 +4165,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
     break;
     default:
 
-    /* "Florence/Tensor/LinAlg.pyx":231
+    /* "Kuru/Tensor/LinAlg.pyx":231
  *         return dgemm3(&A[0,0], &B[0,0])
  *     else:
  *         warn("dgemm of matrices > (3x3) falls back to numpy.dot. Use that instead")             # <<<<<<<<<<<<<<
@@ -4191,7 +4191,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "Florence/Tensor/LinAlg.pyx":232
+    /* "Kuru/Tensor/LinAlg.pyx":232
  *     else:
  *         warn("dgemm of matrices > (3x3) falls back to numpy.dot. Use that instead")
  *         return A.dot(B)             # <<<<<<<<<<<<<<
@@ -4222,7 +4222,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
     break;
   }
 
-  /* "Florence/Tensor/LinAlg.pyx":218
+  /* "Kuru/Tensor/LinAlg.pyx":218
  * #----------------------------------------------------------------------------------------------------
  * 
  * cpdef dgemm(np.ndarray[double,ndim=2] A, np.ndarray[double,ndim=2] B):             # <<<<<<<<<<<<<<
@@ -4242,7 +4242,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_B.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.dgemm", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.dgemm", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4255,8 +4255,8 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm(PyArrayObject *__pyx_v_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_9dgemm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_9dgemm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_9dgemm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_9dgemm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_A = 0;
   PyArrayObject *__pyx_v_B = 0;
   PyObject *__pyx_r = 0;
@@ -4304,13 +4304,13 @@ static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_9dgemm(PyObject *__pyx_self,
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("dgemm", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 218, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.dgemm", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.dgemm", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_A), __pyx_ptype_5numpy_ndarray, 1, "A", 0))) __PYX_ERR(0, 218, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_B), __pyx_ptype_5numpy_ndarray, 1, "B", 0))) __PYX_ERR(0, 218, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8Florence_6Tensor_6LinAlg_8dgemm(__pyx_self, __pyx_v_A, __pyx_v_B);
+  __pyx_r = __pyx_pf_4Kuru_6Tensor_6LinAlg_8dgemm(__pyx_self, __pyx_v_A, __pyx_v_B);
 
   /* function exit code */
   goto __pyx_L0;
@@ -4321,7 +4321,7 @@ static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_9dgemm(PyObject *__pyx_self,
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_8dgemm(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_B) {
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_8dgemm(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_B) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
   __Pyx_Buffer __pyx_pybuffer_A;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_B;
@@ -4349,7 +4349,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_8dgemm(CYTHON_UNUSED PyObjec
   }
   __pyx_pybuffernd_B.diminfo[0].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_B.diminfo[0].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_B.diminfo[1].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_B.diminfo[1].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[1];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8Florence_6Tensor_6LinAlg_dgemm(((PyArrayObject *)__pyx_v_A), ((PyArrayObject *)__pyx_v_B), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4Kuru_6Tensor_6LinAlg_dgemm(((PyArrayObject *)__pyx_v_A), ((PyArrayObject *)__pyx_v_B), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4365,7 +4365,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_8dgemm(CYTHON_UNUSED PyObjec
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_B.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.dgemm", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.dgemm", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4377,7 +4377,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_8dgemm(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":235
+/* "Kuru/Tensor/LinAlg.pyx":235
  * 
  * 
  * cdef inline dgemm2(const double *A, const double *B):             # <<<<<<<<<<<<<<
@@ -4385,7 +4385,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_8dgemm(CYTHON_UNUSED PyObjec
  *     cdef:
  */
 
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double const *__pyx_v_A, double const *__pyx_v_B) {
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_dgemm2(double const *__pyx_v_A, double const *__pyx_v_B) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A2_1;
@@ -4403,7 +4403,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("dgemm2", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":238
+  /* "Kuru/Tensor/LinAlg.pyx":238
  * 
  *     cdef:
  *         double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -4412,7 +4412,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":239
+  /* "Kuru/Tensor/LinAlg.pyx":239
  *     cdef:
  *         double A1_1 = A[0]
  *         double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -4421,7 +4421,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":240
+  /* "Kuru/Tensor/LinAlg.pyx":240
  *         double A1_1 = A[0]
  *         double A1_2 = A[1]
  *         double A2_1 = A[2]             # <<<<<<<<<<<<<<
@@ -4430,7 +4430,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
  */
   __pyx_v_A2_1 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":241
+  /* "Kuru/Tensor/LinAlg.pyx":241
  *         double A1_2 = A[1]
  *         double A2_1 = A[2]
  *         double A2_2 = A[3]             # <<<<<<<<<<<<<<
@@ -4439,7 +4439,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
  */
   __pyx_v_A2_2 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":243
+  /* "Kuru/Tensor/LinAlg.pyx":243
  *         double A2_2 = A[3]
  * 
  *         double B1_1 = B[0]             # <<<<<<<<<<<<<<
@@ -4448,7 +4448,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
  */
   __pyx_v_B1_1 = (__pyx_v_B[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":244
+  /* "Kuru/Tensor/LinAlg.pyx":244
  * 
  *         double B1_1 = B[0]
  *         double B1_2 = B[1]             # <<<<<<<<<<<<<<
@@ -4457,7 +4457,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
  */
   __pyx_v_B1_2 = (__pyx_v_B[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":245
+  /* "Kuru/Tensor/LinAlg.pyx":245
  *         double B1_1 = B[0]
  *         double B1_2 = B[1]
  *         double B2_1 = B[2]             # <<<<<<<<<<<<<<
@@ -4466,7 +4466,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
  */
   __pyx_v_B2_1 = (__pyx_v_B[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":246
+  /* "Kuru/Tensor/LinAlg.pyx":246
  *         double B1_2 = B[1]
  *         double B2_1 = B[2]
  *         double B2_2 = B[3]             # <<<<<<<<<<<<<<
@@ -4475,7 +4475,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
  */
   __pyx_v_B2_2 = (__pyx_v_B[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":250
+  /* "Kuru/Tensor/LinAlg.pyx":250
  *         double AB[2][2]
  * 
  *     AB[:] = [[ A1_1*B1_1 + A1_2*B2_1, A1_1*B1_2 + A1_2*B2_2], [ A2_1*B1_1 + A2_2*B2_1, A2_1*B1_2 + A2_2*B2_2]]             # <<<<<<<<<<<<<<
@@ -4490,7 +4490,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
   memcpy(&(__pyx_t_3[1]), __pyx_t_2, sizeof(__pyx_t_3[0]));
   memcpy(&(__pyx_v_AB[0]), __pyx_t_3, sizeof(__pyx_v_AB[0]) * (2));
 
-  /* "Florence/Tensor/LinAlg.pyx":251
+  /* "Kuru/Tensor/LinAlg.pyx":251
  * 
  *     AB[:] = [[ A1_1*B1_1 + A1_2*B2_1, A1_1*B1_2 + A1_2*B2_2], [ A2_1*B1_1 + A2_2*B2_1, A2_1*B1_2 + A2_2*B2_2]]
  *     return AB             # <<<<<<<<<<<<<<
@@ -4504,7 +4504,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":235
+  /* "Kuru/Tensor/LinAlg.pyx":235
  * 
  * 
  * cdef inline dgemm2(const double *A, const double *B):             # <<<<<<<<<<<<<<
@@ -4515,7 +4515,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.dgemm2", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.dgemm2", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4523,7 +4523,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":254
+/* "Kuru/Tensor/LinAlg.pyx":254
  * 
  * 
  * cdef inline dgemm3(const double *A, const double *B):             # <<<<<<<<<<<<<<
@@ -4531,7 +4531,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2(double c
  *     cdef:
  */
 
-static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double const *__pyx_v_A, double const *__pyx_v_B) {
+static CYTHON_INLINE PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_dgemm3(double const *__pyx_v_A, double const *__pyx_v_B) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A1_3;
@@ -4560,7 +4560,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("dgemm3", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":257
+  /* "Kuru/Tensor/LinAlg.pyx":257
  * 
  *     cdef:
  *         double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -4569,7 +4569,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":258
+  /* "Kuru/Tensor/LinAlg.pyx":258
  *     cdef:
  *         double A1_1 = A[0]
  *         double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -4578,7 +4578,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":259
+  /* "Kuru/Tensor/LinAlg.pyx":259
  *         double A1_1 = A[0]
  *         double A1_2 = A[1]
  *         double A1_3 = A[2]             # <<<<<<<<<<<<<<
@@ -4587,7 +4587,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_A1_3 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":260
+  /* "Kuru/Tensor/LinAlg.pyx":260
  *         double A1_2 = A[1]
  *         double A1_3 = A[2]
  *         double A2_1 = A[3]             # <<<<<<<<<<<<<<
@@ -4596,7 +4596,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_A2_1 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":261
+  /* "Kuru/Tensor/LinAlg.pyx":261
  *         double A1_3 = A[2]
  *         double A2_1 = A[3]
  *         double A2_2 = A[4]             # <<<<<<<<<<<<<<
@@ -4605,7 +4605,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_A2_2 = (__pyx_v_A[4]);
 
-  /* "Florence/Tensor/LinAlg.pyx":262
+  /* "Kuru/Tensor/LinAlg.pyx":262
  *         double A2_1 = A[3]
  *         double A2_2 = A[4]
  *         double A2_3 = A[5]             # <<<<<<<<<<<<<<
@@ -4614,7 +4614,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_A2_3 = (__pyx_v_A[5]);
 
-  /* "Florence/Tensor/LinAlg.pyx":263
+  /* "Kuru/Tensor/LinAlg.pyx":263
  *         double A2_2 = A[4]
  *         double A2_3 = A[5]
  *         double A3_1 = A[6]             # <<<<<<<<<<<<<<
@@ -4623,7 +4623,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_A3_1 = (__pyx_v_A[6]);
 
-  /* "Florence/Tensor/LinAlg.pyx":264
+  /* "Kuru/Tensor/LinAlg.pyx":264
  *         double A2_3 = A[5]
  *         double A3_1 = A[6]
  *         double A3_2 = A[7]             # <<<<<<<<<<<<<<
@@ -4632,7 +4632,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_A3_2 = (__pyx_v_A[7]);
 
-  /* "Florence/Tensor/LinAlg.pyx":265
+  /* "Kuru/Tensor/LinAlg.pyx":265
  *         double A3_1 = A[6]
  *         double A3_2 = A[7]
  *         double A3_3 = A[8]             # <<<<<<<<<<<<<<
@@ -4641,7 +4641,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_A3_3 = (__pyx_v_A[8]);
 
-  /* "Florence/Tensor/LinAlg.pyx":267
+  /* "Kuru/Tensor/LinAlg.pyx":267
  *         double A3_3 = A[8]
  * 
  *         double B1_1 = B[0]             # <<<<<<<<<<<<<<
@@ -4650,7 +4650,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_B1_1 = (__pyx_v_B[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":268
+  /* "Kuru/Tensor/LinAlg.pyx":268
  * 
  *         double B1_1 = B[0]
  *         double B1_2 = B[1]             # <<<<<<<<<<<<<<
@@ -4659,7 +4659,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_B1_2 = (__pyx_v_B[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":269
+  /* "Kuru/Tensor/LinAlg.pyx":269
  *         double B1_1 = B[0]
  *         double B1_2 = B[1]
  *         double B1_3 = B[2]             # <<<<<<<<<<<<<<
@@ -4668,7 +4668,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_B1_3 = (__pyx_v_B[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":270
+  /* "Kuru/Tensor/LinAlg.pyx":270
  *         double B1_2 = B[1]
  *         double B1_3 = B[2]
  *         double B2_1 = B[3]             # <<<<<<<<<<<<<<
@@ -4677,7 +4677,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_B2_1 = (__pyx_v_B[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":271
+  /* "Kuru/Tensor/LinAlg.pyx":271
  *         double B1_3 = B[2]
  *         double B2_1 = B[3]
  *         double B2_2 = B[4]             # <<<<<<<<<<<<<<
@@ -4686,7 +4686,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_B2_2 = (__pyx_v_B[4]);
 
-  /* "Florence/Tensor/LinAlg.pyx":272
+  /* "Kuru/Tensor/LinAlg.pyx":272
  *         double B2_1 = B[3]
  *         double B2_2 = B[4]
  *         double B2_3 = B[5]             # <<<<<<<<<<<<<<
@@ -4695,7 +4695,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_B2_3 = (__pyx_v_B[5]);
 
-  /* "Florence/Tensor/LinAlg.pyx":273
+  /* "Kuru/Tensor/LinAlg.pyx":273
  *         double B2_2 = B[4]
  *         double B2_3 = B[5]
  *         double B3_1 = B[6]             # <<<<<<<<<<<<<<
@@ -4704,7 +4704,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_B3_1 = (__pyx_v_B[6]);
 
-  /* "Florence/Tensor/LinAlg.pyx":274
+  /* "Kuru/Tensor/LinAlg.pyx":274
  *         double B2_3 = B[5]
  *         double B3_1 = B[6]
  *         double B3_2 = B[7]             # <<<<<<<<<<<<<<
@@ -4713,7 +4713,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_B3_2 = (__pyx_v_B[7]);
 
-  /* "Florence/Tensor/LinAlg.pyx":275
+  /* "Kuru/Tensor/LinAlg.pyx":275
  *         double B3_1 = B[6]
  *         double B3_2 = B[7]
  *         double B3_3 = B[8]             # <<<<<<<<<<<<<<
@@ -4722,7 +4722,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  */
   __pyx_v_B3_3 = (__pyx_v_B[8]);
 
-  /* "Florence/Tensor/LinAlg.pyx":279
+  /* "Kuru/Tensor/LinAlg.pyx":279
  *         double AB[3][3]
  * 
  *     AB[:] = [[ A1_1*B1_1 + A1_2*B2_1 + A1_3*B3_1, A1_1*B1_2 + A1_2*B2_2 + A1_3*B3_2, A1_1*B1_3 + A1_2*B2_3 + A1_3*B3_3],             # <<<<<<<<<<<<<<
@@ -4733,7 +4733,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
   __pyx_t_1[1] = (((__pyx_v_A1_1 * __pyx_v_B1_2) + (__pyx_v_A1_2 * __pyx_v_B2_2)) + (__pyx_v_A1_3 * __pyx_v_B3_2));
   __pyx_t_1[2] = (((__pyx_v_A1_1 * __pyx_v_B1_3) + (__pyx_v_A1_2 * __pyx_v_B2_3)) + (__pyx_v_A1_3 * __pyx_v_B3_3));
 
-  /* "Florence/Tensor/LinAlg.pyx":280
+  /* "Kuru/Tensor/LinAlg.pyx":280
  * 
  *     AB[:] = [[ A1_1*B1_1 + A1_2*B2_1 + A1_3*B3_1, A1_1*B1_2 + A1_2*B2_2 + A1_3*B3_2, A1_1*B1_3 + A1_2*B2_3 + A1_3*B3_3],
  *         [ A2_1*B1_1 + A2_2*B2_1 + A2_3*B3_1, A2_1*B1_2 + A2_2*B2_2 + A2_3*B3_2, A2_1*B1_3 + A2_2*B2_3 + A2_3*B3_3],             # <<<<<<<<<<<<<<
@@ -4744,7 +4744,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
   __pyx_t_2[1] = (((__pyx_v_A2_1 * __pyx_v_B1_2) + (__pyx_v_A2_2 * __pyx_v_B2_2)) + (__pyx_v_A2_3 * __pyx_v_B3_2));
   __pyx_t_2[2] = (((__pyx_v_A2_1 * __pyx_v_B1_3) + (__pyx_v_A2_2 * __pyx_v_B2_3)) + (__pyx_v_A2_3 * __pyx_v_B3_3));
 
-  /* "Florence/Tensor/LinAlg.pyx":281
+  /* "Kuru/Tensor/LinAlg.pyx":281
  *     AB[:] = [[ A1_1*B1_1 + A1_2*B2_1 + A1_3*B3_1, A1_1*B1_2 + A1_2*B2_2 + A1_3*B3_2, A1_1*B1_3 + A1_2*B2_3 + A1_3*B3_3],
  *         [ A2_1*B1_1 + A2_2*B2_1 + A2_3*B3_1, A2_1*B1_2 + A2_2*B2_2 + A2_3*B3_2, A2_1*B1_3 + A2_2*B2_3 + A2_3*B3_3],
  *         [ A3_1*B1_1 + A3_2*B2_1 + A3_3*B3_1, A3_1*B1_2 + A3_2*B2_2 + A3_3*B3_2, A3_1*B1_3 + A3_2*B2_3 + A3_3*B3_3]]             # <<<<<<<<<<<<<<
@@ -4755,7 +4755,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
   __pyx_t_3[1] = (((__pyx_v_A3_1 * __pyx_v_B1_2) + (__pyx_v_A3_2 * __pyx_v_B2_2)) + (__pyx_v_A3_3 * __pyx_v_B3_2));
   __pyx_t_3[2] = (((__pyx_v_A3_1 * __pyx_v_B1_3) + (__pyx_v_A3_2 * __pyx_v_B2_3)) + (__pyx_v_A3_3 * __pyx_v_B3_3));
 
-  /* "Florence/Tensor/LinAlg.pyx":279
+  /* "Kuru/Tensor/LinAlg.pyx":279
  *         double AB[3][3]
  * 
  *     AB[:] = [[ A1_1*B1_1 + A1_2*B2_1 + A1_3*B3_1, A1_1*B1_2 + A1_2*B2_2 + A1_3*B3_2, A1_1*B1_3 + A1_2*B2_3 + A1_3*B3_3],             # <<<<<<<<<<<<<<
@@ -4767,7 +4767,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
   memcpy(&(__pyx_t_4[2]), __pyx_t_3, sizeof(__pyx_t_4[0]));
   memcpy(&(__pyx_v_AB[0]), __pyx_t_4, sizeof(__pyx_v_AB[0]) * (3));
 
-  /* "Florence/Tensor/LinAlg.pyx":283
+  /* "Kuru/Tensor/LinAlg.pyx":283
  *         [ A3_1*B1_1 + A3_2*B2_1 + A3_3*B3_1, A3_1*B1_2 + A3_2*B2_2 + A3_3*B3_2, A3_1*B1_3 + A3_2*B2_3 + A3_3*B3_3]]
  * 
  *     return AB             # <<<<<<<<<<<<<<
@@ -4781,7 +4781,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
   __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":254
+  /* "Kuru/Tensor/LinAlg.pyx":254
  * 
  * 
  * cdef inline dgemm3(const double *A, const double *B):             # <<<<<<<<<<<<<<
@@ -4792,7 +4792,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.dgemm3", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.dgemm3", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4800,7 +4800,7 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":288
+/* "Kuru/Tensor/LinAlg.pyx":288
  * #---------------------------------------------------------------------------------------------------------------
  * 
  * cpdef daxpy(np.ndarray[double,ndim=2] A, np.ndarray[double,ndim=1] b):             # <<<<<<<<<<<<<<
@@ -4808,8 +4808,8 @@ static CYTHON_INLINE PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3(double c
  *         int ndim1 = A.shape[1]
  */
 
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_11daxpy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_b, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_11daxpy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_b, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_ndim1;
   int __pyx_v_ndim2;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
@@ -4850,7 +4850,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
   }
   __pyx_pybuffernd_b.diminfo[0].strides = __pyx_pybuffernd_b.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_b.diminfo[0].shape = __pyx_pybuffernd_b.rcbuffer->pybuffer.shape[0];
 
-  /* "Florence/Tensor/LinAlg.pyx":290
+  /* "Kuru/Tensor/LinAlg.pyx":290
  * cpdef daxpy(np.ndarray[double,ndim=2] A, np.ndarray[double,ndim=1] b):
  *     cdef:
  *         int ndim1 = A.shape[1]             # <<<<<<<<<<<<<<
@@ -4859,7 +4859,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
  */
   __pyx_v_ndim1 = (__pyx_v_A->dimensions[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":291
+  /* "Kuru/Tensor/LinAlg.pyx":291
  *     cdef:
  *         int ndim1 = A.shape[1]
  *         int ndim2 = b.shape[0]             # <<<<<<<<<<<<<<
@@ -4868,7 +4868,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
  */
   __pyx_v_ndim2 = (__pyx_v_b->dimensions[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":293
+  /* "Kuru/Tensor/LinAlg.pyx":293
  *         int ndim2 = b.shape[0]
  * 
  *     if ndim1 != ndim2:             # <<<<<<<<<<<<<<
@@ -4878,7 +4878,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
   __pyx_t_1 = ((__pyx_v_ndim1 != __pyx_v_ndim2) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "Florence/Tensor/LinAlg.pyx":294
+    /* "Kuru/Tensor/LinAlg.pyx":294
  * 
  *     if ndim1 != ndim2:
  *         raise ValueError("matrices are not aligned")             # <<<<<<<<<<<<<<
@@ -4891,7 +4891,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 294, __pyx_L1_error)
 
-    /* "Florence/Tensor/LinAlg.pyx":293
+    /* "Kuru/Tensor/LinAlg.pyx":293
  *         int ndim2 = b.shape[0]
  * 
  *     if ndim1 != ndim2:             # <<<<<<<<<<<<<<
@@ -4900,7 +4900,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
  */
   }
 
-  /* "Florence/Tensor/LinAlg.pyx":296
+  /* "Kuru/Tensor/LinAlg.pyx":296
  *         raise ValueError("matrices are not aligned")
  * 
  *     if ndim1 == 2:             # <<<<<<<<<<<<<<
@@ -4910,7 +4910,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
   switch (__pyx_v_ndim1) {
     case 2:
 
-    /* "Florence/Tensor/LinAlg.pyx":297
+    /* "Kuru/Tensor/LinAlg.pyx":297
  * 
  *     if ndim1 == 2:
  *         return daxpy2(&A[0,0], &b[0])             # <<<<<<<<<<<<<<
@@ -4943,13 +4943,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
       __PYX_ERR(0, 297, __pyx_L1_error)
     }
-    __pyx_t_2 = __pyx_f_8Florence_6Tensor_6LinAlg_daxpy2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_3, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_4, __pyx_pybuffernd_A.diminfo[1].strides))), (&(*__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_b.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_b.diminfo[0].strides)))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_4Kuru_6Tensor_6LinAlg_daxpy2((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_3, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_4, __pyx_pybuffernd_A.diminfo[1].strides))), (&(*__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_b.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_b.diminfo[0].strides)))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":296
+    /* "Kuru/Tensor/LinAlg.pyx":296
  *         raise ValueError("matrices are not aligned")
  * 
  *     if ndim1 == 2:             # <<<<<<<<<<<<<<
@@ -4959,7 +4959,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
     break;
     case 3:
 
-    /* "Florence/Tensor/LinAlg.pyx":299
+    /* "Kuru/Tensor/LinAlg.pyx":299
  *         return daxpy2(&A[0,0], &b[0])
  *     elif ndim1 == 3:
  *         return daxpy3(&A[0,0], &b[0])             # <<<<<<<<<<<<<<
@@ -4992,13 +4992,13 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
       __PYX_ERR(0, 299, __pyx_L1_error)
     }
-    __pyx_t_2 = __pyx_f_8Florence_6Tensor_6LinAlg_daxpy3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_7, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_8, __pyx_pybuffernd_A.diminfo[1].strides))), (&(*__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_b.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_b.diminfo[0].strides)))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 299, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_4Kuru_6Tensor_6LinAlg_daxpy3((&(*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_A.rcbuffer->pybuffer.buf, __pyx_t_7, __pyx_pybuffernd_A.diminfo[0].strides, __pyx_t_8, __pyx_pybuffernd_A.diminfo[1].strides))), (&(*__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_b.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_b.diminfo[0].strides)))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 299, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "Florence/Tensor/LinAlg.pyx":298
+    /* "Kuru/Tensor/LinAlg.pyx":298
  *     if ndim1 == 2:
  *         return daxpy2(&A[0,0], &b[0])
  *     elif ndim1 == 3:             # <<<<<<<<<<<<<<
@@ -5008,7 +5008,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
     break;
     default:
 
-    /* "Florence/Tensor/LinAlg.pyx":301
+    /* "Kuru/Tensor/LinAlg.pyx":301
  *         return daxpy3(&A[0,0], &b[0])
  *     else:
  *         warn("daxpy of matrices > (3x3) falls back to numpy.dot. Use that instead")             # <<<<<<<<<<<<<<
@@ -5034,7 +5034,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "Florence/Tensor/LinAlg.pyx":302
+    /* "Kuru/Tensor/LinAlg.pyx":302
  *     else:
  *         warn("daxpy of matrices > (3x3) falls back to numpy.dot. Use that instead")
  *         return np.dot(A,b)             # <<<<<<<<<<<<<<
@@ -5098,7 +5098,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
     break;
   }
 
-  /* "Florence/Tensor/LinAlg.pyx":288
+  /* "Kuru/Tensor/LinAlg.pyx":288
  * #---------------------------------------------------------------------------------------------------------------
  * 
  * cpdef daxpy(np.ndarray[double,ndim=2] A, np.ndarray[double,ndim=1] b):             # <<<<<<<<<<<<<<
@@ -5119,7 +5119,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_b.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.daxpy", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.daxpy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5132,8 +5132,8 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy(PyArrayObject *__pyx_v_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_11daxpy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_11daxpy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_11daxpy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_4Kuru_6Tensor_6LinAlg_11daxpy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_A = 0;
   PyArrayObject *__pyx_v_b = 0;
   PyObject *__pyx_r = 0;
@@ -5181,13 +5181,13 @@ static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_11daxpy(PyObject *__pyx_self
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("daxpy", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 288, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.daxpy", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.daxpy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_A), __pyx_ptype_5numpy_ndarray, 1, "A", 0))) __PYX_ERR(0, 288, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_b), __pyx_ptype_5numpy_ndarray, 1, "b", 0))) __PYX_ERR(0, 288, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8Florence_6Tensor_6LinAlg_10daxpy(__pyx_self, __pyx_v_A, __pyx_v_b);
+  __pyx_r = __pyx_pf_4Kuru_6Tensor_6LinAlg_10daxpy(__pyx_self, __pyx_v_A, __pyx_v_b);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5198,7 +5198,7 @@ static PyObject *__pyx_pw_8Florence_6Tensor_6LinAlg_11daxpy(PyObject *__pyx_self
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_10daxpy(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_b) {
+static PyObject *__pyx_pf_4Kuru_6Tensor_6LinAlg_10daxpy(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_A, PyArrayObject *__pyx_v_b) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_A;
   __Pyx_Buffer __pyx_pybuffer_A;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_b;
@@ -5226,7 +5226,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_10daxpy(CYTHON_UNUSED PyObje
   }
   __pyx_pybuffernd_b.diminfo[0].strides = __pyx_pybuffernd_b.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_b.diminfo[0].shape = __pyx_pybuffernd_b.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8Florence_6Tensor_6LinAlg_daxpy(((PyArrayObject *)__pyx_v_A), ((PyArrayObject *)__pyx_v_b), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4Kuru_6Tensor_6LinAlg_daxpy(((PyArrayObject *)__pyx_v_A), ((PyArrayObject *)__pyx_v_b), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5242,7 +5242,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_10daxpy(CYTHON_UNUSED PyObje
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_A.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_b.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.daxpy", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.daxpy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5254,7 +5254,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_10daxpy(CYTHON_UNUSED PyObje
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":305
+/* "Kuru/Tensor/LinAlg.pyx":305
  * 
  * 
  * cdef daxpy2(const double *A, const double *b):             # <<<<<<<<<<<<<<
@@ -5262,7 +5262,7 @@ static PyObject *__pyx_pf_8Florence_6Tensor_6LinAlg_10daxpy(CYTHON_UNUSED PyObje
  *     cdef:
  */
 
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_A, double const *__pyx_v_b) {
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_A, double const *__pyx_v_b) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A2_1;
@@ -5276,7 +5276,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("daxpy2", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":308
+  /* "Kuru/Tensor/LinAlg.pyx":308
  * 
  *     cdef:
  *         double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -5285,7 +5285,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":309
+  /* "Kuru/Tensor/LinAlg.pyx":309
  *     cdef:
  *         double A1_1 = A[0]
  *         double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -5294,7 +5294,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":310
+  /* "Kuru/Tensor/LinAlg.pyx":310
  *         double A1_1 = A[0]
  *         double A1_2 = A[1]
  *         double A2_1 = A[2]             # <<<<<<<<<<<<<<
@@ -5303,7 +5303,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
  */
   __pyx_v_A2_1 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":311
+  /* "Kuru/Tensor/LinAlg.pyx":311
  *         double A1_2 = A[1]
  *         double A2_1 = A[2]
  *         double A2_2 = A[3]             # <<<<<<<<<<<<<<
@@ -5312,7 +5312,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
  */
   __pyx_v_A2_2 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":313
+  /* "Kuru/Tensor/LinAlg.pyx":313
  *         double A2_2 = A[3]
  * 
  *         double b1 = b[0]             # <<<<<<<<<<<<<<
@@ -5321,7 +5321,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
  */
   __pyx_v_b1 = (__pyx_v_b[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":314
+  /* "Kuru/Tensor/LinAlg.pyx":314
  * 
  *         double b1 = b[0]
  *         double b2 = b[1]             # <<<<<<<<<<<<<<
@@ -5330,7 +5330,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
  */
   __pyx_v_b2 = (__pyx_v_b[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":318
+  /* "Kuru/Tensor/LinAlg.pyx":318
  *         double Ab[2]
  * 
  *     Ab[:] = [A1_1*b1 + A1_2*b2, A2_1*b1 + A2_2*b2]             # <<<<<<<<<<<<<<
@@ -5341,7 +5341,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
   __pyx_t_1[1] = ((__pyx_v_A2_1 * __pyx_v_b1) + (__pyx_v_A2_2 * __pyx_v_b2));
   memcpy(&(__pyx_v_Ab[0]), __pyx_t_1, sizeof(__pyx_v_Ab[0]) * (2));
 
-  /* "Florence/Tensor/LinAlg.pyx":319
+  /* "Kuru/Tensor/LinAlg.pyx":319
  * 
  *     Ab[:] = [A1_1*b1 + A1_2*b2, A2_1*b1 + A2_2*b2]
  *     return Ab             # <<<<<<<<<<<<<<
@@ -5355,7 +5355,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":305
+  /* "Kuru/Tensor/LinAlg.pyx":305
  * 
  * 
  * cdef daxpy2(const double *A, const double *b):             # <<<<<<<<<<<<<<
@@ -5366,7 +5366,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.daxpy2", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.daxpy2", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5374,7 +5374,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
   return __pyx_r;
 }
 
-/* "Florence/Tensor/LinAlg.pyx":322
+/* "Kuru/Tensor/LinAlg.pyx":322
  * 
  * 
  * cdef daxpy3(const double *A, const double *b):             # <<<<<<<<<<<<<<
@@ -5382,7 +5382,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2(double const *__pyx_v_
  *     cdef:
  */
 
-static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_A, double const *__pyx_v_b) {
+static PyObject *__pyx_f_4Kuru_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_A, double const *__pyx_v_b) {
   double __pyx_v_A1_1;
   double __pyx_v_A1_2;
   double __pyx_v_A1_3;
@@ -5402,7 +5402,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("daxpy3", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":325
+  /* "Kuru/Tensor/LinAlg.pyx":325
  * 
  *     cdef:
  *         double A1_1 = A[0]             # <<<<<<<<<<<<<<
@@ -5411,7 +5411,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_A1_1 = (__pyx_v_A[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":326
+  /* "Kuru/Tensor/LinAlg.pyx":326
  *     cdef:
  *         double A1_1 = A[0]
  *         double A1_2 = A[1]             # <<<<<<<<<<<<<<
@@ -5420,7 +5420,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_A1_2 = (__pyx_v_A[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":327
+  /* "Kuru/Tensor/LinAlg.pyx":327
  *         double A1_1 = A[0]
  *         double A1_2 = A[1]
  *         double A1_3 = A[2]             # <<<<<<<<<<<<<<
@@ -5429,7 +5429,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_A1_3 = (__pyx_v_A[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":328
+  /* "Kuru/Tensor/LinAlg.pyx":328
  *         double A1_2 = A[1]
  *         double A1_3 = A[2]
  *         double A2_1 = A[3]             # <<<<<<<<<<<<<<
@@ -5438,7 +5438,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_A2_1 = (__pyx_v_A[3]);
 
-  /* "Florence/Tensor/LinAlg.pyx":329
+  /* "Kuru/Tensor/LinAlg.pyx":329
  *         double A1_3 = A[2]
  *         double A2_1 = A[3]
  *         double A2_2 = A[4]             # <<<<<<<<<<<<<<
@@ -5447,7 +5447,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_A2_2 = (__pyx_v_A[4]);
 
-  /* "Florence/Tensor/LinAlg.pyx":330
+  /* "Kuru/Tensor/LinAlg.pyx":330
  *         double A2_1 = A[3]
  *         double A2_2 = A[4]
  *         double A2_3 = A[5]             # <<<<<<<<<<<<<<
@@ -5456,7 +5456,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_A2_3 = (__pyx_v_A[5]);
 
-  /* "Florence/Tensor/LinAlg.pyx":331
+  /* "Kuru/Tensor/LinAlg.pyx":331
  *         double A2_2 = A[4]
  *         double A2_3 = A[5]
  *         double A3_1 = A[6]             # <<<<<<<<<<<<<<
@@ -5465,7 +5465,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_A3_1 = (__pyx_v_A[6]);
 
-  /* "Florence/Tensor/LinAlg.pyx":332
+  /* "Kuru/Tensor/LinAlg.pyx":332
  *         double A2_3 = A[5]
  *         double A3_1 = A[6]
  *         double A3_2 = A[7]             # <<<<<<<<<<<<<<
@@ -5474,7 +5474,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_A3_2 = (__pyx_v_A[7]);
 
-  /* "Florence/Tensor/LinAlg.pyx":333
+  /* "Kuru/Tensor/LinAlg.pyx":333
  *         double A3_1 = A[6]
  *         double A3_2 = A[7]
  *         double A3_3 = A[8]             # <<<<<<<<<<<<<<
@@ -5483,7 +5483,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_A3_3 = (__pyx_v_A[8]);
 
-  /* "Florence/Tensor/LinAlg.pyx":335
+  /* "Kuru/Tensor/LinAlg.pyx":335
  *         double A3_3 = A[8]
  * 
  *         double b1 = b[0]             # <<<<<<<<<<<<<<
@@ -5492,7 +5492,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_b1 = (__pyx_v_b[0]);
 
-  /* "Florence/Tensor/LinAlg.pyx":336
+  /* "Kuru/Tensor/LinAlg.pyx":336
  * 
  *         double b1 = b[0]
  *         double b2 = b[1]             # <<<<<<<<<<<<<<
@@ -5501,7 +5501,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_b2 = (__pyx_v_b[1]);
 
-  /* "Florence/Tensor/LinAlg.pyx":337
+  /* "Kuru/Tensor/LinAlg.pyx":337
  *         double b1 = b[0]
  *         double b2 = b[1]
  *         double b3 = b[2]             # <<<<<<<<<<<<<<
@@ -5510,7 +5510,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
  */
   __pyx_v_b3 = (__pyx_v_b[2]);
 
-  /* "Florence/Tensor/LinAlg.pyx":341
+  /* "Kuru/Tensor/LinAlg.pyx":341
  *         double Ab[3]
  * 
  *     Ab[:] = [ A1_1*b1 + A1_2*b2 + A1_3*b3, A2_1*b1 + A2_2*b2 + A2_3*b3, A3_1*b1 + A3_2*b2 + A3_3*b3]             # <<<<<<<<<<<<<<
@@ -5522,7 +5522,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
   __pyx_t_1[2] = (((__pyx_v_A3_1 * __pyx_v_b1) + (__pyx_v_A3_2 * __pyx_v_b2)) + (__pyx_v_A3_3 * __pyx_v_b3));
   memcpy(&(__pyx_v_Ab[0]), __pyx_t_1, sizeof(__pyx_v_Ab[0]) * (3));
 
-  /* "Florence/Tensor/LinAlg.pyx":342
+  /* "Kuru/Tensor/LinAlg.pyx":342
  * 
  *     Ab[:] = [ A1_1*b1 + A1_2*b2 + A1_3*b3, A2_1*b1 + A2_2*b2 + A2_3*b3, A3_1*b1 + A3_2*b2 + A3_3*b3]
  *     return Ab             # <<<<<<<<<<<<<<
@@ -5536,7 +5536,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "Florence/Tensor/LinAlg.pyx":322
+  /* "Kuru/Tensor/LinAlg.pyx":322
  * 
  * 
  * cdef daxpy3(const double *A, const double *b):             # <<<<<<<<<<<<<<
@@ -5547,7 +5547,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("Florence.Tensor.LinAlg.daxpy3", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.Tensor.LinAlg.daxpy3", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5555,7 +5555,7 @@ static PyObject *__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3(double const *__pyx_v_
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":258
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":258
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -5604,7 +5604,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_v_info->obj = Py_None; __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(__pyx_v_info->obj);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":265
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":265
  * 
  *             cdef int i, ndim
  *             cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -5613,7 +5613,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":266
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":266
  *             cdef int i, ndim
  *             cdef int endian_detector = 1
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -5622,7 +5622,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":268
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":268
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)
  * 
  *             ndim = PyArray_NDIM(self)             # <<<<<<<<<<<<<<
@@ -5631,7 +5631,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_ndim = PyArray_NDIM(__pyx_v_self);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":270
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":270
  *             ndim = PyArray_NDIM(self)
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5645,7 +5645,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L4_bool_binop_done;
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":271
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":271
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_C_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -5656,7 +5656,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = __pyx_t_2;
   __pyx_L4_bool_binop_done:;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":270
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":270
  *             ndim = PyArray_NDIM(self)
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5665,7 +5665,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   if (unlikely(__pyx_t_1)) {
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":272
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":272
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -5678,7 +5678,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __PYX_ERR(1, 272, __pyx_L1_error)
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":270
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":270
  *             ndim = PyArray_NDIM(self)
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5687,7 +5687,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":274
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":274
  *                 raise ValueError(u"ndarray is not C contiguous")
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5701,7 +5701,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L7_bool_binop_done;
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":275
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":275
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_F_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -5712,7 +5712,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = __pyx_t_2;
   __pyx_L7_bool_binop_done:;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":274
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":274
  *                 raise ValueError(u"ndarray is not C contiguous")
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5721,7 +5721,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   if (unlikely(__pyx_t_1)) {
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":276
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":276
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -5734,7 +5734,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __PYX_ERR(1, 276, __pyx_L1_error)
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":274
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":274
  *                 raise ValueError(u"ndarray is not C contiguous")
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5743,7 +5743,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":278
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":278
  *                 raise ValueError(u"ndarray is not Fortran contiguous")
  * 
  *             info.buf = PyArray_DATA(self)             # <<<<<<<<<<<<<<
@@ -5752,7 +5752,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->buf = PyArray_DATA(__pyx_v_self);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":279
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":279
  * 
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim             # <<<<<<<<<<<<<<
@@ -5761,7 +5761,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->ndim = __pyx_v_ndim;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":280
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":280
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -5771,7 +5771,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":283
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":283
  *                 # Allocate new buffer for strides and shape info.
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>PyObject_Malloc(sizeof(Py_ssize_t) * 2 * <size_t>ndim)             # <<<<<<<<<<<<<<
@@ -5780,7 +5780,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->strides = ((Py_ssize_t *)PyObject_Malloc((((sizeof(Py_ssize_t)) * 2) * ((size_t)__pyx_v_ndim))));
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":284
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":284
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>PyObject_Malloc(sizeof(Py_ssize_t) * 2 * <size_t>ndim)
  *                 info.shape = info.strides + ndim             # <<<<<<<<<<<<<<
@@ -5789,7 +5789,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->shape = (__pyx_v_info->strides + __pyx_v_ndim);
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":285
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":285
  *                 info.strides = <Py_ssize_t*>PyObject_Malloc(sizeof(Py_ssize_t) * 2 * <size_t>ndim)
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):             # <<<<<<<<<<<<<<
@@ -5801,7 +5801,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v_i = __pyx_t_6;
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":286
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":286
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]             # <<<<<<<<<<<<<<
@@ -5810,7 +5810,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
       (__pyx_v_info->strides[__pyx_v_i]) = (PyArray_STRIDES(__pyx_v_self)[__pyx_v_i]);
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":287
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":287
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]
  *                     info.shape[i] = PyArray_DIMS(self)[i]             # <<<<<<<<<<<<<<
@@ -5820,7 +5820,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       (__pyx_v_info->shape[__pyx_v_i]) = (PyArray_DIMS(__pyx_v_self)[__pyx_v_i]);
     }
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":280
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":280
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -5830,7 +5830,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L9;
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":289
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":289
  *                     info.shape[i] = PyArray_DIMS(self)[i]
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)             # <<<<<<<<<<<<<<
@@ -5840,7 +5840,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   /*else*/ {
     __pyx_v_info->strides = ((Py_ssize_t *)PyArray_STRIDES(__pyx_v_self));
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":290
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":290
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)             # <<<<<<<<<<<<<<
@@ -5851,7 +5851,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L9:;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":291
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":291
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL             # <<<<<<<<<<<<<<
@@ -5860,7 +5860,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->suboffsets = NULL;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":292
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":292
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)             # <<<<<<<<<<<<<<
@@ -5869,7 +5869,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->itemsize = PyArray_ITEMSIZE(__pyx_v_self);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":293
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":293
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)
  *             info.readonly = not PyArray_ISWRITEABLE(self)             # <<<<<<<<<<<<<<
@@ -5878,7 +5878,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->readonly = (!(PyArray_ISWRITEABLE(__pyx_v_self) != 0));
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":296
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":296
  * 
  *             cdef int t
  *             cdef char* f = NULL             # <<<<<<<<<<<<<<
@@ -5887,7 +5887,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_f = NULL;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":297
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":297
  *             cdef int t
  *             cdef char* f = NULL
  *             cdef dtype descr = <dtype>PyArray_DESCR(self)             # <<<<<<<<<<<<<<
@@ -5900,7 +5900,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_v_descr = ((PyArray_Descr *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":300
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":300
  *             cdef int offset
  * 
  *             info.obj = self             # <<<<<<<<<<<<<<
@@ -5913,7 +5913,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __Pyx_DECREF(__pyx_v_info->obj);
   __pyx_v_info->obj = ((PyObject *)__pyx_v_self);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":302
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":302
  *             info.obj = self
  * 
  *             if not PyDataType_HASFIELDS(descr):             # <<<<<<<<<<<<<<
@@ -5923,7 +5923,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = ((!(PyDataType_HASFIELDS(__pyx_v_descr) != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":303
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":303
  * 
  *             if not PyDataType_HASFIELDS(descr):
  *                 t = descr.type_num             # <<<<<<<<<<<<<<
@@ -5933,7 +5933,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_4 = __pyx_v_descr->type_num;
     __pyx_v_t = __pyx_t_4;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":304
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":304
  *             if not PyDataType_HASFIELDS(descr):
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -5953,7 +5953,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     }
     __pyx_L15_next_or:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":305
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":305
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -5970,7 +5970,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_1 = __pyx_t_2;
     __pyx_L14_bool_binop_done:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":304
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":304
  *             if not PyDataType_HASFIELDS(descr):
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -5979,7 +5979,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     if (unlikely(__pyx_t_1)) {
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":306
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":306
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -5992,7 +5992,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __PYX_ERR(1, 306, __pyx_L1_error)
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":304
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":304
  *             if not PyDataType_HASFIELDS(descr):
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -6001,7 +6001,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     }
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":307
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":307
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"             # <<<<<<<<<<<<<<
@@ -6014,7 +6014,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_UBYTE:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":308
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":308
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"             # <<<<<<<<<<<<<<
@@ -6025,7 +6025,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_SHORT:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":309
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":309
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"             # <<<<<<<<<<<<<<
@@ -6036,7 +6036,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_USHORT:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":310
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":310
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"             # <<<<<<<<<<<<<<
@@ -6047,7 +6047,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_INT:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":311
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":311
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"             # <<<<<<<<<<<<<<
@@ -6058,7 +6058,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_UINT:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":312
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":312
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"             # <<<<<<<<<<<<<<
@@ -6069,7 +6069,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_LONG:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":313
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":313
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"             # <<<<<<<<<<<<<<
@@ -6080,7 +6080,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_ULONG:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":314
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":314
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"             # <<<<<<<<<<<<<<
@@ -6091,7 +6091,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_LONGLONG:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":315
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":315
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"             # <<<<<<<<<<<<<<
@@ -6102,7 +6102,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_ULONGLONG:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":316
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":316
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"             # <<<<<<<<<<<<<<
@@ -6113,7 +6113,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_FLOAT:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":317
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":317
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"             # <<<<<<<<<<<<<<
@@ -6124,7 +6124,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_DOUBLE:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":318
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":318
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"             # <<<<<<<<<<<<<<
@@ -6135,7 +6135,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_LONGDOUBLE:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":319
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":319
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"             # <<<<<<<<<<<<<<
@@ -6146,7 +6146,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_CFLOAT:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":320
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":320
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"             # <<<<<<<<<<<<<<
@@ -6157,7 +6157,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_CDOUBLE:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":321
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":321
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"             # <<<<<<<<<<<<<<
@@ -6168,7 +6168,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_CLONGDOUBLE:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":322
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":322
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"             # <<<<<<<<<<<<<<
@@ -6179,7 +6179,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_OBJECT:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":323
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":323
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"
  *                 elif t == NPY_OBJECT:      f = "O"             # <<<<<<<<<<<<<<
@@ -6190,7 +6190,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       default:
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":325
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":325
  *                 elif t == NPY_OBJECT:      f = "O"
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -6211,7 +6211,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
     }
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":326
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":326
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f             # <<<<<<<<<<<<<<
@@ -6220,7 +6220,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->format = __pyx_v_f;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":327
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":327
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f
  *                 return             # <<<<<<<<<<<<<<
@@ -6230,7 +6230,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":302
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":302
  *             info.obj = self
  * 
  *             if not PyDataType_HASFIELDS(descr):             # <<<<<<<<<<<<<<
@@ -6239,7 +6239,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":329
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":329
  *                 return
  *             else:
  *                 info.format = <char*>PyObject_Malloc(_buffer_format_string_len)             # <<<<<<<<<<<<<<
@@ -6249,7 +6249,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   /*else*/ {
     __pyx_v_info->format = ((char *)PyObject_Malloc(0xFF));
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":330
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":330
  *             else:
  *                 info.format = <char*>PyObject_Malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment             # <<<<<<<<<<<<<<
@@ -6258,7 +6258,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     (__pyx_v_info->format[0]) = '^';
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":331
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":331
  *                 info.format = <char*>PyObject_Malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0             # <<<<<<<<<<<<<<
@@ -6267,7 +6267,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_offset = 0;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":332
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":332
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0
  *                 f = _util_dtypestring(descr, info.format + 1,             # <<<<<<<<<<<<<<
@@ -6277,7 +6277,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_9 = __pyx_f_5numpy__util_dtypestring(__pyx_v_descr, (__pyx_v_info->format + 1), (__pyx_v_info->format + 0xFF), (&__pyx_v_offset)); if (unlikely(__pyx_t_9 == ((char *)NULL))) __PYX_ERR(1, 332, __pyx_L1_error)
     __pyx_v_f = __pyx_t_9;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":335
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":335
  *                                       info.format + _buffer_format_string_len,
  *                                       &offset)
  *                 f[0] = c'\0' # Terminate format string             # <<<<<<<<<<<<<<
@@ -6287,7 +6287,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     (__pyx_v_f[0]) = '\x00';
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":258
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":258
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -6319,7 +6319,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":337
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":337
  *                 f[0] = c'\0' # Terminate format string
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -6343,7 +6343,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__releasebuffer__", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":338
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":338
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):             # <<<<<<<<<<<<<<
@@ -6353,7 +6353,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (PyArray_HASFIELDS(__pyx_v_self) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":339
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":339
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):
  *                 PyObject_Free(info.format)             # <<<<<<<<<<<<<<
@@ -6362,7 +6362,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
     PyObject_Free(__pyx_v_info->format);
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":338
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":338
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):             # <<<<<<<<<<<<<<
@@ -6371,7 +6371,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":340
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":340
  *             if PyArray_HASFIELDS(self):
  *                 PyObject_Free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -6381,7 +6381,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":341
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":341
  *                 PyObject_Free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):
  *                 PyObject_Free(info.strides)             # <<<<<<<<<<<<<<
@@ -6390,7 +6390,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
     PyObject_Free(__pyx_v_info->strides);
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":340
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":340
  *             if PyArray_HASFIELDS(self):
  *                 PyObject_Free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -6399,7 +6399,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":337
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":337
  *                 f[0] = c'\0' # Terminate format string
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -6411,7 +6411,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":821
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":821
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -6425,7 +6425,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew1", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":822
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":822
  * 
  * cdef inline object PyArray_MultiIterNew1(a):
  *     return PyArray_MultiIterNew(1, <void*>a)             # <<<<<<<<<<<<<<
@@ -6439,7 +6439,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":821
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":821
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -6458,7 +6458,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":824
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":824
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -6472,7 +6472,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew2", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":825
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":825
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)             # <<<<<<<<<<<<<<
@@ -6486,7 +6486,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":824
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":824
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -6505,7 +6505,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":827
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":827
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -6519,7 +6519,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew3", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":828
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":828
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)             # <<<<<<<<<<<<<<
@@ -6533,7 +6533,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":827
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":827
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -6552,7 +6552,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":830
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":830
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -6566,7 +6566,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew4", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":831
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":831
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)             # <<<<<<<<<<<<<<
@@ -6580,7 +6580,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":830
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":830
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -6599,7 +6599,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":833
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":833
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -6613,7 +6613,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew5", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":834
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":834
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)             # <<<<<<<<<<<<<<
@@ -6627,7 +6627,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":833
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":833
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -6646,7 +6646,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":836
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":836
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):             # <<<<<<<<<<<<<<
@@ -6660,7 +6660,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("PyDataType_SHAPE", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":837
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":837
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):             # <<<<<<<<<<<<<<
@@ -6670,7 +6670,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   __pyx_t_1 = (PyDataType_HASSUBARRAY(__pyx_v_d) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":838
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":838
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):
  *         return <tuple>d.subarray.shape             # <<<<<<<<<<<<<<
@@ -6682,7 +6682,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
     __pyx_r = ((PyObject*)__pyx_v_d->subarray->shape);
     goto __pyx_L0;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":837
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":837
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):             # <<<<<<<<<<<<<<
@@ -6691,7 +6691,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
  */
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":840
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":840
  *         return <tuple>d.subarray.shape
  *     else:
  *         return ()             # <<<<<<<<<<<<<<
@@ -6705,7 +6705,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
     goto __pyx_L0;
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":836
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":836
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):             # <<<<<<<<<<<<<<
@@ -6720,7 +6720,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":842
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":842
  *         return ()
  * 
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -6749,7 +6749,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   char *__pyx_t_9;
   __Pyx_RefNannySetupContext("_util_dtypestring", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":847
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":847
  * 
  *     cdef dtype child
  *     cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -6758,7 +6758,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":848
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":848
  *     cdef dtype child
  *     cdef int endian_detector = 1
  *     cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -6767,7 +6767,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":851
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":851
  *     cdef tuple fields
  * 
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -6790,7 +6790,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_childname, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":852
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":852
  * 
  *     for childname in descr.names:
  *         fields = descr.fields[childname]             # <<<<<<<<<<<<<<
@@ -6807,7 +6807,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_fields, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":853
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":853
  *     for childname in descr.names:
  *         fields = descr.fields[childname]
  *         child, new_offset = fields             # <<<<<<<<<<<<<<
@@ -6842,7 +6842,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_new_offset, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":855
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":855
  *         child, new_offset = fields
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:             # <<<<<<<<<<<<<<
@@ -6859,7 +6859,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((((__pyx_v_end - __pyx_v_f) - ((int)__pyx_t_5)) < 15) != 0);
     if (unlikely(__pyx_t_6)) {
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":856
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":856
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -6872,7 +6872,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __PYX_ERR(1, 856, __pyx_L1_error)
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":855
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":855
  *         child, new_offset = fields
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:             # <<<<<<<<<<<<<<
@@ -6881,7 +6881,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
     }
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":858
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":858
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  * 
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -6901,7 +6901,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L8_next_or:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":859
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":859
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -6918,7 +6918,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = __pyx_t_7;
     __pyx_L7_bool_binop_done:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":858
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":858
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  * 
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -6927,7 +6927,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
     if (unlikely(__pyx_t_6)) {
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":860
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":860
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):
  *             raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -6940,7 +6940,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __PYX_ERR(1, 860, __pyx_L1_error)
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":858
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":858
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  * 
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -6949,7 +6949,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
     }
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":870
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":870
  * 
  *         # Output padding bytes
  *         while offset[0] < new_offset:             # <<<<<<<<<<<<<<
@@ -6965,7 +6965,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (!__pyx_t_6) break;
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":871
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":871
  *         # Output padding bytes
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte             # <<<<<<<<<<<<<<
@@ -6974,7 +6974,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       (__pyx_v_f[0]) = 0x78;
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":872
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":872
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte
  *             f += 1             # <<<<<<<<<<<<<<
@@ -6983,7 +6983,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       __pyx_v_f = (__pyx_v_f + 1);
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":873
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":873
  *             f[0] = 120 # "x"; pad byte
  *             f += 1
  *             offset[0] += 1             # <<<<<<<<<<<<<<
@@ -6994,7 +6994,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + 1);
     }
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":875
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":875
  *             offset[0] += 1
  * 
  *         offset[0] += child.itemsize             # <<<<<<<<<<<<<<
@@ -7004,7 +7004,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_8 = 0;
     (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + __pyx_v_child->elsize);
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":877
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":877
  *         offset[0] += child.itemsize
  * 
  *         if not PyDataType_HASFIELDS(child):             # <<<<<<<<<<<<<<
@@ -7014,7 +7014,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((!(PyDataType_HASFIELDS(__pyx_v_child) != 0)) != 0);
     if (__pyx_t_6) {
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":878
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":878
  * 
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num             # <<<<<<<<<<<<<<
@@ -7026,7 +7026,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_XDECREF_SET(__pyx_v_t, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":879
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":879
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num
  *             if end - f < 5:             # <<<<<<<<<<<<<<
@@ -7036,7 +7036,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __pyx_t_6 = (((__pyx_v_end - __pyx_v_f) < 5) != 0);
       if (unlikely(__pyx_t_6)) {
 
-        /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":880
+        /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":880
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -7049,7 +7049,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __PYX_ERR(1, 880, __pyx_L1_error)
 
-        /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":879
+        /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":879
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num
  *             if end - f < 5:             # <<<<<<<<<<<<<<
@@ -7058,7 +7058,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":883
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":883
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"             # <<<<<<<<<<<<<<
@@ -7076,7 +7076,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":884
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":884
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"             # <<<<<<<<<<<<<<
@@ -7094,7 +7094,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":885
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":885
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"             # <<<<<<<<<<<<<<
@@ -7112,7 +7112,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":886
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":886
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"             # <<<<<<<<<<<<<<
@@ -7130,7 +7130,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":887
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":887
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"             # <<<<<<<<<<<<<<
@@ -7148,7 +7148,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":888
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":888
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"             # <<<<<<<<<<<<<<
@@ -7166,7 +7166,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":889
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":889
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"             # <<<<<<<<<<<<<<
@@ -7184,7 +7184,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":890
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":890
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"             # <<<<<<<<<<<<<<
@@ -7202,7 +7202,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":891
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":891
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"             # <<<<<<<<<<<<<<
@@ -7220,7 +7220,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":892
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":892
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"             # <<<<<<<<<<<<<<
@@ -7238,7 +7238,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":893
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":893
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"             # <<<<<<<<<<<<<<
@@ -7256,7 +7256,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":894
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":894
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"             # <<<<<<<<<<<<<<
@@ -7274,7 +7274,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":895
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":895
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"             # <<<<<<<<<<<<<<
@@ -7292,7 +7292,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":896
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":896
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf             # <<<<<<<<<<<<<<
@@ -7312,7 +7312,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":897
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":897
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd             # <<<<<<<<<<<<<<
@@ -7332,7 +7332,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":898
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":898
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg             # <<<<<<<<<<<<<<
@@ -7352,7 +7352,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":899
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":899
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"             # <<<<<<<<<<<<<<
@@ -7370,7 +7370,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":901
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":901
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -7389,7 +7389,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       }
       __pyx_L15:;
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":902
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":902
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *             f += 1             # <<<<<<<<<<<<<<
@@ -7398,7 +7398,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       __pyx_v_f = (__pyx_v_f + 1);
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":877
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":877
  *         offset[0] += child.itemsize
  * 
  *         if not PyDataType_HASFIELDS(child):             # <<<<<<<<<<<<<<
@@ -7408,7 +7408,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       goto __pyx_L13;
     }
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":906
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":906
  *             # Cython ignores struct boundary information ("T{...}"),
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)             # <<<<<<<<<<<<<<
@@ -7421,7 +7421,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L13:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":851
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":851
  *     cdef tuple fields
  * 
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -7431,7 +7431,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":907
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":907
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)
  *     return f             # <<<<<<<<<<<<<<
@@ -7441,7 +7441,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   __pyx_r = __pyx_v_f;
   goto __pyx_L0;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":842
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":842
  *         return ()
  * 
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -7466,7 +7466,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1022
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1022
  *     int _import_umath() except -1
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -7478,7 +7478,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("set_array_base", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1023
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1023
  * 
  * cdef inline void set_array_base(ndarray arr, object base):
  *     Py_INCREF(base) # important to do this before stealing the reference below!             # <<<<<<<<<<<<<<
@@ -7487,7 +7487,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   Py_INCREF(__pyx_v_base);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1024
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1024
  * cdef inline void set_array_base(ndarray arr, object base):
  *     Py_INCREF(base) # important to do this before stealing the reference below!
  *     PyArray_SetBaseObject(arr, base)             # <<<<<<<<<<<<<<
@@ -7496,7 +7496,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   (void)(PyArray_SetBaseObject(__pyx_v_arr, __pyx_v_base));
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1022
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1022
  *     int _import_umath() except -1
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -7508,7 +7508,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1026
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1026
  *     PyArray_SetBaseObject(arr, base)
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -7523,7 +7523,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("get_array_base", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1027
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1027
  * 
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)             # <<<<<<<<<<<<<<
@@ -7532,7 +7532,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
  */
   __pyx_v_base = PyArray_BASE(__pyx_v_arr);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1028
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1028
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)
  *     if base is NULL:             # <<<<<<<<<<<<<<
@@ -7542,7 +7542,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_t_1 = ((__pyx_v_base == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1029
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1029
  *     base = PyArray_BASE(arr)
  *     if base is NULL:
  *         return None             # <<<<<<<<<<<<<<
@@ -7553,7 +7553,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1028
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1028
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)
  *     if base is NULL:             # <<<<<<<<<<<<<<
@@ -7562,7 +7562,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
  */
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1030
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1030
  *     if base is NULL:
  *         return None
  *     return <object>base             # <<<<<<<<<<<<<<
@@ -7574,7 +7574,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_r = ((PyObject *)__pyx_v_base);
   goto __pyx_L0;
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1026
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1026
  *     PyArray_SetBaseObject(arr, base)
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -7589,7 +7589,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1034
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1034
  * # Versions of the import_* functions which are more suitable for
  * # Cython code.
  * cdef inline int import_array() except -1:             # <<<<<<<<<<<<<<
@@ -7610,7 +7610,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("import_array", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1035
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1035
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -7626,7 +7626,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1036
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1036
  * cdef inline int import_array() except -1:
  *     try:
  *         _import_array()             # <<<<<<<<<<<<<<
@@ -7635,7 +7635,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  */
       __pyx_t_4 = _import_array(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 1036, __pyx_L3_error)
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1035
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1035
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -7649,7 +7649,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1037
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1037
  *     try:
  *         _import_array()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -7664,7 +7664,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1038
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1038
  *         _import_array()
  *     except Exception:
  *         raise ImportError("numpy.core.multiarray failed to import")             # <<<<<<<<<<<<<<
@@ -7680,7 +7680,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1035
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1035
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -7695,7 +7695,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1034
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1034
  * # Versions of the import_* functions which are more suitable for
  * # Cython code.
  * cdef inline int import_array() except -1:             # <<<<<<<<<<<<<<
@@ -7718,7 +7718,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1040
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1040
  *         raise ImportError("numpy.core.multiarray failed to import")
  * 
  * cdef inline int import_umath() except -1:             # <<<<<<<<<<<<<<
@@ -7739,7 +7739,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("import_umath", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1041
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1041
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -7755,7 +7755,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1042
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1042
  * cdef inline int import_umath() except -1:
  *     try:
  *         _import_umath()             # <<<<<<<<<<<<<<
@@ -7764,7 +7764,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  */
       __pyx_t_4 = _import_umath(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 1042, __pyx_L3_error)
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1041
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1041
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -7778,7 +7778,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1043
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1043
  *     try:
  *         _import_umath()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -7793,7 +7793,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1044
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1044
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -7809,7 +7809,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1041
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1041
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -7824,7 +7824,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1040
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1040
  *         raise ImportError("numpy.core.multiarray failed to import")
  * 
  * cdef inline int import_umath() except -1:             # <<<<<<<<<<<<<<
@@ -7847,7 +7847,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
   return __pyx_r;
 }
 
-/* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1046
+/* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1046
  *         raise ImportError("numpy.core.umath failed to import")
  * 
  * cdef inline int import_ufunc() except -1:             # <<<<<<<<<<<<<<
@@ -7868,7 +7868,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("import_ufunc", 0);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1047
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1047
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -7884,7 +7884,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1048
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1048
  * cdef inline int import_ufunc() except -1:
  *     try:
  *         _import_umath()             # <<<<<<<<<<<<<<
@@ -7893,7 +7893,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  */
       __pyx_t_4 = _import_umath(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 1048, __pyx_L3_error)
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1047
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1047
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -7907,7 +7907,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1049
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1049
  *     try:
  *         _import_umath()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -7921,7 +7921,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1050
+      /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1050
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -7935,7 +7935,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1047
+    /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1047
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -7950,7 +7950,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1046
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1046
  *         raise ImportError("numpy.core.umath failed to import")
  * 
  * cdef inline int import_ufunc() except -1:             # <<<<<<<<<<<<<<
@@ -8613,11 +8613,11 @@ static CYTHON_INLINE PyObject *__Pyx_carray_to_tuple_double___5b_3_5d_(double (*
 }
 
 static PyMethodDef __pyx_methods[] = {
-  {"inverse", (PyCFunction)__pyx_pw_8Florence_6Tensor_6LinAlg_3inverse, METH_O, 0},
-  {"inverse_transpose", (PyCFunction)__pyx_pw_8Florence_6Tensor_6LinAlg_5inverse_transpose, METH_O, 0},
-  {"determinant", (PyCFunction)__pyx_pw_8Florence_6Tensor_6LinAlg_7determinant, METH_O, 0},
-  {"dgemm", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8Florence_6Tensor_6LinAlg_9dgemm, METH_VARARGS|METH_KEYWORDS, 0},
-  {"daxpy", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8Florence_6Tensor_6LinAlg_11daxpy, METH_VARARGS|METH_KEYWORDS, 0},
+  {"inverse", (PyCFunction)__pyx_pw_4Kuru_6Tensor_6LinAlg_3inverse, METH_O, 0},
+  {"inverse_transpose", (PyCFunction)__pyx_pw_4Kuru_6Tensor_6LinAlg_5inverse_transpose, METH_O, 0},
+  {"determinant", (PyCFunction)__pyx_pw_4Kuru_6Tensor_6LinAlg_7determinant, METH_O, 0},
+  {"dgemm", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_4Kuru_6Tensor_6LinAlg_9dgemm, METH_VARARGS|METH_KEYWORDS, 0},
+  {"daxpy", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_4Kuru_6Tensor_6LinAlg_11daxpy, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
@@ -8665,11 +8665,11 @@ static struct PyModuleDef __pyx_moduledef = {
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_A, __pyx_k_A, sizeof(__pyx_k_A), 0, 0, 1, 1},
   {&__pyx_n_s_B, __pyx_k_B, sizeof(__pyx_k_B), 0, 0, 1, 1},
-  {&__pyx_n_s_Florence_Tensor_LinAlg, __pyx_k_Florence_Tensor_LinAlg, sizeof(__pyx_k_Florence_Tensor_LinAlg), 0, 0, 1, 1},
   {&__pyx_kp_u_Format_string_allocated_too_shor, __pyx_k_Format_string_allocated_too_shor, sizeof(__pyx_k_Format_string_allocated_too_shor), 0, 1, 0, 0},
   {&__pyx_kp_u_Format_string_allocated_too_shor_2, __pyx_k_Format_string_allocated_too_shor_2, sizeof(__pyx_k_Format_string_allocated_too_shor_2), 0, 1, 0, 0},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
   {&__pyx_n_s_Integer, __pyx_k_Integer, sizeof(__pyx_k_Integer), 0, 0, 1, 1},
+  {&__pyx_n_s_Kuru_Tensor_LinAlg, __pyx_k_Kuru_Tensor_LinAlg, sizeof(__pyx_k_Kuru_Tensor_LinAlg), 0, 0, 1, 1},
   {&__pyx_kp_s_LinAlg_pyx, __pyx_k_LinAlg_pyx, sizeof(__pyx_k_LinAlg_pyx), 0, 0, 1, 0},
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
@@ -8728,7 +8728,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "Florence/Tensor/LinAlg.pyx":224
+  /* "Kuru/Tensor/LinAlg.pyx":224
  * 
  *     if ndim1 != ndim2:
  *         raise ValueError("matrices are not aligned")             # <<<<<<<<<<<<<<
@@ -8739,7 +8739,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":272
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":272
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -8750,7 +8750,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":276
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":276
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -8761,7 +8761,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":306
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":306
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -8772,7 +8772,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":856
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":856
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -8783,7 +8783,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":880
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":880
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -8794,7 +8794,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1038
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1038
  *         _import_array()
  *     except Exception:
  *         raise ImportError("numpy.core.multiarray failed to import")             # <<<<<<<<<<<<<<
@@ -8805,7 +8805,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1044
+  /* "../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1044
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -8816,7 +8816,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "Florence/Tensor/LinAlg.pyx":29
+  /* "Kuru/Tensor/LinAlg.pyx":29
  * 
  * # REVERSE Cuthill-McKee PERMUTATION FOR SPARSE MATRICES
  * def symrcm(A):             # <<<<<<<<<<<<<<
@@ -8869,21 +8869,21 @@ static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
-  if (__Pyx_ExportFunction("inverse", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_inverse, "PyObject *(PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("inv2", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_inv2, "PyObject *(double *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("inv3", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_inv3, "PyObject *(double *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("inverse_transpose", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_inverse_transpose, "PyObject *(PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("invT2", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_invT2, "PyObject *(double *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("invT3", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_invT3, "PyObject *(double *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("determinant", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_determinant, "PyObject *(PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("det2", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_det2, "double (double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("det3", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_det3, "double (double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("dgemm", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_dgemm, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("dgemm2", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_dgemm2, "PyObject *(double const *, double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("dgemm3", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_dgemm3, "PyObject *(double const *, double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("daxpy", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_daxpy, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("daxpy2", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_daxpy2, "PyObject *(double const *, double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("daxpy3", (void (*)(void))__pyx_f_8Florence_6Tensor_6LinAlg_daxpy3, "PyObject *(double const *, double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("inverse", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_inverse, "PyObject *(PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("inv2", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_inv2, "PyObject *(double *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("inv3", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_inv3, "PyObject *(double *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("inverse_transpose", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_inverse_transpose, "PyObject *(PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("invT2", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_invT2, "PyObject *(double *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("invT3", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_invT3, "PyObject *(double *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("determinant", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_determinant, "PyObject *(PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("det2", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_det2, "double (double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("det3", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_det3, "double (double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("dgemm", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_dgemm, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("dgemm2", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_dgemm2, "PyObject *(double const *, double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("dgemm3", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_dgemm3, "PyObject *(double const *, double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("daxpy", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_daxpy, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("daxpy2", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_daxpy2, "PyObject *(double const *, double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("daxpy3", (void (*)(void))__pyx_f_4Kuru_6Tensor_6LinAlg_daxpy3, "PyObject *(double const *, double const *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -9123,14 +9123,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_Florence__Tensor__LinAlg) {
+  if (__pyx_module_is_main_Kuru__Tensor__LinAlg) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "Florence.Tensor.LinAlg")) {
-      if (unlikely(PyDict_SetItemString(modules, "Florence.Tensor.LinAlg", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "Kuru.Tensor.LinAlg")) {
+      if (unlikely(PyDict_SetItemString(modules, "Kuru.Tensor.LinAlg", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -9151,7 +9151,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "Florence/Tensor/LinAlg.pyx":2
+  /* "Kuru/Tensor/LinAlg.pyx":2
  * from cython cimport boundscheck, profile, wraparound
  * from warnings import warn             # <<<<<<<<<<<<<<
  * 
@@ -9171,7 +9171,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Florence/Tensor/LinAlg.pyx":4
+  /* "Kuru/Tensor/LinAlg.pyx":4
  * from warnings import warn
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -9183,7 +9183,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_2) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Florence/Tensor/LinAlg.pyx":18
+  /* "Kuru/Tensor/LinAlg.pyx":18
  * # -O3 -pthread -Wall -fwrapv -fno-strict-aliasing -ffast-math -funroll-loops
  * 
  * Integer = np.int32             # <<<<<<<<<<<<<<
@@ -9198,19 +9198,19 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_Integer, __pyx_t_1) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Florence/Tensor/LinAlg.pyx":29
+  /* "Kuru/Tensor/LinAlg.pyx":29
  * 
  * # REVERSE Cuthill-McKee PERMUTATION FOR SPARSE MATRICES
  * def symrcm(A):             # <<<<<<<<<<<<<<
  *     """Reverse Cuthill-McKee algorithm for sparse csr_matrix and csc_matrix.
  *         The return value of symrcm(A) is a permutation vector (1D array) such
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8Florence_6Tensor_6LinAlg_1symrcm, NULL, __pyx_n_s_Florence_Tensor_LinAlg); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4Kuru_6Tensor_6LinAlg_1symrcm, NULL, __pyx_n_s_Kuru_Tensor_LinAlg); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_symrcm, __pyx_t_1) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Florence/Tensor/LinAlg.pyx":1
+  /* "Kuru/Tensor/LinAlg.pyx":1
  * from cython cimport boundscheck, profile, wraparound             # <<<<<<<<<<<<<<
  * from warnings import warn
  * 
@@ -9236,11 +9236,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init Florence.Tensor.LinAlg", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init Kuru.Tensor.LinAlg", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init Florence.Tensor.LinAlg");
+    PyErr_SetString(PyExc_ImportError, "init Kuru.Tensor.LinAlg");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

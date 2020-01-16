@@ -172,6 +172,8 @@ class PostProcess(object):
                 EulerELemCoords = Eulerx[elements[elem,:],:]
                 # GROWTH-REMODELING VALUES FOR THIS ELEMENT
                 ElemGrowthRemodeling = material.growth_remodeling[elements[elem,:],:]
+                ElemRadialStretch = material.deposition_stretch['Radial'][mesh.elements[elem,:]]
+                ElemTangentialPenal = material.mu2D[mesh.elements[elem,:]]
 
                 if material.has_low_level_dispatcher:
 
@@ -199,7 +201,9 @@ class PostProcess(object):
                     # COMPUTE REMAINING KINEMATIC MEASURES
                     StrainTensors = KinematicMeasures(F[elem,:,:,:], fem_solver.analysis_nature)
                     # GROWTH-REMODELING VALUES AT GAUSS POINTS OR NODES (JOANDLAUBRIE)
-                    growth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
+                    ggrowth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
+                    gradial_stretch = np.einsum('ij,i->j',Bases,ElemRadialStretch)
+                    gmu2D = np.einsum('ij,i->j',Bases,ElemTangentialPenal)
 
                     # GEOMETRY UPDATE IS A MUST
                     # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
@@ -213,15 +217,18 @@ class PostProcess(object):
                     # LOOP OVER GAUSS POINTS
                     for counter in range(AllGauss.shape[0]):
 
+                        growth_remodeling = ggrowth_remodeling[counter,:]
+                        radial_stretch = gradial_stretch[counter]
+                        mu2D = gmu2D[counter]
                         if material.energy_type == "enthalpy":
                             # COMPUTE CAUCHY STRESS TENSOR
                             CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,
-                                growth_remodeling,elem,counter)
+                                growth_remodeling,radial_stretch,mu2D,elem,counter)
 
                         elif material.energy_type == "internal_energy":
                             # COMPUTE CAUCHY STRESS TENSOR (JOANDLAUBRIE)
                             CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,
-                                growth_remodeling,elem,counter)
+                                growth_remodeling,radial_stretch,mu2D,elem,counter)
                             FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
                                 StrainTensors,growth_remodeling,elem,counter)
 

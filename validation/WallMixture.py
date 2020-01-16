@@ -3,10 +3,11 @@ import sys, os
 # Mathematics libraries
 import numpy as np
 from numpy import einsum
-# Build a path for python to Florence
-sys.path.append(os.path.join(os.path.expanduser("~/femme"),"FEMpy"))
+# Build a path for python to Kuru
+#sys.path.append(os.path.join(os.path.expanduser("~/kuru")))
+sys.path.append(os.path.expanduser("~/kuru"))
 #import Florence
-from Florence import *
+from Kuru import *
 
 def Directions(mesh):
     """
@@ -41,7 +42,7 @@ def Directions(mesh):
 #============================================================
 #===============  HOMOGENIZED CMT  ==========================
 #============================================================
-ProblemPath = os.getcwd()
+ProblemPath = os.path.dirname(os.getcwd())
 mesh_file = ProblemPath + '/Quarter_Ring.msh'
 
 #===============  MESH PROCESING  ==========================
@@ -101,7 +102,7 @@ fibre_direction = Directions(mesh)
 # Define hyperelastic material for mesh
 material = ArterialWallMixture(ndim,
             mu=72.0,
-            kappa=72.0*33.0,
+            kappa=72.0*20.0,
             k1m=7.6,
             k2m=11.4,
             k1c=568.0,

@@ -47,7 +47,7 @@ def GetRadialStretch(mesh,material):
     H = 0.00141
     for node in range(mesh.nnode):
         kappa = material.kappa*material.growth_remodeling[node,0]
-        mu3D = material.mu3D*material.growth_remodeling[node,0]
+        mu3D = material.mu*material.growth_remodeling[node,0]
         stretch_r = material.deposition_stretch['Radial'][node]
         stretch_t = material.deposition_stretch['Tangential']
         stretch_z = material.deposition_stretch['Axial']
@@ -55,57 +55,21 @@ def GetRadialStretch(mesh,material):
         JMAX=21
         for j in range(JMAX):
             if j==20: exit('Maximum number of iteration reach at Newton method at node: '+str(node))
-            func = pressure*(1.-(radius-R)/H)+ \
+            func = pressure*(1./2.-(radius-R)/H)+ \
+                    kappa*stretch_r*stretch_t*stretch_z*(stretch_r*stretch_t*stretch_z-1.)+\
                     mu3D*(stretch_r*stretch_t*stretch_z)**(-2./3.)*(stretch_r**2-\
-                    1./3.*(stretch_r**2+stretch_t**2+stretch_z**2)) +\
-                    kappa*stretch_r*stretch_t*stretch_z*(stretch_r*stretch_t*stretch_z-1.)
-            df = 4./3.*mu3D*(stretch_r*stretch_t*stretch_z)**(-2./3)*stretch_r-\
+                    1./3.*(stretch_r**2+stretch_t**2+stretch_z**2))
+            df = kappa*(2.*stretch_r*stretch_t**2*stretch_z**2-stretch_t*stretch_z)+\
+                    4./3.*mu3D*(stretch_r*stretch_t*stretch_z)**(-2./3)*stretch_r-\
                     2./3.*mu3D*stretch_r**(-5./3.)*(stretch_t*stretch_z)**(-2./3.)*(stretch_r**2-\
-                    1./3.*(stretch_r**2+stretch_t**2+stretch_z**2)) +\
-                    kappa*(2.*stretch_r*stretch_t**2*stretch_z**2-stretch_t*stretch_z)
+                    1./3.*(stretch_r**2+stretch_t**2+stretch_z**2))
             dx = func/df
             stretch_r -= dx
-            if np.absolute(dx)<1.e-6:
+            if np.absolute(dx)<1.e-5:
                 material.deposition_stretch['Radial'][node] = stretch_r
                 break
 
-    print("Radial deposition stretch is ready")
-
-def GetTangentialPenalty(mesh,material):
-    print("Computing the Tangential penalty mu2D")
-    pressure = 13.3322e3
-    R = 0.010
-    H = 0.00141
-    for node in range(mesh.nnode):
-        kappa = material.kappa*material.growth_remodeling[node,0]
-        mu3D = material.mu3D*material.growth_remodeling[node,0]
-        stretch_r = material.deposition_stretch['Radial'][node]
-        stretch_t = material.deposition_stretch['Tangential']
-        stretch_z = material.deposition_stretch['Axial']
-        k1m = material.k1m*material.growth_remodeling[node,1]
-        k2m = material.k2m
-        s_act = 54.0e3*growth_remodeling[node,1]
-        den0 = 1050.0
-        lambda_m = 1.4
-        lambda_0 = 0.8
-        lambda_a = 1.0
-        stretch_m = material.deposition_stretch['Muscle']
-        k1c1 = material.k1c*material.growth_remodeling[node,2]
-        k1c2 = material.k1c*material.growth_remodeling[node,3]
-        k1c3 = material.k1c*material.growth_remodeling[node,4]
-        k2c = material.k2c
-        stretch_c = material.deposition_stretch['Collagen']
-        #radius = np.sqrt(mesh.points[node,0]**2+mesh.points[node,2]**2)
-        mu2D = (pressure*R/H - \
-                kappa*stretch_r*stretch_t*stretch_z*(stretch_r*stretch_t*stretch_z-1.) - \
-                mu3D*(stretch_r*stretch_t*stretch_z)**(-2./3.)*(stretch_t**2 - \
-                1./3.*(stretch_r**2+stretch_t**2+stretch_z**2)) - \
-                2.*k1m*(stretch_m**2-1.)*np.exp(k2m*(stretch_m**2-1.)**2)*stretch_m**2 - \
-                s_act*(1.-((lambda_m-lambda_a)/(lambda_m-lambda_0))**2)/den0 - \
-                2.*(k1c1+k1c2/2.+k1c3/2.)*(stretch_c**2-1.)*np.exp(k2c*(stretch_c**2-1.)**2)*stretch_c**2)/\
-                (stretch_t**2-1./(stretch_t*stretch_z)**2)
-        material.mu2D[node] = mu2D/material.growth_remodeling[node,0]
-    print("Tangential penalty mu2D is ready")
+    print("Radial deposition stretch is computed")
 
 def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,Softness):
     """
@@ -118,7 +82,7 @@ def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,
     t_dam = 40.0
     D_max = 0.5
     T_ela = 101.0*365.25
-    den0_e = 241.5
+    den0_e = 1050.0*0.23
     # Fribres turnover and remodeling
     turnover = 101.0
     gain = 0.05/turnover
@@ -148,7 +112,7 @@ def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,
 #===============  HOMOGENIZED CMT  ==========================
 #============================================================
 ProblemPath = os.path.dirname(os.getcwd())
-mesh_file = ProblemPath + '/Quarter_Cylinder.msh'
+mesh_file = ProblemPath + '/Quarter_Ring.msh'
 
 #===============  MESH PROCESING  ==========================
 # Build mesh with Florence tools from GMSH mesh
@@ -214,15 +178,10 @@ growth_remodeling[:,6:12] = 1.0
 # fibre directions [thick,sms,co1,co2,co3,co4]
 fibre_direction = Directions(mesh)
 
-# Total initial density
-mu2D = np.zeros((mesh.nnode),dtype=np.float64)
-mu2D[:] = 20.0
-
 # Define hyperelastic material for mesh
 material = ArterialWallMixtureGR(ndim,
-            mu3D=72.0,
-            mu2D=mu2D,
-            kappa=72.0*20.0,
+            mu=72.0,
+            kappa=72.0*33.0,
             k1m=7.6,
             k2m=11.4,
             k1c=568.0,
@@ -236,8 +195,6 @@ material = ArterialWallMixtureGR(ndim,
 # kappa/mu=100 => nu=0.495 (Poisson's ratio)
 GetRadialStretch(mesh,material)
 print(material.deposition_stretch['Radial'][:])
-GetTangentialPenalty(mesh,material)
-print(material.mu2D[:])
 
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
@@ -320,7 +277,6 @@ euler_x = mesh.points + TotalDisplacements
 file_out = open("growth_remodeling.txt","w+")
 file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(0,euler_x[0,0],growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
 file_out.close()
-
 #=================  REMODELING SOLUTION  =======================
 print('=====================================')
 print('==  COMPUTE GROWTH AND REMODELING  ==')
@@ -357,4 +313,3 @@ while time<total_time:
     file_out = open("growth_remodeling.txt","a")
     file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(step,euler_x[0,0],growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
     file_out.close()
-

@@ -48,6 +48,14 @@ class DisplacementFormulation(VariationalPrinciple):
             ElemGrowthRemodeling = material.growth_remodeling[mesh.elements[elem,:],:]
         else:
             ElemGrowthRemodeling = None
+        if hasattr(material,'deposition_stretch'):
+            ElemRadialStretch = material.deposition_stretch['Radial'][mesh.elements[elem,:]]
+        else:
+            ElemRadialStretch = None
+        if hasattr(material,'mu2D'):
+            ElemTangentialPenal = material.mu2D[mesh.elements[elem,:]]
+        else:
+            ElemTangentialPenal = None
 
 
         # COMPUTE THE STIFFNESS MATRIX
@@ -56,7 +64,8 @@ class DisplacementFormulation(VariationalPrinciple):
                 LagrangeElemCoords,EulerElemCoords,fem_solver,elem)
         else:
             stiffnessel, t = self.GetLocalStiffness(function_space,material,
-                LagrangeElemCoords,EulerElemCoords,ElemGrowthRemodeling,fem_solver,elem)
+                LagrangeElemCoords,EulerElemCoords,ElemGrowthRemodeling,ElemRadialStretch,
+                ElemTangentialPenal,fem_solver,elem)
 
         I_mass_elem = []; J_mass_elem = []; V_mass_elem = []
         if fem_solver.analysis_type != 'static' and fem_solver.is_mass_computed is False:
@@ -72,7 +81,7 @@ class DisplacementFormulation(VariationalPrinciple):
 
         return I_stiff_elem, J_stiff_elem, V_stiff_elem, t, I_mass_elem, J_mass_elem, V_mass_elem
 
-    def GetLocalStiffness(self, function_space, material, LagrangeElemCoords, EulerELemCoords, ElemGrowthRemodeling, fem_solver, elem=0):
+    def GetLocalStiffness(self, function_space, material, LagrangeElemCoords, EulerELemCoords, ElemGrowthRemodeling, ElemRadialStretch, ElemTangentialPenal, fem_solver, elem=0):
         """Get stiffness matrix of the system"""
 
         nvar = self.nvar
@@ -100,9 +109,17 @@ class DisplacementFormulation(VariationalPrinciple):
 
         # MAPPING DEPOSITION-STRETCH AND GROWTH-REMODELING VALUES (JOANDLAUBRIE)
         if ElemGrowthRemodeling is not None:
-            growth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
+            ggrowth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
         else:
-            growth_remodeling = None
+            ggrowth_remodeling = None
+        if ElemRadialStretch is not None:
+            gradial_stretch = np.einsum('ij,i->j',Bases,ElemRadialStretch)
+        else:
+            gradial_stretch = None
+        if ElemTangentialPenal is not None:
+            gmu2D = np.einsum('ij,i->j',Bases,ElemTangentialPenal)
+        else:
+            gmu2D = None
 
         # COMPUTE REMAINING KINEMATIC MEASURES
         StrainTensors = KinematicMeasures(F, fem_solver.analysis_nature)
@@ -125,12 +142,26 @@ class DisplacementFormulation(VariationalPrinciple):
         # LOOP OVER GAUSS POINTS
         for counter in range(AllGauss.shape[0]):
 
+            # MAPPING DEPOSITION-STRETCH AND GROWTH-REMODELING VALUES (JOANDLAUBRIE)
+            if ggrowth_remodeling is not None:
+                growth_remodeling = ggrowth_remodeling[counter,:]
+            else:
+                growth_remodeling = None
+            if gradial_stretch is not None:
+                radial_stretch = gradial_stretch[counter]
+            else:
+                radial_stretch = None
+            if gmu2D is not None:
+                mu2D = gmu2D[counter]
+            else:
+                mu2D = None
+
             # COMPUTE THE HESSIAN AT THIS GAUSS POINT
-            H_Voigt = material.Hessian(StrainTensors,growth_remodeling,elem,counter)
+            H_Voigt = material.Hessian(StrainTensors,growth_remodeling,radial_stretch,mu2D,elem,counter)
             # COMPUTE CAUCHY STRESS TENSOR
             CauchyStressTensor = []
             if fem_solver.requires_geometry_update:
-                CauchyStressTensor = material.CauchyStress(StrainTensors,growth_remodeling,elem,counter)
+                CauchyStressTensor = material.CauchyStress(StrainTensors,growth_remodeling,radial_stretch,mu2D,elem,counter)
 
             # COMPUTE THE TANGENT STIFFNESS MATRIX
             BDB_1, t = self.ConstitutiveStiffnessIntegrand(B, SpatialGradient[counter,:,:],

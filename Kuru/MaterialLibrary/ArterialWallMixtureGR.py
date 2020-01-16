@@ -37,7 +37,7 @@ class ArterialWallMixtureGR(Material):
         #self.has_low_level_dispatcher = True
         self.has_low_level_dispatcher = False
 
-    def Hessian(self,StrainTensors,growth_remodeling,elem=0,gcounter=0):
+    def Hessian(self,StrainTensors,growth_remodeling=None,radial_stretch=None,mu2D=0.,elem=0,gcounter=0):
 
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
@@ -60,29 +60,54 @@ class ArterialWallMixtureGR(Material):
             Rotation[2,i] = Axial[i]
 
         # Growth Gradient Deformation
+        if growth_remodeling is None:
+            growth_remodeling = np.zeros((12),dtype=np.float64)
+            growth_remodeling[0] = 241.5
+            growth_remodeling[1] = 157.5
+            growth_remodeling[2] = 65.1
+            growth_remodeling[3] = 260.4
+            growth_remodeling[4] = 260.4
+            growth_remodeling[5] = 62.1
+            growth_remodeling[6:12] = 1.0
         outerNormal = einsum('i,j',Normal,Normal)
         outerTangential = I - outerNormal
-        F_g = growth_remodeling[gcounter][11]*outerNormal + outerTangential
+        F_g = growth_remodeling[11]*outerNormal + outerTangential
         F_g_inv = np.linalg.inv(F_g)
 
         #ELASTIN
-        kappa = self.kappa*growth_remodeling[gcounter][0]
-        mu = self.mu*growth_remodeling[gcounter][0]
-        Gh_ela = self.deposition_stretch['Elastin']
+        if radial_stretch is None:
+            radial_stretch = 1./(self.deposition_stretch['Tangential']*self.deposition_stretch['Axial'])
+        kappa = self.kappa*growth_remodeling[0]
+        mu3D = self.mu3D*growth_remodeling[0]
+        Gh_ela = np.eye(3,3,dtype=np.float64)
+        Gh_ela[0,0] = radial_stretch
+        Gh_ela[1,1] = self.deposition_stretch['Tangential']
+        Gh_ela[2,2] = self.deposition_stretch['Axial']
         Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
         F_ela = np.dot(F,Gh_ela)
         F_ela_e = np.dot(F_ela,F_g_inv)
         J_ela_e = np.linalg.det(F_ela_e)
         b_ela_e = np.dot(F_ela_e,F_ela_e.T)
+        Normal_gr = np.dot(F_g,Normal)
+        Normal_gr = Normal_gr/np.linalg.norm(Normal_gr)
+        outerNormal_gr = einsum('i,j',Normal_gr,Normal_gr)
+        outerTangential_gr = I - outerNormal_gr
+        b_ela_tan = np.dot(F_ela_e,np.dot(outerTangential_gr,F_ela_e.T))
+        C_ela_e = np.dot(F_ela_e.T,F_ela_e)
+        C_ela_tan = np.dot(outerTangential_gr,np.dot(C_ela_e,outerTangential_gr))
+        det_2D = np.linalg.det(C_ela_tan + outerNormal_gr)
 
         if self.ndim == 3:
             trb_ela_e = trace(b_ela_e)
         elif self.ndim == 2:
             trb_ela_e = trace(b_ela_e) + 1.
 
-        H_Voigt = 2.*mu*J_ela_e**(-2./3.)*(1./9.*trb_ela_e*einsum('ij,kl',I,I) - \
+        H_Voigt = 2.*mu3D*J_ela_e**(-2./3.)*(1./9.*trb_ela_e*einsum('ij,kl',I,I) - \
                 1./3.*einsum('ij,kl',I,b_ela_e) - 1./3.*einsum('ij,kl',b_ela_e,I) + \
                 1./6.*trb_ela_e*(einsum('il,jk',I,I) + einsum('ik,jl',I,I)) )/J + \
+                mu2D*growth_remodeling[0]*(2.*einsum('ij,kl',outerTangential_gr,outerTangential_gr) + \
+                einsum('il,jk',outerTangential_gr,outerTangential_gr) + \
+                einsum('ik,jl',outerTangential_gr,outerTangential_gr))/(det_2D*J) +\
                 kappa*J_ela_e*((2.*J_ela_e-1.)*einsum('ij,kl',I,I) - \
                 (J_ela_e-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))/J
 
@@ -94,18 +119,18 @@ class ArterialWallMixtureGR(Material):
             FN = np.dot(F,N)
             if fibre_i is 1:
                 FN = np.dot(self.deposition_stretch['Muscle'],FN)
-                k1 = self.k1m*growth_remodeling[gcounter][1]
+                k1 = self.k1m*growth_remodeling[1]
                 k2 = self.k2m
             elif fibre_i is not 1:
                 FN = np.dot(self.deposition_stretch['Collagen'],FN)
-                k1 = self.k1c*growth_remodeling[gcounter][fibre_i]
+                k1 = self.k1c*growth_remodeling[fibre_i]
                 k2 = self.k2c
 
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)
             # Remodeling stretch in fibre direction
-            lambda_r = growth_remodeling[gcounter][fibre_i+5]
+            lambda_r = growth_remodeling[fibre_i+5]
             if np.isclose(lambda_r,0.0): exit('Remodeling in fibre is zero at element: '+str(elem))
             # ELASTIC deformation
             innerFN_e = innerFN/lambda_r**2
@@ -117,7 +142,7 @@ class ArterialWallMixtureGR(Material):
             # Active stress for SMC
             if fibre_i is 1:
                 den0 = 1050.0
-                s_act = 54.0e3*growth_remodeling[gcounter][1]
+                s_act = 54.0e3*growth_remodeling[1]
                 stretch_m = 1.4
                 stretch_a = 1.0
                 stretch_0 = 0.8
@@ -129,7 +154,7 @@ class ArterialWallMixtureGR(Material):
 
         return H_Voigt
 
-    def CauchyStress(self,StrainTensors,growth_remodeling,elem=0,gcounter=0):
+    def CauchyStress(self,StrainTensors,growth_remodeling=None,radial_stretch=None,mu2D=0.,elem=0,gcounter=0):
 
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
@@ -152,27 +177,51 @@ class ArterialWallMixtureGR(Material):
             Rotation[2,i] = Axial[i]
 
         # Growth Gradient Deformation
+        if growth_remodeling is None:
+            growth_remodeling = np.zeros((12),dtype=np.float64)
+            growth_remodeling[0] = 241.5
+            growth_remodeling[1] = 157.5
+            growth_remodeling[2] = 65.1
+            growth_remodeling[3] = 260.4
+            growth_remodeling[4] = 260.4
+            growth_remodeling[5] = 62.1
+            growth_remodeling[6:12] = 1.0
         outerNormal = einsum('i,j',Normal,Normal)
         outerTangential = I - outerNormal
-        F_g = growth_remodeling[gcounter][11]*outerNormal + outerTangential
+        F_g = growth_remodeling[11]*outerNormal + outerTangential
         F_g_inv = np.linalg.inv(F_g)
 
         #ELASTIN
-        kappa = self.kappa*growth_remodeling[gcounter][0]
-        mu = self.mu*growth_remodeling[gcounter][0]
-        Gh_ela = self.deposition_stretch['Elastin']
+        if radial_stretch is None:
+            radial_stretch = 1./(self.deposition_stretch['Tangential']*self.deposition_stretch['Axial'])
+        kappa = self.kappa*growth_remodeling[0]
+        mu3D = self.mu3D*growth_remodeling[0]
+        Gh_ela = np.eye(3,3,dtype=np.float64)
+        Gh_ela[0,0] = radial_stretch
+        Gh_ela[1,1] = self.deposition_stretch['Tangential']
+        Gh_ela[2,2] = self.deposition_stretch['Axial']
         Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
         F_ela = np.dot(F,Gh_ela)
         F_ela_e = np.dot(F_ela,F_g_inv)
         J_ela_e = np.linalg.det(F_ela_e)
         b_ela_e = np.dot(F_ela_e,F_ela_e.T)
+        Normal_gr = np.dot(F_g,Normal)
+        Normal_gr = Normal_gr/np.linalg.norm(Normal_gr)
+        outerNormal_gr = einsum('i,j',Normal_gr,Normal_gr)
+        outerTangential_gr = I - outerNormal_gr
+        b_ela_tan = np.dot(F_ela_e,np.dot(outerTangential_gr,F_ela_e.T))
+        C_ela_e = np.dot(F_ela_e.T,F_ela_e)
+        C_ela_tan = np.dot(outerTangential_gr,np.dot(C_ela_e,outerTangential_gr))
+        det_2D = np.linalg.det(C_ela_tan + outerNormal_gr)
 
         if self.ndim == 3:
             trb_ela_e = trace(b_ela_e)
         elif self.ndim == 2:
             trb_ela_e = trace(b_ela_e) + 1.
 
-        stress = mu*J_ela_e**(-2./3.)*(b_ela_e - (1./3.)*trb_ela_e*I)/J + kappa*J_ela_e*(J_ela_e-1.)*I/J
+        stress = mu3D*J_ela_e**(-2./3.)*(b_ela_e - (1./3.)*trb_ela_e*I)/J +\
+                mu2D*growth_remodeling[0]*(b_ela_tan - outerTangential_gr/det_2D)/J +\
+                kappa*J_ela_e*(J_ela_e-1.)*I/J
 
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:
@@ -182,18 +231,18 @@ class ArterialWallMixtureGR(Material):
             FN = np.dot(F,N)
             if fibre_i is 1:
                 FN = np.dot(self.deposition_stretch['Muscle'],FN)
-                k1 = self.k1m*growth_remodeling[gcounter][1]
+                k1 = self.k1m*growth_remodeling[1]
                 k2 = self.k2m
             elif fibre_i is not 1:
                 FN = np.dot(self.deposition_stretch['Collagen'],FN)
-                k1 = self.k1c*growth_remodeling[gcounter][fibre_i]
+                k1 = self.k1c*growth_remodeling[fibre_i]
                 k2 = self.k2c
 
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)
             # Remodeling stretch in fibre direction
-            lambda_r = growth_remodeling[gcounter][fibre_i+5]
+            lambda_r = growth_remodeling[fibre_i+5]
             if np.isclose(lambda_r,0.0): exit('Remodeling in fibre is zero at element: '+str(elem))
             # ELASTIC deformation
             innerFN_e = innerFN/lambda_r**2
@@ -205,7 +254,7 @@ class ArterialWallMixtureGR(Material):
             # Active stress for SMC
             if fibre_i is 1:
                 den0 = 1050.0
-                s_act = 54.0e3*growth_remodeling[gcounter][1]
+                s_act = 54.0e3*growth_remodeling[1]
                 stretch_m = 1.4
                 stretch_a = 1.0
                 stretch_0 = 0.8
@@ -214,12 +263,22 @@ class ArterialWallMixtureGR(Material):
 
         return stress
 
-    def ConstituentStress(self,StrainTensors,growth_remodeling,elem=0,gcounter=0):
+    def ConstituentStress(self,StrainTensors,growth_remodeling=None,elem=0,gcounter=0):
 
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
 
+        # Default Growth and Remodeling
+        if growth_remodeling is None:
+            growth_remodeling = np.zeros((12),dtype=np.float64)
+            growth_remodeling[0] = 241.5
+            growth_remodeling[1] = 157.5
+            growth_remodeling[2] = 65.1
+            growth_remodeling[3] = 260.4
+            growth_remodeling[4] = 260.4
+            growth_remodeling[5] = 62.1
+            growth_remodeling[6:12] = 1.0
         #SMC AND COLLAGEN FIBRES
         fibre_stress = np.zeros((5),dtype=np.float64)
         softness = np.zeros((5),dtype=np.float64)
@@ -230,18 +289,18 @@ class ArterialWallMixtureGR(Material):
             FN = np.dot(F,N)
             if fibre_i is 1:
                 FN = np.dot(self.deposition_stretch['Muscle'],FN)
-                k1 = self.k1m*growth_remodeling[gcounter][1]
+                k1 = self.k1m*growth_remodeling[1]
                 k2 = self.k2m
             elif fibre_i is not 1:
                 FN = np.dot(self.deposition_stretch['Collagen'],FN)
-                k1 = self.k1c*growth_remodeling[gcounter][fibre_i]
+                k1 = self.k1c*growth_remodeling[fibre_i]
                 k2 = self.k2c
 
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)
             # Remodeling along the fibre
-            lambda_r = growth_remodeling[gcounter][5+fibre_i]
+            lambda_r = growth_remodeling[5+fibre_i]
             if np.isclose(lambda_r,0.0): exit('Remodeling in fibre is zero at element: '+str(elem))
             # Elastic deformation
             innerFN_e = innerFN/lambda_r**2
@@ -251,7 +310,7 @@ class ArterialWallMixtureGR(Material):
             # Active stress for SMC
             if fibre_i is 1:
                 den0 = 1050.0
-                s_act = 54.0e3*growth_remodeling[gcounter][1]
+                s_act = 54.0e3*growth_remodeling[1]
                 stretch_m = 1.4
                 stretch_a = 1.0
                 stretch_0 = 0.8

@@ -148,13 +148,14 @@ def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,
 #===============  HOMOGENIZED CMT  ==========================
 #============================================================
 ProblemPath = os.path.dirname(os.getcwd())
-mesh_file = ProblemPath + '/Quarter_Cylinder.msh'
+mesh_file = ProblemPath + '/Quarter_Ring.msh'
 
 #===============  MESH PROCESING  ==========================
 # Build mesh with Florence tools from GMSH mesh
 mesh = Mesh()
 mesh.Read(filename=mesh_file, reader_type="gmsh", element_type="hex",read_surface_info=True)
 ndim = mesh.InferSpatialDimension()
+mesh.GetHighOrderMesh(p=1)
 #Boolean arrays for boundary condition in Dirichlet
 BottomSurface = np.zeros(mesh.nnode,dtype=bool)
 TopSurface = np.zeros(mesh.nnode,dtype=bool)
@@ -216,13 +217,13 @@ fibre_direction = Directions(mesh)
 
 # Total initial density
 mu2D = np.zeros((mesh.nnode),dtype=np.float64)
-mu2D[:] = 20.0
+mu2D[:] = 0.0
 
 # Define hyperelastic material for mesh
 material = ArterialWallMixtureGR(ndim,
             mu3D=72.0,
             mu2D=mu2D,
-            kappa=72.0*20.0,
+            kappa=72.0*33.0,
             k1m=7.6,
             k2m=11.4,
             k1c=568.0,
@@ -234,10 +235,10 @@ material = ArterialWallMixtureGR(ndim,
 # kappa/mu=20  => nu=0.475 (Poisson's ratio)
 # kappa/mu=33  => nu=0.485 (Poisson's ratio)
 # kappa/mu=100 => nu=0.495 (Poisson's ratio)
-GetRadialStretch(mesh,material)
-print(material.deposition_stretch['Radial'][:])
-GetTangentialPenalty(mesh,material)
-print(material.mu2D[:])
+#GetRadialStretch(mesh,material)
+#print(material.deposition_stretch['Radial'][:])
+#GetTangentialPenalty(mesh,material)
+#print(material.mu2D[:])
 
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
@@ -317,6 +318,7 @@ Softness = solution.recovered_fields['Softness'][-1,:,:]
 # Update mesh coordinates
 TotalDisplacements = solution.sol[:,:,-1]
 euler_x = mesh.points + TotalDisplacements
+"""
 file_out = open("growth_remodeling.txt","w+")
 file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(0,euler_x[0,0],growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
 file_out.close()
@@ -357,4 +359,4 @@ while time<total_time:
     file_out = open("growth_remodeling.txt","a")
     file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(step,euler_x[0,0],growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
     file_out.close()
-
+"""

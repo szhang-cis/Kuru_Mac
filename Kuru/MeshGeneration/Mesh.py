@@ -12,7 +12,7 @@ from Kuru.Tensor import unique2d, itemfreq, in2d, makezero
 #    has_meshpy = True
 #except ImportError:
 #    has_meshpy = False
-#from .HigherOrderMeshing import *
+from .HigherOrderMeshing import *
 from .NodeArrangement import *
 #from .GeometricPath import *
 from warnings import warn
@@ -130,6 +130,47 @@ class Mesh(object):
         else:
             raise ValueError('Type of element not understood')
         return self.edges
+
+    def GetElementsEdgeNumberingQuad(self):
+        """Finds edges of elements and their flags saying which edge they are [0,1,2,3].
+            At most a quad can have all its four edges on the boundary.
+
+        output:
+
+            edge_elements:              [1D array] array containing elements which have edges
+                                        on the boundary
+
+                                        Note that this method sets the self.edge_to_element to edge_elements,
+                                        so the return value is not strictly necessary
+        """
+
+        if isinstance(self.edge_to_element,np.ndarray):
+            if self.edge_to_element.shape[0] > 1:
+                return self.edge_to_element
+
+        # GET ALL EDGES FROM THE ELEMENT CONNECTIVITY
+        if self.all_edges is None:
+            self.GetEdgesQuad()
+
+
+        p = self.InferPolynomialDegree()
+
+        # FIND WHICH FACE NODES ARE IN WHICH ELEMENT
+        node_arranger = NodeArrangementQuad(p-1)[0]
+
+        # GET ALL EDGES FROM THE ELEMENT CONNECTIVITY
+        all_edges = np.concatenate((self.elements[:,node_arranger[0,:]],self.elements[:,node_arranger[1,:]],
+            self.elements[:,node_arranger[2,:]],self.elements[:,node_arranger[3,:]]),axis=0).astype(np.int64)
+
+        all_edges, idx = unique2d(all_edges,consider_sort=True,order=False, return_index=True)
+        edge_elements = np.zeros((all_edges.shape[0],2),dtype=np.int64)
+        # edge_elements = np.zeros((self.edges.shape[0],2),dtype=np.int64)
+
+        edge_elements[:,0] = idx % self.elements.shape[0]
+        edge_elements[:,1] = idx // self.elements.shape[0]
+
+        self.edge_to_element = edge_elements
+        return self.edge_to_element
 
     def GetBoundaryEdgesHex(self):
         """Find boundary edges (lines) of hexahedral mesh.
@@ -323,6 +364,122 @@ class Mesh(object):
         self.boundary_edge_to_element = boundary_edge_to_element
 
         return self.edges
+
+    def GetElementsWithBoundaryEdgesQuad(self):
+        """Finds elements which have edges on the boundary.
+            At most a quad can have all its four edges on the boundary.
+
+        output:
+
+            boundary_edge_to_element:   [2D array] array containing elements which have face
+                                        on the boundary [cloumn 0] and a flag stating which edges they are [column 1]
+
+        """
+
+        if isinstance(self.boundary_edge_to_element,np.ndarray):
+            if self.boundary_edge_to_element.shape[1] > 1 and self.boundary_edge_to_element.shape[0] > 1:
+                return self.boundary_edge_to_element
+
+        # DO NOT COMPUTE EDGES AND RAISE BECAUSE OF CYCLIC DEPENDENCIES
+        assert self.elements is not None
+        assert self.edges is not None
+
+        p = self.InferPolynomialDegree()
+
+        # FIND WHICH FACE NODES ARE IN WHICH ELEMENT
+        node_arranger = NodeArrangementQuad(p-1)[0]
+
+        # GET ALL EDGES FROM THE ELEMENT CONNECTIVITY
+        all_edges = np.concatenate((self.elements[:,node_arranger[0,:]],self.elements[:,node_arranger[1,:]],
+            self.elements[:,node_arranger[2,:]],self.elements[:,node_arranger[3,:]]),axis=0).astype(self.edges.dtype)
+
+        # GET UNIQUE ROWS
+        uniques, idx, inv = unique2d(all_edges,consider_sort=True,order=False,return_index=True,return_inverse=True)
+
+        # ROWS THAT APPEAR ONLY ONCE CORRESPOND TO BOUNDARY EDGES
+        freqs_inv = itemfreq(inv)
+        edges_ext_flags = freqs_inv[freqs_inv[:,1]==1,0]
+        # NOT ARRANGED
+        edges = uniques[edges_ext_flags,:]
+
+        # DETERMINE WHICH FACE OF THE ELEMENT THEY ARE
+        boundary_edge_to_element = np.zeros((edges_ext_flags.shape[0],2),dtype=np.int64)
+
+        # FURTHER RE-ARRANGEMENT / ARANGE THE NODES BASED ON THE ORDER THEY APPEAR
+        # IN ELEMENT CONNECTIVITY
+        # THIS STEP IS NOT NECESSARY INDEED - ITS JUST FOR RE-ARANGMENT OF EDGES
+        all_edges_in_edges = in2d(all_edges,self.edges,consider_sort=True)
+        all_edges_in_edges = np.where(all_edges_in_edges==True)[0]
+
+        boundary_edge_to_element[:,0] = all_edges_in_edges % self.elements.shape[0]
+        boundary_edge_to_element[:,1] = all_edges_in_edges // self.elements.shape[0]
+
+        # ARRANGE FOR ANY ORDER OF BASES/ELEMENTS AND ASSIGN DATA MEMBERS
+        self.boundary_edge_to_element = boundary_edge_to_element
+
+        return self.boundary_edge_to_element
+
+    def GetElementsWithBoundaryFacesHex(self):
+        """Finds elements which have faces on the boundary.
+            At most a hexahedral can have all its 8 faces on the boundary.
+
+        output:
+
+            boundary_face_to_element:   [2D array] array containing elements which have face
+                                        on the boundary [column 0] and a flag stating which faces they are [column 1]
+
+        """
+
+        # DO NOT COMPUTE FACES AND RAISE BECAUSE OF CYCLIC DEPENDENCIES
+        assert self.elements is not None
+        assert self.faces is not None
+
+        if self.boundary_face_to_element is not None:
+            return self.boundary_face_to_element
+
+        # THIS METHOD ALWAYS RETURNS THE FACE TO ELEMENT ARRAY, AND DOES NOT CHECK
+        # IF THIS HAS BEEN COMPUTED BEFORE, THE REASON BEING THAT THE FACES CAN COME
+        # EXTERNALLY WHOSE ARRANGEMENT WOULD NOT CORRESPOND TO THE ONE USED INTERNALLY
+        # HENCE THIS MAPPING BECOMES NECESSARY
+
+        C = self.InferPolynomialDegree() - 1
+        node_arranger = NodeArrangementHex(C)[0]
+
+        all_faces = np.concatenate((np.concatenate((
+                np.concatenate((np.concatenate((np.concatenate((self.elements[:,node_arranger[0,:]],
+                self.elements[:,node_arranger[1,:]]),axis=0),self.elements[:,node_arranger[2,:]]),axis=0),
+                self.elements[:,node_arranger[3,:]]),axis=0),self.elements[:,node_arranger[4,:]]),axis=0),
+                self.elements[:,node_arranger[5,:]]),axis=0).astype(self.faces.dtype)
+
+        all_faces_in_faces = in2d(all_faces,self.faces[:,:4],consider_sort=True)
+        all_faces_in_faces = np.where(all_faces_in_faces==True)[0]
+
+        boundary_face_to_element = np.zeros((all_faces_in_faces.shape[0],2),dtype=np.int64)
+        boundary_face_to_element[:,0] = all_faces_in_faces % self.elements.shape[0]
+        boundary_face_to_element[:,1] = all_faces_in_faces // self.elements.shape[0]
+
+
+        # SO FAR WE HAVE COMPUTED THE ELEMENTS THAT CONTAIN FACES, HOWEVER
+        # NOTE THAT WE STILL HAVE NOT COMPUTED A MAPPING BETWEEN ELEMENTS AND
+        # FACES. WE ONLY KNOW WHICH ELEMENTS CONTAIN FACES FROM in2d.
+        # WE NEED TO FIND THIS MAPPING NOW
+
+        # WE NEED TO DO THIS DUMMY RECONSTRUCTION OF FACES BASED ON ELEMENTS
+        faces = self.elements[boundary_face_to_element[:,0][:,None],
+            node_arranger[boundary_face_to_element[:,1],:]].astype(self.faces.dtype)
+
+        # CHECK FOR THIS CONDITION AS ARRANGEMENT IS NO LONGER MAINTAINED
+        assert np.sum(faces[:,:4].astype(np.int64) - self.faces[:,:4].astype(np.int64)) == 0
+
+        # NOW GET THE ROW MAPPING BETWEEN OLD FACES AND NEW FACES
+        from Kuru.Tensor import shuffle_along_axis
+        row_mapper = shuffle_along_axis(faces[:,:4],self.faces[:,:4],consider_sort=True)
+
+        # UPDATE THE MAP
+        boundary_face_to_element[:,:] = boundary_face_to_element[row_mapper,:]
+        self.boundary_face_to_element = boundary_face_to_element
+
+        return self.boundary_face_to_element
 
     def GetFacesHex(self):
         """Find all faces (surfaces) in the hexahedral mesh (boundary & interior).

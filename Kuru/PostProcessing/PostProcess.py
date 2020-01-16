@@ -1,5 +1,5 @@
 from __future__ import print_function
-#import os, sys, gc
+import os, sys, gc
 #from time import time
 #from copy import deepcopy
 #import numpy as np
@@ -16,7 +16,7 @@ from Kuru import FunctionSpace, QuadratureRule
 
 from Kuru.FiniteElements.LocalAssembly.KinematicMeasures import *
 #from Florence.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
-#from Florence import Mesh
+from Kuru import Mesh
 #from Florence.MeshGeneration import vtk_writer
 #from Florence.Utils import constant_camera_view
 
@@ -762,3 +762,205 @@ class PostProcess(object):
                                 pointData={q_names[counter]: np.ascontiguousarray(sol[:,quant,Increment])})
 
         return
+
+    @staticmethod
+    def TessellateHexes(mesh, TotalDisp, QuantityToPlot=None, plot_on_faces=True,
+        ProjectionFlags=None, interpolation_degree=20, EquallySpacedPoints=False,
+        plot_points=False, plot_edges=True, plot_surfaces=True):
+
+        """High order curved hexahedral surfaces mesh plots, based on high order nodal FEM.
+            The equally spaced FEM points do not work as good as the Fekete points
+        """
+
+
+
+        from Kuru.QuadratureRules import GaussLobattoPointsQuad
+        from Kuru.QuadratureRules.NumericIntegrator import GaussLobattoQuadrature
+        from Kuru.QuadratureRules.EquallySpacedPoints import EquallySpacedPoints as EquallySpacedPointsnD
+        from Kuru.MeshGeneration.NodeArrangement import NodeArrangementQuad
+        from Kuru.FunctionSpace import Quad
+        from Kuru.FunctionSpace.OneDimensional.Line import LagrangeGaussLobatto, Lagrange
+
+        from copy import deepcopy
+        from scipy.spatial import Delaunay
+
+        assert mesh.element_type == "hex"
+
+        # SINCE THIS IS A 3D PLOT
+        ndim=3
+
+        C = interpolation_degree
+        p = C+1
+        nsize = int((C+2)**2)
+        CActual = mesh.InferPolynomialDegree() - 1
+        nsize_2 = int((CActual+2)**2)
+
+        GaussLobattoPoints = GaussLobattoPointsQuad(C)
+        if EquallySpacedPoints:
+            GaussLobattoPoints = EquallySpacedPointsnD(ndim,C)
+
+        # BUILD DELAUNAY TRIANGULATION OF REFERENCE ELEMENTS
+        TrianglesFunc = Delaunay(GaussLobattoPoints)
+        Triangles = TrianglesFunc.simplices.copy()
+
+        # GET EQUALLY-SPACED/GAUSS-LOBATTO POINTS FOR THE EDGES
+        GaussLobattoPointsOneD = GaussLobattoQuadrature(C+2)[0].flatten()
+        if EquallySpacedPoints:
+            GaussLobattoPointsOneD = EquallySpacedPointsnD(ndim-1, C).flatten()
+
+        BasesQuad = np.zeros((nsize_2,GaussLobattoPoints.shape[0]),dtype=np.float64)
+        hpBases = Quad.LagrangeGaussLobatto
+        for i in range(GaussLobattoPoints.shape[0]):
+            BasesQuad[:,i] = hpBases(CActual,GaussLobattoPoints[i,0],GaussLobattoPoints[i,1])[:,0]
+
+        BasesOneD = np.zeros((CActual+2,GaussLobattoPointsOneD.shape[0]),dtype=np.float64)
+        for i in range(GaussLobattoPointsOneD.shape[0]):
+            BasesOneD[:,i] = LagrangeGaussLobatto(CActual,GaussLobattoPointsOneD[i])[0]
+
+        # GET ONLY THE FACES WHICH NEED TO BE PLOTTED
+        if ProjectionFlags is None:
+            faces_to_plot_flag = np.ones(mesh.faces.shape[0])
+        else:
+            faces_to_plot_flag = ProjectionFlags.flatten()
+
+        # CHECK IF ALL FACES NEED TO BE PLOTTED OR ONLY BOUNDARY FACES
+        if faces_to_plot_flag.shape[0] > mesh.faces.shape[0]:
+            # ALL FACES
+            corr_faces = mesh.all_faces
+            # FOR MAPPING DATA E.G. SCALED JACOBIAN FROM ELEMENTS TO FACES
+            face_elements = mesh.GetElementsFaceNumberingHex()
+
+        elif faces_to_plot_flag.shape[0] == mesh.faces.shape[0]:
+            # ONLY BOUNDARY FACES
+            corr_faces = mesh.faces
+            # FOR MAPPING DATA E.G. SCALED JACOBIAN FROM ELEMENTS TO FACES
+            face_elements = mesh.GetElementsWithBoundaryFacesHex()
+        else:
+            # raise ValueError("I do not understand what you want to plot")
+            corr_faces = mesh.all_faces
+            face_elements = mesh.GetElementsFaceNumberingHex()
+
+        faces_to_plot = corr_faces[faces_to_plot_flag.flatten()==1,:]
+
+        if QuantityToPlot is not None and plot_on_faces:
+            quantity_to_plot = QuantityToPlot[face_elements[faces_to_plot_flag.flatten()==1,0]]
+
+        # BUILD MESH OF SURFACE
+        smesh = Mesh()
+        smesh.element_type = "quad"
+        # smesh.elements = np.copy(corr_faces)
+        smesh.elements = np.copy(faces_to_plot)
+        smesh.nelem = smesh.elements.shape[0]
+        smesh.points = mesh.points[np.unique(smesh.elements),:]
+
+
+        # MAP TO ORIGIN
+        unique_elements, inv = np.unique(smesh.elements,return_inverse=True)
+        mapper = np.arange(unique_elements.shape[0])
+        smesh.elements = mapper[inv].reshape(smesh.elements.shape)
+
+        smesh.GetBoundaryEdgesQuad()
+        smesh.GetEdgesQuad()
+        edge_elements = smesh.GetElementsEdgeNumberingQuad()
+
+
+
+        # GET EDGE ORDERING IN THE REFERENCE ELEMENT
+        reference_edges = NodeArrangementQuad(CActual)[0]
+        reference_edges = np.concatenate((reference_edges,reference_edges[:,1,None]),axis=1)
+        reference_edges = np.delete(reference_edges,1,1)
+
+        # GET EULERIAN GEOMETRY
+        if TotalDisp.ndim == 3:
+            vpoints = mesh.points + TotalDisp[:,:ndim,-1]
+        elif TotalDisp.ndim == 2:
+            vpoints = mesh.points + TotalDisp[:,:ndim]
+        else:
+            raise AssertionError("mesh points and displacment arrays are incompatible")
+
+        # svpoints = vpoints[np.unique(mesh.faces),:]
+        svpoints = vpoints[np.unique(faces_to_plot),:]
+        del vpoints
+        gc.collect()
+
+        if plot_edges:
+            # GET X, Y & Z OF CURVED EDGES
+            x_edges = np.zeros((C+2,smesh.all_edges.shape[0]))
+            y_edges = np.zeros((C+2,smesh.all_edges.shape[0]))
+            z_edges = np.zeros((C+2,smesh.all_edges.shape[0]))
+
+            for iedge in range(smesh.all_edges.shape[0]):
+                ielem = edge_elements[iedge,0]
+                edge = smesh.elements[ielem,reference_edges[edge_elements[iedge,1],:]]
+                coord_edge = svpoints[edge,:]
+                x_edges[:,iedge], y_edges[:,iedge], z_edges[:,iedge] = np.dot(coord_edge.T,BasesOneD)
+
+
+            # PLOT CURVED EDGES
+            connections_elements = np.arange(x_edges.size).reshape(x_edges.shape[1],x_edges.shape[0])
+            connections = np.zeros((x_edges.size,2),dtype=np.int64)
+            for i in range(connections_elements.shape[0]):
+                connections[i*(x_edges.shape[0]-1):(i+1)*(x_edges.shape[0]-1),0] = connections_elements[i,:-1]
+                connections[i*(x_edges.shape[0]-1):(i+1)*(x_edges.shape[0]-1),1] = connections_elements[i,1:]
+            connections = connections[:(i+1)*(x_edges.shape[0]-1),:]
+
+        # CURVED SURFACES
+        if plot_surfaces:
+
+            nface = smesh.elements.shape[0]
+            nnode = nsize*nface
+            nelem = Triangles.shape[0]*nface
+
+            Xplot = np.zeros((nnode,3),dtype=np.float64)
+            Tplot = np.zeros((nelem,3),dtype=np.int64)
+
+            # FOR CURVED ELEMENTS
+            for ielem in range(nface):
+                Xplot[ielem*nsize:(ielem+1)*nsize,:] = np.dot(BasesQuad.T, svpoints[smesh.elements[ielem,:],:])
+                Tplot[ielem*TrianglesFunc.nsimplex:(ielem+1)*TrianglesFunc.nsimplex,:] = Triangles + ielem*nsize
+
+            if QuantityToPlot is not None:
+                Uplot = np.zeros(nnode,dtype=np.float64)
+                if plot_on_faces:
+                    # for ielem in range(nface):
+                    #     Uplot[ielem*nsize:(ielem+1)*nsize] = quantity_to_plot[ielem]
+                    # NEW APPROACH FOR CELL DATA - CHECK
+                    Uplot = np.zeros(nelem,dtype=np.float64)
+                    for ielem in range(nface):
+                        Uplot[ielem*TrianglesFunc.nsimplex:(ielem+1)*TrianglesFunc.nsimplex] = quantity_to_plot[ielem]
+                else:
+                    # IF QUANTITY IS DEFINED ON NODES
+                    quantity = QuantityToPlot[np.unique(faces_to_plot)]
+                    for ielem in range(nface):
+                        Uplot[ielem*nsize:(ielem+1)*nsize] = np.dot(BasesQuad.T, quantity[smesh.elements[ielem,:]])
+
+
+
+        # THIS IS NOT A FLORENCE MESH COMPLIANT MESH
+        tmesh = Mesh()
+        tmesh.element_type = "tri"
+        if plot_surfaces:
+            tmesh.elements = Tplot
+            tmesh.points = Xplot
+            if QuantityToPlot is not None:
+                tmesh.quantity = Uplot
+            tmesh.nelem = nelem
+            tmesh.nnode = nnode
+            tmesh.nface = nface
+        tmesh.nsize = nsize
+        tmesh.bases_1 = BasesOneD
+        tmesh.bases_2 = BasesQuad.T
+
+        tmesh.smesh = smesh
+        tmesh.faces_to_plot = faces_to_plot
+        tmesh.svpoints = svpoints
+
+        if plot_edges:
+            tmesh.x_edges = x_edges
+            tmesh.y_edges = y_edges
+            tmesh.z_edges = z_edges
+            tmesh.connections = connections
+            tmesh.edge_elements = edge_elements
+            tmesh.reference_edges = reference_edges
+
+        return tmesh

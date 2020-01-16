@@ -4422,4 +4422,4 @@ def ParallelWriteVTK(zipper_object):
         steps=zipper_object.steps, write_curved_mesh=zipper_object.write_curved_mesh,
         interpolation_degree=zipper_object.interpolation_degree,
         ProjectionFlags=zipper_object.ProjectionFlags, fmt=zipper_object.fmt,
-        equally_spaced=zipper_object.equally_spaced)
+        equally_spaced=zipper_object.equally_spaced)TessellateHexes

@@ -432,7 +432,7 @@ def remove_duplicates_2D(A, decimals=10):
     assert isinstance(A,np.ndarray)
     assert (A.dtype == np.float64 or A.dtype == np.float32)
 
-    from Florence.Tensor import makezero
+    from Kuru.Tensor import makezero
     makezero(A)
     rounded_repoints = np.round(A,decimals=decimals)
     _, idx_repoints, inv_repoints = unique2d(rounded_repoints,order=False,

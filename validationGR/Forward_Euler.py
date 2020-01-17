@@ -148,7 +148,7 @@ def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,
 #===============  HOMOGENIZED CMT  ==========================
 #============================================================
 ProblemPath = os.path.dirname(os.getcwd())
-mesh_file = ProblemPath + '/Quarter_Ring.msh'
+mesh_file = ProblemPath + '/Quarter_Cylinder.msh'
 
 #===============  MESH PROCESING  ==========================
 # Build mesh with Florence tools from GMSH mesh
@@ -217,13 +217,13 @@ fibre_direction = Directions(mesh)
 
 # Total initial density
 mu2D = np.zeros((mesh.nnode),dtype=np.float64)
-mu2D[:] = 0.0
+mu2D[:] = 20.0
 
 # Define hyperelastic material for mesh
 material = ArterialWallMixtureGR(ndim,
             mu3D=72.0,
             mu2D=mu2D,
-            kappa=72.0*33.0,
+            kappa=72.0*10.0,
             k1m=7.6,
             k2m=11.4,
             k1c=568.0,
@@ -235,9 +235,11 @@ material = ArterialWallMixtureGR(ndim,
 # kappa/mu=20  => nu=0.475 (Poisson's ratio)
 # kappa/mu=33  => nu=0.485 (Poisson's ratio)
 # kappa/mu=100 => nu=0.495 (Poisson's ratio)
-#GetRadialStretch(mesh,material)
+
+# Homogenization of stresses to a thin-walled case
+GetRadialStretch(mesh,material)
 #print(material.deposition_stretch['Radial'][:])
-#GetTangentialPenalty(mesh,material)
+GetTangentialPenalty(mesh,material)
 #print(material.mu2D[:])
 
 #==================  FORMULATION  =========================
@@ -291,7 +293,7 @@ fem_solver_gr = FEMSolver(analysis_nature="nonlinear",
                        optimise=False,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=1)
+                       number_of_load_increments=3)
 
 #=================  HOMEOSTATIC SOLUTION  =======================
 print('=====================================')
@@ -318,9 +320,8 @@ Softness = solution.recovered_fields['Softness'][-1,:,:]
 # Update mesh coordinates
 TotalDisplacements = solution.sol[:,:,-1]
 euler_x = mesh.points + TotalDisplacements
-"""
 file_out = open("growth_remodeling.txt","w+")
-file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(0,euler_x[0,0],growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
+file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(0,np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
 file_out.close()
 
 #=================  REMODELING SOLUTION  =======================
@@ -330,7 +331,7 @@ print('=====================================')
 # Growth and Remodeling steps [10 days]
 total_time = 5500
 time = 0.0
-Delta_t = 10.0
+Delta_t = 30.0
 step = 0
 while time<total_time:
     # prepare for next step
@@ -357,6 +358,6 @@ while time<total_time:
     TotalDisplacements = solution.sol[:,:,-1]
     euler_x = mesh.points + TotalDisplacements
     file_out = open("growth_remodeling.txt","a")
-    file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(step,euler_x[0,0],growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
+    file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(step,np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
     file_out.close()
-"""
+

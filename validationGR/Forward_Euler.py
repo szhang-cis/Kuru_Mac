@@ -148,7 +148,7 @@ def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,
 #===============  HOMOGENIZED CMT  ==========================
 #============================================================
 ProblemPath = os.path.dirname(os.getcwd())
-mesh_file = ProblemPath + '/Quarter_Cylinder.msh'
+mesh_file = ProblemPath + '/Quarter_Ring.msh'
 
 #===============  MESH PROCESING  ==========================
 # Build mesh with Florence tools from GMSH mesh
@@ -320,6 +320,7 @@ Softness = solution.recovered_fields['Softness'][-1,:,:]
 # Update mesh coordinates
 TotalDisplacements = solution.sol[:,:,-1]
 euler_x = mesh.points + TotalDisplacements
+"""
 file_out = open("growth_remodeling.txt","w+")
 file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(0,np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
 file_out.close()
@@ -360,4 +361,4 @@ while time<total_time:
     file_out = open("growth_remodeling.txt","a")
     file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(step,np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
     file_out.close()
-
+"""

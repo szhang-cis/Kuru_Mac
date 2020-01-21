@@ -1,3 +1,4 @@
+cimport cython
 import numpy as np
 cimport numpy as np
 from libc.stdint cimport int64_t, uint64_t
@@ -5,9 +6,10 @@ from libc.stdint cimport int64_t, uint64_t
 ctypedef int64_t Integer
 ctypedef uint64_t UInteger
 ctypedef double Real
+# type int is int32 in numpy, in this case
 
 cdef extern from "FollowerForces.h" nogil:
-    void AssemblerStaticForces(const UInteger *faces,
+    void StaticForcesAssembler(const UInteger *faces,
                                const Real *Eulerx,
                                const Real *Bases,
                                const Real *Jm,
@@ -19,7 +21,7 @@ cdef extern from "FollowerForces.h" nogil:
                                int squeeze_sparsity_pattern,
                                const int *data_global_indices,
                                const int *data_local_indices,
-                               cosnt UInteger *sorted_elements,
+                               const UInteger *sorted_elements,
                                const Integer *sorter,
                                int *I_stiff,
                                int *J_stiff,
@@ -42,7 +44,7 @@ def StaticForces(boundary_condition, mesh, material, function_space, fem_solver,
     cdef Integer ndim    = material.ndim
     cdef Integer nvar    = material.ndim
 
-    cdef np.ndarray[int,ndim=1, mode='c'] pressure_flags    = boundary_condition.pressure_flags
+    cdef np.ndarray[int,ndim=1, mode='c'] pressure_flags    = boundary_condition.pressure_flags.astype(np.int32)
     cdef np.ndarray[Real,ndim=1, mode='c'] applied_pressure = boundary_condition.applied_pressure
     cdef Real pressure_increment                            = boundary_condition.pressure_increment
 
@@ -87,14 +89,14 @@ def StaticForces(boundary_condition, mesh, material, function_space, fem_solver,
     else:
         I_stiff = fem_solver.indices
         J_stiff = fem_solver.indptr
-        V_stiff = np.zeros(indices.shape[0],dtype=np.float64)
+        V_stiff = np.zeros(fem_solver.indices.shape[0],dtype=np.float64)
         data_global_indices = fem_solver.data_global_indices
         data_local_indices = fem_solver.data_local_indices
         if fem_solver.squeeze_sparsity_pattern:
             sorter = mesh.element_sorter
             sorted_elements = mesh.sorted_elements
 
-    AssemblerStaticForces(  &faces[0,0],
+    StaticForcesAssembler(  &faces[0,0],
                             &Eulerx[0,0],
                             &Bases[0,0],
                             &Jm[0,0,0],

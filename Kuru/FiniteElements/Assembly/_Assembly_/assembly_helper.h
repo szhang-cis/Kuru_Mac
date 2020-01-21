@@ -13,7 +13,7 @@
 
 #include "_KinematicMeasures_.h"
 #include "_GeometricStiffness_.h"
-#include "_MassIntegrand_.h"
+#include "FollowerForces.h"
 
 
 #ifndef LL_TYPES

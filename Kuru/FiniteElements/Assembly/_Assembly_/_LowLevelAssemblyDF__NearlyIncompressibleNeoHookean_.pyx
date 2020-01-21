@@ -7,12 +7,11 @@ ctypedef uint64_t UInteger
 ctypedef double Real
 
 
-cdef extern from "_LowLevelAssemblyDF_.h" nogil:
-    void _GlobalAssemblyDF_(const Real *points,
+cdef extern from "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.h" nogil:
+    void _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_(const Real *points,
                             const UInteger* elements,
                             const Real* Eulerx,
-                            const Real* Eulerp,
-                            const Real* bases,
+                            const Real* Bases,
                             const Real* Jm,
                             const Real* AllGauss,
                             Integer ndim,
@@ -37,20 +36,11 @@ cdef extern from "_LowLevelAssemblyDF_.h" nogil:
                             const Integer *sorter,
                             Real rho,
                             Real mu,
-                            Real mu1,
-                            Real mu2,
-                            Real mu3,
-                            Real mue,
-                            Real lamb,
-                            Real eps_1,
-                            Real eps_2,
-                            Real eps_3,
-                            Real eps_e,
-                            const Real *anisotropic_orientations
+                            Real kappa
                             )
 
 
-def _LowLevelAssemblyDF_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx, Real[::1] Eulerp):
+def _LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):
 
     # GET VARIABLES FOR DISPATCHING TO C
     cdef Integer ndim                       = formulation.ndim
@@ -63,7 +53,7 @@ def _LowLevelAssemblyDF_(fem_solver, function_space, formulation, mesh, material
 
     cdef np.ndarray[UInteger,ndim=2, mode='c'] elements = mesh.elements
     cdef np.ndarray[Real,ndim=2, mode='c'] points       = mesh.points
-    cdef np.ndarray[Real,ndim=2, mode='c'] bases        = function_space.Bases
+    cdef np.ndarray[Real,ndim=2, mode='c'] Bases        = function_space.Bases
     cdef np.ndarray[Real,ndim=3, mode='c'] Jm           = function_space.Jm
     cdef np.ndarray[Real,ndim=1, mode='c'] AllGauss     = function_space.AllGauss.flatten()
 
@@ -106,17 +96,16 @@ def _LowLevelAssemblyDF_(fem_solver, function_space, formulation, mesh, material
     if material.is_transversely_isotropic:
         anisotropic_orientations = material.anisotropic_orientations
 
-    cdef Real mu=0.,mu1=0.,mu2=0.,mu3=0.,mue=0.,lamb=0.,eps_1=0.,eps_2=0., eps_3=0., eps_e=0.
+    cdef Real mu=0.,kappa=0.
 
-    mu1, mu2, lamb = material.mu1, material.mu2, material.lamb
+    mu, kappa = material.mu, material.kappa
 
     cdef Real rho = material.rho
 
-    _GlobalAssemblyDF_(     &points[0,0],
+    _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_(     &points[0,0],
                             &elements[0,0],
                             &Eulerx[0,0],
-                            &Eulerp[0],
-                            &bases[0,0],
+                            &Bases[0,0],
                             &Jm[0,0,0],
                             &AllGauss[0],
                             ndim,
@@ -141,16 +130,7 @@ def _LowLevelAssemblyDF_(fem_solver, function_space, formulation, mesh, material
                             &sorter[0,0],
                             rho,
                             mu,
-                            mu1,
-                            mu2,
-                            mu3,
-                            mue,
-                            lamb,
-                            eps_1,
-                            eps_2,
-                            eps_3,
-                            eps_e,
-                            &anisotropic_orientations[0,0]
+                            kappa
                             )
 
 

@@ -297,7 +297,7 @@ fem_solver_gr = FEMSolver(analysis_nature="nonlinear",
 
 #=================  HOMEOSTATIC SOLUTION  =======================
 print('=====================================')
-print('==  COMPUTE HOMEOSTATIC STATE  ==')
+print('===    COMPUTE HOMEOSTATIC STEP   ===')
 print('=====================================')
 # Call the solver for Homeostatic computation
 solution = fem_solver_h.Solve(formulation=formulation, mesh=mesh,

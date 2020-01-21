@@ -34,7 +34,7 @@ class NearlyIncompressibleNeoHookean(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        self.has_low_level_dispatcher = False
+        self.has_low_level_dispatcher = True
 
 
     def Hessian(self, StrainTensors, growth_remodeling=None, elem=0, gcounter=0):

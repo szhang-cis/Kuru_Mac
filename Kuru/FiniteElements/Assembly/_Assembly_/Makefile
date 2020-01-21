@@ -41,9 +41,7 @@ endif
 KIN_INC = ../../LocalAssembly/_KinematicMeasures_/
 MAT_INC = ../../../MaterialLibrary/LLDispatch/CythonSource/
 CONDF_INC = ../../../VariationalPrinciple/_ConstitutiveStiffness_/
-CONDPF_INC = ../../../VariationalPrinciple/_ConstitutiveStiffness_/
 GEO_INC = ../../../VariationalPrinciple/_GeometricStiffness_/
-MASS_INC = ../../../VariationalPrinciple/_Mass_/
 TRAC_INC = ../../../VariationalPrinciple/_Traction_/
 
 ifeq ($(findstring g++,$(CXX)),g++)
@@ -86,7 +84,7 @@ build_module:
 	$(CYTHON) $(ASSEMBLY_NAME).pyx
 	$(CXX) $(CXXSTD) $(CXXFLAGS) $(ASSEMBLY_NAME).cpp -o $(ASSEMBLY_NAME).$(EXT_POSTFIX) -I. \
 	-I$(PYTHON_INCLUDE_PATH) -I$(NUMPY_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION) -I$(KIN_INC) -I../../../Tensor/ -I$(MAT_INC) \
-	-I$(GEO_INC) -I$(CONDF_INC) -I$(CONDPF_INC) -I$(MASS_INC) -I$(BLAS_INCLUDE_PATH) -L$(BLAS_LD_PATH) -l$(BLAS_VERSION)
+	-I$(GEO_INC) -I$(CONDF_INC) -I$(BLAS_INCLUDE_PATH) -L$(BLAS_LD_PATH) -l$(BLAS_VERSION)
 	$(MOVE) $(ASSEMBLY_NAME).$(EXT_POSTFIX) ../
 
 clean:
@@ -98,19 +96,25 @@ source_clean:
 
 
 cython_assembler_build:
-	@echo "Building florence FEM sparse assembler module"
+	@echo "Building kuru FEM follower forces assembler module"
+	$(CYTHON) FollowerForces.pyx
+	$(CXX) $(CXXSTD) $(CXXFLAGS) FollowerForces.cpp -o FollowerForces.$(EXT_POSTFIX) -I. \
+	-I$(PYTHON_INCLUDE_PATH) -I$(NUMPY_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION)
+	$(MOVE) FollowerForces.$(EXT_POSTFIX) ../
+
+	@echo "Building kuru FEM sparse assembler module"
 	$(CYTHON) SparseAssemblyNative.pyx
 	$(CXX) $(CXXSTD) $(CXXFLAGS) SparseAssemblyNative.cpp -o SparseAssemblyNative.$(EXT_POSTFIX) -I. \
 	-I$(PYTHON_INCLUDE_PATH) -I$(NUMPY_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION)
 	$(MOVE) SparseAssemblyNative.$(EXT_POSTFIX) ../
 
-	@echo "Building florence FEM RHS assembler module"
+	@echo "Building kuru FEM RHS assembler module"
 	$(CYTHON) RHSAssemblyNative.pyx
 	$(CXX) $(CXXSTD) $(CXXFLAGS) RHSAssemblyNative.cpp -o RHSAssemblyNative.$(EXT_POSTFIX) -I. \
 	-I$(PYTHON_INCLUDE_PATH) -I$(NUMPY_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION)
 	$(MOVE) RHSAssemblyNative.$(EXT_POSTFIX) ../
 
-	@echo "Building florence FEM sparsity pattern estimator module"
+	@echo "Building kuru FEM sparsity pattern estimator module"
 	$(CYTHON) ComputeSparsityPattern.pyx
 	$(CXX) $(CXXSTD) $(CXXFLAGS) ComputeSparsityPattern.cpp -o ComputeSparsityPattern.$(EXT_POSTFIX) -I. \
 	-I$(PYTHON_INCLUDE_PATH) -I$(NUMPY_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION)

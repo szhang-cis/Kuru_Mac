@@ -6,7 +6,7 @@ from time import time
 import numpy as np
 from scipy.sparse import coo_matrix, csr_matrix, csc_matrix
 
-#from ._LowLevelAssembly_ import _LowLevelAssembly_, _LowLevelAssemblyExplicit_, _LowLevelAssemblyLaplacian_
+from ._LowLevelAssembly_ import _LowLevelAssembly_ #, _LowLevelAssemblyExplicit_, _LowLevelAssemblyLaplacian_
 #from ._LowLevelAssembly_ import _LowLevelAssembly_Par_, _LowLevelAssemblyExplicit_Par_
 
 from .SparseAssemblyNative import SparseAssemblyNative, SparseAssemblyNativeCSR_RecomputeDataIndex #, SparseAssemblyNativeCSR
@@ -17,7 +17,7 @@ from .RHSAssemblyNative import RHSAssemblyNative
 #import multiprocessing
 #import Florence.ParallelProcessing.parmap as parmap
 
-__all__ = ['Assemble', 'AssembleForces']
+__all__ = ['Assemble', 'AssemblyFollowerForces']
 
 #----------------------------------------------------------------------------------------------------------------#
 #------------------------------- ASSEMBLY ROUTINE FOR INTERNAL TRACTION FORCES ----------------------------------#
@@ -25,13 +25,73 @@ __all__ = ['Assemble', 'AssembleForces']
 def Assemble(fem_solver, function_spaces, formulation, mesh, material, boundary_condition, Eulerx):
 
     if fem_solver.has_low_level_dispatcher:
-        return LowLevelAssembly(fem_solver, function_spaces[0], formulation, mesh, material, Eulerx)
+        return LowLevelAssembly(fem_solver, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)
     else:
         if mesh.nelem <= 600000:
             return AssemblySmall(fem_solver, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)
         elif mesh.nelem > 600000:
             print("Larger than memory system. Dask on disk parallel assembly is turned on")
-            return OutofCoreAssembly(fem_solver, function_spaces[0], formulation, mesh, material, Eulerx)
+            return OutofCoreAssembly(fem_solver, function_spaces[0], formulation, mesh, material, boundary_condition, Eulerx)
+
+
+def LowLevelAssembly(fem_solver, function_spaces, formulation, mesh, material, boundary_condition, Eulerx):
+
+    t_assembly = time()
+
+    if not material.has_low_level_dispatcher:
+        raise RuntimeError("Cannot dispatch to low level module since material {} does not support it".format(type(material).__name__))
+
+    # HACK TO DISPATCH TO EFFICIENT MASS MATRIX COMUTATION
+    ll_failed = False
+    M = []
+    if fem_solver.analysis_type != "static" and fem_solver.is_mass_computed is False:
+        try:
+            t_mass_assembly = time()
+            from Kuru.VariationalPrinciple._MassIntegrand_ import __TotalConstantMassIntegrand__
+            if fem_solver.recompute_sparsity_pattern:
+                M, I_mass, J_mass, V_mass = __TotalConstantMassIntegrand__(mesh, function_spaces[0], formulation, fem_solver.mass_type)
+                if fem_solver.mass_type == "consistent":
+                    M = csr_matrix((V_mass,(I_mass,J_mass)),shape=((formulation.nvar*mesh.points.shape[0],
+                        formulation.nvar*mesh.points.shape[0])),dtype=np.float64)
+            else:
+                M, V_mass = __TotalConstantMassIntegrand__(mesh, function_spaces[0],
+                    formulation, fem_solver.mass_type, fem_solver.recompute_sparsity_pattern,
+                    fem_solver.squeeze_sparsity_pattern, fem_solver.indices, fem_solver.indptr,
+                    fem_solver.data_global_indices, fem_solver.data_local_indices)
+                if fem_solver.mass_type == "consistent":
+                    M = csr_matrix((V_mass,fem_solver.indices,fem_solver.indptr),shape=((formulation.nvar*mesh.points.shape[0],
+                        formulation.nvar*mesh.points.shape[0])),dtype=np.float64)
+            if M is not None:
+                fem_solver.is_mass_computed = True
+            t_mass_assembly = time() - t_mass_assembly
+            print("Assembled mass matrix. Time elapsed was {} seconds".format(t_mass_assembly))
+        except ImportError:
+            # CONTINUE DOWN
+            warn("Low level mass assembly not available. Falling back to python version")
+            ll_failed = True
+
+
+    if fem_solver.parallel:
+        stiffness, T, mass = ImplicitParallelLauncher(fem_solver, function_spaces[0], formulation, mesh, material, Eulerx)
+    else:
+        stiffness, T, mass = _LowLevelAssembly_(fem_solver, function_spaces[0], formulation, mesh, material, Eulerx)
+
+    # SET FLAG AGAIN - NECESSARY
+    if ll_failed:
+        if mass is not None:
+            fem_solver.is_mass_computed = True
+    else:
+        mass = M
+
+    if fem_solver.has_moving_boundary:
+        K_pressure, F_pressure = AssemblyFollowerForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx)
+        stiffness -= K_pressure
+        T -= F_pressure
+
+    fem_solver.assembly_time = time() - t_assembly
+
+    return stiffness, T[:,None], mass
+
 
 def AssemblySmall(fem_solver, function_spaces, formulation, mesh, material, boundary_condition, Eulerx):
 
@@ -161,7 +221,7 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, material, boun
     if fem_solver.has_moving_boundary:
         K_pressure, F_pressure = AssemblyFollowerForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx)
         stiffness -= K_pressure
-        T -= F_pressure
+        T -= F_pressure[:,None]
 
     fem_solver.assembly_time = time() - t_assembly
     return stiffness, T, mass

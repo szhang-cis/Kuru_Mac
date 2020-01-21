@@ -1,15 +1,14 @@
-#ifndef _LOWLEVELASSEMBLYDPF__H
-#define _LOWLEVELASSEMBLYDPF__H
+#ifndef _LOWLEVELASSEMBLYDF__NEARLYINCOMPRESSIBLENEOHOOKEAN_H
+#define _LOWLEVELASSEMBLYDF__NEARLYINCOMPRESSIBLENEOHOOKEAN_H
 
 #include "assembly_helper.h"
-#include "_ConstitutiveStiffnessDPF_.h"
-#include "_IsotropicElectroMechanics_101_.h"
+#include "_ConstitutiveStiffnessDF_.h"
+#include "_NearlyIncompressibleNeoHookean_.h"
 
-void _GlobalAssemblyDPF_(const Real *points,
+void _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_(const Real *points,
                         const UInteger* elements,
                         const Real* Eulerx,
-                        const Real* Eulerp,
-                        const Real* bases,
+                        const Real* Bases,
                         const Real* Jm,
                         const Real* AllGauss,
                         Integer ndim,
@@ -34,16 +33,7 @@ void _GlobalAssemblyDPF_(const Real *points,
                         const Integer *sorter,
                         Real rho,
                         Real mu,
-                        Real mu1,
-                        Real mu2,
-                        Real mu3,
-                        Real mue,
-                        Real lamb,
-                        Real eps_1,
-                        Real eps_2,
-                        Real eps_3,
-                        Real eps_e,
-                        const Real *anisotropic_orientations
+                        Real kappa
                         ) {
 
     Integer ndof = nvar*nodeperelem;
@@ -51,15 +41,11 @@ void _GlobalAssemblyDPF_(const Real *points,
 
     Real *LagrangeElemCoords        = allocate<Real>(nodeperelem*ndim);
     Real *EulerElemCoords           = allocate<Real>(nodeperelem*ndim);
-    Real *ElectricPotentialElem     = allocate<Real>(nodeperelem);
 
     Real *F                         = allocate<Real>(ngauss*ndim*ndim);
     Real *SpatialGradient           = allocate<Real>(ngauss*nodeperelem*ndim);
     Real *detJ                      = allocate<Real>(ngauss);
 
-    Real *ElectricFieldx            = allocate<Real>(ngauss*ndim);
-
-    Real *D                         = allocate<Real>(ngauss*ndim);
     Real *stress                    = allocate<Real>(ngauss*ndim*ndim);
     Real *hessian                   = allocate<Real>(ngauss*H_VoigtSize*H_VoigtSize);
 
@@ -67,7 +53,7 @@ void _GlobalAssemblyDPF_(const Real *points,
     Real *stiffness                 = allocate<Real>(local_capacity);
     Real *geometric_stiffness       = allocate<Real>(local_capacity);
 
-    auto mat_obj = _IsotropicElectroMechanics_101_<Real>(mu,lamb,eps_1);
+    auto mat_obj = _NearlyIncompressibleNeoHookean_<Real>(mu,kappa);
 
     // LOOP OVER ELEMETNS
     for (Integer elem=0; elem < nelem; ++elem) {
@@ -79,7 +65,6 @@ void _GlobalAssemblyDPF_(const Real *points,
                 LagrangeElemCoords[i*ndim+j] = points[inode*ndim+j];
                 EulerElemCoords[i*ndim+j] = Eulerx[inode*ndim+j];
             }
-            ElectricPotentialElem[i] = Eulerp[inode];
         }
 
         // COMPUTE KINEMATIC MEASURES
@@ -99,28 +84,16 @@ void _GlobalAssemblyDPF_(const Real *points,
                             requires_geometry_update
                             );
 
-        // COMPUTE ELECTRIC FIELD
-        for (Integer i=0; i<ngauss; ++i) {
-            for (Integer k=0; k<ndim; ++k) {
-                Real iE = 0;
-                for (Integer j=0; j<nodeperelem; ++j) {
-                    iE += SpatialGradient[i*nodeperelem*ndim+j*ndim+k]*ElectricPotentialElem[j];
-                }
-                ElectricFieldx[i*ndim+k] = -iE;
-            }
-        }
-
         // COMPUTE KINETIC MEASURES
-        mat_obj.KineticMeasures(D, stress, hessian, ndim, ngauss, F, ElectricFieldx);
+        mat_obj.KineticMeasures(stress, hessian, ndim, ngauss, F);
 
         // COMPUTE CONSTITUTIVE STIFFNESS AND TRACTION
         std::fill(stiffness,stiffness+local_capacity,0.);
         std::fill(traction,traction+ndof,0.);
-        _ConstitutiveStiffnessIntegrandDPF_Filler_(
+        _ConstitutiveStiffnessIntegrandDF_Filler_(
             stiffness,
             traction,
             SpatialGradient,
-            D,
             stress,
             hessian,
             detJ,
@@ -132,7 +105,7 @@ void _GlobalAssemblyDPF_(const Real *points,
             requires_geometry_update);
 
         // COMPUTE GEOMETRIC STIFFNESS
-        std::fill(geometric_stiffness,geometric_stiffness+local_capacity,0);
+        std::fill(geometric_stiffness,geometric_stiffness+local_capacity,0.);
         _GeometricStiffnessFiller_( geometric_stiffness,
                                     SpatialGradient,
                                     stress,
@@ -181,13 +154,10 @@ void _GlobalAssemblyDPF_(const Real *points,
 
     deallocate(LagrangeElemCoords);
     deallocate(EulerElemCoords);
-    deallocate(ElectricPotentialElem);
 
     deallocate(F);
     deallocate(SpatialGradient);
     deallocate(detJ);
-    deallocate(ElectricFieldx);
-    deallocate(D);
     deallocate(stress);
     deallocate(hessian);
     deallocate(traction);
@@ -196,4 +166,4 @@ void _GlobalAssemblyDPF_(const Real *points,
 }
 
 
-#endif // _LOWLEVELASSEMBLYDPF__H
+#endif // _LOWLEVELASSEMBLYDF__H

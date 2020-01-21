@@ -75,31 +75,10 @@ build_module:
 	     -I$(NUMPY_INCLUDE_PATH) -I$(BLAS_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION) -L$(BLAS_LD_PATH) -l$(BLAS_VERSION)
 	@$(MOVE) _ConstitutiveStiffnessDF_.$(EXT_POSTFIX) ../
 
-	@echo "Building low level electromechanical constitutive stiffness integrands"
-	$(CYTHON) DisplacementPotentialApproachIndices.pyx
-	$(CXX) $(CXXSTD) $(CXXFLAGS) DisplacementPotentialApproachIndices.cpp -o DisplacementPotentialApproachIndices.$(EXT_POSTFIX) -I. -I$(PYTHON_INCLUDE_PATH) \
-	     -I$(NUMPY_INCLUDE_PATH) -I$(BLAS_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION) -L$(BLAS_LD_PATH) -l$(BLAS_VERSION)
-	@$(MOVE) DisplacementPotentialApproachIndices.$(EXT_POSTFIX) ../
-
-	@echo "Building low level electromechanical constitutive stiffness dispatcher module"
-	$(CYTHON) _ConstitutiveStiffnessDPF_.pyx
-	$(CXX) $(CXXSTD) $(CXXFLAGS) _ConstitutiveStiffnessDPF_.cpp -o _ConstitutiveStiffnessDPF_.$(EXT_POSTFIX) -I. -I$(PYTHON_INCLUDE_PATH) \
-	     -I$(NUMPY_INCLUDE_PATH) -I$(BLAS_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION) -L$(BLAS_LD_PATH) -l$(BLAS_VERSION)
-	@$(MOVE) _ConstitutiveStiffnessDPF_.$(EXT_POSTFIX) ../
-
-	@echo "Building low level electrostatic constitutive stiffness dispatcher module"
-	$(CYTHON) _ConstitutiveStiffnessLaplacian_.pyx
-	$(CXX) $(CXXSTD) $(CXXFLAGS) _ConstitutiveStiffnessLaplacian_.cpp -o _ConstitutiveStiffnessLaplacian_.$(EXT_POSTFIX) -I. -I$(PYTHON_INCLUDE_PATH) \
-	     -I$(NUMPY_INCLUDE_PATH) -I$(BLAS_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION) -L$(BLAS_LD_PATH) -l$(BLAS_VERSION)
-	@$(MOVE) _ConstitutiveStiffnessLaplacian_.$(EXT_POSTFIX) ../
-
 clean:
 	$(REMOVE) DisplacementApproachIndices.cpp DisplacementApproachIndices.$(EXT_POSTFIX) ../DisplacementApproachIndices.$(EXT_POSTFIX)
 	$(REMOVE) _ConstitutiveStiffnessDF_.cpp _ConstitutiveStiffnessDF_.$(EXT_POSTFIX) ../_ConstitutiveStiffnessDF_.$(EXT_POSTFIX)
-	$(REMOVE) DisplacementPotentialApproachIndices.cpp DisplacementPotentialApproachIndices.$(EXT_POSTFIX) ../DisplacementPotentialApproachIndices.$(EXT_POSTFIX)
-	$(REMOVE) _ConstitutiveStiffnessDPF_.cpp _ConstitutiveStiffnessDPF_.$(EXT_POSTFIX) ../_ConstitutiveStiffnessDPF_.$(EXT_POSTFIX)
-	$(REMOVE)  _ConstitutiveStiffnessLaplacian_.cpp _ConstitutiveStiffnessLaplacian_.$(EXT_POSTFIX) ../_ConstitutiveStiffnessLaplacian_.$(EXT_POSTFIX)
 
 source_clean:
-	$(REMOVE) DisplacementApproachIndices.cpp DisplacementPotentialApproachIndices.cpp
-	$(REMOVE) _ConstitutiveStiffnessDF_.cpp _ConstitutiveStiffnessDPF_.cpp _ConstitutiveStiffnessLaplacian_.cpp
+	$(REMOVE) DisplacementApproachIndices.cpp
+	$(REMOVE) _ConstitutiveStiffnessDF_.cpp

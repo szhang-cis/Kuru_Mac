@@ -221,7 +221,7 @@ class FEMSolver(object):
 
         # TURN OFF PARALLELISM IF NOT AVAILABLE
         if self.parallel:
-            if (formulation.fields == "mechanics") and self.has_low_level_dispatcher:
+            if formulation.fields == "mechanics" and self.has_low_level_dispatcher:
                 if self.parallel_model is None:
                     if self.analysis_type == "dynamic" and self.analysis_subtype == "explicit":
                         self.parallel_model = "context_manager"

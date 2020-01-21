@@ -165,7 +165,7 @@ void GetFacesForces(Real *stiff_face,
 		    Integer nvar)
 {
    Integer ndof = nodeperface*nvar;
-   Integer local_capacity = ndof*ndof;
+   //Integer local_capacity = ndof*ndof;
    Integer i;
    Integer j;
    Integer k;
@@ -249,7 +249,7 @@ void GetFacesForces(Real *stiff_face,
       for (n=0; n<ndof; ++n) {
          for (i=0; i<nvar; ++i) {
             for (m=0; m<ngauss; ++m) {
-               for (j=0; j<(nvar; ++j) {
+               for (j=0; j<nvar; ++j) {
                   for (k=0; k<nvar; ++k) {
                      crossy[l*ndof*nvar*ngauss+n*nvar*ngauss+i*ngauss+m] += 
 		      alternating[i*nvar*nvar+j*nvar+k]*gNy[l*nvar*ngauss+j*ngauss+m]*
@@ -302,7 +302,7 @@ void StaticForcesAssembler(const UInteger *faces,
                            int squeeze_sparsity_pattern,
                            const int *data_global_indices,
                            const int *data_local_indices,
-                           cosnt UInteger *sorted_elements,
+                           const UInteger *sorted_elements,
                            const Integer *sorter,
                            int *I_stiff,
                            int *J_stiff,
@@ -317,14 +317,14 @@ void StaticForcesAssembler(const UInteger *faces,
    Integer ndof = nodeperface*nvar;
    Integer local_capacity = ndof*ndof;
 
-   Real *EulerElemCoords = (Real*)malloc(sizeof(Real)*nodeperface*ndim);
+   Real *EulerElemCoords = (Real*)malloc(sizeof(Real)*nodeperface*nvar);
 
    Real *force = (Real*)malloc(ndof*sizeof(Real));
    Real *stiff_face = (Real*)malloc(local_capacity*sizeof(Real));
 
    // LOOP OVER FACES
    for (Integer face=0; face<nface; ++face) {
-      if pressure_flags[face] {
+      if (pressure_flags[face]) {
 	 // APPLIED PRESSURE BY INCREMENT AND FACE
          Real pressure = pressure_increment*applied_pressure[face];
 	 // GET FIELD AT ELEMENT LEVEL (JUST CURRENT)
@@ -337,7 +337,7 @@ void StaticForcesAssembler(const UInteger *faces,
 	 // COMPUTE STIFFNESS AND FORCE
 	 std::fill(force,force+ndof,0.0);
 	 std::fill(stiff_face,stiff_face+local_capacity,0.0);
-	 FacesForces(    stiff_face,
+	 GetFacesForces( stiff_face,
 			 force,
 			 pressure,
 			 Bases,
@@ -371,10 +371,10 @@ void StaticForcesAssembler(const UInteger *faces,
 
 	 // ASSEMBLE FORCES
 	 // F[faces[face,:]*nvar+ivar,0]+=force[ivar::nvar,0]
-	 for (i=0; i<nodeperface; ++i) {
-	    inode = faces[face*nodeperface+i]*nvar;
-	    for (ivar=0; ivar<nvar; ++ivar) {
-	       F[inode+ivar] += force[i*nvar+ivar];
+	 for (Integer i=0; i<nodeperface; ++i) {
+	    Integer inode = faces[face*nodeperface+i]*nvar;
+	    for (Integer j=0; j<nvar; ++j) {
+	       F[inode+j] += force[i*nvar+j];
 	    }
 	 }
       }

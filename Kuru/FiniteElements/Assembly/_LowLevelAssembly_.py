@@ -3,7 +3,8 @@ import numpy as np
 from scipy.sparse import csr_matrix, csc_matrix
 
 try:
-    from ._LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_ import _LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
+    from ._LLADF__NearlyIncompressibleNeoHookean_ import _LLADF__NearlyIncompressibleNeoHookean_
+    from ._LLADF__AnisotropicFungQuadratic_ import _LLADF__AnisotropicFungQuadratic_
     has_low_level_dispatcher = True
 except ImportError:
     has_low_level_dispatcher = False
@@ -13,7 +14,7 @@ __all__ = ['_LowLevelAssembly_']
 
 def _LowLevelAssembly_(fem_solver, function_space, formulation, mesh, material, Eulerx):
 
-    prefix = "_LowLevelAssemblyDF__"
+    prefix = "_LLADF__"
 
     assembly_func = prefix + type(material).__name__ + "_"
     # CHECK IF LOW LEVEL ASSEMBLY EXISTS FOR MATERIAL

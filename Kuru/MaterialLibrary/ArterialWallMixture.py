@@ -33,10 +33,18 @@ class ArterialWallMixture(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        #self.has_low_level_dispatcher = True
-        self.has_low_level_dispatcher = False
+        self.has_low_level_dispatcher = True
+        #self.has_low_level_dispatcher = False
 
-    def Hessian(self,StrainTensors,growth_remodeling=None,elem=0,gcounter=0):
+    def KineticMeasures(self,F, elem=0):
+        N = self.anisotropic_orientations[elem,:,:]
+        if N.ndim != 2:
+            raise ValueError("Dimension of fibre orientations must be 2 after choose element")
+        from Kuru.MaterialLibrary.LLDispatch._ArterialWallMixture_ import KineticMeasures
+        return KineticMeasures(self, np.ascontiguousarray(F), np.ascontiguousarray(N))
+
+
+    def Hessian(self,StrainTensors,elem=0,gcounter=0):
 
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
@@ -64,7 +72,7 @@ class ArterialWallMixture(Material):
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:
             # Fibre direction
-            N = self.anisotropic_orientations[fibre_i][elem][:,None]
+            N = self.anisotropic_orientations[elem][fibre_i][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
             if fibre_i is 1:
@@ -96,7 +104,7 @@ class ArterialWallMixture(Material):
 
         return H_Voigt
 
-    def CauchyStress(self,StrainTensors,growth_remodeling=None,elem=0,gcounter=0):
+    def CauchyStress(self,StrainTensors,elem=0,gcounter=0):
 
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
@@ -121,7 +129,7 @@ class ArterialWallMixture(Material):
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:
             # Fibre direction
-            N = self.anisotropic_orientations[fibre_i][elem][:,None]
+            N = self.anisotropic_orientations[elem][fibre_i][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
             if fibre_i is 1:

@@ -31,15 +31,18 @@ class AnisotropicFungQuadratic(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        #self.has_low_level_dispatcher = True
-        self.has_low_level_dispatcher = False
+        self.has_low_level_dispatcher = True
+        #self.has_low_level_dispatcher = False
 
-#    def KineticMeasures(self,F,ElectricFieldx=0, elem=0):
-#        from Florence.MaterialLibrary.LLDispatch._AnisotropicFungQuadratic_ import KineticMeasures
-#        return KineticMeasures(self, F, self.anisotropic_orientations[elem][:,None])
+    def KineticMeasures(self,F, elem=0):
+        N = self.anisotropic_orientations[elem,:,:]
+        if N.ndim != 2:
+            raise ValueError("Dimension of fibre orientations must be 2 after choose element")
+        from Kuru.MaterialLibrary.LLDispatch._AnisotropicFungQuadratic_ import KineticMeasures
+        return KineticMeasures(self, np.ascontiguousarray(F), np.ascontiguousarray(N))
 
 
-    def Hessian(self,StrainTensors,growth_remodeling=None,elem=0,gcounter=0):
+    def Hessian(self,StrainTensors,elem=0,gcounter=0):
 
         kappa = self.kappa
         mu = self.mu
@@ -74,7 +77,7 @@ class AnisotropicFungQuadratic(Material):
 
         return H_Voigt
 
-    def CauchyStress(self,StrainTensors,growth_remodeling=None,elem=0,gcounter=0):
+    def CauchyStress(self,StrainTensors,elem=0,gcounter=0):
 
         kappa = self.kappa
         mu = self.mu

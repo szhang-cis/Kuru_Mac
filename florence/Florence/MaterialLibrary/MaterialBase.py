@@ -111,7 +111,7 @@ class Material(object):
         self.anisotropic_orientations = anisotropic_orientations
 
         self.has_low_level_dispatcher = False
-
+        self.has_growth_remodeling = False
 
 
 

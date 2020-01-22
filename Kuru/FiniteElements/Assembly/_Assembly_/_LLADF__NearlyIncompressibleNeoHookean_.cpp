@@ -619,15 +619,15 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE___LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
-#define __PYX_HAVE_API___LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
+#define __PYX_HAVE___LLADF__NearlyIncompressibleNeoHookean_
+#define __PYX_HAVE_API___LLADF__NearlyIncompressibleNeoHookean_
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
 #include "numpy/arrayobject.h"
 #include "numpy/ufuncobject.h"
 #include <stdint.h>
-#include "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.h"
+#include "_LLADF__NearlyIncompressibleNeoHookean_.h"
 #include "pythread.h"
 #include <stdlib.h>
 #include "pystate.h"
@@ -860,7 +860,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx",
+  "_LLADF__NearlyIncompressibleNeoHookean_.pyx",
   "__init__.pxd",
   "stringsource",
   "type.pxd",
@@ -1163,32 +1163,32 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":5
+/* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":5
  * from libc.stdint cimport int64_t, uint64_t
  * 
  * ctypedef int64_t Integer             # <<<<<<<<<<<<<<
  * ctypedef uint64_t UInteger
  * ctypedef double Real
  */
-typedef int64_t __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer;
+typedef int64_t __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer;
 
-/* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":6
+/* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":6
  * 
  * ctypedef int64_t Integer
  * ctypedef uint64_t UInteger             # <<<<<<<<<<<<<<
  * ctypedef double Real
  * 
  */
-typedef uint64_t __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger;
+typedef uint64_t __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger;
 
-/* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":7
+/* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":7
  * ctypedef int64_t Integer
  * ctypedef uint64_t UInteger
  * ctypedef double Real             # <<<<<<<<<<<<<<
  * 
  * 
  */
-typedef double __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real;
+typedef double __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real;
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -1982,13 +1982,13 @@ static int __Pyx_ValidateAndInit_memviewslice(
                 PyObject *original_obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real(PyObject *, int writable_flag);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* None.proto */
-static CYTHON_INLINE __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __Pyx_pow___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer, __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer);
+static CYTHON_INLINE __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __Pyx_pow___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer, __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int64_t(int64_t value);
@@ -2164,7 +2164,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 
 /* Module declarations from 'libc.stdint' */
 
-/* Module declarations from '_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_' */
+/* Module declarations from '_LLADF__NearlyIncompressibleNeoHookean_' */
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
 static PyTypeObject *__pyx_memoryview_type = 0;
@@ -2209,15 +2209,15 @@ static void __pyx_memoryview_refcount_objects_in_slice(char *, Py_ssize_t *, Py_
 static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size_t, void *, int); /*proto*/
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger = { "UInteger", NULL, sizeof(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger), { 0 }, 0, IS_UNSIGNED(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger), 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real = { "Real", NULL, sizeof(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real), { 0 }, 0, 'R', 0, 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer = { "Integer", NULL, sizeof(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer), { 0 }, 0, IS_UNSIGNED(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer), 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger = { "UInteger", NULL, sizeof(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger), { 0 }, 0, IS_UNSIGNED(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger), 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real = { "Real", NULL, sizeof(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real), { 0 }, 0, 'R', 0, 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer = { "Integer", NULL, sizeof(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer), { 0 }, 0, IS_UNSIGNED(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer), 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_int = { "int", NULL, sizeof(int), { 0 }, 0, IS_UNSIGNED(int) ? 'U' : 'I', IS_UNSIGNED(int), 0 };
-#define __Pyx_MODULE_NAME "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_"
-extern int __pyx_module_is_main__LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_;
-int __pyx_module_is_main__LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_ = 0;
+#define __Pyx_MODULE_NAME "_LLADF__NearlyIncompressibleNeoHookean_"
+extern int __pyx_module_is_main__LLADF__NearlyIncompressibleNeoHookean_;
+int __pyx_module_is_main__LLADF__NearlyIncompressibleNeoHookean_ = 0;
 
-/* Implementation of '_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_' */
+/* Implementation of '_LLADF__NearlyIncompressibleNeoHookean_' */
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
@@ -2354,7 +2354,7 @@ static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cyt
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
-static const char __pyx_k_LowLevelAssemblyDF__NearlyIncom[] = "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_";
+static const char __pyx_k_LLADF__NearlyIncompressibleNeoH[] = "_LLADF__NearlyIncompressibleNeoHookean_";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
@@ -2374,7 +2374,7 @@ static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not F
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_unable_to_allocate_shape_and_str[] = "unable to allocate shape and strides.";
-static const char __pyx_k_LowLevelAssemblyDF__NearlyIncom_2[] = "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx";
+static const char __pyx_k_LLADF__NearlyIncompressibleNeoH_2[] = "_LLADF__NearlyIncompressibleNeoHookean_.pyx";
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
 static PyObject *__pyx_n_s_ASCII;
 static PyObject *__pyx_n_s_AllGauss;
@@ -2399,8 +2399,8 @@ static PyObject *__pyx_kp_s_Invalid_mode_expected_c_or_fortr;
 static PyObject *__pyx_kp_s_Invalid_shape_in_axis_d_d;
 static PyObject *__pyx_n_s_J_stiff;
 static PyObject *__pyx_n_s_Jm;
-static PyObject *__pyx_n_s_LowLevelAssemblyDF__NearlyIncom;
-static PyObject *__pyx_kp_s_LowLevelAssemblyDF__NearlyIncom_2;
+static PyObject *__pyx_n_s_LLADF__NearlyIncompressibleNeoH;
+static PyObject *__pyx_kp_s_LLADF__NearlyIncompressibleNeoH_2;
 static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_kp_s_MemoryView_of_r_at_0x_x;
 static PyObject *__pyx_kp_s_MemoryView_of_r_object;
@@ -2526,7 +2526,7 @@ static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean___LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fem_solver, PyObject *__pyx_v_function_space, PyObject *__pyx_v_formulation, PyObject *__pyx_v_mesh, PyObject *__pyx_v_material, __Pyx_memviewslice __pyx_v_Eulerx); /* proto */
+static PyObject *__pyx_pf_39_LLADF__NearlyIncompressibleNeoHookean___LLADF__NearlyIncompressibleNeoHookean_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fem_solver, PyObject *__pyx_v_function_space, PyObject *__pyx_v_formulation, PyObject *__pyx_v_mesh, PyObject *__pyx_v_material, __Pyx_memviewslice __pyx_v_Eulerx); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
@@ -2616,18 +2616,18 @@ static PyObject *__pyx_codeobj__28;
 static PyObject *__pyx_codeobj__35;
 /* Late includes */
 
-/* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":43
+/* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":43
  * 
  * 
- * def _LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
+ * def _LLADF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__1_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__1_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_ = {"_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__1_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__1_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_39_LLADF__NearlyIncompressibleNeoHookean__1_LLADF__NearlyIncompressibleNeoHookean_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_39_LLADF__NearlyIncompressibleNeoHookean__1_LLADF__NearlyIncompressibleNeoHookean_ = {"_LLADF__NearlyIncompressibleNeoHookean_", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_39_LLADF__NearlyIncompressibleNeoHookean__1_LLADF__NearlyIncompressibleNeoHookean_, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_39_LLADF__NearlyIncompressibleNeoHookean__1_LLADF__NearlyIncompressibleNeoHookean_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_fem_solver = 0;
   PyObject *__pyx_v_function_space = 0;
   PyObject *__pyx_v_formulation = 0;
@@ -2636,7 +2636,7 @@ static PyObject *__pyx_pw_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_memviewslice __pyx_v_Eulerx = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_ (wrapper)", 0);
+  __Pyx_RefNannySetupContext("_LLADF__NearlyIncompressibleNeoHookean_ (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_fem_solver,&__pyx_n_s_function_space,&__pyx_n_s_formulation,&__pyx_n_s_mesh,&__pyx_n_s_material,&__pyx_n_s_Eulerx,0};
     PyObject* values[6] = {0,0,0,0,0,0};
@@ -2668,35 +2668,35 @@ static PyObject *__pyx_pw_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_function_space)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 1); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 1); __PYX_ERR(0, 43, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_formulation)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 2); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 2); __PYX_ERR(0, 43, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_mesh)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 3); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 3); __PYX_ERR(0, 43, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_material)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 4); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 4); __PYX_ERR(0, 43, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Eulerx)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 5); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__NearlyIncompressibleNeoHookean_", 1, 6, 6, 5); __PYX_ERR(0, 43, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_") < 0)) __PYX_ERR(0, 43, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_LLADF__NearlyIncompressibleNeoHookean_") < 0)) __PYX_ERR(0, 43, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 6) {
       goto __pyx_L5_argtuple_error;
@@ -2713,37 +2713,37 @@ static PyObject *__pyx_pw_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __pyx_v_formulation = values[2];
     __pyx_v_mesh = values[3];
     __pyx_v_material = values[4];
-    __pyx_v_Eulerx = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_Eulerx.memview)) __PYX_ERR(0, 43, __pyx_L3_error)
+    __pyx_v_Eulerx = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_Eulerx.memview)) __PYX_ERR(0, 43, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 43, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_LLADF__NearlyIncompressibleNeoHookean_", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 43, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_._LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("_LLADF__NearlyIncompressibleNeoHookean_._LLADF__NearlyIncompressibleNeoHookean_", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean___LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(__pyx_self, __pyx_v_fem_solver, __pyx_v_function_space, __pyx_v_formulation, __pyx_v_mesh, __pyx_v_material, __pyx_v_Eulerx);
+  __pyx_r = __pyx_pf_39_LLADF__NearlyIncompressibleNeoHookean___LLADF__NearlyIncompressibleNeoHookean_(__pyx_self, __pyx_v_fem_solver, __pyx_v_function_space, __pyx_v_formulation, __pyx_v_mesh, __pyx_v_material, __pyx_v_Eulerx);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean___LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fem_solver, PyObject *__pyx_v_function_space, PyObject *__pyx_v_formulation, PyObject *__pyx_v_mesh, PyObject *__pyx_v_material, __Pyx_memviewslice __pyx_v_Eulerx) {
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __pyx_v_ndim;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __pyx_v_nvar;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __pyx_v_ngauss;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __pyx_v_nelem;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __pyx_v_nodeperelem;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __pyx_v_nnode;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __pyx_v_H_VoigtSize;
+static PyObject *__pyx_pf_39_LLADF__NearlyIncompressibleNeoHookean___LLADF__NearlyIncompressibleNeoHookean_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fem_solver, PyObject *__pyx_v_function_space, PyObject *__pyx_v_formulation, PyObject *__pyx_v_mesh, PyObject *__pyx_v_material, __Pyx_memviewslice __pyx_v_Eulerx) {
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __pyx_v_ndim;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __pyx_v_nvar;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __pyx_v_ngauss;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __pyx_v_nelem;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __pyx_v_nodeperelem;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __pyx_v_nnode;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __pyx_v_H_VoigtSize;
   PyArrayObject *__pyx_v_elements = 0;
   PyArrayObject *__pyx_v_points = 0;
   PyArrayObject *__pyx_v_Bases = 0;
   PyArrayObject *__pyx_v_Jm = 0;
   PyArrayObject *__pyx_v_AllGauss = 0;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __pyx_v_requires_geometry_update;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __pyx_v_requires_geometry_update;
   PyArrayObject *__pyx_v_local_rows_stiffness = 0;
   PyArrayObject *__pyx_v_local_cols_stiffness = 0;
   CYTHON_UNUSED PyArrayObject *__pyx_v_local_rows_mass = 0;
@@ -2759,9 +2759,9 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   int __pyx_v_recompute_sparsity_pattern;
   PyArrayObject *__pyx_v_T = 0;
   CYTHON_UNUSED PyArrayObject *__pyx_v_anisotropic_orientations = 0;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real __pyx_v_mu;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real __pyx_v_kappa;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real __pyx_v_rho;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real __pyx_v_mu;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real __pyx_v_kappa;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real __pyx_v_rho;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_AllGauss;
   __Pyx_Buffer __pyx_pybuffer_AllGauss;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_Bases;
@@ -2801,7 +2801,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __pyx_t_2;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   PyArrayObject *__pyx_t_4 = NULL;
   PyArrayObject *__pyx_t_5 = NULL;
@@ -2830,8 +2830,8 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   PyObject *__pyx_t_28 = NULL;
   PyArrayObject *__pyx_t_29 = NULL;
   PyArrayObject *__pyx_t_30 = NULL;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real __pyx_t_31;
-  __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real __pyx_t_32;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real __pyx_t_31;
+  __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real __pyx_t_32;
   Py_ssize_t __pyx_t_33;
   Py_ssize_t __pyx_t_34;
   Py_ssize_t __pyx_t_35;
@@ -2856,7 +2856,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   Py_ssize_t __pyx_t_54;
   Py_ssize_t __pyx_t_55;
   Py_ssize_t __pyx_t_56;
-  __Pyx_RefNannySetupContext("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", 0);
+  __Pyx_RefNannySetupContext("_LLADF__NearlyIncompressibleNeoHookean_", 0);
   __pyx_pybuffer_elements.pybuffer.buf = NULL;
   __pyx_pybuffer_elements.refcount = 0;
   __pyx_pybuffernd_elements.data = NULL;
@@ -2930,7 +2930,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_pybuffernd_anisotropic_orientations.data = NULL;
   __pyx_pybuffernd_anisotropic_orientations.rcbuffer = &__pyx_pybuffer_anisotropic_orientations;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":46
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":46
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  *     cdef Integer ndim                       = formulation.ndim             # <<<<<<<<<<<<<<
@@ -2943,7 +2943,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_ndim = __pyx_t_2;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":47
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":47
  *     #GET VARIABLES FOR DISPATCHING TO C
  *     cdef Integer ndim                       = formulation.ndim
  *     cdef Integer nvar                       = formulation.nvar             # <<<<<<<<<<<<<<
@@ -2956,7 +2956,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nvar = __pyx_t_2;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":48
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":48
  *     cdef Integer ndim                       = formulation.ndim
  *     cdef Integer nvar                       = formulation.nvar
  *     cdef Integer ngauss                     = function_space.AllGauss.shape[0]             # <<<<<<<<<<<<<<
@@ -2975,7 +2975,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_ngauss = __pyx_t_2;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":49
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":49
  *     cdef Integer nvar                       = formulation.nvar
  *     cdef Integer ngauss                     = function_space.AllGauss.shape[0]
  *     cdef Integer nelem                      = mesh.nelem             # <<<<<<<<<<<<<<
@@ -2988,7 +2988,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nelem = __pyx_t_2;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":50
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":50
  *     cdef Integer ngauss                     = function_space.AllGauss.shape[0]
  *     cdef Integer nelem                      = mesh.nelem
  *     cdef Integer nodeperelem                = mesh.elements.shape[1]             # <<<<<<<<<<<<<<
@@ -3007,7 +3007,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nodeperelem = __pyx_t_2;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":51
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":51
  *     cdef Integer nelem                      = mesh.nelem
  *     cdef Integer nodeperelem                = mesh.elements.shape[1]
  *     cdef Integer nnode                      = mesh.points.shape[0]             # <<<<<<<<<<<<<<
@@ -3026,7 +3026,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nnode = __pyx_t_2;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":52
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":52
  *     cdef Integer nodeperelem                = mesh.elements.shape[1]
  *     cdef Integer nnode                      = mesh.points.shape[0]
  *     cdef Integer H_VoigtSize                = material.H_VoigtSize             # <<<<<<<<<<<<<<
@@ -3039,7 +3039,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_H_VoigtSize = __pyx_t_2;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":54
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":54
  *     cdef Integer H_VoigtSize                = material.H_VoigtSize
  * 
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] elements = mesh.elements             # <<<<<<<<<<<<<<
@@ -3052,7 +3052,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_4 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_4, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_4, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_elements = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_elements.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 54, __pyx_L1_error)
     } else {__pyx_pybuffernd_elements.diminfo[0].strides = __pyx_pybuffernd_elements.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_elements.diminfo[0].shape = __pyx_pybuffernd_elements.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_elements.diminfo[1].strides = __pyx_pybuffernd_elements.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_elements.diminfo[1].shape = __pyx_pybuffernd_elements.rcbuffer->pybuffer.shape[1];
@@ -3062,7 +3062,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_elements = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":55
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":55
  * 
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] elements = mesh.elements
  *     cdef np.ndarray[Real,ndim=2, mode='c'] points       = mesh.points             # <<<<<<<<<<<<<<
@@ -3075,7 +3075,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_points.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_points.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_points = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_points.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 55, __pyx_L1_error)
     } else {__pyx_pybuffernd_points.diminfo[0].strides = __pyx_pybuffernd_points.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_points.diminfo[0].shape = __pyx_pybuffernd_points.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_points.diminfo[1].strides = __pyx_pybuffernd_points.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_points.diminfo[1].shape = __pyx_pybuffernd_points.rcbuffer->pybuffer.shape[1];
@@ -3085,7 +3085,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_points = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":56
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":56
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] elements = mesh.elements
  *     cdef np.ndarray[Real,ndim=2, mode='c'] points       = mesh.points
  *     cdef np.ndarray[Real,ndim=2, mode='c'] Bases        = function_space.Bases             # <<<<<<<<<<<<<<
@@ -3098,7 +3098,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Bases.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Bases.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_Bases = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_Bases.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 56, __pyx_L1_error)
     } else {__pyx_pybuffernd_Bases.diminfo[0].strides = __pyx_pybuffernd_Bases.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Bases.diminfo[0].shape = __pyx_pybuffernd_Bases.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_Bases.diminfo[1].strides = __pyx_pybuffernd_Bases.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_Bases.diminfo[1].shape = __pyx_pybuffernd_Bases.rcbuffer->pybuffer.shape[1];
@@ -3108,7 +3108,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_Bases = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":57
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":57
  *     cdef np.ndarray[Real,ndim=2, mode='c'] points       = mesh.points
  *     cdef np.ndarray[Real,ndim=2, mode='c'] Bases        = function_space.Bases
  *     cdef np.ndarray[Real,ndim=3, mode='c'] Jm           = function_space.Jm             # <<<<<<<<<<<<<<
@@ -3121,7 +3121,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_7 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Jm.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Jm.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
       __pyx_v_Jm = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_Jm.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 57, __pyx_L1_error)
     } else {__pyx_pybuffernd_Jm.diminfo[0].strides = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Jm.diminfo[0].shape = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_Jm.diminfo[1].strides = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_Jm.diminfo[1].shape = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_Jm.diminfo[2].strides = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_Jm.diminfo[2].shape = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.shape[2];
@@ -3131,7 +3131,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_Jm = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":58
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":58
  *     cdef np.ndarray[Real,ndim=2, mode='c'] Bases        = function_space.Bases
  *     cdef np.ndarray[Real,ndim=3, mode='c'] Jm           = function_space.Jm
  *     cdef np.ndarray[Real,ndim=1, mode='c'] AllGauss     = function_space.AllGauss.flatten()             # <<<<<<<<<<<<<<
@@ -3162,7 +3162,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_9 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_AllGauss.rcbuffer->pybuffer, (PyObject*)__pyx_t_9, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_AllGauss.rcbuffer->pybuffer, (PyObject*)__pyx_t_9, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_AllGauss = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 58, __pyx_L1_error)
     } else {__pyx_pybuffernd_AllGauss.diminfo[0].strides = __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_AllGauss.diminfo[0].shape = __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.shape[0];
@@ -3172,7 +3172,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_AllGauss = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":60
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":60
  *     cdef np.ndarray[Real,ndim=1, mode='c'] AllGauss     = function_space.AllGauss.flatten()
  * 
  *     cdef Integer requires_geometry_update               = fem_solver.requires_geometry_update             # <<<<<<<<<<<<<<
@@ -3185,7 +3185,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_requires_geometry_update = __pyx_t_2;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":62
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":62
  *     cdef Integer requires_geometry_update               = fem_solver.requires_geometry_update
  * 
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_stiffness   = formulation.local_rows             # <<<<<<<<<<<<<<
@@ -3198,7 +3198,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_10 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer, (PyObject*)__pyx_t_10, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer, (PyObject*)__pyx_t_10, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_local_rows_stiffness = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 62, __pyx_L1_error)
     } else {__pyx_pybuffernd_local_rows_stiffness.diminfo[0].strides = __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_local_rows_stiffness.diminfo[0].shape = __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.shape[0];
@@ -3208,7 +3208,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_local_rows_stiffness = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":63
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":63
  * 
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_stiffness   = formulation.local_rows
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_stiffness   = formulation.local_columns             # <<<<<<<<<<<<<<
@@ -3221,7 +3221,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_11 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer, (PyObject*)__pyx_t_11, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer, (PyObject*)__pyx_t_11, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_local_cols_stiffness = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 63, __pyx_L1_error)
     } else {__pyx_pybuffernd_local_cols_stiffness.diminfo[0].strides = __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_local_cols_stiffness.diminfo[0].shape = __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.shape[0];
@@ -3231,7 +3231,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_local_cols_stiffness = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":65
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":65
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_stiffness   = formulation.local_columns
  * 
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_mass        = formulation.local_rows_mass             # <<<<<<<<<<<<<<
@@ -3244,7 +3244,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_12 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_local_rows_mass = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 65, __pyx_L1_error)
     } else {__pyx_pybuffernd_local_rows_mass.diminfo[0].strides = __pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_local_rows_mass.diminfo[0].shape = __pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer.shape[0];
@@ -3254,7 +3254,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_local_rows_mass = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":66
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":66
  * 
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_mass        = formulation.local_rows_mass
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_mass        = formulation.local_columns_mass             # <<<<<<<<<<<<<<
@@ -3267,7 +3267,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_13 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_local_cols_mass = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 66, __pyx_L1_error)
     } else {__pyx_pybuffernd_local_cols_mass.diminfo[0].strides = __pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_local_cols_mass.diminfo[0].shape = __pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer.shape[0];
@@ -3277,7 +3277,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_local_cols_mass = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":68
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":68
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_mass        = formulation.local_columns_mass
  * 
  *     cdef np.ndarray[int,ndim=1,mode='c'] I_stiff        = np.zeros(1,np.int32)             # <<<<<<<<<<<<<<
@@ -3355,7 +3355,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_I_stiff = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":69
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":69
  * 
  *     cdef np.ndarray[int,ndim=1,mode='c'] I_stiff        = np.zeros(1,np.int32)
  *     cdef np.ndarray[int,ndim=1,mode='c'] J_stiff        = np.zeros(1,np.int32)             # <<<<<<<<<<<<<<
@@ -3433,7 +3433,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_J_stiff = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":70
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":70
  *     cdef np.ndarray[int,ndim=1,mode='c'] I_stiff        = np.zeros(1,np.int32)
  *     cdef np.ndarray[int,ndim=1,mode='c'] J_stiff        = np.zeros(1,np.int32)
  *     cdef np.ndarray[Real,ndim=1,mode='c'] V_stiff       = np.zeros(1,np.float64)             # <<<<<<<<<<<<<<
@@ -3501,7 +3501,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_19 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_V_stiff = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 70, __pyx_L1_error)
     } else {__pyx_pybuffernd_V_stiff.diminfo[0].strides = __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_V_stiff.diminfo[0].shape = __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.shape[0];
@@ -3511,7 +3511,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_V_stiff = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":72
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":72
  *     cdef np.ndarray[Real,ndim=1,mode='c'] V_stiff       = np.zeros(1,np.float64)
  * 
  *     cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)             # <<<<<<<<<<<<<<
@@ -3579,7 +3579,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_20 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_t_20, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_t_20, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_sorter = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_sorter.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 72, __pyx_L1_error)
     } else {__pyx_pybuffernd_sorter.diminfo[0].strides = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sorter.diminfo[0].shape = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_sorter.diminfo[1].strides = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_sorter.diminfo[1].shape = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.shape[1];
@@ -3589,7 +3589,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_sorter = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":73
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":73
  * 
  *     cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements          = np.zeros((1,1),np.uint64)             # <<<<<<<<<<<<<<
@@ -3657,7 +3657,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_21 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_21, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_21, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_sorted_elements = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 73, __pyx_L1_error)
     } else {__pyx_pybuffernd_sorted_elements.diminfo[0].strides = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sorted_elements.diminfo[0].shape = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_sorted_elements.diminfo[1].strides = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_sorted_elements.diminfo[1].shape = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.shape[1];
@@ -3667,7 +3667,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_sorted_elements = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":74
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":74
  *     cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements          = np.zeros((1,1),np.uint64)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)             # <<<<<<<<<<<<<<
@@ -3745,7 +3745,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_data_global_indices = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":75
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":75
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements          = np.zeros((1,1),np.uint64)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices             = np.zeros(1,np.int32)             # <<<<<<<<<<<<<<
@@ -3823,7 +3823,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_data_local_indices = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":76
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":76
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices             = np.zeros(1,np.int32)
  *     cdef int squeeze_sparsity_pattern                                   = fem_solver.squeeze_sparsity_pattern             # <<<<<<<<<<<<<<
@@ -3836,7 +3836,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_squeeze_sparsity_pattern = __pyx_t_15;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":77
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":77
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices             = np.zeros(1,np.int32)
  *     cdef int squeeze_sparsity_pattern                                   = fem_solver.squeeze_sparsity_pattern
  *     cdef int recompute_sparsity_pattern                                 = fem_solver.recompute_sparsity_pattern             # <<<<<<<<<<<<<<
@@ -3849,7 +3849,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_recompute_sparsity_pattern = __pyx_t_15;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":79
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":79
  *     cdef int recompute_sparsity_pattern                                 = fem_solver.recompute_sparsity_pattern
  * 
  *     if fem_solver.recompute_sparsity_pattern:             # <<<<<<<<<<<<<<
@@ -3862,7 +3862,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_24) {
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":80
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":80
  * 
  *     if fem_solver.recompute_sparsity_pattern:
  *         I_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)             # <<<<<<<<<<<<<<
@@ -3874,7 +3874,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_14 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_3); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
@@ -3956,7 +3956,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF_SET(__pyx_v_I_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":81
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":81
  *     if fem_solver.recompute_sparsity_pattern:
  *         I_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
  *         J_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)             # <<<<<<<<<<<<<<
@@ -3968,7 +3968,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __pyx_t_25 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_zeros); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_25);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_16 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_16 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_16); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
@@ -4050,7 +4050,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF_SET(__pyx_v_J_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":82
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":82
  *         I_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
  *         J_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
  *         V_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.float64)             # <<<<<<<<<<<<<<
@@ -4062,7 +4062,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
-    __pyx_t_25 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_25 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_25);
     __pyx_t_14 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_25); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
@@ -4126,10 +4126,10 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer);
-      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
+      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
       if (unlikely(__pyx_t_15 < 0)) {
         PyErr_Fetch(&__pyx_t_26, &__pyx_t_27, &__pyx_t_28);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_v_V_stiff, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_v_V_stiff, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
           Py_XDECREF(__pyx_t_26); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_28);
           __Pyx_RaiseBufferFallbackError();
         } else {
@@ -4144,7 +4144,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF_SET(__pyx_v_V_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":79
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":79
  *     cdef int recompute_sparsity_pattern                                 = fem_solver.recompute_sparsity_pattern
  * 
  *     if fem_solver.recompute_sparsity_pattern:             # <<<<<<<<<<<<<<
@@ -4154,7 +4154,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     goto __pyx_L3;
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":84
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":84
  *         V_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.float64)
  *     else:
  *         I_stiff = fem_solver.indptr             # <<<<<<<<<<<<<<
@@ -4187,7 +4187,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF_SET(__pyx_v_I_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":85
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":85
  *     else:
  *         I_stiff = fem_solver.indptr
  *         J_stiff = fem_solver.indices             # <<<<<<<<<<<<<<
@@ -4219,7 +4219,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF_SET(__pyx_v_J_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":86
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":86
  *         I_stiff = fem_solver.indptr
  *         J_stiff = fem_solver.indices
  *         V_stiff = np.zeros(fem_solver.indices.shape[0],dtype=np.float64)             # <<<<<<<<<<<<<<
@@ -4263,10 +4263,10 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer);
-      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
+      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
       if (unlikely(__pyx_t_15 < 0)) {
         PyErr_Fetch(&__pyx_t_28, &__pyx_t_27, &__pyx_t_26);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_v_V_stiff, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_v_V_stiff, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
           Py_XDECREF(__pyx_t_28); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_26);
           __Pyx_RaiseBufferFallbackError();
         } else {
@@ -4281,7 +4281,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF_SET(__pyx_v_V_stiff, ((PyArrayObject *)__pyx_t_14));
     __pyx_t_14 = 0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":87
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":87
  *         J_stiff = fem_solver.indices
  *         V_stiff = np.zeros(fem_solver.indices.shape[0],dtype=np.float64)
  *         data_global_indices = fem_solver.data_global_indices             # <<<<<<<<<<<<<<
@@ -4313,7 +4313,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF_SET(__pyx_v_data_global_indices, ((PyArrayObject *)__pyx_t_14));
     __pyx_t_14 = 0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":88
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":88
  *         V_stiff = np.zeros(fem_solver.indices.shape[0],dtype=np.float64)
  *         data_global_indices = fem_solver.data_global_indices
  *         data_local_indices = fem_solver.data_local_indices             # <<<<<<<<<<<<<<
@@ -4345,7 +4345,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF_SET(__pyx_v_data_local_indices, ((PyArrayObject *)__pyx_t_14));
     __pyx_t_14 = 0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":89
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":89
  *         data_global_indices = fem_solver.data_global_indices
  *         data_local_indices = fem_solver.data_local_indices
  *         if fem_solver.squeeze_sparsity_pattern:             # <<<<<<<<<<<<<<
@@ -4358,7 +4358,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     if (__pyx_t_24) {
 
-      /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":90
+      /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":90
  *         data_local_indices = fem_solver.data_local_indices
  *         if fem_solver.squeeze_sparsity_pattern:
  *             sorter = mesh.element_sorter             # <<<<<<<<<<<<<<
@@ -4372,10 +4372,10 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
       {
         __Pyx_BufFmt_StackElem __pyx_stack[1];
         __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer);
-        __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_t_20, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
+        __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_t_20, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
         if (unlikely(__pyx_t_15 < 0)) {
           PyErr_Fetch(&__pyx_t_26, &__pyx_t_27, &__pyx_t_28);
-          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_v_sorter, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_v_sorter, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
             Py_XDECREF(__pyx_t_26); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_28);
             __Pyx_RaiseBufferFallbackError();
           } else {
@@ -4390,7 +4390,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
       __Pyx_DECREF_SET(__pyx_v_sorter, ((PyArrayObject *)__pyx_t_14));
       __pyx_t_14 = 0;
 
-      /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":91
+      /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":91
  *         if fem_solver.squeeze_sparsity_pattern:
  *             sorter = mesh.element_sorter
  *             sorted_elements = mesh.sorted_elements             # <<<<<<<<<<<<<<
@@ -4404,10 +4404,10 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
       {
         __Pyx_BufFmt_StackElem __pyx_stack[1];
         __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer);
-        __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_21, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
+        __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_21, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
         if (unlikely(__pyx_t_15 < 0)) {
           PyErr_Fetch(&__pyx_t_28, &__pyx_t_27, &__pyx_t_26);
-          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_v_sorted_elements, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_v_sorted_elements, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
             Py_XDECREF(__pyx_t_28); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_26);
             __Pyx_RaiseBufferFallbackError();
           } else {
@@ -4422,7 +4422,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
       __Pyx_DECREF_SET(__pyx_v_sorted_elements, ((PyArrayObject *)__pyx_t_14));
       __pyx_t_14 = 0;
 
-      /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":89
+      /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":89
  *         data_global_indices = fem_solver.data_global_indices
  *         data_local_indices = fem_solver.data_local_indices
  *         if fem_solver.squeeze_sparsity_pattern:             # <<<<<<<<<<<<<<
@@ -4433,7 +4433,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   }
   __pyx_L3:;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":93
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":93
  *             sorted_elements = mesh.sorted_elements
  * 
  *     cdef np.ndarray[Real,ndim=1,mode='c'] T = np.zeros(mesh.points.shape[0]*nvar,np.float64)             # <<<<<<<<<<<<<<
@@ -4517,7 +4517,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_29 = ((PyArrayObject *)__pyx_t_14);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_T.rcbuffer->pybuffer, (PyObject*)__pyx_t_29, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_T.rcbuffer->pybuffer, (PyObject*)__pyx_t_29, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_T = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_T.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 93, __pyx_L1_error)
     } else {__pyx_pybuffernd_T.diminfo[0].strides = __pyx_pybuffernd_T.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_T.diminfo[0].shape = __pyx_pybuffernd_T.rcbuffer->pybuffer.shape[0];
@@ -4527,7 +4527,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_T = ((PyArrayObject *)__pyx_t_14);
   __pyx_t_14 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":95
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":95
  *     cdef np.ndarray[Real,ndim=1,mode='c'] T = np.zeros(mesh.points.shape[0]*nvar,np.float64)
  * 
  *     cdef np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations = np.zeros((1,1),np.float64)             # <<<<<<<<<<<<<<
@@ -4595,7 +4595,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_t_30 = ((PyArrayObject *)__pyx_t_14);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_t_30, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_t_30, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_anisotropic_orientations = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 95, __pyx_L1_error)
     } else {__pyx_pybuffernd_anisotropic_orientations.diminfo[0].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[0].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[1];
@@ -4605,7 +4605,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_anisotropic_orientations = ((PyArrayObject *)__pyx_t_14);
   __pyx_t_14 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":96
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":96
  * 
  *     cdef np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations = np.zeros((1,1),np.float64)
  *     if material.is_transversely_isotropic:             # <<<<<<<<<<<<<<
@@ -4618,7 +4618,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   if (__pyx_t_24) {
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":97
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":97
  *     cdef np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations = np.zeros((1,1),np.float64)
  *     if material.is_transversely_isotropic:
  *         anisotropic_orientations = material.anisotropic_orientations             # <<<<<<<<<<<<<<
@@ -4632,10 +4632,10 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer);
-      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_t_30, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
+      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_t_30, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
       if (unlikely(__pyx_t_15 < 0)) {
         PyErr_Fetch(&__pyx_t_26, &__pyx_t_27, &__pyx_t_28);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_v_anisotropic_orientations, &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_v_anisotropic_orientations, &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
           Py_XDECREF(__pyx_t_26); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_28);
           __Pyx_RaiseBufferFallbackError();
         } else {
@@ -4650,7 +4650,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_DECREF_SET(__pyx_v_anisotropic_orientations, ((PyArrayObject *)__pyx_t_14));
     __pyx_t_14 = 0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":96
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":96
  * 
  *     cdef np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations = np.zeros((1,1),np.float64)
  *     if material.is_transversely_isotropic:             # <<<<<<<<<<<<<<
@@ -4659,7 +4659,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
  */
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":99
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":99
  *         anisotropic_orientations = material.anisotropic_orientations
  * 
  *     cdef Real mu=0.,kappa=0.             # <<<<<<<<<<<<<<
@@ -4669,7 +4669,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_mu = 0.;
   __pyx_v_kappa = 0.;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":101
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":101
  *     cdef Real mu=0.,kappa=0.
  * 
  *     mu, kappa = material.mu, material.kappa             # <<<<<<<<<<<<<<
@@ -4687,7 +4687,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __pyx_v_mu = __pyx_t_31;
   __pyx_v_kappa = __pyx_t_32;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":103
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":103
  *     mu, kappa = material.mu, material.kappa
  * 
  *     cdef Real rho = material.rho             # <<<<<<<<<<<<<<
@@ -4700,7 +4700,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __pyx_v_rho = __pyx_t_32;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":105
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":105
  *     cdef Real rho = material.rho
  * 
  *     _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_(     &points[0,0],             # <<<<<<<<<<<<<<
@@ -4723,7 +4723,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 105, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":106
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":106
  * 
  *     _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_(     &points[0,0],
  *                             &elements[0,0],             # <<<<<<<<<<<<<<
@@ -4746,7 +4746,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 106, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":107
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":107
  *     _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_(     &points[0,0],
  *                             &elements[0,0],
  *                             &Eulerx[0,0],             # <<<<<<<<<<<<<<
@@ -4769,7 +4769,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 107, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":108
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":108
  *                             &elements[0,0],
  *                             &Eulerx[0,0],
  *                             &Bases[0,0],             # <<<<<<<<<<<<<<
@@ -4792,7 +4792,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 108, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":109
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":109
  *                             &Eulerx[0,0],
  *                             &Bases[0,0],
  *                             &Jm[0,0,0],             # <<<<<<<<<<<<<<
@@ -4820,7 +4820,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 109, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":110
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":110
  *                             &Bases[0,0],
  *                             &Jm[0,0,0],
  *                             &AllGauss[0],             # <<<<<<<<<<<<<<
@@ -4838,7 +4838,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 110, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":119
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":119
  *                             H_VoigtSize,
  *                             requires_geometry_update,
  *                             &local_rows_stiffness[0],             # <<<<<<<<<<<<<<
@@ -4856,7 +4856,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 119, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":120
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":120
  *                             requires_geometry_update,
  *                             &local_rows_stiffness[0],
  *                             &local_cols_stiffness[0],             # <<<<<<<<<<<<<<
@@ -4874,7 +4874,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 120, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":121
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":121
  *                             &local_rows_stiffness[0],
  *                             &local_cols_stiffness[0],
  *                             &I_stiff[0],             # <<<<<<<<<<<<<<
@@ -4892,7 +4892,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 121, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":122
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":122
  *                             &local_cols_stiffness[0],
  *                             &I_stiff[0],
  *                             &J_stiff[0],             # <<<<<<<<<<<<<<
@@ -4910,7 +4910,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 122, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":123
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":123
  *                             &I_stiff[0],
  *                             &J_stiff[0],
  *                             &V_stiff[0],             # <<<<<<<<<<<<<<
@@ -4928,7 +4928,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 123, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":124
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":124
  *                             &J_stiff[0],
  *                             &V_stiff[0],
  *                             &T[0],             # <<<<<<<<<<<<<<
@@ -4946,7 +4946,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 124, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":127
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":127
  *                             recompute_sparsity_pattern,
  *                             squeeze_sparsity_pattern,
  *                             &data_local_indices[0],             # <<<<<<<<<<<<<<
@@ -4964,7 +4964,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 127, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":128
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":128
  *                             squeeze_sparsity_pattern,
  *                             &data_local_indices[0],
  *                             &data_global_indices[0],             # <<<<<<<<<<<<<<
@@ -4982,7 +4982,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 128, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":129
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":129
  *                             &data_local_indices[0],
  *                             &data_global_indices[0],
  *                             &sorted_elements[0,0],             # <<<<<<<<<<<<<<
@@ -5005,7 +5005,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 129, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":130
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":130
  *                             &data_global_indices[0],
  *                             &sorted_elements[0,0],
  *                             &sorter[0,0],             # <<<<<<<<<<<<<<
@@ -5028,16 +5028,16 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __PYX_ERR(0, 130, __pyx_L1_error)
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":105
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":105
  *     cdef Real rho = material.rho
  * 
  *     _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_(     &points[0,0],             # <<<<<<<<<<<<<<
  *                             &elements[0,0],
  *                             &Eulerx[0,0],
  */
-  _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_((&(*__Pyx_BufPtrCContig2d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_points.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_points.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_points.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger *, __pyx_pybuffernd_elements.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_elements.diminfo[0].strides, __pyx_t_36, __pyx_pybuffernd_elements.diminfo[1].strides))), (&(*((__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real *) ( /* dim=1 */ ((char *) (((__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real *) ( /* dim=0 */ (__pyx_v_Eulerx.data + __pyx_t_37 * __pyx_v_Eulerx.strides[0]) )) + __pyx_t_38)) )))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_Bases.rcbuffer->pybuffer.buf, __pyx_t_39, __pyx_pybuffernd_Bases.diminfo[0].strides, __pyx_t_40, __pyx_pybuffernd_Bases.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig3d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_Jm.rcbuffer->pybuffer.buf, __pyx_t_41, __pyx_pybuffernd_Jm.diminfo[0].strides, __pyx_t_42, __pyx_pybuffernd_Jm.diminfo[1].strides, __pyx_t_43, __pyx_pybuffernd_Jm.diminfo[2].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.buf, __pyx_t_44, __pyx_pybuffernd_AllGauss.diminfo[0].strides))), __pyx_v_ndim, __pyx_v_nvar, __pyx_v_ngauss, __pyx_v_nelem, __pyx_v_nodeperelem, __pyx_v_nnode, __pyx_v_H_VoigtSize, __pyx_v_requires_geometry_update, (&(*__Pyx_BufPtrCContig1d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer *, __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.buf, __pyx_t_45, __pyx_pybuffernd_local_rows_stiffness.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer *, __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.buf, __pyx_t_46, __pyx_pybuffernd_local_cols_stiffness.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.buf, __pyx_t_47, __pyx_pybuffernd_I_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.buf, __pyx_t_48, __pyx_pybuffernd_J_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.buf, __pyx_t_49, __pyx_pybuffernd_V_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_T.rcbuffer->pybuffer.buf, __pyx_t_50, __pyx_pybuffernd_T.diminfo[0].strides))), __pyx_v_recompute_sparsity_pattern, __pyx_v_squeeze_sparsity_pattern, (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer.buf, __pyx_t_51, __pyx_pybuffernd_data_local_indices.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer.buf, __pyx_t_52, __pyx_pybuffernd_data_global_indices.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__UInteger *, __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.buf, __pyx_t_53, __pyx_pybuffernd_sorted_elements.diminfo[0].strides, __pyx_t_54, __pyx_pybuffernd_sorted_elements.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer *, __pyx_pybuffernd_sorter.rcbuffer->pybuffer.buf, __pyx_t_55, __pyx_pybuffernd_sorter.diminfo[0].strides, __pyx_t_56, __pyx_pybuffernd_sorter.diminfo[1].strides))), __pyx_v_rho, __pyx_v_mu, __pyx_v_kappa);
+  _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_((&(*__Pyx_BufPtrCContig2d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_points.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_points.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_points.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger *, __pyx_pybuffernd_elements.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_elements.diminfo[0].strides, __pyx_t_36, __pyx_pybuffernd_elements.diminfo[1].strides))), (&(*((__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real *) ( /* dim=1 */ ((char *) (((__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real *) ( /* dim=0 */ (__pyx_v_Eulerx.data + __pyx_t_37 * __pyx_v_Eulerx.strides[0]) )) + __pyx_t_38)) )))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_Bases.rcbuffer->pybuffer.buf, __pyx_t_39, __pyx_pybuffernd_Bases.diminfo[0].strides, __pyx_t_40, __pyx_pybuffernd_Bases.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig3d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_Jm.rcbuffer->pybuffer.buf, __pyx_t_41, __pyx_pybuffernd_Jm.diminfo[0].strides, __pyx_t_42, __pyx_pybuffernd_Jm.diminfo[1].strides, __pyx_t_43, __pyx_pybuffernd_Jm.diminfo[2].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.buf, __pyx_t_44, __pyx_pybuffernd_AllGauss.diminfo[0].strides))), __pyx_v_ndim, __pyx_v_nvar, __pyx_v_ngauss, __pyx_v_nelem, __pyx_v_nodeperelem, __pyx_v_nnode, __pyx_v_H_VoigtSize, __pyx_v_requires_geometry_update, (&(*__Pyx_BufPtrCContig1d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer *, __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.buf, __pyx_t_45, __pyx_pybuffernd_local_rows_stiffness.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer *, __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.buf, __pyx_t_46, __pyx_pybuffernd_local_cols_stiffness.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.buf, __pyx_t_47, __pyx_pybuffernd_I_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.buf, __pyx_t_48, __pyx_pybuffernd_J_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.buf, __pyx_t_49, __pyx_pybuffernd_V_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real *, __pyx_pybuffernd_T.rcbuffer->pybuffer.buf, __pyx_t_50, __pyx_pybuffernd_T.diminfo[0].strides))), __pyx_v_recompute_sparsity_pattern, __pyx_v_squeeze_sparsity_pattern, (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer.buf, __pyx_t_51, __pyx_pybuffernd_data_local_indices.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer.buf, __pyx_t_52, __pyx_pybuffernd_data_global_indices.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__UInteger *, __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.buf, __pyx_t_53, __pyx_pybuffernd_sorted_elements.diminfo[0].strides, __pyx_t_54, __pyx_pybuffernd_sorted_elements.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer *, __pyx_pybuffernd_sorter.rcbuffer->pybuffer.buf, __pyx_t_55, __pyx_pybuffernd_sorter.diminfo[0].strides, __pyx_t_56, __pyx_pybuffernd_sorter.diminfo[1].strides))), __pyx_v_rho, __pyx_v_mu, __pyx_v_kappa);
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":137
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":137
  * 
  * 
  *     if fem_solver.recompute_sparsity_pattern:             # <<<<<<<<<<<<<<
@@ -5050,7 +5050,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   if (__pyx_t_24) {
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":138
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":138
  * 
  *     if fem_solver.recompute_sparsity_pattern:
  *         return I_stiff, J_stiff, V_stiff, T             # <<<<<<<<<<<<<<
@@ -5076,7 +5076,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __pyx_t_14 = 0;
     goto __pyx_L0;
 
-    /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":137
+    /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":137
  * 
  * 
  *     if fem_solver.recompute_sparsity_pattern:             # <<<<<<<<<<<<<<
@@ -5085,7 +5085,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
  */
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":140
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":140
  *         return I_stiff, J_stiff, V_stiff, T
  *     else:
  *         return V_stiff, T             # <<<<<<<<<<<<<<
@@ -5105,10 +5105,10 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     goto __pyx_L0;
   }
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":43
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":43
  * 
  * 
- * def _LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
+ * def _LLADF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  */
@@ -5144,7 +5144,7 @@ static PyObject *__pyx_pf_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_._LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("_LLADF__NearlyIncompressibleNeoHookean_._LLADF__NearlyIncompressibleNeoHookean_", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -20505,7 +20505,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.array", /*tp_name*/
+  "_LLADF__NearlyIncompressibleNeoHookean_.array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -20613,7 +20613,7 @@ static PyMethodDef __pyx_methods_Enum[] = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.Enum", /*tp_name*/
+  "_LLADF__NearlyIncompressibleNeoHookean_.Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -20863,7 +20863,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.memoryview", /*tp_name*/
+  "_LLADF__NearlyIncompressibleNeoHookean_.memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -20990,7 +20990,7 @@ static struct PyGetSetDef __pyx_getsets__memoryviewslice[] = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_._memoryviewslice", /*tp_name*/
+  "_LLADF__NearlyIncompressibleNeoHookean_._memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -21061,17 +21061,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec__LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(PyObject* module); /*proto*/
+static int __pyx_pymod_exec__LLADF__NearlyIncompressibleNeoHookean_(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec__LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_},
+  {Py_mod_exec, (void*)__pyx_pymod_exec__LLADF__NearlyIncompressibleNeoHookean_},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_",
+    "_LLADF__NearlyIncompressibleNeoHookean_",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -21123,8 +21123,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Invalid_shape_in_axis_d_d, __pyx_k_Invalid_shape_in_axis_d_d, sizeof(__pyx_k_Invalid_shape_in_axis_d_d), 0, 0, 1, 0},
   {&__pyx_n_s_J_stiff, __pyx_k_J_stiff, sizeof(__pyx_k_J_stiff), 0, 0, 1, 1},
   {&__pyx_n_s_Jm, __pyx_k_Jm, sizeof(__pyx_k_Jm), 0, 0, 1, 1},
-  {&__pyx_n_s_LowLevelAssemblyDF__NearlyIncom, __pyx_k_LowLevelAssemblyDF__NearlyIncom, sizeof(__pyx_k_LowLevelAssemblyDF__NearlyIncom), 0, 0, 1, 1},
-  {&__pyx_kp_s_LowLevelAssemblyDF__NearlyIncom_2, __pyx_k_LowLevelAssemblyDF__NearlyIncom_2, sizeof(__pyx_k_LowLevelAssemblyDF__NearlyIncom_2), 0, 0, 1, 0},
+  {&__pyx_n_s_LLADF__NearlyIncompressibleNeoH, __pyx_k_LLADF__NearlyIncompressibleNeoH, sizeof(__pyx_k_LLADF__NearlyIncompressibleNeoH), 0, 0, 1, 1},
+  {&__pyx_kp_s_LLADF__NearlyIncompressibleNeoH_2, __pyx_k_LLADF__NearlyIncompressibleNeoH_2, sizeof(__pyx_k_LLADF__NearlyIncompressibleNeoH_2), 0, 0, 1, 0},
   {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_kp_s_MemoryView_of_r_at_0x_x, __pyx_k_MemoryView_of_r_at_0x_x, sizeof(__pyx_k_MemoryView_of_r_at_0x_x), 0, 0, 1, 0},
   {&__pyx_kp_s_MemoryView_of_r_object, __pyx_k_MemoryView_of_r_object, sizeof(__pyx_k_MemoryView_of_r_object), 0, 0, 1, 0},
@@ -21272,7 +21272,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":72
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":72
  *     cdef np.ndarray[Real,ndim=1,mode='c'] V_stiff       = np.zeros(1,np.float64)
  * 
  *     cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)             # <<<<<<<<<<<<<<
@@ -21552,17 +21552,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":43
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":43
  * 
  * 
- * def _LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
+ * def _LLADF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  */
   __pyx_tuple__27 = PyTuple_Pack(37, __pyx_n_s_fem_solver, __pyx_n_s_function_space, __pyx_n_s_formulation, __pyx_n_s_mesh, __pyx_n_s_material, __pyx_n_s_Eulerx, __pyx_n_s_ndim, __pyx_n_s_nvar, __pyx_n_s_ngauss, __pyx_n_s_nelem, __pyx_n_s_nodeperelem, __pyx_n_s_nnode, __pyx_n_s_H_VoigtSize, __pyx_n_s_elements, __pyx_n_s_points, __pyx_n_s_Bases, __pyx_n_s_Jm, __pyx_n_s_AllGauss, __pyx_n_s_requires_geometry_update, __pyx_n_s_local_rows_stiffness, __pyx_n_s_local_cols_stiffness, __pyx_n_s_local_rows_mass, __pyx_n_s_local_cols_mass, __pyx_n_s_I_stiff, __pyx_n_s_J_stiff, __pyx_n_s_V_stiff, __pyx_n_s_sorter, __pyx_n_s_sorted_elements, __pyx_n_s_data_global_indices, __pyx_n_s_data_local_indices, __pyx_n_s_squeeze_sparsity_pattern, __pyx_n_s_recompute_sparsity_pattern, __pyx_n_s_T, __pyx_n_s_anisotropic_orientations, __pyx_n_s_mu, __pyx_n_s_kappa, __pyx_n_s_rho); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(6, 0, 37, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_LowLevelAssemblyDF__NearlyIncom_2, __pyx_n_s_LowLevelAssemblyDF__NearlyIncom, 43, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(6, 0, 37, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_LLADF__NearlyIncompressibleNeoH_2, __pyx_n_s_LLADF__NearlyIncompressibleNeoH, 43, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 43, __pyx_L1_error)
 
   /* "View.MemoryView":286
  *         return self.name
@@ -21807,11 +21807,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC init_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC init_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(void)
+__Pyx_PyMODINIT_FUNC init_LLADF__NearlyIncompressibleNeoHookean_(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC init_LLADF__NearlyIncompressibleNeoHookean_(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit__LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit__LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(void)
+__Pyx_PyMODINIT_FUNC PyInit__LLADF__NearlyIncompressibleNeoHookean_(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit__LLADF__NearlyIncompressibleNeoHookean_(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -21878,7 +21878,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec__LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec__LLADF__NearlyIncompressibleNeoHookean_(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -21888,7 +21888,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec__LowLevelAssemblyDF__NearlyIncompr
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module '_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module '_LLADF__NearlyIncompressibleNeoHookean_' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -21903,7 +21903,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit__LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit__LLADF__NearlyIncompressibleNeoHookean_(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -21942,7 +21942,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("_LLADF__NearlyIncompressibleNeoHookean_", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -21961,14 +21961,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main__LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_) {
+  if (__pyx_module_is_main__LLADF__NearlyIncompressibleNeoHookean_) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name_2, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_")) {
-      if (unlikely(PyDict_SetItemString(modules, "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "_LLADF__NearlyIncompressibleNeoHookean_")) {
+      if (unlikely(PyDict_SetItemString(modules, "_LLADF__NearlyIncompressibleNeoHookean_", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -21989,7 +21989,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":1
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * from libc.stdint cimport int64_t, uint64_t
@@ -21999,19 +21999,19 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":43
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":43
  * 
  * 
- * def _LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
+ * def _LLADF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__1_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_, NULL, __pyx_n_s_LowLevelAssemblyDF__NearlyIncom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_39_LLADF__NearlyIncompressibleNeoHookean__1_LLADF__NearlyIncompressibleNeoHookean_, NULL, __pyx_n_s_LLADF__NearlyIncompressibleNeoH); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LowLevelAssemblyDF__NearlyIncom, __pyx_t_1) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LLADF__NearlyIncompressibleNeoH, __pyx_t_1) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.pyx":1
+  /* "_LLADF__NearlyIncompressibleNeoHookean_.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * from libc.stdint cimport int64_t, uint64_t
@@ -22181,11 +22181,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init _LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init _LLADF__NearlyIncompressibleNeoHookean_", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init _LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_");
+    PyErr_SetString(PyExc_ImportError, "init _LLADF__NearlyIncompressibleNeoHookean_");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -25292,7 +25292,7 @@ no_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
     int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_FOLLOW), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
@@ -25303,7 +25303,7 @@ no_fail:
     }
     retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
                                                  (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 2,
-                                                 &__Pyx_TypeInfo_nn___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Real, stack,
+                                                 &__Pyx_TypeInfo_nn___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Real, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
         goto __pyx_fail;
@@ -25368,8 +25368,8 @@ __pyx_fail:
 }
 
 /* None */
-  static CYTHON_INLINE __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer __Pyx_pow___pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer(__pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer b, __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer e) {
-    __pyx_t_52_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean__Integer t = b;
+  static CYTHON_INLINE __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer __Pyx_pow___pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer(__pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer b, __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer e) {
+    __pyx_t_39_LLADF__NearlyIncompressibleNeoHookean__Integer t = b;
     switch (e) {
         case 3:
             t *= b;

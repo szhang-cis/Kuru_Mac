@@ -1,5 +1,5 @@
-#ifndef _LOWLEVELASSEMBLYDF__NEARLYINCOMPRESSIBLENEOHOOKEAN_H
-#define _LOWLEVELASSEMBLYDF__NEARLYINCOMPRESSIBLENEOHOOKEAN_H
+#ifndef _LLADF__NEARLYINCOMPRESSIBLENEOHOOKEAN_H
+#define _LLADF__NEARLYINCOMPRESSIBLENEOHOOKEAN_H
 
 #include "assembly_helper.h"
 #include "_ConstitutiveStiffnessDF_.h"
@@ -166,4 +166,4 @@ void _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_(const Real *points,
 }
 
 
-#endif // _LOWLEVELASSEMBLYDF__H
+#endif // _LLADF__H

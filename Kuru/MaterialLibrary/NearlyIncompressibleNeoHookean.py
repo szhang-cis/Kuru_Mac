@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import einsum, asarray, eye
 from .MaterialBase import Material
 from Kuru.Tensor import trace, Voigt
@@ -36,8 +37,12 @@ class NearlyIncompressibleNeoHookean(Material):
         # LOW LEVEL DISPATCHER
         self.has_low_level_dispatcher = True
 
+    def KineticMeasures(self,F, elem=0):
+        from Kuru.MaterialLibrary.LLDispatch._NearlyIncompressibleNeoHookean_ import KineticMeasures
+        return KineticMeasures(self,np.ascontiguousarray(F))
 
-    def Hessian(self, StrainTensors, growth_remodeling=None, elem=0, gcounter=0):
+
+    def Hessian(self, StrainTensors, elem=0, gcounter=0):
         """Hessian split into isochoroic and volumetric parts"""
 
         I = StrainTensors['I']
@@ -59,7 +64,7 @@ class NearlyIncompressibleNeoHookean(Material):
         return H_Voigt
 
 
-    def CauchyStress(self,StrainTensors,growth_remodeling=None,elem=0,gcounter=0):
+    def CauchyStress(self,StrainTensors,elem=0,gcounter=0):
 
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]

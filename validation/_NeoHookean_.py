@@ -3,9 +3,8 @@ import sys, os
 # Mathematics libraries
 import numpy as np
 from numpy import einsum
-# Build a path for python to Florence
+# Build a path for python to Kuru
 sys.path.append(os.path.expanduser("~/kuru"))
-#import Florence
 from Kuru import *
 
 ProblemPath = os.path.dirname(os.getcwd())
@@ -104,12 +103,12 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        optimise=True,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=1)
+                       number_of_load_increments=3)
 
 #=================  SOLUTION  =======================
 # Call the solver
 solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
     material=material, boundary_condition=boundary_condition)
 # Write to paraview
-solution.WriteVTK('Neo_Hookean',quantity=0)
+solution.WriteVTK('_NeoHookean_',quantity=0)
 #print(solution.sol[:,:,-1])

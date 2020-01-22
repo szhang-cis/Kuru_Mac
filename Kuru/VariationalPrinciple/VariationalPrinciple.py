@@ -1,7 +1,7 @@
 import numpy as np
-from Kuru import QuadratureRule, FunctionSpace #, Mesh
-#from Florence.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
-#from Florence.VariationalPrinciple._GeometricStiffness_ import GeometricStiffnessIntegrand as GetGeomStiffness
+from Kuru import QuadratureRule, FunctionSpace , Mesh
+from Kuru.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
+from Kuru.VariationalPrinciple._GeometricStiffness_ import GeometricStiffnessIntegrand as GetGeomStiffness
 from .DisplacementApproachIndices import FillGeometricB
 #from ._MassIntegrand_ import __MassIntegrand__, __ConstantMassIntegrand__
 
@@ -173,4 +173,8 @@ class VariationalPrinciple(object):
 
         return BDB
 
+
+    def __GeometricStiffnessIntegrand__(self, SpatialGradient, CauchyStressTensor, detJ):
+        """Applies to displacement based formulation"""
+        return GetGeomStiffness(np.ascontiguousarray(SpatialGradient),CauchyStressTensor, detJ, self.nvar)
 

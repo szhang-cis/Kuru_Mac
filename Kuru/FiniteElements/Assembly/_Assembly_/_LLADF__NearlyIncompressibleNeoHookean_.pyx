@@ -7,7 +7,7 @@ ctypedef uint64_t UInteger
 ctypedef double Real
 
 
-cdef extern from "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.h" nogil:
+cdef extern from "_LLADF__NearlyIncompressibleNeoHookean_.h" nogil:
     void _GlobalAssemblyDF__NearlyIncompressibleNeoHookean_(const Real *points,
                             const UInteger* elements,
                             const Real* Eulerx,
@@ -40,7 +40,7 @@ cdef extern from "_LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_.h" nogil:
                             )
 
 
-def _LowLevelAssemblyDF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):
+def _LLADF__NearlyIncompressibleNeoHookean_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):
 
     # GET VARIABLES FOR DISPATCHING TO C
     cdef Integer ndim                       = formulation.ndim

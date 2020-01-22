@@ -4,9 +4,8 @@ import sys, os
 import numpy as np
 from numpy import einsum
 # Build a path for python to Kuru
-#sys.path.append(os.path.join(os.path.expanduser("~/kuru")))
 sys.path.append(os.path.expanduser("~/kuru"))
-#import Florence
+#import Kuru
 from Kuru import *
 
 def Directions(mesh):
@@ -15,28 +14,26 @@ def Directions(mesh):
         the Material in Florence and for the auxiliar routines in this script.
     """
     ndim = mesh.InferSpatialDimension()
-    direction = np.zeros((6,mesh.nelem,ndim),dtype=np.float64)
+    direction = np.zeros((mesh.nelem,6,ndim),dtype=np.float64)
     # Geometric definitions per element
-    center = np.zeros((mesh.nelem,ndim),dtype=np.float64)
-    tangential = np.zeros((mesh.nelem,ndim),dtype=np.float64)
     divider = mesh.elements.shape[1]
     directrix = [0.,1.,0.]
     # Loop throught the element in the mesh
     for elem in range(mesh.nelem):
         # Geometric definitions per element
-        center[elem,:] = np.sum(mesh.points[mesh.elements[elem,:],:],axis=0)/divider
-        tangential[elem,:] = np.cross(directrix,center[elem,:])
-        tangential[elem,:] = tangential[elem,:]/np.linalg.norm(tangential[elem,:])
-        direction[0][elem,:] = np.cross(tangential[elem,:],directrix)
-        direction[0][elem,:] = direction[0][elem,:]/np.linalg.norm(direction[0][elem,:])
+        center = np.sum(mesh.points[mesh.elements[elem,:],:],axis=0)/divider
+        tangential = np.cross(directrix,center)
+        tangential = tangential/np.linalg.norm(tangential)
+        normal = np.cross(tangential,directrix)
+        direction[elem][0][:] = normal/np.linalg.norm(normal)
         # Define the anisotropic orientations
-        direction[1][elem,:]=tangential[elem,:]
-        direction[2][elem,:]=tangential[elem,:]
-        direction[3][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) + \
-            np.multiply(tangential[elem,:],np.sin(np.pi/4))
-        direction[4][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) - \
-            np.multiply(tangential[elem,:],np.sin(np.pi/4))
-        direction[5][elem,:]=directrix
+        direction[elem][1][:]=tangential
+        direction[elem][2][:]=tangential
+        direction[elem][3][:]=np.multiply(directrix,np.cos(np.pi/4)) + \
+            np.multiply(tangential,np.sin(np.pi/4))
+        direction[elem][4][:]=np.multiply(directrix,np.cos(np.pi/4)) - \
+            np.multiply(tangential,np.sin(np.pi/4))
+        direction[elem][5][:]=directrix
 
     return direction
 #============================================================
@@ -153,11 +150,11 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        optimise=False,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=3)
+                       number_of_load_increments=1)
 
 #=================  SOLUTION  =======================
 # Call FEM solver
 solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
     material=material, boundary_condition=boundary_condition)
 solution.WriteVTK('WallMixture',quantity=0)
-print(solution.sol[:,:,-1])
+#print(solution.sol[:,:,-1])

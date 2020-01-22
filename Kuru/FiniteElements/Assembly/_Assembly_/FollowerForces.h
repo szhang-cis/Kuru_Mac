@@ -166,12 +166,6 @@ void GetFacesForces(Real *stiff_face,
 {
    Integer ndof = nodeperface*nvar;
    //Integer local_capacity = ndof*ndof;
-   Integer i;
-   Integer j;
-   Integer k;
-   Integer l;
-   Integer m;
-   Integer n;
    
    Real *alternating = (Real*)malloc(3*3*3*sizeof(Real)); //alternating[i*3*3 + j*3 + k]
    std::fill(alternating,alternating+3*3*3,0.0);          //              j k     k
@@ -196,10 +190,10 @@ void GetFacesForces(Real *stiff_face,
    std::fill(gNy,gNy+ndof*nvar*ngauss,0.0);
    // Loop to fill function spaces for dimensons
    // 0::3=>0,3,6,9 -- 1::3=>1,4,7,10 -- 2::3=>2,5,8,11
-   for (i=0; i<nvar; ++i) {
-      for (j=0; j<nodeperface; ++j) {
+   for (Integer i=0; i<nvar; ++i) {
+      for (Integer j=0; j<nodeperface; ++j) {
          Integer idof = j*nvar + i;
-         for (k=0; k<ngauss; ++k) {
+         for (Integer k=0; k<ngauss; ++k) {
             N[idof*nvar*ngauss+i*ngauss+k] = Bases[j*ngauss+k];
             gNx[idof*nvar*ngauss+i*ngauss+k] = Jm[0*nodeperface*ngauss+j*ngauss+k];
             gNy[idof*nvar*ngauss+i*ngauss+k] = Jm[1*nodeperface*ngauss+j*ngauss+k];
@@ -211,9 +205,9 @@ void GetFacesForces(Real *stiff_face,
    // mapping tangential vectors [\partial\vec{x}/ \partial\zeta (ngauss x ndim)]
    //tangentialx = einsum("ij,ik->jk",gBasesx,EulerElemCoords)
    //tangentialy = einsum("ij,ik->jk",gBasesy,EulerElemCoords)
-   for (j=0; j<ngauss; ++j) {
-      for (k=0; k<nvar; ++k) {
-         for (i=0; i<nodeperface; ++i) {
+   for (Integer j=0; j<ngauss; ++j) {
+      for (Integer k=0; k<nvar; ++k) {
+         for (Integer i=0; i<nodeperface; ++i) {
             tangentialx[j*nvar+k] += Jm[0*nodeperface*ngauss+i*ngauss+j]*EulerElemCoords[i*nvar+k];
             tangentialy[j*nvar+k] += Jm[1*nodeperface*ngauss+i*ngauss+j]*EulerElemCoords[i*nvar+k];
 	 }
@@ -222,10 +216,10 @@ void GetFacesForces(Real *stiff_face,
    std::fill(normal,normal+ngauss*nvar,0.0);
    // mapping normal (ngauss x ndim)
    //normal = einsum("ijk,lj,lk->li",alternating,tangentialx,tangentialy)
-   for (l=0; l<ngauss; ++l) {
-      for (i=0; i<nvar; ++i) {
-         for (j=0; j<nvar; ++j) {
-            for (k=0; k<nvar; ++k) {
+   for (Integer l=0; l<ngauss; ++l) {
+      for (Integer i=0; i<nvar; ++i) {
+         for (Integer j=0; j<nvar; ++j) {
+            for (Integer k=0; k<nvar; ++k) {
                normal[l*nvar+i] += alternating[i*nvar*nvar+j*nvar+k]*tangentialx[l*nvar+j]*tangentialy[l*nvar+k];
 	    }
 	 }
@@ -233,9 +227,9 @@ void GetFacesForces(Real *stiff_face,
    }
    // Gauss quadrature of follower load (traction)
    //force = einsum("ijk,kj,k->ik",N,normal,AllGauss[:,0]).sum(axis=1)
-   for (i=0; i<ndof; ++i) {
-      for (k=0; k<ngauss; ++k) {
-         for (j=0; j<nvar; ++j) {
+   for (Integer i=0; i<ndof; ++i) {
+      for (Integer k=0; k<ngauss; ++k) {
+         for (Integer j=0; j<nvar; ++j) {
             force[i] += pressure*N[i*nvar*ngauss+j*ngauss+k]*normal[k*nvar+j]*AllGauss[k];
 	 }
       }
@@ -245,12 +239,12 @@ void GetFacesForces(Real *stiff_face,
    // Gauss quadrature of follower load (stiffness)
    //crossy=einsum("ijk,ljm,nkm->lnim",alternating,gNy,N)-np.einsum("ijk,ljm,nkm->lnim",alternating,N,gNy)
    //crossx=einsum("ijk,ljm,nkm->lnim",alternating,gNx,N)-np.einsum("ijk,ljm,nkm->lnim",alternating,N,gNx)
-   for (l=0; l<ndof; ++l) {
-      for (n=0; n<ndof; ++n) {
-         for (i=0; i<nvar; ++i) {
-            for (m=0; m<ngauss; ++m) {
-               for (j=0; j<nvar; ++j) {
-                  for (k=0; k<nvar; ++k) {
+   for (Integer l=0; l<ndof; ++l) {
+      for (Integer n=0; n<ndof; ++n) {
+         for (Integer i=0; i<nvar; ++i) {
+            for (Integer m=0; m<ngauss; ++m) {
+               for (Integer j=0; j<nvar; ++j) {
+                  for (Integer k=0; k<nvar; ++k) {
                      crossy[l*ndof*nvar*ngauss+n*nvar*ngauss+i*ngauss+m] += 
 		      alternating[i*nvar*nvar+j*nvar+k]*gNy[l*nvar*ngauss+j*ngauss+m]*
 		      N[n*nvar*ngauss+k*ngauss+m] - alternating[i*nvar*nvar+j*nvar+k]*
@@ -268,10 +262,10 @@ void GetFacesForces(Real *stiff_face,
    //quadrature1 = einsum("ij,klji,i->kli",tangentialx,crossy,AllGauss[:,0]).sum(axis=2)
    //quadrature2 = einsum("ij,klji,i->kli",tangentialy,crossx,AllGauss[:,0]).sum(axis=2)
    //0.5*pressure*(quadrature1-quadrature2)
-   for (k=0; k<ndof; ++k) {
-      for (l=0; l<ndof; ++l) {
-         for (i=0; i<ngauss; ++i) {
-            for (j=0; j<nvar; ++j) {
+   for (Integer k=0; k<ndof; ++k) {
+      for (Integer l=0; l<ndof; ++l) {
+         for (Integer i=0; i<ngauss; ++i) {
+            for (Integer j=0; j<nvar; ++j) {
                stiff_face[k*ndof+l] += 0.5*pressure*(tangentialx[i*nvar+j]*
 		crossy[k*ndof*nvar*ngauss+l*nvar*ngauss+j*ngauss+i] - 
 		tangentialy[i*nvar+j]*crossx[k*ndof*nvar*ngauss+l*nvar*ngauss+j*ngauss+i])*AllGauss[i];

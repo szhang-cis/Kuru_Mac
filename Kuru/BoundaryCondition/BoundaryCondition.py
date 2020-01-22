@@ -283,7 +283,7 @@ class BoundaryCondition(object):
 
 
         if self.neumann_data_applied_at == 'face':
-            from Florence.FiniteElements.Assembly import AssembleForces
+            from Kuru.FiniteElements.Assembly import AssembleForces
             if not isinstance(function_spaces,tuple):
                 raise ValueError("Boundary functional spaces not available for computing Neumman and body forces")
             else:
@@ -297,7 +297,7 @@ class BoundaryCondition(object):
                         has_boundary_spaces = True
                         break
                 if not has_boundary_spaces:
-                    from Florence import QuadratureRule, FunctionSpace
+                    from Kuru import QuadratureRule, FunctionSpace
                     # COMPUTE BOUNDARY FUNCTIONAL SPACES
                     p = mesh.InferPolynomialDegree()
                     bquadrature = QuadratureRule(optimal=3, norder=2*p+1,

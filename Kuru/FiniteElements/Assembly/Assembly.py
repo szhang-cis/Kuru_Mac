@@ -17,7 +17,7 @@ from .RHSAssemblyNative import RHSAssemblyNative
 #import multiprocessing
 #import Florence.ParallelProcessing.parmap as parmap
 
-__all__ = ['Assemble', 'AssemblyFollowerForces']
+__all__ = ['Assemble', 'AssemblyFollowerForces','AssembleForces']
 
 #----------------------------------------------------------------------------------------------------------------#
 #------------------------------- ASSEMBLY ROUTINE FOR INTERNAL TRACTION FORCES ----------------------------------#

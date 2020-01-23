@@ -49,11 +49,11 @@ class ArterialWallMixture0(Material):
             print(J)
             exit('Deformation Gradient is negative at element: '+str(elem)+' gauss: '+str(gcounter))
         # Directional vector for element
-        Axial = self.anisotropic_orientations[5][elem][:,None]
+        Axial = self.anisotropic_orientations[elem][2][:,None]
         Axial = np.dot(I,Axial)[:,0]
-        Tangential = self.anisotropic_orientations[1][elem][:,None]
+        Tangential = self.anisotropic_orientations[elem][1][:,None]
         Tangential = np.dot(I,Tangential)[:,0]
-        Normal = self.anisotropic_orientations[0][elem][:,None]
+        Normal = self.anisotropic_orientations[elem][0][:,None]
         Normal = np.dot(I,Normal)[:,0]
         Rotation = np.eye(3,3,dtype=np.float64)
         for i in range(3):
@@ -64,7 +64,10 @@ class ArterialWallMixture0(Material):
         #ELASTIN
         kappa = self.kappa*self.mixture_density[0]
         mu = self.mu*self.mixture_density[0]
-        Gh_ela = self.deposition_stretch['Elastin']
+        Gh_ela = np.eye(3,3,dtype=np.float64)
+        Gh_ela[0,0] = self.deposition_stretch[0]
+        Gh_ela[1,1] = self.deposition_stretch[4]
+        Gh_ela[2,2] = self.deposition_stretch[8]
         Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
         F_ela = np.dot(F,Gh_ela)
         J_ela = np.linalg.det(F_ela)

@@ -33,15 +33,19 @@ class ArterialWallMixture(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        self.has_low_level_dispatcher = True
-        #self.has_low_level_dispatcher = False
+        #self.has_low_level_dispatcher = True
+        self.has_low_level_dispatcher = False
 
     def KineticMeasures(self,F, elem=0):
-        N = self.anisotropic_orientations[elem,:,:]
-        if N.ndim != 2:
-            raise ValueError("Dimension of fibre orientations must be 2 after choose element")
+        # first three direction are use for rotation matrix (Normal, Tangential and Axial)
+        anisotropic_orientations = self.anisotropic_orientations[elem,:,:]
+        # first six component are the densities(6), the remodeling(5) and growth(1)
+        growth_remodeling = self.growth_remodeling[:]
+        # deposition is an array of 11 spaces, 0 to 8 is for elastin tensor, 9 muscle and 10 collagen 
+        deposition_stretch = self.deposition_stretch[:]
         from Kuru.MaterialLibrary.LLDispatch._ArterialWallMixture_ import KineticMeasures
-        return KineticMeasures(self, np.ascontiguousarray(F), np.ascontiguousarray(N))
+        return KineticMeasures(self,np.ascontiguousarray(F),np.ascontiguousarray(anisotropic_orientations),
+                np.ascontiguousarray(growth_remodeling),np.ascontiguousarray(deposition_stretch))
 
 
     def Hessian(self,StrainTensors,elem=0,gcounter=0):
@@ -49,25 +53,50 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
-        b = StrainTensors['b'][gcounter]
         if J<0.0:
             print(F)
             print(J)
             exit('Deformation Gradient is negative at element: '+str(elem)+' gauss: '+str(gcounter))
+        # Directional vector for element
+        Normal = self.anisotropic_orientations[elem][0][:,None]
+        Normal = np.dot(I,Normal)[:,0]
+        Tangential = self.anisotropic_orientations[elem][1][:,None]
+        Tangential = np.dot(I,Tangential)[:,0]
+        Axial = self.anisotropic_orientations[elem][2][:,None]
+        Axial = np.dot(I,Axial)[:,0]
+        Rotation = np.eye(3,3,dtype=np.float64)
+        for i in range(3):
+            Rotation[0,i] = Normal[i]
+            Rotation[1,i] = Tangential[i]
+            Rotation[2,i] = Axial[i]
+
+        # Growth tensor definition
+        outerNormal = einsum('i,j',Normal,Normal)
+        outerTangential = I - outerNormal
+        F_g = self.growth_remodeling[11]*outerNormal + outerTangential
+        F_g_inv = np.linalg.inv(F_g)
 
         #ELASTIN
-        kappa = self.kappa*self.mixture_density[0]
-        mu = self.mu*self.mixture_density[0]
+        kappa = self.kappa*self.growth_remodeling[0]
+        mu = self.mu*self.growth_remodeling[0]
+        Gh_ela = np.eye(3,3,dtype=np.float64)
+        Gh_ela[0,0] = self.deposition_stretch[0]
+        Gh_ela[1,1] = self.deposition_stretch[4]
+        Gh_ela[2,2] = self.deposition_stretch[8]
+        Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
+        F_ela = np.dot(F,Gh_ela)
+        J_ela = np.linalg.det(F_ela)
+        b_ela = np.dot(F_ela,F_ela.T)
 
         if self.ndim == 3:
-            trb = trace(b)
+            trb = trace(b_ela)
         elif self.ndim == 2:
-            trb = trace(b) + 1.
+            trb = trace(b_ela) + 1.
 
-        H_Voigt = 2.*mu*J**(-5./3.)*(1./9.*trb*einsum('ij,kl',I,I) - \
-                1./3.*einsum('ij,kl',I,b) - 1./3.*einsum('ij,kl',b,I) + \
+        H_Voigt = 2.*mu*(J_ela**(-2./3.)/J)*(1./9.*trb*einsum('ij,kl',I,I) - \
+                1./3.*einsum('ij,kl',I,b_ela) - 1./3.*einsum('ij,kl',b_ela,I) + \
                 1./6.*trb*(einsum('il,jk',I,I) + einsum('ik,jl',I,I)) ) + \
-                kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
+                kappa*(J_ela/J)*((2.*J-1.)*einsum('ij,kl',I,I)-(J-1.)*(einsum('ik,jl',I,I)+einsum('il,jk',I,I)))
 
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:
@@ -76,27 +105,34 @@ class ArterialWallMixture(Material):
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
             if fibre_i is 1:
-                k1 = self.k1m*self.mixture_density[1]
+                FN = np.dot(self.deposition_stretch[9],FN)
+                k1 = self.k1m*self.growth_remodeling[1]
                 k2 = self.k2m
             elif fibre_i is not 1:
-                k1 = self.k1c*self.mixture_density[fibre_i]
+                FN = np.dot(self.deposition_stretch[10],FN)
+                k1 = self.k1c*self.growth_remodeling[fibre_i]
                 k2 = self.k2c
 
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)
+            # Remodeling stretch in fibre direction
+            lambda_r = self.growth_remodeling[fibre_i+5]
+            # ELASTIC deformation
+            innerFN_e = innerFN/lambda_r**2
+            outerFN_e = outerFN/lambda_r**2
             # Anisotropic Stiffness for this key
-            expo = np.exp(k2*(innerFN-1.)**2)
+            expo = np.exp(k2*(innerFN_e-1.)**2)
             if np.isnan(expo) or np.isinf(expo): exit('Fibre model is NaN or Inf: '+str(expo))
-            H_Voigt += 4.*k1/J*(1.+2.*k2*(innerFN-1.)**2)*expo*einsum('ij,kl',outerFN,outerFN)
+            H_Voigt += 4.*k1/J*(1.+2.*k2*(innerFN_e-1.)**2)*expo*einsum('ij,kl',outerFN_e,outerFN_e)
             # Active stress for SMC
             if fibre_i is 1:
                 den0 = 1050.0
-                s_act = 54.0e3*self.mixture_density[1]
+                s_act = 54.0e3*self.growth_remodeling[1]
                 stretch_m = 1.4
                 stretch_a = 1.0
                 stretch_0 = 0.8
-                H_Voigt += -2.*(s_act/(den0*innerFN**2))*\
+                H_Voigt += -2.*(s_act/(J*den0*innerFN**2))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*\
                         einsum('ij,kl',outerFN,outerFN)
 
@@ -109,22 +145,47 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
-        b = StrainTensors['b'][gcounter]
         if J<0.0:
             print(F)
             print(J)
             exit('Deformation Gradient is negative at element: '+str(elem)+' gauss: '+str(gcounter))
+        # Directional vector for element
+        Normal = self.anisotropic_orientations[elem][0][:,None]
+        Normal = np.dot(I,Normal)[:,0]
+        Tangential = self.anisotropic_orientations[elem][1][:,None]
+        Tangential = np.dot(I,Tangential)[:,0]
+        Axial = self.anisotropic_orientations[elem][2][:,None]
+        Axial = np.dot(I,Axial)[:,0]
+        Rotation = np.eye(3,3,dtype=np.float64)
+        for i in range(3):
+            Rotation[0,i] = Normal[i]
+            Rotation[1,i] = Tangential[i]
+            Rotation[2,i] = Axial[i]
+
+        # Growth tensor definition
+        outerNormal = einsum('i,j',Normal,Normal)
+        outerTangential = I - outerNormal
+        F_g = self.growth_remodeling[11]*outerNormal + outerTangential
+        F_g_inv = np.linalg.inv(F_g)
 
         #ELASTIN
-        kappa = self.kappa*self.mixture_density[0]
-        mu = self.mu*self.mixture_density[0]
+        kappa = self.kappa*self.growth_remodeling[0]
+        mu = self.mu*self.growth_remodeling[0]
+        Gh_ela = np.eye(3,3,dtype=np.float64)
+        Gh_ela[0,0] = self.deposition_stretch[0]
+        Gh_ela[1,1] = self.deposition_stretch[4]
+        Gh_ela[2,2] = self.deposition_stretch[8]
+        Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
+        F_ela = np.dot(F,Gh_ela)
+        J_ela = np.linalg.det(F_ela)
+        b_ela = np.dot(F_ela,F_ela.T)
 
         if self.ndim == 3:
-            trb = trace(b)
+            trb = trace(b_ela)
         elif self.ndim == 2:
-            trb = trace(b) + 1.
+            trb = trace(b_ela) + 1.
 
-        stress = mu*J**(-5./3.)*(b-1./3.*trb*I) + kappa*(J-1.)*I
+        stress = mu*(J_ela**(-2./3.)/J)*(b_ela-1./3.*trb*I) + kappa*(J-1.)*(J_ela/J)*I
 
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:
@@ -133,27 +194,34 @@ class ArterialWallMixture(Material):
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
             if fibre_i is 1:
-                k1 = self.k1m*self.mixture_density[1]
+                FN = np.dot(self.deposition_stretch[9],FN)
+                k1 = self.k1m*self.growth_remodeling[1]
                 k2 = self.k2m
             elif fibre_i is not 1:
-                k1 = self.k1c*self.mixture_density[fibre_i]
+                FN = np.dot(self.deposition_stretch[10],FN)
+                k1 = self.k1c*self.growth_remodeling[fibre_i]
                 k2 = self.k2c
 
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)
+            # Remodeling stretch in fibre direction
+            lambda_r = self.growth_remodeling[fibre_i+5]
+            # ELASTIC deformation
+            innerFN_e = innerFN/lambda_r**2
+            outerFN_e = outerFN/lambda_r**2
             # Anisotropic Stiffness for this key
-            expo = np.exp(k2*(innerFN-1.)**2)
+            expo = np.exp(k2*(innerFN_e-1.)**2)
             if np.isnan(expo) or np.isinf(expo): exit('Fibre model is NaN or Inf: '+str(expo))
-            stress += 2.*k1/J*(innerFN-1.)*expo*outerFN
+            stress += 2.*k1/J*(innerFN_e-1.)*expo*outerFN_e
             # Active stress for SMC
             if fibre_i is 1:
                 den0 = 1050.0
-                s_act = 54.0e3*self.mixture_density[1]
+                s_act = 54.0e3*self.growth_remodeling[1]
                 stretch_m = 1.4
                 stretch_a = 1.0
                 stretch_0 = 0.8
-                stress += (s_act/(den0*innerFN))*\
+                stress += (s_act/(den0*innerFN*J))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*outerFN
 
         return stress

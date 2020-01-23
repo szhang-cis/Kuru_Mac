@@ -12,31 +12,30 @@ from Kuru import *
 def Directions(mesh):
     """
         Routine dedicated to compute the fibre direction of components in integration point for 
-        the Material in Florence and for the auxiliar routines in this script.
+        the Material in Florence and for the auxiliar routines in this script. First three directions 
+        are taken into the code for Rotation matrix, so always it should be present in this order,
+        Normal, Tangential, Axial.
     """
     ndim = mesh.InferSpatialDimension()
-    direction = np.zeros((6,mesh.nelem,ndim),dtype=np.float64)
+    nfibre = 6
+    direction = np.zeros((mesh.nelem,nfibre,ndim),dtype=np.float64)
     # Geometric definitions per element
-    center = np.zeros((mesh.nelem,ndim),dtype=np.float64)
-    tangential = np.zeros((mesh.nelem,ndim),dtype=np.float64)
     divider = mesh.elements.shape[1]
     directrix = [0.,1.,0.]
     # Loop throught the element in the mesh
     for elem in range(mesh.nelem):
         # Geometric definitions per element
-        center[elem,:] = np.sum(mesh.points[mesh.elements[elem,:],:],axis=0)/divider
-        tangential[elem,:] = np.cross(directrix,center[elem,:])
-        tangential[elem,:] = tangential[elem,:]/np.linalg.norm(tangential[elem,:])
-        direction[0][elem,:] = np.cross(tangential[elem,:],directrix)
-        direction[0][elem,:] = direction[0][elem,:]/np.linalg.norm(direction[0][elem,:])
+        center = np.sum(mesh.points[mesh.elements[elem,:],:],axis=0)/divider
+        tangential = np.cross(directrix,center)
+        tangential = tangential/np.linalg.norm(tangential)
+        normal = np.cross(tangential,directrix)
+        direction[elem][0][:] = normal/np.linalg.norm(normal)
         # Define the anisotropic orientations
-        direction[1][elem,:]=tangential[elem,:]
-        direction[2][elem,:]=tangential[elem,:]
-        direction[3][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) + \
-            np.multiply(tangential[elem,:],np.sin(np.pi/4))
-        direction[4][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) - \
-            np.multiply(tangential[elem,:],np.sin(np.pi/4))
-        direction[5][elem,:]=directrix
+        direction[elem][1][:]=tangential
+        direction[elem][2][:]=directrix
+        direction[elem][3][:]=np.multiply(directrix,np.cos(np.pi/4)) + np.multiply(tangential,np.sin(np.pi/4))
+        direction[elem][4][:]=np.multiply(directrix,np.cos(np.pi/4)) - np.multiply(tangential,np.sin(np.pi/4))
+        direction[elem][5][:]=tangential
 
     return direction
 
@@ -194,52 +193,50 @@ PressureBoundary['InnerFaces'] = InnerFaces
 
 #===============  MATERIAL DEFINITION  ====================
 # Deposition Stretches
-deposition_stretch = {}
-deposition_stretch['Radial'] = np.zeros(mesh.nnode,dtype=np.float64)
-deposition_stretch['Axial'] = 1.25
-deposition_stretch['Tangential'] = 1.34
-deposition_stretch['Radial'][:] = 1.0/(1.34*1.25)
-deposition_stretch['Muscle'] = 1.1
-deposition_stretch['Collagen'] = 1.062
+deposition_stretch = np.zeros(11,dtype=np.float64)
+deposition_stretch[0] = 1.0/(1.34*1.25)
+deposition_stretch[4] = 1.34
+deposition_stretch[8] = 1.25
+deposition_stretch[9] = 1.1
+deposition_stretch[10] = 1.062
 
 # Total initial density
-growth_remodeling = np.zeros((mesh.nnode,12),dtype=np.float64)
-growth_remodeling[:,0] = 241.5
-growth_remodeling[:,1] = 157.5
-growth_remodeling[:,2] = 65.1
-growth_remodeling[:,3] = 260.4
-growth_remodeling[:,4] = 260.4
-growth_remodeling[:,5] = 62.1
-growth_remodeling[:,6:12] = 1.0
+growth_remodeling = np.zeros(12,dtype=np.float64)
+growth_remodeling[0] = 241.5
+growth_remodeling[1] = 157.5
+growth_remodeling[2] = 65.1
+growth_remodeling[3] = 260.4
+growth_remodeling[4] = 260.4
+growth_remodeling[5] = 65.1
+growth_remodeling[6:12] = 1.0
 
 # fibre directions [thick,sms,co1,co2,co3,co4]
 fibre_direction = Directions(mesh)
 
 # Total initial density
-mu2D = np.zeros((mesh.nnode),dtype=np.float64)
-mu2D[:] = 20.0
+#mu2D = np.zeros((mesh.nnode),dtype=np.float64)
+#mu2D = 0.0
 
 # Define hyperelastic material for mesh
-material = ArterialWallMixtureGR(ndim,
-            mu3D=72.0,
-            mu2D=mu2D,
-            kappa=72.0*10.0,
+material = ArterialWallMixture(ndim,
+            mu=72.0,
+            kappa=72.0*20.0,
             k1m=7.6,
             k2m=11.4,
             k1c=568.0,
             k2c=11.2,
             anisotropic_orientations=fibre_direction,
-            deposition_stretch=deposition_stretch,
-            growth_remodeling=growth_remodeling)
+            growth_remodeling=growth_remodeling,
+            deposition_stretch=deposition_stretch)
 
 # kappa/mu=20  => nu=0.475 (Poisson's ratio)
 # kappa/mu=33  => nu=0.485 (Poisson's ratio)
 # kappa/mu=100 => nu=0.495 (Poisson's ratio)
 
 # Homogenization of stresses to a thin-walled case
-GetRadialStretch(mesh,material)
+#GetRadialStretch(mesh,material)
 #print(material.deposition_stretch['Radial'][:])
-GetTangentialPenalty(mesh,material)
+#GetTangentialPenalty(mesh,material)
 #print(material.mu2D[:])
 
 #==================  FORMULATION  =========================
@@ -293,7 +290,7 @@ fem_solver_gr = FEMSolver(analysis_nature="nonlinear",
                        optimise=False,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=3)
+                       number_of_load_increments=1)
 
 #=================  HOMEOSTATIC SOLUTION  =======================
 print('=====================================')
@@ -312,14 +309,14 @@ print('Distortion: '+str(distortion))
 solution.WriteVTK('ForwardEuler_0',quantity=0)
 print('... Homeostatic step finished')
 # HOMEOSTATIC POSTPROCESS
-solution.StressRecovery()
+#solution.StressRecovery()
 #DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
-Stress_H = solution.recovered_fields['FibreStress'][-1,:,:]
-FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
-Softness = solution.recovered_fields['Softness'][-1,:,:]
+#Stress_H = solution.recovered_fields['FibreStress'][-1,:,:]
+#FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
+#Softness = solution.recovered_fields['Softness'][-1,:,:]
 # Update mesh coordinates
-TotalDisplacements = solution.sol[:,:,-1]
-euler_x = mesh.points + TotalDisplacements
+#TotalDisplacements = solution.sol[:,:,-1]
+#euler_x = mesh.points + TotalDisplacements
 """
 file_out = open("growth_remodeling.txt","w+")
 file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(0,np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))

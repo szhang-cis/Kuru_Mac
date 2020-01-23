@@ -67,7 +67,7 @@ class ArterialWallMixtureGR(Material):
             growth_remodeling[2] = 65.1
             growth_remodeling[3] = 260.4
             growth_remodeling[4] = 260.4
-            growth_remodeling[5] = 62.1
+            growth_remodeling[5] = 65.1
             growth_remodeling[6:12] = 1.0
         outerNormal = einsum('i,j',Normal,Normal)
         outerTangential = I - outerNormal

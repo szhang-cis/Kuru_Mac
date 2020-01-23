@@ -15,28 +15,25 @@ def Directions(mesh):
         the Material in Florence and for the auxiliar routines in this script.
     """
     ndim = mesh.InferSpatialDimension()
-    direction = np.zeros((6,mesh.nelem,ndim),dtype=np.float64)
+    nfibre = 6
+    direction = np.zeros((mesh.nelem,nfibre,ndim),dtype=np.float64)
     # Geometric definitions per element
-    center = np.zeros((mesh.nelem,ndim),dtype=np.float64)
-    tangential = np.zeros((mesh.nelem,ndim),dtype=np.float64)
     divider = mesh.elements.shape[1]
     directrix = [0.,1.,0.]
     # Loop throught the element in the mesh
     for elem in range(mesh.nelem):
         # Geometric definitions per element
-        center[elem,:] = np.sum(mesh.points[mesh.elements[elem,:],:],axis=0)/divider
-        tangential[elem,:] = np.cross(directrix,center[elem,:])
-        tangential[elem,:] = tangential[elem,:]/np.linalg.norm(tangential[elem,:])
-        direction[0][elem,:] = np.cross(tangential[elem,:],directrix)
-        direction[0][elem,:] = direction[0][elem,:]/np.linalg.norm(direction[0][elem,:])
+        center = np.sum(mesh.points[mesh.elements[elem,:],:],axis=0)/divider
+        tangential = np.cross(directrix,center)
+        tangential = tangential/np.linalg.norm(tangential)
+        normal = np.cross(tangential,directrix)
+        direction[elem][0][:] = normal/np.linalg.norm(normal)
         # Define the anisotropic orientations
-        direction[1][elem,:]=tangential[elem,:]
-        direction[2][elem,:]=tangential[elem,:]
-        direction[3][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) + \
-            np.multiply(tangential[elem,:],np.sin(np.pi/4))
-        direction[4][elem,:]=np.multiply(directrix,np.cos(np.pi/4)) - \
-            np.multiply(tangential[elem,:],np.sin(np.pi/4))
-        direction[5][elem,:]=directrix
+        direction[elem][1][:]=tangential
+        direction[elem][2][:]=directrix
+        direction[elem][3][:]=np.multiply(directrix,np.cos(np.pi/4)) + np.multiply(tangential,np.sin(np.pi/4))
+        direction[elem][4][:]=np.multiply(directrix,np.cos(np.pi/4)) - np.multiply(tangential,np.sin(np.pi/4))
+        direction[elem][5][:]=tangential
 
     return direction
 #============================================================
@@ -87,14 +84,14 @@ PressureBoundary['InnerLogic'] = InnerSurface
 PressureBoundary['InnerFaces'] = InnerFaces
 
 #===============  MATERIAL DEFINITION  ====================
-# Deposition Stretches
-deposition_stretch = {}
-deposition_stretch['Elastin'] = np.eye(3,3,dtype=np.float64)
-deposition_stretch['Elastin'][2,2] = 1.25
-deposition_stretch['Elastin'][1,1] = 1.34
-deposition_stretch['Elastin'][0,0] = 1.0/(1.34*1.25)
-deposition_stretch['Muscle'] = 1.1
-deposition_stretch['Collagen'] = 1.062
+# Deposition Stretches (elastin [normal,tanential,axial], muscle and collagen)
+# first 9 elements fill the elastin deposition strethch
+deposition_stretch = np.zeros(11,dtype=np.float64)
+deposition_stretch[0] = 1.0/(1.34*1.25)
+deposition_stretch[4] = 1.34
+deposition_stretch[8] = 1.25
+deposition_stretch[9] = 1.1
+deposition_stretch[10] = 1.062
 
 # Total initial density
 density = np.zeros(6,dtype=np.float64)
@@ -103,13 +100,13 @@ density[1] = 157.5
 density[2] = 65.1
 density[3] = 260.4
 density[4] = 260.4
-density[5] = 62.1
+density[5] = 65.1
 
 # fibre directions [thick,sms,co1,co2,co3,co4]
 fibre_direction = Directions(mesh)
 
 # Define hyperelastic material for mesh
-material = ArterialWallMixture0(ndim,
+material = ArterialWallMixture(ndim,
             mu=72.0,
             kappa=72.0*20.0,
             k1m=7.6,
@@ -165,11 +162,11 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        optimise=False,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=3)
+                       number_of_load_increments=1)
 
 #=================  SOLUTION  =======================
 # Call FEM solver
 solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
     material=material, boundary_condition=boundary_condition)
 solution.WriteVTK('DepositionStretch',quantity=0)
-print(solution.sol[:,:,-1])
+#print(solution.sol[:,:,-1])

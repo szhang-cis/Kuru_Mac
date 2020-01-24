@@ -1310,7 +1310,6 @@ static void __Pyx_RaiseBufferFallbackError(void);
 
 #define __Pyx_BufPtrCContig3d(type, buf, i0, s0, i1, s1, i2, s2) ((type)((char*)buf + i0 * s0 + i1 * s1) + i2)
 #define __Pyx_BufPtrCContig2d(type, buf, i0, s0, i1, s1) ((type)((char*)buf + i0 * s0) + i1)
-#define __Pyx_BufPtrCContig1d(type, buf, i0, s0) ((type)buf + i0)
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
@@ -1719,7 +1718,6 @@ static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_ImportError;
 static const char __pyx_k_F[] = "F";
-static const char __pyx_k_N[] = "N";
 static const char __pyx_k_mu[] = "mu";
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_k1c[] = "k1c";
@@ -1737,19 +1735,20 @@ static const char __pyx_k_range[] = "range";
 static const char __pyx_k_zeros[] = "zeros";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_nfibre[] = "nfibre";
+static const char __pyx_k_nfield[] = "nfield";
 static const char __pyx_k_ngauss[] = "ngauss";
 static const char __pyx_k_stress[] = "stress";
-static const char __pyx_k_density[] = "density";
 static const char __pyx_k_float64[] = "float64";
 static const char __pyx_k_hessian[] = "hessian";
 static const char __pyx_k_mat_obj[] = "mat_obj";
 static const char __pyx_k_material[] = "material";
 static const char __pyx_k_ValueError[] = "ValueError";
-static const char __pyx_k_deposition[] = "deposition";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
 static const char __pyx_k_KineticMeasures[] = "KineticMeasures";
+static const char __pyx_k_field_variables[] = "field_variables";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_anisotropic_orientations[] = "anisotropic_orientations";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_Kuru_MaterialLibrary_LLDispatch[] = "Kuru.MaterialLibrary.LLDispatch.CythonSource._ArterialWallMixture_";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
@@ -1767,14 +1766,13 @@ static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
 static PyObject *__pyx_n_s_ImportError;
 static PyObject *__pyx_n_s_KineticMeasures;
 static PyObject *__pyx_n_s_Kuru_MaterialLibrary_LLDispatch;
-static PyObject *__pyx_n_s_N;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_ValueError;
+static PyObject *__pyx_n_s_anisotropic_orientations;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_density;
-static PyObject *__pyx_n_s_deposition;
 static PyObject *__pyx_n_s_dtype;
+static PyObject *__pyx_n_s_field_variables;
 static PyObject *__pyx_n_s_float64;
 static PyObject *__pyx_n_s_hessian;
 static PyObject *__pyx_n_s_import;
@@ -1792,6 +1790,7 @@ static PyObject *__pyx_kp_u_ndarray_is_not_C_contiguous;
 static PyObject *__pyx_kp_u_ndarray_is_not_Fortran_contiguou;
 static PyObject *__pyx_n_s_ndim;
 static PyObject *__pyx_n_s_nfibre;
+static PyObject *__pyx_n_s_nfield;
 static PyObject *__pyx_n_s_ngauss;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
@@ -1802,7 +1801,7 @@ static PyObject *__pyx_n_s_stress;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__KineticMeasures(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_material, PyArrayObject *__pyx_v_F, PyArrayObject *__pyx_v_N, PyArrayObject *__pyx_v_density, PyArrayObject *__pyx_v_deposition); /* proto */
+static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__KineticMeasures(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_material, PyArrayObject *__pyx_v_F, PyArrayObject *__pyx_v_anisotropic_orientations, PyArrayObject *__pyx_v_field_variables); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_int_3;
@@ -1821,9 +1820,9 @@ static PyObject *__pyx_codeobj__9;
 /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":23
  * 
  * 
- * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F, np.ndarray[Real,ndim=2,mode='c'] N,             # <<<<<<<<<<<<<<
- *         np.ndarray[Real,ndim=1,mode='c'] density, np.ndarray[Real,ndim=1,mode='c'] deposition):
- * 
+ * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,             # <<<<<<<<<<<<<<
+ *         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  */
 
 /* Python wrapper */
@@ -1832,21 +1831,18 @@ static PyMethodDef __pyx_mdef_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSourc
 static PyObject *__pyx_pw_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__1KineticMeasures(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_material = 0;
   PyArrayObject *__pyx_v_F = 0;
-  PyArrayObject *__pyx_v_N = 0;
-  PyArrayObject *__pyx_v_density = 0;
-  PyArrayObject *__pyx_v_deposition = 0;
+  PyArrayObject *__pyx_v_anisotropic_orientations = 0;
+  PyArrayObject *__pyx_v_field_variables = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("KineticMeasures (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_material,&__pyx_n_s_F,&__pyx_n_s_N,&__pyx_n_s_density,&__pyx_n_s_deposition,0};
-    PyObject* values[5] = {0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_material,&__pyx_n_s_F,&__pyx_n_s_anisotropic_orientations,&__pyx_n_s_field_variables,0};
+    PyObject* values[4] = {0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-        CYTHON_FALLTHROUGH;
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -1867,58 +1863,49 @@ static PyObject *__pyx_pw_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_F)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 5, 5, 1); __PYX_ERR(0, 23, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 4, 4, 1); __PYX_ERR(0, 23, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_N)) != 0)) kw_args--;
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_anisotropic_orientations)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 5, 5, 2); __PYX_ERR(0, 23, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 4, 4, 2); __PYX_ERR(0, 23, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
-        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_density)) != 0)) kw_args--;
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_field_variables)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 5, 5, 3); __PYX_ERR(0, 23, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  4:
-        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_deposition)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 5, 5, 4); __PYX_ERR(0, 23, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 4, 4, 3); __PYX_ERR(0, 23, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "KineticMeasures") < 0)) __PYX_ERR(0, 23, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
     }
     __pyx_v_material = values[0];
     __pyx_v_F = ((PyArrayObject *)values[1]);
-    __pyx_v_N = ((PyArrayObject *)values[2]);
-    __pyx_v_density = ((PyArrayObject *)values[3]);
-    __pyx_v_deposition = ((PyArrayObject *)values[4]);
+    __pyx_v_anisotropic_orientations = ((PyArrayObject *)values[2]);
+    __pyx_v_field_variables = ((PyArrayObject *)values[3]);
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 23, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 23, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("Kuru.MaterialLibrary.LLDispatch.CythonSource._ArterialWallMixture_.KineticMeasures", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_F), __pyx_ptype_5numpy_ndarray, 1, "F", 0))) __PYX_ERR(0, 23, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_N), __pyx_ptype_5numpy_ndarray, 1, "N", 0))) __PYX_ERR(0, 23, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_density), __pyx_ptype_5numpy_ndarray, 1, "density", 0))) __PYX_ERR(0, 24, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_deposition), __pyx_ptype_5numpy_ndarray, 1, "deposition", 0))) __PYX_ERR(0, 24, __pyx_L1_error)
-  __pyx_r = __pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__KineticMeasures(__pyx_self, __pyx_v_material, __pyx_v_F, __pyx_v_N, __pyx_v_density, __pyx_v_deposition);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_anisotropic_orientations), __pyx_ptype_5numpy_ndarray, 1, "anisotropic_orientations", 0))) __PYX_ERR(0, 24, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_field_variables), __pyx_ptype_5numpy_ndarray, 1, "field_variables", 0))) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_r = __pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__KineticMeasures(__pyx_self, __pyx_v_material, __pyx_v_F, __pyx_v_anisotropic_orientations, __pyx_v_field_variables);
 
   /* function exit code */
   goto __pyx_L0;
@@ -1929,21 +1916,20 @@ static PyObject *__pyx_pw_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__KineticMeasures(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_material, PyArrayObject *__pyx_v_F, PyArrayObject *__pyx_v_N, PyArrayObject *__pyx_v_density, PyArrayObject *__pyx_v_deposition) {
+static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__KineticMeasures(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_material, PyArrayObject *__pyx_v_F, PyArrayObject *__pyx_v_anisotropic_orientations, PyArrayObject *__pyx_v_field_variables) {
   int __pyx_v_ndim;
   int __pyx_v_ngauss;
   int __pyx_v_nfibre;
+  int __pyx_v_nfield;
   PyArrayObject *__pyx_v_stress = 0;
   PyArrayObject *__pyx_v_hessian = 0;
   _ArterialWallMixture_<__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real>  __pyx_v_mat_obj;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_F;
   __Pyx_Buffer __pyx_pybuffer_F;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_N;
-  __Pyx_Buffer __pyx_pybuffer_N;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_density;
-  __Pyx_Buffer __pyx_pybuffer_density;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_deposition;
-  __Pyx_Buffer __pyx_pybuffer_deposition;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_anisotropic_orientations;
+  __Pyx_Buffer __pyx_pybuffer_anisotropic_orientations;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_field_variables;
+  __Pyx_Buffer __pyx_pybuffer_field_variables;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_hessian;
   __Pyx_Buffer __pyx_pybuffer_hessian;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_stress;
@@ -1993,18 +1979,14 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
   __pyx_pybuffer_F.refcount = 0;
   __pyx_pybuffernd_F.data = NULL;
   __pyx_pybuffernd_F.rcbuffer = &__pyx_pybuffer_F;
-  __pyx_pybuffer_N.pybuffer.buf = NULL;
-  __pyx_pybuffer_N.refcount = 0;
-  __pyx_pybuffernd_N.data = NULL;
-  __pyx_pybuffernd_N.rcbuffer = &__pyx_pybuffer_N;
-  __pyx_pybuffer_density.pybuffer.buf = NULL;
-  __pyx_pybuffer_density.refcount = 0;
-  __pyx_pybuffernd_density.data = NULL;
-  __pyx_pybuffernd_density.rcbuffer = &__pyx_pybuffer_density;
-  __pyx_pybuffer_deposition.pybuffer.buf = NULL;
-  __pyx_pybuffer_deposition.refcount = 0;
-  __pyx_pybuffernd_deposition.data = NULL;
-  __pyx_pybuffernd_deposition.rcbuffer = &__pyx_pybuffer_deposition;
+  __pyx_pybuffer_anisotropic_orientations.pybuffer.buf = NULL;
+  __pyx_pybuffer_anisotropic_orientations.refcount = 0;
+  __pyx_pybuffernd_anisotropic_orientations.data = NULL;
+  __pyx_pybuffernd_anisotropic_orientations.rcbuffer = &__pyx_pybuffer_anisotropic_orientations;
+  __pyx_pybuffer_field_variables.pybuffer.buf = NULL;
+  __pyx_pybuffer_field_variables.refcount = 0;
+  __pyx_pybuffernd_field_variables.data = NULL;
+  __pyx_pybuffernd_field_variables.rcbuffer = &__pyx_pybuffer_field_variables;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_F.rcbuffer->pybuffer, (PyObject*)__pyx_v_F, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
@@ -2012,66 +1994,70 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
   __pyx_pybuffernd_F.diminfo[0].strides = __pyx_pybuffernd_F.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_F.diminfo[0].shape = __pyx_pybuffernd_F.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_F.diminfo[1].strides = __pyx_pybuffernd_F.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_F.diminfo[1].shape = __pyx_pybuffernd_F.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_F.diminfo[2].strides = __pyx_pybuffernd_F.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_F.diminfo[2].shape = __pyx_pybuffernd_F.rcbuffer->pybuffer.shape[2];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_N.rcbuffer->pybuffer, (PyObject*)__pyx_v_N, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_v_anisotropic_orientations, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
   }
-  __pyx_pybuffernd_N.diminfo[0].strides = __pyx_pybuffernd_N.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_N.diminfo[0].shape = __pyx_pybuffernd_N.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_N.diminfo[1].strides = __pyx_pybuffernd_N.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_N.diminfo[1].shape = __pyx_pybuffernd_N.rcbuffer->pybuffer.shape[1];
+  __pyx_pybuffernd_anisotropic_orientations.diminfo[0].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[0].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[1];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_density.rcbuffer->pybuffer, (PyObject*)__pyx_v_density, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer, (PyObject*)__pyx_v_field_variables, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
   }
-  __pyx_pybuffernd_density.diminfo[0].strides = __pyx_pybuffernd_density.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_density.diminfo[0].shape = __pyx_pybuffernd_density.rcbuffer->pybuffer.shape[0];
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_deposition.rcbuffer->pybuffer, (PyObject*)__pyx_v_deposition, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
-  }
-  __pyx_pybuffernd_deposition.diminfo[0].strides = __pyx_pybuffernd_deposition.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_deposition.diminfo[0].shape = __pyx_pybuffernd_deposition.rcbuffer->pybuffer.shape[0];
+  __pyx_pybuffernd_field_variables.diminfo[0].strides = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_field_variables.diminfo[0].shape = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_field_variables.diminfo[1].strides = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_field_variables.diminfo[1].shape = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.shape[1];
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":26
- *         np.ndarray[Real,ndim=1,mode='c'] density, np.ndarray[Real,ndim=1,mode='c'] deposition):
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":27
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  * 
  *     cdef int ndim = F.shape[2]             # <<<<<<<<<<<<<<
  *     cdef int ngauss = F.shape[0]
- *     cdef int nfibre = N.shape[0]
+ *     cdef int nfibre = anisotropic_orientations.shape[0]
  */
   __pyx_v_ndim = (__pyx_v_F->dimensions[2]);
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":27
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":28
  * 
  *     cdef int ndim = F.shape[2]
  *     cdef int ngauss = F.shape[0]             # <<<<<<<<<<<<<<
- *     cdef int nfibre = N.shape[0]
- *     cdef np.ndarray[Real, ndim=3, mode='c'] stress, hessian
+ *     cdef int nfibre = anisotropic_orientations.shape[0]
+ *     cdef int nfield = field_variables.shape[1]
  */
   __pyx_v_ngauss = (__pyx_v_F->dimensions[0]);
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":28
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":29
  *     cdef int ndim = F.shape[2]
  *     cdef int ngauss = F.shape[0]
- *     cdef int nfibre = N.shape[0]             # <<<<<<<<<<<<<<
+ *     cdef int nfibre = anisotropic_orientations.shape[0]             # <<<<<<<<<<<<<<
+ *     cdef int nfield = field_variables.shape[1]
+ *     cdef np.ndarray[Real, ndim=3, mode='c'] stress, hessian
+ */
+  __pyx_v_nfibre = (__pyx_v_anisotropic_orientations->dimensions[0]);
+
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":30
+ *     cdef int ngauss = F.shape[0]
+ *     cdef int nfibre = anisotropic_orientations.shape[0]
+ *     cdef int nfield = field_variables.shape[1]             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Real, ndim=3, mode='c'] stress, hessian
  * 
  */
-  __pyx_v_nfibre = (__pyx_v_N->dimensions[0]);
+  __pyx_v_nfield = (__pyx_v_field_variables->dimensions[1]);
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":31
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":33
  *     cdef np.ndarray[Real, ndim=3, mode='c'] stress, hessian
  * 
  *     stress = np.zeros((ngauss,ndim,ndim),dtype=np.float64)             # <<<<<<<<<<<<<<
  *     if ndim==3:
  *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ngauss); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ngauss); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_ndim); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_ndim); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_ndim); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_ndim); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
@@ -2082,26 +2068,26 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
   __pyx_t_1 = 0;
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 33, __pyx_L1_error)
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2118,13 +2104,13 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
       __pyx_t_8 = __pyx_t_9 = __pyx_t_10 = 0;
     }
     __pyx_pybuffernd_stress.diminfo[0].strides = __pyx_pybuffernd_stress.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_stress.diminfo[0].shape = __pyx_pybuffernd_stress.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_stress.diminfo[1].strides = __pyx_pybuffernd_stress.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_stress.diminfo[1].shape = __pyx_pybuffernd_stress.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_stress.diminfo[2].strides = __pyx_pybuffernd_stress.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_stress.diminfo[2].shape = __pyx_pybuffernd_stress.rcbuffer->pybuffer.shape[2];
-    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 31, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 33, __pyx_L1_error)
   }
   __pyx_t_6 = 0;
   __pyx_v_stress = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":32
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":34
  * 
  *     stress = np.zeros((ngauss,ndim,ndim),dtype=np.float64)
  *     if ndim==3:             # <<<<<<<<<<<<<<
@@ -2134,21 +2120,21 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
   switch (__pyx_v_ndim) {
     case 3:
 
-    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":33
+    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":35
  *     stress = np.zeros((ngauss,ndim,ndim),dtype=np.float64)
  *     if ndim==3:
  *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)             # <<<<<<<<<<<<<<
  *     elif ndim==2:
  *         hessian = np.zeros((ngauss,3,3),dtype=np.float64)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ngauss); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ngauss); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
@@ -2159,26 +2145,26 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
     __Pyx_GIVEREF(__pyx_int_6);
     PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_int_6);
     __pyx_t_1 = 0;
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_4);
     __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float64); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float64); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 33, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 35, __pyx_L1_error)
     __pyx_t_6 = ((PyArrayObject *)__pyx_t_3);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2195,13 +2181,13 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
         __pyx_t_10 = __pyx_t_9 = __pyx_t_8 = 0;
       }
       __pyx_pybuffernd_hessian.diminfo[0].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_hessian.diminfo[0].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_hessian.diminfo[1].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_hessian.diminfo[1].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_hessian.diminfo[2].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_hessian.diminfo[2].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[2];
-      if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 33, __pyx_L1_error)
+      if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
     }
     __pyx_t_6 = 0;
     __pyx_v_hessian = ((PyArrayObject *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":32
+    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":34
  * 
  *     stress = np.zeros((ngauss,ndim,ndim),dtype=np.float64)
  *     if ndim==3:             # <<<<<<<<<<<<<<
@@ -2211,21 +2197,21 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
     break;
     case 2:
 
-    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":35
+    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":37
  *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)
  *     elif ndim==2:
  *         hessian = np.zeros((ngauss,3,3),dtype=np.float64)             # <<<<<<<<<<<<<<
  * 
  *     cdef _ArterialWallMixture_[Real] mat_obj = _ArterialWallMixture_()
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_ngauss); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_ngauss); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
@@ -2236,26 +2222,26 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
     __Pyx_GIVEREF(__pyx_int_3);
     PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_int_3);
     __pyx_t_3 = 0;
-    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_float64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_float64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 35, __pyx_L1_error)
+    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 37, __pyx_L1_error)
     __pyx_t_6 = ((PyArrayObject *)__pyx_t_2);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2272,13 +2258,13 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
         __pyx_t_8 = __pyx_t_9 = __pyx_t_10 = 0;
       }
       __pyx_pybuffernd_hessian.diminfo[0].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_hessian.diminfo[0].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_hessian.diminfo[1].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_hessian.diminfo[1].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_hessian.diminfo[2].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_hessian.diminfo[2].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[2];
-      if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
+      if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 37, __pyx_L1_error)
     }
     __pyx_t_6 = 0;
     __pyx_v_hessian = ((PyArrayObject *)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":34
+    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":36
  *     if ndim==3:
  *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)
  *     elif ndim==2:             # <<<<<<<<<<<<<<
@@ -2289,64 +2275,64 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
     default: break;
   }
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":37
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":39
  *         hessian = np.zeros((ngauss,3,3),dtype=np.float64)
  * 
  *     cdef _ArterialWallMixture_[Real] mat_obj = _ArterialWallMixture_()             # <<<<<<<<<<<<<<
  *     mat_obj.SetParameters(material.mu,material.kappa,material.k1m,material.k2m,material.k1c,material.k2c)
- *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre, &N[0,0],
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,
  */
   try {
     __pyx_t_11 = _ArterialWallMixture_<Real> ();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 37, __pyx_L1_error)
+    __PYX_ERR(0, 39, __pyx_L1_error)
   }
   __pyx_v_mat_obj = ((_ArterialWallMixture_<__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real> )__pyx_t_11);
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":38
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":40
  * 
  *     cdef _ArterialWallMixture_[Real] mat_obj = _ArterialWallMixture_()
  *     mat_obj.SetParameters(material.mu,material.kappa,material.k1m,material.k2m,material.k1c,material.k2c)             # <<<<<<<<<<<<<<
- *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre, &N[0,0],
- *             &density[0], &deposition[0])
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0])
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_mu); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_mu); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_kappa); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_kappa); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_15 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_15 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_15 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_15 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_16 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_16 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_16 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_16 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_17 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_17 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_17 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_17 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   try {
     __pyx_v_mat_obj.SetParameters(__pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 38, __pyx_L1_error)
+    __PYX_ERR(0, 40, __pyx_L1_error)
   }
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":39
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":41
  *     cdef _ArterialWallMixture_[Real] mat_obj = _ArterialWallMixture_()
  *     mat_obj.SetParameters(material.mu,material.kappa,material.k1m,material.k2m,material.k1c,material.k2c)
- *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre, &N[0,0],             # <<<<<<<<<<<<<<
- *             &density[0], &deposition[0])
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,             # <<<<<<<<<<<<<<
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0])
  * 
  */
   __pyx_t_18 = 0;
@@ -2358,40 +2344,41 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
   __pyx_t_24 = 0;
   __pyx_t_25 = 0;
   __pyx_t_26 = 0;
-  __pyx_t_27 = 0;
-  __pyx_t_28 = 0;
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":40
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":42
  *     mat_obj.SetParameters(material.mu,material.kappa,material.k1m,material.k2m,material.k1c,material.k2c)
- *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre, &N[0,0],
- *             &density[0], &deposition[0])             # <<<<<<<<<<<<<<
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0])             # <<<<<<<<<<<<<<
  * 
  *     return stress, hessian
  */
+  __pyx_t_27 = 0;
+  __pyx_t_28 = 0;
   __pyx_t_29 = 0;
   __pyx_t_30 = 0;
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":39
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":41
  *     cdef _ArterialWallMixture_[Real] mat_obj = _ArterialWallMixture_()
  *     mat_obj.SetParameters(material.mu,material.kappa,material.k1m,material.k2m,material.k1c,material.k2c)
- *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre, &N[0,0],             # <<<<<<<<<<<<<<
- *             &density[0], &deposition[0])
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,             # <<<<<<<<<<<<<<
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0])
  * 
  */
   try {
-    __pyx_v_mat_obj.KineticMeasures((&(*__Pyx_BufPtrCContig3d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_stress.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_stress.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_stress.diminfo[1].strides, __pyx_t_20, __pyx_pybuffernd_stress.diminfo[2].strides))), (&(*__Pyx_BufPtrCContig3d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_hessian.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_hessian.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_hessian.diminfo[1].strides, __pyx_t_23, __pyx_pybuffernd_hessian.diminfo[2].strides))), __pyx_v_ndim, __pyx_v_ngauss, (&(*__Pyx_BufPtrCContig3d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_F.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_F.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_F.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_F.diminfo[2].strides))), __pyx_v_nfibre, (&(*__Pyx_BufPtrCContig2d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_N.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_N.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_N.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_density.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_density.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_deposition.rcbuffer->pybuffer.buf, __pyx_t_30, __pyx_pybuffernd_deposition.diminfo[0].strides))));
+    __pyx_v_mat_obj.KineticMeasures((&(*__Pyx_BufPtrCContig3d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_stress.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_stress.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_stress.diminfo[1].strides, __pyx_t_20, __pyx_pybuffernd_stress.diminfo[2].strides))), (&(*__Pyx_BufPtrCContig3d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_hessian.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_hessian.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_hessian.diminfo[1].strides, __pyx_t_23, __pyx_pybuffernd_hessian.diminfo[2].strides))), __pyx_v_ndim, __pyx_v_ngauss, (&(*__Pyx_BufPtrCContig3d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_F.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_F.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_F.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_F.diminfo[2].strides))), __pyx_v_nfibre, (&(*__Pyx_BufPtrCContig2d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_anisotropic_orientations.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_anisotropic_orientations.diminfo[1].strides))), __pyx_v_nfield, (&(*__Pyx_BufPtrCContig2d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__Real *, __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_field_variables.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_field_variables.diminfo[1].strides))));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 39, __pyx_L1_error)
+    __PYX_ERR(0, 41, __pyx_L1_error)
   }
 
-  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":42
- *             &density[0], &deposition[0])
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":44
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0])
  * 
  *     return stress, hessian             # <<<<<<<<<<<<<<
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(((PyObject *)__pyx_v_stress));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_stress));
@@ -2406,9 +2393,9 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
   /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":23
  * 
  * 
- * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F, np.ndarray[Real,ndim=2,mode='c'] N,             # <<<<<<<<<<<<<<
- *         np.ndarray[Real,ndim=1,mode='c'] density, np.ndarray[Real,ndim=1,mode='c'] deposition):
- * 
+ * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,             # <<<<<<<<<<<<<<
+ *         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  */
 
   /* function exit code */
@@ -2423,9 +2410,8 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
     __Pyx_PyThreadState_assign
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_F.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_N.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_density.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_deposition.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_stress.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
@@ -2434,9 +2420,8 @@ static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21
   goto __pyx_L2;
   __pyx_L0:;
   __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_F.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_N.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_density.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_deposition.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer);
   __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer);
   __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_stress.rcbuffer->pybuffer);
   __pyx_L2:;
@@ -4918,14 +4903,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
   {&__pyx_n_s_KineticMeasures, __pyx_k_KineticMeasures, sizeof(__pyx_k_KineticMeasures), 0, 0, 1, 1},
   {&__pyx_n_s_Kuru_MaterialLibrary_LLDispatch, __pyx_k_Kuru_MaterialLibrary_LLDispatch, sizeof(__pyx_k_Kuru_MaterialLibrary_LLDispatch), 0, 0, 1, 1},
-  {&__pyx_n_s_N, __pyx_k_N, sizeof(__pyx_k_N), 0, 0, 1, 1},
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
+  {&__pyx_n_s_anisotropic_orientations, __pyx_k_anisotropic_orientations, sizeof(__pyx_k_anisotropic_orientations), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_density, __pyx_k_density, sizeof(__pyx_k_density), 0, 0, 1, 1},
-  {&__pyx_n_s_deposition, __pyx_k_deposition, sizeof(__pyx_k_deposition), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
+  {&__pyx_n_s_field_variables, __pyx_k_field_variables, sizeof(__pyx_k_field_variables), 0, 0, 1, 1},
   {&__pyx_n_s_float64, __pyx_k_float64, sizeof(__pyx_k_float64), 0, 0, 1, 1},
   {&__pyx_n_s_hessian, __pyx_k_hessian, sizeof(__pyx_k_hessian), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -4943,6 +4927,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_ndarray_is_not_Fortran_contiguou, __pyx_k_ndarray_is_not_Fortran_contiguou, sizeof(__pyx_k_ndarray_is_not_Fortran_contiguou), 0, 1, 0, 0},
   {&__pyx_n_s_ndim, __pyx_k_ndim, sizeof(__pyx_k_ndim), 0, 0, 1, 1},
   {&__pyx_n_s_nfibre, __pyx_k_nfibre, sizeof(__pyx_k_nfibre), 0, 0, 1, 1},
+  {&__pyx_n_s_nfield, __pyx_k_nfield, sizeof(__pyx_k_nfield), 0, 0, 1, 1},
   {&__pyx_n_s_ngauss, __pyx_k_ngauss, sizeof(__pyx_k_ngauss), 0, 0, 1, 1},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
@@ -5049,14 +5034,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":23
  * 
  * 
- * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F, np.ndarray[Real,ndim=2,mode='c'] N,             # <<<<<<<<<<<<<<
- *         np.ndarray[Real,ndim=1,mode='c'] density, np.ndarray[Real,ndim=1,mode='c'] deposition):
- * 
+ * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,             # <<<<<<<<<<<<<<
+ *         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  */
-  __pyx_tuple__8 = PyTuple_Pack(11, __pyx_n_s_material, __pyx_n_s_F, __pyx_n_s_N, __pyx_n_s_density, __pyx_n_s_deposition, __pyx_n_s_ndim, __pyx_n_s_ngauss, __pyx_n_s_nfibre, __pyx_n_s_stress, __pyx_n_s_hessian, __pyx_n_s_mat_obj); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(11, __pyx_n_s_material, __pyx_n_s_F, __pyx_n_s_anisotropic_orientations, __pyx_n_s_field_variables, __pyx_n_s_ndim, __pyx_n_s_ngauss, __pyx_n_s_nfibre, __pyx_n_s_nfield, __pyx_n_s_stress, __pyx_n_s_hessian, __pyx_n_s_mat_obj); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(5, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_CythonSource__ArterialWallMixtur, __pyx_n_s_KineticMeasures, 23, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(4, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_CythonSource__ArterialWallMixtur, __pyx_n_s_KineticMeasures, 23, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5379,9 +5364,9 @@ if (!__Pyx_RefNanny) {
   /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_ArterialWallMixture_.pyx":23
  * 
  * 
- * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F, np.ndarray[Real,ndim=2,mode='c'] N,             # <<<<<<<<<<<<<<
- *         np.ndarray[Real,ndim=1,mode='c'] density, np.ndarray[Real,ndim=1,mode='c'] deposition):
- * 
+ * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,             # <<<<<<<<<<<<<<
+ *         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_21_ArterialWallMixture__1KineticMeasures, NULL, __pyx_n_s_Kuru_MaterialLibrary_LLDispatch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);

@@ -192,25 +192,23 @@ PressureBoundary['InnerLogic'] = InnerSurface
 PressureBoundary['InnerFaces'] = InnerFaces
 
 #===============  MATERIAL DEFINITION  ====================
+field_variables = np.zeros((mesh.nnode,23),dtype=np.float64)
 # Deposition Stretches
-deposition_stretch = np.zeros(11,dtype=np.float64)
-deposition_stretch[0] = 1.0/(1.34*1.25)
-deposition_stretch[4] = 1.34
-deposition_stretch[8] = 1.25
-deposition_stretch[9] = 1.1
-deposition_stretch[10] = 1.062
-
+field_variables[:,0] = 1.0/(1.34*1.25)
+field_variables[:,4] = 1.34
+field_variables[:,8] = 1.25
+field_variables[:,9] = 1.1
+field_variables[:,10] = 1.062
 # Total initial density
-growth_remodeling = np.zeros(12,dtype=np.float64)
-growth_remodeling[0] = 241.5
-growth_remodeling[1] = 157.5
-growth_remodeling[2] = 65.1
-growth_remodeling[3] = 260.4
-growth_remodeling[4] = 260.4
-growth_remodeling[5] = 65.1
-growth_remodeling[6:12] = 1.0
+field_variables[:,11] = 241.5
+field_variables[:,12] = 157.5
+field_variables[:,13] = 65.1
+field_variables[:,14] = 260.4
+field_variables[:,15] = 260.4
+field_variables[:,16] = 65.1
+field_variables[:,17:23] = 1.0
 
-# fibre directions [thick,sms,co1,co2,co3,co4]
+# fibre directions [thick,smc,co1,co2,co3,co4]
 fibre_direction = Directions(mesh)
 
 # Total initial density
@@ -226,8 +224,7 @@ material = ArterialWallMixture(ndim,
             k1c=568.0,
             k2c=11.2,
             anisotropic_orientations=fibre_direction,
-            growth_remodeling=growth_remodeling,
-            deposition_stretch=deposition_stretch)
+            field_variables=field_variables)
 
 # kappa/mu=20  => nu=0.475 (Poisson's ratio)
 # kappa/mu=33  => nu=0.485 (Poisson's ratio)
@@ -309,17 +306,17 @@ print('Distortion: '+str(distortion))
 solution.WriteVTK('ForwardEuler_0',quantity=0)
 print('... Homeostatic step finished')
 # HOMEOSTATIC POSTPROCESS
-#solution.StressRecovery()
+solution.StressRecovery()
 #DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
-#Stress_H = solution.recovered_fields['FibreStress'][-1,:,:]
-#FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
-#Softness = solution.recovered_fields['Softness'][-1,:,:]
+Stress_H = solution.recovered_fields['FibreStress'][-1,:,:]
+FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
+Softness = solution.recovered_fields['Softness'][-1,:,:]
 # Update mesh coordinates
-#TotalDisplacements = solution.sol[:,:,-1]
-#euler_x = mesh.points + TotalDisplacements
-"""
+TotalDisplacements = solution.sol[:,:,-1]
+euler_x = mesh.points + TotalDisplacements
+
 file_out = open("growth_remodeling.txt","w+")
-file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(0,np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
+file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f \n'%(0,1000.*np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),field_variables[0,11],field_variables[0,12],field_variables[0,13],field_variables[0,14],field_variables[0,15],field_variables[0,16],field_variables[0,17],field_variables[0,18],field_variables[0,19],field_variables[0,20],field_variables[0,21],field_variables[0,22]))
 file_out.close()
 
 #=================  REMODELING SOLUTION  =======================
@@ -338,8 +335,8 @@ while time<total_time:
     print('==== STEP: '+str(step)+' |8===D| TIME: '+str(time)+' days ====')
     print('*** Compute Solution')
     #**** compute of G&R at t_n **** F_{gr}(t_{n+1})
-    growth_remodeling = GetGrowthRemodeling(time,Delta_t,mesh,growth_remodeling,Stress_H,FibreStress,Softness)
-    material.growth_remodeling = growth_remodeling
+    field_variables[:,11:23] = GetGrowthRemodeling(time,Delta_t,mesh,field_variables[:,11:23],Stress_H,FibreStress,Softness)
+    material.field_variables = field_variables
     #**** compute mechanical equilibrium at t_{n+1} **** F(t_{n+1})
     solution = fem_solver_gr.Solve(formulation=formulation, mesh=mesh, material=material,
             boundary_condition=boundary_condition, Eulerx=euler_x)
@@ -356,6 +353,6 @@ while time<total_time:
     TotalDisplacements = solution.sol[:,:,-1]
     euler_x = mesh.points + TotalDisplacements
     file_out = open("growth_remodeling.txt","a")
-    file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f\n'%(step,np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),growth_remodeling[0,0],growth_remodeling[0,1],growth_remodeling[0,2],growth_remodeling[0,3],growth_remodeling[0,4],growth_remodeling[0,5],growth_remodeling[0,6],growth_remodeling[0,7],growth_remodeling[0,8],growth_remodeling[0,9],growth_remodeling[0,10],growth_remodeling[0,11]))
+    file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f \n'%(0,1000.*np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),field_variables[0,11],field_variables[0,12],field_variables[0,13],field_variables[0,14],field_variables[0,15],field_variables[0,16],field_variables[0,17],field_variables[0,18],field_variables[0,19],field_variables[0,20],field_variables[0,21],field_variables[0,22]))
     file_out.close()
-"""
+

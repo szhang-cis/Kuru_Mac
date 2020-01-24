@@ -117,9 +117,9 @@ Y=0.001
 Ld=0.010
 den_=241.5
 dens=241.5
-Delta_t=10.0
+Delta_t=1.0
 time=0.0
-while time<100.0
+while time<3000.0
     global time += Delta_t
     global den_,dens
     backeuler = newton_raphson(time,Delta_t,Y,den_)

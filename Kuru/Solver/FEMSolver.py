@@ -353,11 +353,11 @@ class FEMSolver(object):
         ##############################################################################
 
         ##############################################################################
+        if material.has_field_variables:
+            material.MappingFieldVariables(mesh,function_spaces[0])
         # AT THE MOMENT ALL HESSIANS SEEMINGLY HAVE THE SAME SIGNATURE SO THIS IS O.K.
         try:
             F = np.eye(material.ndim,material.ndim)[None,:,:]
-            #GR = np.ones((1,12),dtype=np.float64)
-            #E = np.random.rand(material.ndim)
             material.Hessian(KinematicMeasures(F,self.analysis_nature))
         except TypeError:
             # CATCH ONLY TypeError. OTHER MATERIAL CONSTANT RELATED ERRORS ARE SELF EXPLANATORY

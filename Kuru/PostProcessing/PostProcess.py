@@ -15,7 +15,7 @@ from Kuru import FunctionSpace, QuadratureRule
 #from Florence.FunctionSpace import Hex, HexES
 
 from Kuru.FiniteElements.LocalAssembly.KinematicMeasures import *
-#from Florence.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
+from Kuru.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
 from Kuru import Mesh
 #from Florence.MeshGeneration import vtk_writer
 #from Florence.Utils import constant_camera_view
@@ -128,7 +128,7 @@ class PostProcess(object):
         Domain = FunctionSpace(mesh, p=C+1, evaluate_at_nodes=True)
         Jm = Domain.Jm
         AllGauss = Domain.AllGauss
-        Bases = Domain.Bases  #JOANDLAUBRIE
+        Bases = Domain.Bases
 
         # requires_geometry_update = fem_solver.requires_geometry_update
         requires_geometry_update = True # ALWAYS TRUE FOR THIS ROUTINE
@@ -171,25 +171,25 @@ class PostProcess(object):
                 LagrangeElemCoords = points[elements[elem,:],:]
                 EulerELemCoords = Eulerx[elements[elem,:],:]
                 # GROWTH-REMODELING VALUES FOR THIS ELEMENT
-                ElemGrowthRemodeling = material.growth_remodeling[elements[elem,:],:]
-                ElemRadialStretch = material.deposition_stretch['Radial'][mesh.elements[elem,:]]
-                ElemTangentialPenal = material.mu2D[mesh.elements[elem,:]]
+                material.MappingFieldVariables(mesh,Domain,elem)
 
                 if material.has_low_level_dispatcher:
 
                     # GET LOCAL KINEMATICS
-                    SpatialGradient, F[elem,:,:,:], detJ = _KinematicMeasures_(Jm, AllGauss[:,0], LagrangeElemCoords,
-                        EulerELemCoords, requires_geometry_update)
+                    SpatialGradient, F[elem,:,:,:], detJ = _KinematicMeasures_(Jm, AllGauss[:,0],
+                            LagrangeElemCoords, EulerELemCoords, requires_geometry_update)
 
                     if self.formulation.fields == "electro_mechanics":
                         # GET ELECTRIC FIELD
                         ElectricFieldx[elem,:,:] = - np.einsum('ijk,j',SpatialGradient,ElectricPotentialElem)
                         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
-                        _D_dum ,CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:], ElectricFieldx[elem,:,:], elem=elem)
+                        _D_dum ,CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],
+                                ElectricFieldx[elem,:,:], elem=elem)
                         ElectricDisplacementx[elem,:,:] = _D_dum[:,:,0]
                     elif self.formulation.fields == "mechanics":
                         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
                         CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
+                        FibreStress[elem,:,:],Softness[elem,:,:] = material.LLConstituentStress(F[elem,:,:,:],elem)
 
                 else:
                     # GAUSS LOOP IN VECTORISED FORM
@@ -200,10 +200,6 @@ class PostProcess(object):
                     F[elem,:,:,:] = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
                     # COMPUTE REMAINING KINEMATIC MEASURES
                     StrainTensors = KinematicMeasures(F[elem,:,:,:], fem_solver.analysis_nature)
-                    # GROWTH-REMODELING VALUES AT GAUSS POINTS OR NODES (JOANDLAUBRIE)
-                    ggrowth_remodeling = np.einsum('ij,ik->jk',Bases,ElemGrowthRemodeling)
-                    gradial_stretch = np.einsum('ij,i->j',Bases,ElemRadialStretch)
-                    gmu2D = np.einsum('ij,i->j',Bases,ElemTangentialPenal)
 
                     # GEOMETRY UPDATE IS A MUST
                     # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
@@ -217,20 +213,17 @@ class PostProcess(object):
                     # LOOP OVER GAUSS POINTS
                     for counter in range(AllGauss.shape[0]):
 
-                        growth_remodeling = ggrowth_remodeling[counter,:]
-                        radial_stretch = gradial_stretch[counter]
-                        mu2D = gmu2D[counter]
                         if material.energy_type == "enthalpy":
                             # COMPUTE CAUCHY STRESS TENSOR
-                            CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,
-                                growth_remodeling,radial_stretch,mu2D,elem,counter)
+                            CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
+                            FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
+                                StrainTensors,elem,counter)
 
                         elif material.energy_type == "internal_energy":
-                            # COMPUTE CAUCHY STRESS TENSOR (JOANDLAUBRIE)
-                            CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,
-                                growth_remodeling,radial_stretch,mu2D,elem,counter)
+                            # COMPUTE CAUCHY STRESS TENSOR
+                            CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
                             FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
-                                StrainTensors,growth_remodeling,elem,counter)
+                                StrainTensors,elem,counter)
 
 
             if average_derived_quantities:

@@ -43,9 +43,9 @@ class DisplacementFormulation(VariationalPrinciple):
         # GET THE FIELDS AT THE ELEMENT LEVEL
         LagrangeElemCoords = mesh.points[mesh.elements[elem,:],:]
         EulerElemCoords = Eulerx[mesh.elements[elem,:],:]
-        # GET DEPOSITION-STRETCH AND GROWTH-REMODELING FIELDS AT ELEMENT LEVEL (JOANDLAUBRIE)
-        if material.has_growth_remodeling:
-            material.MappingGrowthRemodeling(elem,mesh,function_space)
+        # GET FIELD VARIABLES AT ELEMENT LEVEL AND BY GAUSS POINT
+        if material.has_field_variables:
+            material.MappingFieldVariables(mesh,function_space,elem)
 
         # COMPUTE THE STIFFNESS MATRIX
         if material.has_low_level_dispatcher:
@@ -80,7 +80,6 @@ class DisplacementFormulation(VariationalPrinciple):
         inv = np.linalg.inv
         Jm = function_space.Jm
         AllGauss = function_space.AllGauss
-        Bases = function_space.Bases
 
         # ALLOCATE
         stiffness = np.zeros((nodeperelem*nvar,nodeperelem*nvar),dtype=np.float64)

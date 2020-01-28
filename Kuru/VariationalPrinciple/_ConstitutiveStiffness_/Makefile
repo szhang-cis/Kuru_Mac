@@ -1,7 +1,7 @@
 PYTHON_VERSION = python2.7
 PYTHON_LANG_LEVEL = 2
 PYTHON_INCLUDE_PATH = /usr/include/python2.7/
-PYTHON_LD_PATH = /usr/lib/
+PYTHON_LD_PATH = /usr/lib/python2.7/
 EXT_POSTFIX = so
 CYTHONFLAGS = -DNPY_NO_DEPRECATED_API
 
@@ -31,19 +31,20 @@ ifeq ($(findstring mkl,$(BLAS_VERSION)),mkl)
 CXXFLAGS += -DHAS_MKL
 endif
 
-NUMPY_INCLUDE_PATH = /usr/local/lib/python2.7/dist-packages/numpy/core/include
+#NUMPY_INCLUDE_PATH = /usr/local/lib/python2.7/dist-packages/numpy/core/include
+NUMPY_INCLUDE_PATH = /usr/include/numpy/
 
 ifeq ($(findstring g++,$(CXX)),g++)
 ifneq ($(findstring clang++,$(CXX)),clang++)
 CXXFLAGS += -Wno-cpp -Wno-unused-function -Wno-maybe-uninitialized -fabi-version=6
 CXXFLAGS += -march=native -ffast-math -fwrapv -funroll-loops -finline-functions -finline-limit=$(INLINE_THRESHOLD) -ffp-contract=fast
 else
-CXXFLAGS += -Wno-uninitialized -Wno-missing-braces -Wno-#warnings
+CXXFLAGS += -Wno-uninitialized -Wno-missing-braces -Wno -warnings
 CXXFLAGS += -march=native -ffast-math -mllvm -inline-threshold=$(INLINE_THRESHOLD) -ffp-contract=fast
 endif
 endif
 ifeq ($(findstring c++,$(CXX)),c++)
-CXXFLAGS += -Wno-uninitialized -Wno-missing-braces -Wno-#NPY_NO_DEPRECATED_API
+CXXFLAGS += -Wno-uninitialized -Wno-missing-braces -Wno -NPY_NO_DEPRECATED_API
 CXXFLAGS += -march=native -ffast-math -mllvm -inline-threshold=$(INLINE_THRESHOLD) -ffp-contract=fast
 endif
 ifeq ($(findstring icpc,$(CXX)),icpc)

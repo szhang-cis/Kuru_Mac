@@ -1,6 +1,6 @@
 import numpy as np
 
-#from Florence.FunctionSpace import Line
+from Kuru.FunctionSpace import Line
 #from Florence.FunctionSpace import Tri
 #from Florence.FunctionSpace import Tet
 from Kuru.FunctionSpace import Quad, QuadES

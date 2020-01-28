@@ -35,7 +35,7 @@ def Directions(mesh):
 #============================================================
 #===============  FUNG QUADRATIC   ==========================
 #============================================================
-def _FungQuad_(optimise=False):
+def FungQuad(optimise=False):
     ProblemPath = os.path.dirname(os.getcwd())
     mesh_file = ProblemPath + '/Quarter_Ring.msh'
     #===============  MESH PROCESING  ==========================
@@ -87,7 +87,7 @@ def _FungQuad_(optimise=False):
     fibre_direction = Directions(mesh)
 
     # Define hyperelastic material for mesh
-    material = AnisotropicFungQuadratic(ndim,
+    material = IncompressibleAnisotropicFungQuadratic(ndim,
             mu=72.0*total_density,
             kappa=72.0*total_density*33.0,
             k1=568.0*total_density,
@@ -138,15 +138,15 @@ def _FungQuad_(optimise=False):
                        optimise=optimise,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=3)
+                       number_of_load_increments=1)
 
     #=================  SOLUTION  =======================
     # Call the solver
     solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
         material=material, boundary_condition=boundary_condition)
     # Write to paraview
-    solution.WriteVTK('FungQ',quantity=0)
+    #solution.WriteVTK('FungQ',quantity=0)
     #print(solution.sol[:,:,-1])
 
 if __name__=="__main__":
-    _FungQuad_(optimise=True)
+    FungQuad(optimise=True)

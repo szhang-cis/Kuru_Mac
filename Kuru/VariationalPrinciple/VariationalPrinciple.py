@@ -42,7 +42,6 @@ class VariationalPrinciple(object):
 
         self.compute_post_quadrature = compute_post_quadrature
 
-
         # GET NUMBER OF VARIABLES
         self.GetNumberOfVariables()
 

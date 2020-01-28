@@ -6,6 +6,7 @@ from Kuru.FiniteElements.LocalAssembly.KinematicMeasures import *
 from Kuru.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
 from .DisplacementApproachIndices import *
 from ._ConstitutiveStiffnessDF_ import __ConstitutiveStiffnessIntegrandDF__
+from ._VolumetricStiffness_ import _VolumetricStiffnessIntegrand_
 #from ._TractionDF_ import __TractionIntegrandDF__
 #from Florence.Tensor import issymetric
 
@@ -103,7 +104,7 @@ class DisplacementFormulation(VariationalPrinciple):
             ParentGradientx = np.einsum('ijk,jl->kil',Jm, EulerELemCoords)
             # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N) (ngauss x nodesperelem x ndim)]
             SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx),Jm)
-            # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE)
+            # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE) (dv = dV*J)
             detJ = np.einsum('i,i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)),np.abs(StrainTensors['J']))
         else:
             # SPATIAL GRADIENT AND MATERIAL GRADIENT TENSORS ARE EQUAL
@@ -111,6 +112,21 @@ class DisplacementFormulation(VariationalPrinciple):
             # COMPUTE ONCE detJ
             detJ = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
 
+        # COMPUTE PARAMETERS FOR MEAN DILATATION METHOD, IT NEEDS TO BE BEFORE COMPUTE HESSIAN AND STRESS
+        if material.is_incompressible:
+            dVolume = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
+            MaterialVolume, CurrentVolume = 0.0, 0.0
+            for i in range(AllGauss.shape[0]):
+                CurrentVolume += detJ[i]
+                MaterialVolume += dVolume[i]
+
+            material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
+            # AVERAGE SPATIAL GRADIENT IN PHYSICAL ELEMENT [\frac{1}{v} \int \nabla (N) dv (nodeperelem x ndim)]
+            AverageSpatialGradient = np.einsum('ijk,i->jk',SpatialGradient,detJ)
+            AverageSpatialGradient = AverageSpatialGradient.flatten()
+            stiffness_k = np.einsum('i,j->ij',AverageSpatialGradient,AverageSpatialGradient)
+            stiffness_k *= material.kappa/MaterialVolume
+            stiffness += stiffness_k
 
         # LOOP OVER GAUSS POINTS
         for counter in range(AllGauss.shape[0]):
@@ -136,15 +152,19 @@ class DisplacementFormulation(VariationalPrinciple):
             # INTEGRATE STIFFNESS
             stiffness += BDB_1*detJ[counter]
 
-
         return stiffness, tractionforce
 
     def __GetLocalStiffness__(self, function_space, material, LagrangeElemCoords, EulerELemCoords, fem_solver, elem=0):
         """Get stiffness matrix of the system"""
 
         # GET LOCAL KINEMATICS
-        SpatialGradient, F, detJ = _KinematicMeasures_(function_space.Jm, function_space.AllGauss[:,0],
+        SpatialGradient, F, detJ, dV = _KinematicMeasures_(function_space.Jm, function_space.AllGauss[:,0],
             LagrangeElemCoords, EulerELemCoords, fem_solver.requires_geometry_update)
+        # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
+        if material.is_incompressible:
+            stiffness_k, pressure = _VolumetricStiffnessIntegrand_(SpatialGradient, detJ, dV, self.nvar)
+            material.pressure = material.kappa*pressure
+            stiffness_k *= material.kappa
         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
         CauchyStressTensor, H_Voigt = material.KineticMeasures(F,elem=elem)
         # COMPUTE LOCAL CONSTITUTIVE STIFFNESS AND TRACTION
@@ -153,6 +173,8 @@ class DisplacementFormulation(VariationalPrinciple):
         # COMPUTE GEOMETRIC STIFFNESS
         if material.nature != "linear":
             stiffness += self.__GeometricStiffnessIntegrand__(SpatialGradient,CauchyStressTensor,detJ)
+        if material.is_incompressible:
+            stiffness += stiffness_k
 
         return stiffness, tractionforce
 

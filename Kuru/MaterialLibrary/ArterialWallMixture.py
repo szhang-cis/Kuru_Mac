@@ -25,6 +25,7 @@ class ArterialWallMixture(Material):
         self.is_transversely_isotropic = True
         self.energy_type = "internal_energy"
         self.nature = "nonlinear"
+        #self.fields = "mechanics"
         self.fields = "mechanics"
 
         if self.ndim==3:
@@ -37,6 +38,7 @@ class ArterialWallMixture(Material):
         #self.has_low_level_dispatcher = False
 
         # FIELD VARIABLES AS GROWTH_&_REMODELING AND/OR DEPOSITION STRETCHES, ETC
+        self.has_growth_remodeling = True
         self.has_field_variables = True
         #self.has_field_variables = False
 
@@ -113,7 +115,7 @@ class ArterialWallMixture(Material):
         H_Voigt = 2.*mu*(J_ela**(-2./3.)/J)*(1./9.*trb*einsum('ij,kl',I,I) - \
                 1./3.*einsum('ij,kl',I,b_ela) - 1./3.*einsum('ij,kl',b_ela,I) + \
                 1./6.*trb*(einsum('il,jk',I,I) + einsum('ik,jl',I,I)) ) + \
-                kappa*(J_ela/J)*((2.*J-1.)*einsum('ij,kl',I,I)-(J-1.)*(einsum('ik,jl',I,I)+einsum('il,jk',I,I)))
+                kappa*(J_ela/J)*((2.*J_ela-1.)*einsum('ij,kl',I,I)-(J_ela-1.)*(einsum('ik,jl',I,I)+einsum('il,jk',I,I)))
 
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:
@@ -203,7 +205,7 @@ class ArterialWallMixture(Material):
         elif self.ndim == 2:
             trb = trace(b_ela) + 1.
 
-        stress = mu*(J_ela**(-2./3.)/J)*(b_ela-1./3.*trb*I) + kappa*(J-1.)*(J_ela/J)*I
+        stress = mu*(J_ela**(-2./3.)/J)*(b_ela-1./3.*trb*I) + kappa*(J_ela-1.)*(J_ela/J)*I
 
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:

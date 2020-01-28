@@ -54,8 +54,9 @@ class NearlyIncompressibleNeoHookean(Material):
         # ISOCHORIC
         H_Voigt = 2*mu*J**(-5./3.)*(1./9.*trace(b)*einsum('ij,kl',I,I) - \
             1./3.*(einsum('ij,kl',b,I) + einsum('ij,kl',I,b)) +\
-            1./6.*trace(b)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)) ) +\
-            kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
+            1./6.*trace(b)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)) )
+        # VOLUMETRIC CHANGES
+        H_Voigt += kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
 
         H_Voigt = Voigt(H_Voigt,1)
 
@@ -72,6 +73,7 @@ class NearlyIncompressibleNeoHookean(Material):
 
         mu = self.mu
         kappa = self.kappa
-        stress = mu*J**(-5./3.)*(b - 1./3.*trace(b)*I) + kappa*(J-1.)*I
+        stress = mu*J**(-5./3.)*(b - 1./3.*trace(b)*I)
+        stress += kappa*(J-1.)*I
 
         return stress

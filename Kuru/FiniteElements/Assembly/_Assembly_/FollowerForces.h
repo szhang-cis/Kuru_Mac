@@ -197,7 +197,7 @@ void GetFacesForces(Real *stiff_face,
             N[idof*nvar*ngauss+i*ngauss+k] = Bases[j*ngauss+k];
             gNx[idof*nvar*ngauss+i*ngauss+k] = Jm[0*nodeperface*ngauss+j*ngauss+k];
             gNy[idof*nvar*ngauss+i*ngauss+k] = Jm[1*nodeperface*ngauss+j*ngauss+k];
-	 }
+	     }
       }
    }
    std::fill(tangentialx,tangentialx+ngauss*nvar,0.0);

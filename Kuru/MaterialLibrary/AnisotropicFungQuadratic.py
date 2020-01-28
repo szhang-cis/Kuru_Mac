@@ -31,13 +31,11 @@ class AnisotropicFungQuadratic(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        self.has_low_level_dispatcher = True
-        #self.has_low_level_dispatcher = False
+        #self.has_low_level_dispatcher = True
+        self.has_low_level_dispatcher = False
 
     def KineticMeasures(self,F, elem=0):
         N = self.anisotropic_orientations[elem,:,:]
-        if N.ndim != 2:
-            raise ValueError("Dimension of fibre orientations must be 2 after choose element")
         from Kuru.MaterialLibrary.LLDispatch._AnisotropicFungQuadratic_ import KineticMeasures
         return KineticMeasures(self, np.ascontiguousarray(F), np.ascontiguousarray(N))
 
@@ -66,7 +64,7 @@ class AnisotropicFungQuadratic(Material):
 
         # Anisotropic contibution
         for i_fibre in range(2):
-            N = self.anisotropic_orientations[i_fibre][elem][:,None]
+            N = self.anisotropic_orientations[elem][i_fibre][:,None]
             FN = np.dot(F,N)[:,0]
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)
@@ -98,7 +96,7 @@ class AnisotropicFungQuadratic(Material):
 
         # Anisotropic contibution
         for i_fibre in range(2):
-            N = self.anisotropic_orientations[i_fibre][elem][:,None]
+            N = self.anisotropic_orientations[elem][i_fibre][:,None]
             FN = np.dot(F,N)[:,0]
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)

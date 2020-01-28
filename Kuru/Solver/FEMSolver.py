@@ -293,21 +293,13 @@ class FEMSolver(object):
         ###########################################################################
         self.requires_geometry_update = True
         if formulation.fields == "mechanics":
-            if self.analysis_nature == "nonlinear" or self.has_prestress:
+            if self.analysis_nature == "nonlinear":
                 self.requires_geometry_update = True
             else:
                 self.requires_geometry_update = False
-        # FOR DYNAMIC PROBLEMS GEOMETRY NEEDS TO BE UPDATED ALWAYS
-        if self.analysis_type == "dynamic":
-            if formulation.fields == "mechanics":
-                self.requires_geometry_update = True
 
         # CHECK IF MATERIAL MODEL AND ANALYSIS TYPE ARE COMPATIBLE
         #############################################################################
-        if material.nature == "linear" and self.analysis_nature == "nonlinear":
-            if formulation.fields != "electrostatics":
-                raise RuntimeError("Cannot perform nonlinear analysis with linear material model")
-
         if material.fields != formulation.fields:
             raise RuntimeError("Incompatible material model and formulation type")
 
@@ -515,7 +507,6 @@ class FEMSolver(object):
                 TotalDisp = self.IncrementalLinearElasticitySolver(function_spaces, formulation, mesh, material,
                     boundary_condition, solver, TotalDisp, Eulerx, NeumannForces)
                 return self.__makeoutput__(mesh, TotalDisp, formulation, function_spaces, material)
-
 
         # ASSEMBLE STIFFNESS MATRIX AND TRACTION FORCES FOR THE FIRST TIME (INTERNAL ENERGY)
         if self.analysis_type == "static":

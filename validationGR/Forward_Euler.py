@@ -218,7 +218,7 @@ fibre_direction = Directions(mesh)
 # Define hyperelastic material for mesh
 material = ArterialWallMixture(ndim,
             mu=72.0,
-            kappa=72.0*20.0,
+            kappa=72.0*33.0,
             k1m=7.6,
             k2m=11.4,
             k1c=568.0,
@@ -275,7 +275,7 @@ fem_solver_h = FEMSolver(analysis_nature="nonlinear",
                        analysis_type="static",
                        break_at_stagnation=False,
                        maximum_iteration_for_newton_raphson=50,
-                       optimise=False,
+                       optimise=True,
                        print_incremental_log=True,
                        has_moving_boundary=True,
                        number_of_load_increments=1)
@@ -284,7 +284,7 @@ fem_solver_gr = FEMSolver(analysis_nature="nonlinear",
                        analysis_type="static",
                        break_at_stagnation=False,
                        maximum_iteration_for_newton_raphson=50,
-                       optimise=False,
+                       optimise=True,
                        print_incremental_log=True,
                        has_moving_boundary=True,
                        number_of_load_increments=1)
@@ -303,8 +303,9 @@ dmesh_bounds = dmesh.Bounds
 distortion = np.sqrt(dmesh_bounds[0,0]**2+dmesh_bounds[0,1]**2+dmesh_bounds[0,2]**2)/0.010
 print('Distortion: '+str(distortion))
 # Write Homeostatic state to paraview
-solution.WriteVTK('ForwardEuler_0',quantity=0)
+#solution.WriteVTK('ForwardEuler_0',quantity=0)
 print('... Homeostatic step finished')
+
 # HOMEOSTATIC POSTPROCESS
 solution.StressRecovery()
 #DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
@@ -314,7 +315,6 @@ Softness = solution.recovered_fields['Softness'][-1,:,:]
 # Update mesh coordinates
 TotalDisplacements = solution.sol[:,:,-1]
 euler_x = mesh.points + TotalDisplacements
-
 file_out = open("growth_remodeling.txt","w+")
 file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f \n'%(0,1000.*np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2),field_variables[0,11],field_variables[0,12],field_variables[0,13],field_variables[0,14],field_variables[0,15],field_variables[0,16],field_variables[0,17],field_variables[0,18],field_variables[0,19],field_variables[0,20],field_variables[0,21],field_variables[0,22]))
 file_out.close()
@@ -326,7 +326,7 @@ print('=====================================')
 # Growth and Remodeling steps [10 days]
 total_time = 5500
 time = 0.0
-Delta_t = 30.0
+Delta_t = 10.0
 step = 0
 while time<total_time:
     # prepare for next step
@@ -345,7 +345,7 @@ while time<total_time:
         file_out.close()
         exit('MODEL DID NOT CONVERGE!')
     #**** STEPS POSTPROCESS ****
-    solution.WriteVTK('ForwardEuler_'+str(step),quantity=0)
+    #solution.WriteVTK('ForwardEuler_'+str(step),quantity=0)
     solution.StressRecovery()
     FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
     Softness = solution.recovered_fields['Softness'][-1,:,:]

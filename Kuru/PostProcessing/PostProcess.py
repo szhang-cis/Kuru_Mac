@@ -176,8 +176,12 @@ class PostProcess(object):
                 if material.has_low_level_dispatcher:
 
                     # GET LOCAL KINEMATICS
-                    SpatialGradient, F[elem,:,:,:], detJ = _KinematicMeasures_(Jm, AllGauss[:,0],
+                    SpatialGradient, F[elem,:,:,:], detJ, dV = _KinematicMeasures_(Jm, AllGauss[:,0],
                             LagrangeElemCoords, EulerELemCoords, requires_geometry_update)
+                    # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
+                    if material.is_incompressible:
+                        stiffness_k, pressure = _VolumetricStiffnessIntegrand_(SpatialGradient, detJ, dV, formulation.nvar)
+                        material.pressure = material.kappa*pressure
 
                     if self.formulation.fields == "electro_mechanics":
                         # GET ELECTRIC FIELD
@@ -189,7 +193,8 @@ class PostProcess(object):
                     elif self.formulation.fields == "mechanics":
                         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
                         CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
-                        FibreStress[elem,:,:],Softness[elem,:,:] = material.LLConstituentStress(F[elem,:,:,:],elem)
+                        if material.has_field_variables:
+                            FibreStress[elem,:,:],Softness[elem,:,:] = material.LLConstituentStress(F[elem,:,:,:],elem)
 
                 else:
                     # GAUSS LOOP IN VECTORISED FORM
@@ -210,20 +215,32 @@ class PostProcess(object):
                     detJ = np.einsum('i,i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)),
                         np.abs(StrainTensors['J']))
 
+                    # COMPUTE PARAMETERS FOR MEAN DILATATION METHOD, IT NEEDS TO BE BEFORE COMPUTE HESSIAN AND STRESS
+                    if material.is_incompressible:
+                        dVolume = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
+                        MaterialVolume, CurrentVolume = 0.0, 0.0
+                        for i in range(AllGauss.shape[0]):
+                            CurrentVolume += detJ[i]
+                            MaterialVolume += dVolume[i]
+
+                        material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
+
                     # LOOP OVER GAUSS POINTS
                     for counter in range(AllGauss.shape[0]):
 
                         if material.energy_type == "enthalpy":
                             # COMPUTE CAUCHY STRESS TENSOR
                             CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
-                            FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
-                                StrainTensors,elem,counter)
+                            if material.has_field_variables:
+                                FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
+                                    StrainTensors,elem,counter)
 
                         elif material.energy_type == "internal_energy":
                             # COMPUTE CAUCHY STRESS TENSOR
                             CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
-                            FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
-                                StrainTensors,elem,counter)
+                            if material.has_field_variables:
+                                FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
+                                    StrainTensors,elem,counter)
 
 
             if average_derived_quantities:

@@ -24,6 +24,9 @@ class Material(object):
         # MATERIAL CONSTANTS
         self.rho = density
 
+        # MIXED FORMULATION FOR VOLUME CHANGE
+        self.pressure = 0.0
+
         # SET ALL THE OPTIONAL KEYWORD ARGUMENTS
         for i in kwargs.keys():
             if "__" not in i:
@@ -49,3 +52,6 @@ class Material(object):
 
         self.has_low_level_dispatcher = False
         self.has_field_variables = False
+        self.has_growth_remodeling = False
+
+

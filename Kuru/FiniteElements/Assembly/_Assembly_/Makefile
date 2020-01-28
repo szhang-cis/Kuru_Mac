@@ -28,7 +28,8 @@ CXXSTD=-std=c++14
 OPTFLAGS= -O3 -fno-strict-aliasing -DNDEBUG
 CXXFLAGS= -fPIC -shared -pthread -Wall $(CYTHONFLAGS) $(OPTFLAGS)
 
-NUMPY_INCLUDE_PATH = /usr/local/lib/python2.7/dist-packages/numpy/core/include
+#NUMPY_INCLUDE_PATH = /usr/local/lib/python2.7/dist-packages/numpy/core/include
+NUMPY_INCLUDE_PATH = /usr/include/numpy/
 
 BLAS_VERSION = openblas
 BLAS_INCLUDE_PATH = /opt/OpenBLAS/include/
@@ -42,6 +43,7 @@ KIN_INC = ../../LocalAssembly/_KinematicMeasures_/
 MAT_INC = ../../../MaterialLibrary/LLDispatch/CythonSource/
 CONDF_INC = ../../../VariationalPrinciple/_ConstitutiveStiffness_/
 GEO_INC = ../../../VariationalPrinciple/_GeometricStiffness_/
+VOL_INC = ../../../VariationalPrinciple/_VolumetricStiffness_/
 TRAC_INC = ../../../VariationalPrinciple/_Traction_/
 
 ifeq ($(findstring g++,$(CXX)),g++)
@@ -84,7 +86,7 @@ build_module:
 	$(CYTHON) $(ASSEMBLY_NAME).pyx
 	$(CXX) $(CXXSTD) $(CXXFLAGS) $(ASSEMBLY_NAME).cpp -o $(ASSEMBLY_NAME).$(EXT_POSTFIX) -I. \
 	-I$(PYTHON_INCLUDE_PATH) -I$(NUMPY_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION) -I$(KIN_INC) -I../../../Tensor/ -I$(MAT_INC) \
-	-I$(GEO_INC) -I$(CONDF_INC) -I$(BLAS_INCLUDE_PATH) -L$(BLAS_LD_PATH) -l$(BLAS_VERSION)
+	-I$(GEO_INC) -I$(VOL_INC) -I$(CONDF_INC) -I$(BLAS_INCLUDE_PATH) -L$(BLAS_LD_PATH) -l$(BLAS_VERSION)
 	$(MOVE) $(ASSEMBLY_NAME).$(EXT_POSTFIX) ../
 
 clean:

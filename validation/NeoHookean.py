@@ -56,9 +56,9 @@ PressureBoundary['InnerFaces'] = InnerFaces
 total_density = 1050.0
 
 # Define hyperelastic material for mesh
-material = NearlyIncompressibleNeoHookean(ndim,
+material = IncompressibleNeoHookean(ndim,
             mu=144.0*total_density,
-            kappa=144.0*total_density*33.0)
+            kappa=144.0*total_density*100.0)
 
 # kappa/mu=33 give nu=0.485 (Poisson's ratio)
 #==================  FORMULATION  =========================
@@ -103,12 +103,12 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        optimise=True,
                        print_incremental_log=True,
                        has_moving_boundary=True,
-                       number_of_load_increments=3)
+                       number_of_load_increments=1)
 
 #=================  SOLUTION  =======================
 # Call the solver
 solution = fem_solver.Solve(formulation=formulation, mesh=mesh,
     material=material, boundary_condition=boundary_condition)
 # Write to paraview
-solution.WriteVTK('_NeoHookean_',quantity=0)
+#solution.WriteVTK('NeoHookean',quantity=0)
 #print(solution.sol[:,:,-1])

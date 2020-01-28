@@ -84,36 +84,21 @@ class Mesh(object):
 
         self.filename = None
 
-    @property
-    def Bounds(self):
-        """Returns bounds of a mesh i.e. the minimum and maximum coordinate values
-            in every direction
-        """
-        assert self.points is not None
-
-        if self.points.shape[1] == 3:
-            bounds = np.array([[np.min(self.points[:,0]),
-                        np.min(self.points[:,1]),
-                        np.min(self.points[:,2])],
-                        [np.max(self.points[:,0]),
-                        np.max(self.points[:,1]),
-                        np.max(self.points[:,2])]])
-            makezero(bounds)
-            return bounds
-        elif self.points.shape[1] == 2:
-            bounds = np.array([[np.min(self.points[:,0]),
-                        np.min(self.points[:,1])],
-                        [np.max(self.points[:,0]),
-                        np.max(self.points[:,1])]])
-            makezero(bounds)
-            return bounds
-        elif self.points.shape[1] == 1:
-            bounds = np.array([[np.min(self.points[:,0])],
-                        [np.max(self.points[:,0])]])
-            makezero(bounds)
-            return bounds
+    def GetEdges(self):
+        assert self.element_type is not None
+        if self.element_type == "tri":
+            self.GetEdgesTri()
+        elif self.element_type == "quad":
+            self.GetEdgesQuad()
+        elif self.element_type == "pent":
+            self.GetEdgesPent()
+        elif self.element_type == "tet":
+            self.GetEdgesTet()
+        elif self.element_type == "hex":
+            self.GetEdgesHex()
         else:
-            raise ValueError("Invalid dimension for mesh coordinates")
+            raise ValueError('Type of element not understood')
+        return self.all_edges
 
     def GetBoundaryEdges(self):
         assert self.element_type is not None
@@ -130,150 +115,6 @@ class Mesh(object):
         else:
             raise ValueError('Type of element not understood')
         return self.edges
-
-    def GetElementsEdgeNumberingQuad(self):
-        """Finds edges of elements and their flags saying which edge they are [0,1,2,3].
-            At most a quad can have all its four edges on the boundary.
-
-        output:
-
-            edge_elements:              [1D array] array containing elements which have edges
-                                        on the boundary
-
-                                        Note that this method sets the self.edge_to_element to edge_elements,
-                                        so the return value is not strictly necessary
-        """
-
-        if isinstance(self.edge_to_element,np.ndarray):
-            if self.edge_to_element.shape[0] > 1:
-                return self.edge_to_element
-
-        # GET ALL EDGES FROM THE ELEMENT CONNECTIVITY
-        if self.all_edges is None:
-            self.GetEdgesQuad()
-
-
-        p = self.InferPolynomialDegree()
-
-        # FIND WHICH FACE NODES ARE IN WHICH ELEMENT
-        node_arranger = NodeArrangementQuad(p-1)[0]
-
-        # GET ALL EDGES FROM THE ELEMENT CONNECTIVITY
-        all_edges = np.concatenate((self.elements[:,node_arranger[0,:]],self.elements[:,node_arranger[1,:]],
-            self.elements[:,node_arranger[2,:]],self.elements[:,node_arranger[3,:]]),axis=0).astype(np.int64)
-
-        all_edges, idx = unique2d(all_edges,consider_sort=True,order=False, return_index=True)
-        edge_elements = np.zeros((all_edges.shape[0],2),dtype=np.int64)
-        # edge_elements = np.zeros((self.edges.shape[0],2),dtype=np.int64)
-
-        edge_elements[:,0] = idx % self.elements.shape[0]
-        edge_elements[:,1] = idx // self.elements.shape[0]
-
-        self.edge_to_element = edge_elements
-        return self.edge_to_element
-
-    def GetBoundaryEdgesHex(self):
-        """Find boundary edges (lines) of hexahedral mesh.
-        """
-
-        p = self.InferPolynomialDegree()
-        # DO NOT COMPUTE IF ALREADY COMPUTED
-        if isinstance(self.edges,np.ndarray):
-            if self.edges.shape[0] > 1:
-                # IF LINEAR VERSION IS COMPUTED, DO COMPUTE HIGHER VERSION
-                if self.edges.shape[1] == 2 and p > 1:
-                    pass
-                else:
-                    return
-
-
-        # FIRST GET BOUNDARY FACES
-        if not isinstance(self.faces,np.ndarray):
-            self.GetBoundaryFacesHex()
-
-        # BUILD A 2D MESH
-        tmesh = Mesh()
-        tmesh.element_type = "quad"
-        tmesh.elements = self.faces
-        tmesh.nelem = tmesh.elements.shape[0]
-        del tmesh.faces
-        del tmesh.points
-
-        # ALL THE EDGES CORRESPONDING TO THESE BOUNDARY FACES ARE BOUNDARY EDGES
-        self.edges =  tmesh.GetEdgesQuad()
-
-    def GetFaces(self):
-        assert self.element_type is not None
-        if self.element_type == "tet":
-            self.GetFacesTet()
-        elif self.element_type == "hex":
-            self.GetFacesHex()
-        elif self.element_type=="tri" or self.element_type=="quad":
-            raise ValueError("2D mesh does not have faces")
-        else:
-            raise ValueError('Type of element not understood')
-        return self.all_faces
-
-    def GetBoundaryFaces(self):
-        assert self.element_type is not None
-        if self.element_type == "tet":
-            self.GetBoundaryFacesTet()
-        elif self.element_type == "hex":
-            self.GetBoundaryFacesHex()
-        elif self.element_type=="tri" or self.element_type=="quad":
-            raise ValueError("2D mesh does not have faces")
-        else:
-            raise ValueError('Type of element not understood')
-        return self.faces
-
-    def GetBoundaryFacesHex(self):
-        """Find boundary faces (surfaces) of a hexahedral mesh"""
-
-        p = self.InferPolynomialDegree()
-
-        # DO NOT COMPUTE IF ALREADY COMPUTED
-        if isinstance(self.faces,np.ndarray):
-            if self.faces.shape[0] > 1:
-                # IF LINEAR VERSION IS COMPUTED, DO COMPUTE HIGHER VERSION
-                if self.faces.shape[1] == 4 and p > 1:
-                    pass
-                else:
-                    return
-
-        node_arranger = NodeArrangementHex(p-1)[0]
-
-        # CONCATENATE ALL THE FACES MADE FROM ELEMENTS
-        all_faces = np.concatenate((np.concatenate((
-                np.concatenate((np.concatenate((np.concatenate((self.elements[:,node_arranger[0,:]],
-                self.elements[:,node_arranger[1,:]]),axis=0),self.elements[:,node_arranger[2,:]]),axis=0),
-                self.elements[:,node_arranger[3,:]]),axis=0),self.elements[:,node_arranger[4,:]]),axis=0),
-                self.elements[:,node_arranger[5,:]]),axis=0).astype(np.int64)
-        # GET UNIQUE ROWS
-        uniques, idx, inv = unique2d(all_faces,consider_sort=True,order=False,return_index=True,return_inverse=True)
-
-        # ROWS THAT APPEAR ONLY ONCE CORRESPOND TO BOUNDARY FACES
-        freqs_inv = itemfreq(inv)
-        faces_ext_flags = freqs_inv[freqs_inv[:,1]==1,0]
-        # NOT ARRANGED
-        self.faces = uniques[faces_ext_flags,:]
-
-        # DETERMINE WHICH FACE OF THE ELEMENT THEY ARE
-        boundary_face_to_element = np.zeros((faces_ext_flags.shape[0],2),dtype=np.int64)
-
-        # FURTHER RE-ARRANGEMENT / ARANGE THE NODES BASED ON THE ORDER THEY APPEAR
-        # IN ELEMENT CONNECTIVITY
-        # THIS STEP IS NOT NECESSARY INDEED - ITS JUST FOR RE-ARANGMENT OF FACES
-        all_faces_in_faces = in2d(all_faces,self.faces,consider_sort=True)
-        all_faces_in_faces = np.where(all_faces_in_faces==True)[0]
-
-        # boundary_face_to_element = np.zeros((all_faces_in_faces.shape[0],2),dtype=np.int64)
-        boundary_face_to_element[:,0] = all_faces_in_faces % self.elements.shape[0]
-        boundary_face_to_element[:,1] = all_faces_in_faces // self.elements.shape[0]
-
-        # ARRANGE FOR ANY ORDER OF BASES/ELEMENTS AND ASSIGN DATA MEMBERS
-        self.faces = self.elements[boundary_face_to_element[:,0][:,None],node_arranger[boundary_face_to_element[:,1],:]]
-        self.faces = self.faces.astype(np.uint64)
-        self.boundary_face_to_element = boundary_face_to_element
 
     def GetEdgesQuad(self):
         """Find the all edges of a quadrilateral mesh.
@@ -364,6 +205,181 @@ class Mesh(object):
         self.boundary_edge_to_element = boundary_edge_to_element
 
         return self.edges
+
+    def GetBoundaryEdgesHex(self):
+        """Find boundary edges (lines) of hexahedral mesh.
+        """
+
+        p = self.InferPolynomialDegree()
+        # DO NOT COMPUTE IF ALREADY COMPUTED
+        if isinstance(self.edges,np.ndarray):
+            if self.edges.shape[0] > 1:
+                # IF LINEAR VERSION IS COMPUTED, DO COMPUTE HIGHER VERSION
+                if self.edges.shape[1] == 2 and p > 1:
+                    pass
+                else:
+                    return
+
+
+        # FIRST GET BOUNDARY FACES
+        if not isinstance(self.faces,np.ndarray):
+            self.GetBoundaryFacesHex()
+
+        # BUILD A 2D MESH
+        tmesh = Mesh()
+        tmesh.element_type = "quad"
+        tmesh.elements = self.faces
+        tmesh.nelem = tmesh.elements.shape[0]
+        del tmesh.faces
+        del tmesh.points
+
+        # ALL THE EDGES CORRESPONDING TO THESE BOUNDARY FACES ARE BOUNDARY EDGES
+        self.edges =  tmesh.GetEdgesQuad()
+
+    @property
+    def Bounds(self):
+        """Returns bounds of a mesh i.e. the minimum and maximum coordinate values
+            in every direction
+        """
+        assert self.points is not None
+
+        if self.points.shape[1] == 3:
+            bounds = np.array([[np.min(self.points[:,0]),
+                        np.min(self.points[:,1]),
+                        np.min(self.points[:,2])],
+                        [np.max(self.points[:,0]),
+                        np.max(self.points[:,1]),
+                        np.max(self.points[:,2])]])
+            makezero(bounds)
+            return bounds
+        elif self.points.shape[1] == 2:
+            bounds = np.array([[np.min(self.points[:,0]),
+                        np.min(self.points[:,1])],
+                        [np.max(self.points[:,0]),
+                        np.max(self.points[:,1])]])
+            makezero(bounds)
+            return bounds
+        elif self.points.shape[1] == 1:
+            bounds = np.array([[np.min(self.points[:,0])],
+                        [np.max(self.points[:,0])]])
+            makezero(bounds)
+            return bounds
+        else:
+            raise ValueError("Invalid dimension for mesh coordinates")
+
+    def GetElementsEdgeNumberingQuad(self):
+        """Finds edges of elements and their flags saying which edge they are [0,1,2,3].
+            At most a quad can have all its four edges on the boundary.
+
+        output:
+
+            edge_elements:              [1D array] array containing elements which have edges
+                                        on the boundary
+
+                                        Note that this method sets the self.edge_to_element to edge_elements,
+                                        so the return value is not strictly necessary
+        """
+
+        if isinstance(self.edge_to_element,np.ndarray):
+            if self.edge_to_element.shape[0] > 1:
+                return self.edge_to_element
+
+        # GET ALL EDGES FROM THE ELEMENT CONNECTIVITY
+        if self.all_edges is None:
+            self.GetEdgesQuad()
+
+
+        p = self.InferPolynomialDegree()
+
+        # FIND WHICH FACE NODES ARE IN WHICH ELEMENT
+        node_arranger = NodeArrangementQuad(p-1)[0]
+
+        # GET ALL EDGES FROM THE ELEMENT CONNECTIVITY
+        all_edges = np.concatenate((self.elements[:,node_arranger[0,:]],self.elements[:,node_arranger[1,:]],
+            self.elements[:,node_arranger[2,:]],self.elements[:,node_arranger[3,:]]),axis=0).astype(np.int64)
+
+        all_edges, idx = unique2d(all_edges,consider_sort=True,order=False, return_index=True)
+        edge_elements = np.zeros((all_edges.shape[0],2),dtype=np.int64)
+        # edge_elements = np.zeros((self.edges.shape[0],2),dtype=np.int64)
+
+        edge_elements[:,0] = idx % self.elements.shape[0]
+        edge_elements[:,1] = idx // self.elements.shape[0]
+
+        self.edge_to_element = edge_elements
+        return self.edge_to_element
+
+    def GetFaces(self):
+        assert self.element_type is not None
+        if self.element_type == "tet":
+            self.GetFacesTet()
+        elif self.element_type == "hex":
+            self.GetFacesHex()
+        elif self.element_type=="tri" or self.element_type=="quad":
+            raise ValueError("2D mesh does not have faces")
+        else:
+            raise ValueError('Type of element not understood')
+        return self.all_faces
+
+    def GetBoundaryFaces(self):
+        assert self.element_type is not None
+        if self.element_type == "tet":
+            self.GetBoundaryFacesTet()
+        elif self.element_type == "hex":
+            self.GetBoundaryFacesHex()
+        elif self.element_type=="tri" or self.element_type=="quad":
+            raise ValueError("2D mesh does not have faces")
+        else:
+            raise ValueError('Type of element not understood')
+        return self.faces
+
+    def GetBoundaryFacesHex(self):
+        """Find boundary faces (surfaces) of a hexahedral mesh"""
+
+        p = self.InferPolynomialDegree()
+
+        # DO NOT COMPUTE IF ALREADY COMPUTED
+        if isinstance(self.faces,np.ndarray):
+            if self.faces.shape[0] > 1:
+                # IF LINEAR VERSION IS COMPUTED, DO COMPUTE HIGHER VERSION
+                if self.faces.shape[1] == 4 and p > 1:
+                    pass
+                else:
+                    return
+
+        node_arranger = NodeArrangementHex(p-1)[0]
+
+        # CONCATENATE ALL THE FACES MADE FROM ELEMENTS
+        all_faces = np.concatenate((np.concatenate((
+                np.concatenate((np.concatenate((np.concatenate((self.elements[:,node_arranger[0,:]],
+                self.elements[:,node_arranger[1,:]]),axis=0),self.elements[:,node_arranger[2,:]]),axis=0),
+                self.elements[:,node_arranger[3,:]]),axis=0),self.elements[:,node_arranger[4,:]]),axis=0),
+                self.elements[:,node_arranger[5,:]]),axis=0).astype(np.int64)
+        # GET UNIQUE ROWS
+        uniques, idx, inv = unique2d(all_faces,consider_sort=True,order=False,return_index=True,return_inverse=True)
+
+        # ROWS THAT APPEAR ONLY ONCE CORRESPOND TO BOUNDARY FACES
+        freqs_inv = itemfreq(inv)
+        faces_ext_flags = freqs_inv[freqs_inv[:,1]==1,0]
+        # NOT ARRANGED
+        self.faces = uniques[faces_ext_flags,:]
+
+        # DETERMINE WHICH FACE OF THE ELEMENT THEY ARE
+        boundary_face_to_element = np.zeros((faces_ext_flags.shape[0],2),dtype=np.int64)
+
+        # FURTHER RE-ARRANGEMENT / ARANGE THE NODES BASED ON THE ORDER THEY APPEAR
+        # IN ELEMENT CONNECTIVITY
+        # THIS STEP IS NOT NECESSARY INDEED - ITS JUST FOR RE-ARANGMENT OF FACES
+        all_faces_in_faces = in2d(all_faces,self.faces,consider_sort=True)
+        all_faces_in_faces = np.where(all_faces_in_faces==True)[0]
+
+        # boundary_face_to_element = np.zeros((all_faces_in_faces.shape[0],2),dtype=np.int64)
+        boundary_face_to_element[:,0] = all_faces_in_faces % self.elements.shape[0]
+        boundary_face_to_element[:,1] = all_faces_in_faces // self.elements.shape[0]
+
+        # ARRANGE FOR ANY ORDER OF BASES/ELEMENTS AND ASSIGN DATA MEMBERS
+        self.faces = self.elements[boundary_face_to_element[:,0][:,None],node_arranger[boundary_face_to_element[:,1],:]]
+        self.faces = self.faces.astype(np.uint64)
+        self.boundary_face_to_element = boundary_face_to_element
 
     def GetElementsWithBoundaryEdgesQuad(self):
         """Finds elements which have edges on the boundary.
@@ -596,6 +612,34 @@ class Mesh(object):
         if not silent:
             print('Finished generating the high order mesh. Time taken', time()-t_mesh,'sec')
 
+    def Line(self, left_point=0., right_point=1., n=10, p=1):
+        """Creates a mesh of on a line for 1D rods/beams"""
+
+        self.__reset__()
+        assert p > 0
+
+        if not isinstance(left_point,float):
+            if not isinstance(left_point,int):
+                raise ValueError("left_point must be a number")
+        if not isinstance(right_point,float):
+            if not isinstance(right_point,int):
+                raise ValueError("right_point must be a number")
+        left_point = float(left_point)
+        right_point = float(right_point)
+
+        n = int(n)
+        if n <= 0:
+            raise ValueError("Number of discretisation cannot be zero or negative: n={}".format(n))
+
+
+        self.element_type = "line"
+        self.points = np.linspace(left_point,right_point,p*n+1)[:,None]
+        self.elements = np.zeros((n,p+1),dtype=np.int64)
+        for i in range(p+1):
+            self.elements[:,i] = p*np.arange(0,n)+i
+        self.nelem = self.elements.shape[0]
+        self.nnode = self.points.shape[0]
+
     def Rectangle(self,lower_left_point=(0,0), upper_right_point=(2,1),
         nx=5, ny=5, element_type="tri"):
         """Creates a quad/tri mesh of a rectangle"""
@@ -687,7 +731,7 @@ class Mesh(object):
         return els, pos, flat_pos
 
     def Read(self, filename=None, element_type="tri", reader_type=None, reader_type_format=None,
-        reader_type_version=None, order=0, read_surface_info=False, **kwargs):
+        reader_type_version=None, order=0, read_surface_info=False, read_curve_info=False, **kwargs):
         """Convenience mesh reader method to dispatch call to subsequent apporpriate methods"""
 
         if not isinstance(filename,str):
@@ -729,7 +773,7 @@ class Mesh(object):
             #self.ReadGIDMesh(filename, element_type, order)
             raise ValueError("Reader not implemented yet")
         elif self.reader_type is 'gmsh':
-            self.ReadGmsh(filename, element_type=element_type, read_surface_info=read_surface_info)
+            self.ReadGmsh(filename, element_type=element_type, read_surface_info=read_surface_info, read_curve_info=read_curve_info)
         elif self.reader_type is 'obj':
             #self.ReadOBJ(filename, element_type=element_type, read_surface_info=read_surface_info)
             raise ValueError("Reader not implemented yet")
@@ -769,7 +813,7 @@ class Mesh(object):
         self.elements = np.ascontiguousarray(self.elements)
         return
 
-    def ReadGmsh(self, filename, element_type, read_surface_info=False):
+    def ReadGmsh(self, filename, element_type, read_surface_info=False,read_curve_info=False):
         """Read gmsh (.msh) file"""
 
         try:
@@ -799,9 +843,11 @@ class Mesh(object):
         elif element_type == "tri":
             el = 2
             bel = 2
+            cel = 1
         elif element_type == "quad":
             el = 3
             bel = 3
+            cel = 1
         elif element_type == "tet":
             el = 4
             bel = 2
@@ -856,7 +902,7 @@ class Mesh(object):
                     elem_blocks, self.nelem = int(plist[0]), int(plist[1])
                     break
 
-        points, elements, faces, face_to_surface = [],[], [], []
+        points, elements, faces, face_to_surface, edges, curve = [], [], [], [], [], []
         if msh_version == 2:
             # RE-READ
             ns = self.InferNumberOfNodesPerElement(p=1,element_type=element_type)
@@ -874,12 +920,16 @@ class Mesh(object):
                     if line_counter > rem_nelem and line_counter < self.nelem+rem_nelem+1:
                         if int(plist[1]) == el:
                             elements.append([int(i) for i in plist[-ns:]])
-
                         # READ SURFACE INFO - CERTAINLY ONLY IF SURFACE ELEMENT TYPE IS QUADS/TRIS
                         if read_surface_info:
                             if int(plist[1]) == bel:
                                 faces.append([int(i) for i in plist[5:]])
                                 face_to_surface.append(int(plist[4]))
+                        # READ CURVE INFO - CERTAINLY ONLY IF CURVE ELEMENT TYPE IS LINE
+                        if read_curve_info:
+                            if int(plist[1]) == cel:
+                                edges.append([int(i) for i in plist[5:]])
+                                curve.append(int(plist[4]))
 
 
         elif msh_version == 4:
@@ -962,6 +1012,27 @@ class Mesh(object):
             self.GetFaces()
             self.GetBoundaryFaces()
             self.GetBoundaryEdges()
+
+        if read_curve_info:
+            edges = np.array(edges,copy=True) - 1
+            assert self.edges.shape[0]==edges.shape[0]
+            edge_to_curve = np.array(curve, dtype=np.int64, copy=True).flatten()
+            for i in range(self.edges.shape[0]):
+                for j in range(edges.shape[0]):
+                    if self.edges[i,0]==edges[j,0] and self.edges[i,1]==edges[j,1]:
+                        edge_to_curve[i] = curve[j]
+                    elif self.edges[i,0]==edges[j,1] and self.edges[i,1]==edges[j,0]:
+                        edge_to_curve[i] = curve[j]
+            self.edge_to_curve = np.array(edge_to_curve, dtype=np.int64, copy=True).flatten()
+            self.edge_to_curve -= 1
+            # CHECK IF FILLED
+            if isinstance(self.edge_to_curve,list):
+                if not self.edge_to_curve:
+                    self.edge_to_curve = None
+            elif isinstance(self.edge_to_curve,np.ndarray):
+                if self.edge_to_curve.shape[0]==0:
+                    self.edge_to_curve = None
+
 
         return
 

@@ -34,14 +34,14 @@ void _GlobalAssemblyDF__ArterialWallMixture_(const Real *points,
                         Real rho,
                         Real mu,
                         Real kappa,
-            			Real k1m,
-			            Real k2m,
-            			Real k1c,
-			            Real k2c,
-			            const Real *anisotropic_orientations,
-			            Integer nfibre,
-			            const Real *field_variables,
-			            Integer nfield
+            		Real k1m,
+			Real k2m,
+            		Real k1c,
+			Real k2c,
+			const Real *anisotropic_orientations,
+			Integer nfibre,
+			const Real *field_variables,
+			Integer nfield
                         ) {
 
     Integer ndof = nvar*nodeperelem;
@@ -109,6 +109,7 @@ void _GlobalAssemblyDF__ArterialWallMixture_(const Real *points,
                 }
             }
         }
+
         // COMPUTE KINETIC MEASURES
         mat_obj.KineticMeasures(stress, hessian, ndim, ngauss, F, nfibre, &anisotropic_orientations[elem*nfibre*ndim], nfield, GaussFieldVariables);
 
@@ -183,11 +184,14 @@ void _GlobalAssemblyDF__ArterialWallMixture_(const Real *points,
     deallocate(F);
     deallocate(SpatialGradient);
     deallocate(detJ);
+    deallocate(dV);
     deallocate(stress);
     deallocate(hessian);
     deallocate(traction);
     deallocate(stiffness);
     deallocate(geometric_stiffness);
+
+    deallocate(GaussFieldVariables);
 }
 
 

@@ -35,7 +35,7 @@ class IncompressibleNeoHookean(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        self.has_low_level_dispatcher = True
+        self.has_low_level_dispatcher = False
 
     def KineticMeasures(self,F, elem=0):
         from Kuru.MaterialLibrary.LLDispatch._IncompressibleNeoHookean_ import KineticMeasures

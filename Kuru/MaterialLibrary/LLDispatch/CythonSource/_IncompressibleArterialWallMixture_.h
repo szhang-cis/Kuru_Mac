@@ -1,51 +1,48 @@
 #include "_MaterialBase_.h"
 
 template<typename U>
-class _ArterialWallMixture_ : public _MaterialBase_<U> {
+class _IncompressibleArterialWallMixture_ : public _MaterialBase_<U> {
 public:
     U mu;
-    U kappa;
     U k1m;
     U k2m;
     U k1c;
     U k2c;
 
-    FASTOR_INLINE _ArterialWallMixture_() = default;
+    FASTOR_INLINE _IncompressibleArterialWallMixture_() = default;
 
     FASTOR_INLINE
-    _ArterialWallMixture_(U mu, U kappa, U k1m, U k2m, U k1c, U k2c) {
+    _IncompressibleArterialWallMixture_(U mu, U k1m, U k2m, U k1c, U k2c) {
         this->mu = mu;
-        this->kappa = kappa;
     	this->k1m = k1m;
-	this->k2m = k2m;
-	this->k1c = k1c;
-        this->k2c = k2c;
+	    this->k2m = k2m;
+	    this->k1c = k1c;
+	    this->k2c = k2c;
     }
 
     FASTOR_INLINE
-    void SetParameters(U mu, U kappa, U k1m, U k2m, U k1c, U k2c){
+    void SetParameters(U mu, U k1m, U k2m, U k1c, U k2c){
         this->mu = mu;
-        this->kappa = kappa;
-	this->k1m = k1m;
-        this->k2m = k2m;
-        this->k1c = k1c;
-        this->k2c = k2c;
+	    this->k1m = k1m;
+	    this->k2m = k2m;
+	    this->k1c = k1c;
+	    this->k2c = k2c;
     }
 
 
     template<typename T=U, size_t ndim>
     FASTOR_INLINE
     std::tuple<Tensor<T,ndim,ndim>, typename MechanicsHessianType<T,ndim>::return_type>
-    _KineticMeasures_(const T *Fnp, const T *Nnp, int nfibre, const T *FVnp)
+    _KineticMeasures_(const T *Fnp, const T *Nnp, int nfibre, const T *FVnp, const T pressure)
     {
 
         // CREATE FASTOR TENSORS
 	// deformation gradient
         Tensor<T,ndim,ndim> F;
-        // local rotation tensor
+	// local rotation tensor
         Tensor<T,ndim,ndim> R;
-        Tensor<T,ndim> Normal;
-        // elastin deposition stretch in cylindrcal coordinates
+	Tensor<T,ndim> Normal;
+	// elastin deposition stretch in cylindrcal coordinates
         Tensor<T,ndim,ndim> Ge;
         // COPY NUMPY ARRAY TO FASTOR TENSORS
         copy_numpy(F,Fnp);
@@ -54,7 +51,7 @@ public:
         copy_numpy(Ge,FVnp);
 
 	// Fibres deposition stretches
-        T Gm = FVnp[9], Gc = FVnp[10];
+	T Gm = FVnp[9], Gc = FVnp[10];
 
         // FIND THE KINEMATIC MEASURES
         Tensor<Real,ndim,ndim> I; I.eye2();
@@ -74,7 +71,7 @@ public:
 	T trb = trace(b_ela);
 	if (ndim==2) { trb += 1.; }
 	T coeff0 = std::pow(J_ela,-2./3.);
-        Tensor<T,ndim,ndim> stress = (mu*coeff0/J*(b_ela-1./3.*trb*I) + kappa*J_ela/J*(J_ela-1.)*I)*FVnp[11];
+        Tensor<T,ndim,ndim> stress = (mu*coeff0/J*(b_ela-1./3.*trb*I) + (J_ela/J)*pressure*I)*FVnp[11];
 
         // FIND ELASTICITY TENSOR FOR ELASTIN
         auto II_ijkl = einsum<Index<i,j>,Index<k,l>>(I,I);
@@ -86,7 +83,7 @@ public:
 
         Tensor<T,ndim,ndim,ndim,ndim> elasticity = (2.*mu*coeff0/J*(1./9.*trb*II_ijkl-
 			1./3.*(Ib_ijkl+bI_ijkl)+1./6.*trb*(II_ikjl+II_iljk))+
-			kappa*J_ela/J*((2.*J_ela-1.)*II_ijkl-(J_ela-1.)*(II_ikjl+II_iljk)))*FVnp[11];
+			pressure*(J_ela/J)*(II_ijkl-(II_ikjl+II_iljk)))*FVnp[11];
 
 	// LOOP OVER FIBRES ORIENTATIONS
 	for (int n=1; n<nfibre; ++n) {
@@ -147,20 +144,20 @@ public:
 
     template<typename T>
     void KineticMeasures(T *Snp, T* Hnp, int ndim, int ngauss, const T *Fnp, int nfibre,
-		    const T *Nnp, int nfield, const T *FVnp);
+	const T *Nnp, int nfield, const T *FVnp, const T pressure);
 
 };
 
 template<> template<>
-void _ArterialWallMixture_<Real>::KineticMeasures<Real>(Real *Snp, Real* Hnp, int ndim, int ngauss, 
-		const Real *Fnp, int nfibre, const Real *Nnp, int nfield, const Real *FVnp)
+void _IncompressibleArterialWallMixture_<Real>::KineticMeasures<Real>(Real *Snp, Real* Hnp, int ndim, int ngauss, 
+	const Real *Fnp, int nfibre, const Real *Nnp, int nfield, const Real *FVnp, const Real pressure)
 {
 
     if (ndim==3) {
         Tensor<Real,3,3> stress;
         Tensor<Real,6,6> hessian;
         for (int g=0; g<ngauss; ++g) {
-            std::tie(stress,hessian) =_KineticMeasures_<Real,3>(Fnp+9*g, Nnp, nfibre, FVnp+nfield*g);
+            std::tie(stress,hessian) =_KineticMeasures_<Real,3>(Fnp+9*g, Nnp, nfibre, FVnp+nfield*g, pressure);
             copy_fastor(Snp,stress,g*9);
             copy_fastor(Hnp,hessian,g*36);
         }
@@ -169,7 +166,7 @@ void _ArterialWallMixture_<Real>::KineticMeasures<Real>(Real *Snp, Real* Hnp, in
         Tensor<Real,2,2> stress;
         Tensor<Real,3,3> hessian;
         for (int g=0; g<ngauss; ++g) {
-            std::tie(stress,hessian) =_KineticMeasures_<Real,2>(Fnp+4*g, Nnp, nfibre, FVnp+nfield*g);
+            std::tie(stress,hessian) =_KineticMeasures_<Real,2>(Fnp+4*g, Nnp, nfibre, FVnp+nfield*g, pressure);
             copy_fastor(Snp,stress,g*4);
             copy_fastor(Hnp,hessian,g*9);
         }

@@ -8,6 +8,7 @@ try:
     from ._LLADF__ArterialWallMixture_ import _LLADF__ArterialWallMixture_
     from ._LLADF__IncompressibleNeoHookean_ import _LLADF__IncompressibleNeoHookean_
     from ._LLADF__IncompressibleAnisotropicFungQuadratic_ import _LLADF__IncompressibleAnisotropicFungQuadratic_
+    from ._LLADF__IncompressibleArterialWallMixture_ import _LLADF__IncompressibleArterialWallMixture_
     has_low_level_dispatcher = True
 except ImportError:
     has_low_level_dispatcher = False

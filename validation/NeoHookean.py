@@ -58,7 +58,7 @@ total_density = 1050.0
 # Define hyperelastic material for mesh
 material = IncompressibleNeoHookean(ndim,
             mu=144.0*total_density,
-            kappa=144.0*total_density*100.0)
+            kappa=144.0*total_density*33.0)
 
 # kappa/mu=33 give nu=0.485 (Poisson's ratio)
 #==================  FORMULATION  =========================
@@ -100,7 +100,7 @@ fem_solver = FEMSolver(analysis_nature="nonlinear",
                        analysis_type="static",
                        break_at_stagnation=False,
                        maximum_iteration_for_newton_raphson=50,
-                       optimise=True,
+                       optimise=False,
                        print_incremental_log=True,
                        has_moving_boundary=True,
                        number_of_load_increments=1)

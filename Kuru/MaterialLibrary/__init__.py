@@ -2,6 +2,7 @@ from .MaterialBase import Material
 
 # SOFT TISSUE MATERIALS
 from .ArterialWallMixture import *
+from .IncompressibleArterialWallMixture import *
 
 # ISOTROPIC MATERIAL
 from .NearlyIncompressibleNeoHookean import *

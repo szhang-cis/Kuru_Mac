@@ -1,12 +1,12 @@
-#ifndef _LLADF__ANISOTROPICFUNGQUADRATIC_H
-#define _LLADF__ANISOTROPICFUNGQUADRATIC_H
+#ifndef _LLADF__ARTERIALWALLMIXTURE_H
+#define _LLADF__ARTERIALWALLMIXTURE_H
 
 #include "assembly_helper.h"
 #include "_ConstitutiveStiffnessDF_.h"
 #include "_VolumetricStiffness_.h"
-#include "_IncompressibleAnisotropicFungQuadratic_.h"
+#include "_IncompressibleArterialWallMixture_.h"
 
-void _GlobalAssemblyDF__IncompressibleAnisotropicFungQuadratic_(const Real *points,
+void _GlobalAssemblyDF__IncompressibleArterialWallMixture_(const Real *points,
                         const UInteger* elements,
                         const Real* Eulerx,
                         const Real* Bases,
@@ -35,10 +35,15 @@ void _GlobalAssemblyDF__IncompressibleAnisotropicFungQuadratic_(const Real *poin
                         Real rho,
                         Real mu,
                         Real kappa,
-		        Real k1,
-			Real k2,
+            		Real k1m,
+	                Real k2m,
+           		Real k1c,
+			Real k2c,
 			const Real *anisotropic_orientations,
-			Integer nfibre
+			Integer nfibre,
+			const Real *field_variables,
+			Integer nfield,
+			Integer has_growth_remodeling
                         ) {
 
     Integer ndof = nvar*nodeperelem;
@@ -46,11 +51,15 @@ void _GlobalAssemblyDF__IncompressibleAnisotropicFungQuadratic_(const Real *poin
 
     Real *LagrangeElemCoords        = allocate<Real>(nodeperelem*ndim);
     Real *EulerElemCoords           = allocate<Real>(nodeperelem*ndim);
+    Real *ElemFieldVariables        = allocate<Real>(nodeperelem*nfield);
 
     Real *F                         = allocate<Real>(ngauss*ndim*ndim);
     Real *SpatialGradient           = allocate<Real>(ngauss*nodeperelem*ndim);
     Real *detJ                      = allocate<Real>(ngauss);
     Real *dV                        = allocate<Real>(ngauss);
+    Real *GaussFieldVariables       = allocate<Real>(ngauss*nfield);
+    Real *density                   = allocate<Real>(ngauss);
+    Real *Growth                    = allocate<Real>(ngauss);
 
     Real *stress                    = allocate<Real>(ngauss*ndim*ndim);
     Real *hessian                   = allocate<Real>(ngauss*H_VoigtSize*H_VoigtSize);
@@ -61,7 +70,7 @@ void _GlobalAssemblyDF__IncompressibleAnisotropicFungQuadratic_(const Real *poin
     Real *geometric_stiffness       = allocate<Real>(local_capacity);
     Real *volumetric_stiffness      = allocate<Real>(local_capacity);
 
-    auto mat_obj = _IncompressibleAnisotropicFungQuadratic_<Real>(mu,k1,k2);
+    auto mat_obj = _IncompressibleArterialWallMixture_<Real>(mu,k1m,k2m,k1c,k2c);
 
     // LOOP OVER ELEMETNS
     for (Integer elem=0; elem < nelem; ++elem) {
@@ -72,6 +81,9 @@ void _GlobalAssemblyDF__IncompressibleAnisotropicFungQuadratic_(const Real *poin
             for (Integer j=0; j<ndim; ++j) {
                 LagrangeElemCoords[i*ndim+j] = points[inode*ndim+j];
                 EulerElemCoords[i*ndim+j] = Eulerx[inode*ndim+j];
+            }
+            for (Integer k=0; k<nfield; ++k) {
+                ElemFieldVariables[i*nfield+k] = field_variables[inode*nfield+k];
             }
         }
 
@@ -93,14 +105,31 @@ void _GlobalAssemblyDF__IncompressibleAnisotropicFungQuadratic_(const Real *poin
                             requires_geometry_update
                             );
 
+        // MAP FIELD VARIABLES FROM NODES TO GAUSS POINTS
+        //GaussFieldVariables = np.einsum('ki,kj->ij',Bases,ElemFieldVariables)
+        std::fill(GaussFieldVariables,GaussFieldVariables+ngauss*nfield,0.);
+        for (Integer i=0; i<ngauss; ++i) {
+            for (Integer j=0; j<nfield; ++j) {
+                for (Integer k=0; k<nodeperelem; ++k) {
+                GaussFieldVariables[i*nfield+j] += Bases[k*ngauss+i]*ElemFieldVariables[k*nfield+j];
+                }
+            }
+        }
+
         // COMPUTE VOLUMETRIC STIFFNESS AND PRESSURE
         std::fill(volumetric_stiffness,volumetric_stiffness+local_capacity,0.);
         std::fill(pressure,pressure+1,0.);
-        _VolumetricStiffnessFiller_(volumetric_stiffness, pressure, SpatialGradient, detJ, dV, ndim, nvar, nodeperelem, ngauss);
-        pressure[0] = kappa*pressure[0];
+	for (Integer g=0; g<ngauss; ++g) {
+	   density[g] = GaussFieldVariables[g*nfield+11];
+	   Growth[g] = GaussFieldVariables[g*nfield+22];
+	}
+        _VolumetricStiffnessFiller_(volumetric_stiffness, pressure, SpatialGradient, detJ, dV,
+			density, Growth, has_growth_remodeling, ndim, nvar, nodeperelem, ngauss);
+        pressure[0] *= kappa;
 
         // COMPUTE KINETIC MEASURES
-        mat_obj.KineticMeasures(stress, hessian, ndim, ngauss, F, nfibre, &anisotropic_orientations[elem*nfibre*ndim], pressure[0]);
+        mat_obj.KineticMeasures(stress, hessian, ndim, ngauss, F, nfibre,
+			&anisotropic_orientations[elem*nfibre*ndim], nfield, GaussFieldVariables, pressure[0]);
 
         // COMPUTE CONSTITUTIVE STIFFNESS AND TRACTION
         std::fill(stiffness,stiffness+local_capacity,0.);
@@ -157,12 +186,12 @@ void _GlobalAssemblyDF__IncompressibleAnisotropicFungQuadratic_(const Real *poin
 
         // ASSEMBLE TRACTIONS
         {
-            for (Integer i = 0; i<nodeperelem; ++i) {
-                UInteger T_idx = elements[elem*nodeperelem+i]*nvar;
-                for (Integer iterator = 0; iterator < nvar; ++iterator) {
-                    T[T_idx+iterator] += traction[i*nvar+iterator];
-                }
-            }
+        for (Integer i = 0; i<nodeperelem; ++i) {
+           UInteger T_idx = elements[elem*nodeperelem+i]*nvar;
+           for (Integer iterator = 0; iterator < nvar; ++iterator) {
+              T[T_idx+iterator] += traction[i*nvar+iterator];
+           }
+        }
         }
 
     }
@@ -173,11 +202,18 @@ void _GlobalAssemblyDF__IncompressibleAnisotropicFungQuadratic_(const Real *poin
     deallocate(F);
     deallocate(SpatialGradient);
     deallocate(detJ);
+    deallocate(dV);
     deallocate(stress);
     deallocate(hessian);
+    deallocate(pressure);
     deallocate(traction);
     deallocate(stiffness);
     deallocate(geometric_stiffness);
+    deallocate(volumetric_stiffness);
+
+    deallocate(density);
+    deallocate(Growth);
+    deallocate(GaussFieldVariables);
 }
 
 

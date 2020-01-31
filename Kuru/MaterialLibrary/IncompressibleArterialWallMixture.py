@@ -6,7 +6,7 @@ from .MaterialBase import Material
 from Kuru.Tensor import trace, Voigt #, makezero
 
 
-class ArterialWallMixture(Material):
+class IncompressibleArterialWallMixture(Material):
     """A incompressible anisotropic Fung Quadratic model with the energy given by:
 
         W(C) = rho_e*mu/2*J**(-2/3)*(C:I) + rho_m*1/2*k1m/k2m*(exp(k2m*(FN.FN-1)**2)-1)
@@ -20,7 +20,7 @@ class ArterialWallMixture(Material):
 
     def __init__(self, ndim, **kwargs):
         mtype = type(self).__name__
-        super(ArterialWallMixture, self).__init__(mtype, ndim, **kwargs)
+        super(IncompressibleArterialWallMixture, self).__init__(mtype, ndim, **kwargs)
         self.nvar = self.ndim
         self.is_incompressible = True
         self.is_transversely_isotropic = True
@@ -35,10 +35,11 @@ class ArterialWallMixture(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        #self.has_low_level_dispatcher = True
-        self.has_low_level_dispatcher = False
+        self.has_low_level_dispatcher = True
+        #self.has_low_level_dispatcher = False
 
         # FIELD VARIABLES AS GROWTH_&_REMODELING AND/OR DEPOSITION STRETCHES, ETC
+        self.has_growth_remodeling = True
         self.has_field_variables = True
         #self.has_field_variables = False
 
@@ -61,7 +62,7 @@ class ArterialWallMixture(Material):
         # deposition (0-8 is elastin, 9 muscle, 10 collagen) then densities (11-16) remodeling (17-21) 
         # and growth (22)
         field_variables = self.FieldVariables
-        from Kuru.MaterialLibrary.LLDispatch._ArterialWallMixture_ import KineticMeasures
+        from Kuru.MaterialLibrary.LLDispatch._IncompressibleArterialWallMixture_ import KineticMeasures
         return KineticMeasures(self,np.ascontiguousarray(F),np.ascontiguousarray(anisotropic_orientations),
                 np.ascontiguousarray(field_variables))
 
@@ -95,7 +96,6 @@ class ArterialWallMixture(Material):
         F_g_inv = np.linalg.inv(F_g)
 
         #ELASTIN
-        kappa = self.kappa*self.FieldVariables[gcounter][11]
         mu = self.mu*self.FieldVariables[gcounter][11]
         Gh_ela = np.eye(3,3,dtype=np.float64)
         Gh_ela[0,0] = self.FieldVariables[gcounter][0]
@@ -112,10 +112,13 @@ class ArterialWallMixture(Material):
         elif self.ndim == 2:
             trb = trace(b_ela) + 1.
 
+        # ISOCHORIC COMPONENT OF ELASTIC ELASTIN
         H_Voigt = 2.*mu*(J_ela**(-2./3.)/J)*(1./9.*trb*einsum('ij,kl',I,I) - \
                 1./3.*einsum('ij,kl',I,b_ela) - 1./3.*einsum('ij,kl',b_ela,I) + \
-                1./6.*trb*(einsum('il,jk',I,I) + einsum('ik,jl',I,I)) ) + \
-                kappa*(J_ela/J)*((2.*J-1.)*einsum('ij,kl',I,I)-(J-1.)*(einsum('ik,jl',I,I)+einsum('il,jk',I,I)))
+                1./6.*trb*(einsum('il,jk',I,I) + einsum('ik,jl',I,I)) )
+        # VOLUMETRIC COMPONENT OF ELASTIC ELASTIN
+        H_Voigt += self.FieldVariables[gcounter][11]*self.pressure*(J_ela/J)*\
+                (einsum('ij,kl',I,I)-(einsum('ik,jl',I,I)+einsum('il,jk',I,I)))
 
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:
@@ -188,7 +191,6 @@ class ArterialWallMixture(Material):
         F_g_inv = np.linalg.inv(F_g)
 
         #ELASTIN
-        kappa = self.kappa*self.FieldVariables[gcounter][11]
         mu = self.mu*self.FieldVariables[gcounter][11]
         Gh_ela = np.eye(3,3,dtype=np.float64)
         Gh_ela[0,0] = self.FieldVariables[gcounter][0]
@@ -205,7 +207,10 @@ class ArterialWallMixture(Material):
         elif self.ndim == 2:
             trb = trace(b_ela) + 1.
 
-        stress = mu*(J_ela**(-2./3.)/J)*(b_ela-1./3.*trb*I) + kappa*(J-1.)*(J_ela/J)*I
+        # ISOCHORIC COMPONENT OF ELASTIC ELASTIN
+        stress = mu*(J_ela**(-2./3.)/J)*(b_ela-1./3.*trb*I)
+        # VOLUMETRIC COMPONENT OF ELASTIC ELASTIN
+        stress += self.FieldVariables[gcounter][11]*self.pressure*(J_ela/J)*I
 
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:

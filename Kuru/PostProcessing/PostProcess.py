@@ -180,8 +180,13 @@ class PostProcess(object):
                             LagrangeElemCoords, EulerELemCoords, requires_geometry_update)
                     # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
                     if material.is_incompressible:
-                        stiffness_k, pressure = _VolumetricStiffnessIntegrand_(SpatialGradient, detJ, dV, formulation.nvar)
-                        material.pressure = material.kappa*pressure
+                        MaterialVolume = np.sum(dV)
+                        if material.has_growth_remodeling:
+                            dve = np.true_divide(detJ,material.FieldVariables[:,22])
+                            CurrentVolume = np.sum(dve)
+                        else:
+                            CurrentVolume = np.sum(detJ)
+                        material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
                     if self.formulation.fields == "electro_mechanics":
                         # GET ELECTRIC FIELD
@@ -217,12 +222,13 @@ class PostProcess(object):
 
                     # COMPUTE PARAMETERS FOR MEAN DILATATION METHOD, IT NEEDS TO BE BEFORE COMPUTE HESSIAN AND STRESS
                     if material.is_incompressible:
-                        dVolume = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
-                        MaterialVolume, CurrentVolume = 0.0, 0.0
-                        for i in range(AllGauss.shape[0]):
-                            CurrentVolume += detJ[i]
-                            MaterialVolume += dVolume[i]
-
+                        dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
+                        MaterialVolume = np.sum(dV)
+                        if material.has_growth_remodeling:
+                            dve = np.true_divide(detJ,material.FieldVariables[:,22])
+                            CurrentVolume = np.sum(dve)
+                        else:
+                            CurrentVolume = np.sum(detJ)
                         material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
                     # LOOP OVER GAUSS POINTS

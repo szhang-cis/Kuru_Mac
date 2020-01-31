@@ -1,4 +1,4 @@
-#import numpy as np
+import numpy as np
 from .VariationalPrinciple import VariationalPrinciple
 #from Florence import QuadratureRule, FunctionSpace
 
@@ -6,7 +6,6 @@ from Kuru.FiniteElements.LocalAssembly.KinematicMeasures import *
 from Kuru.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
 from .DisplacementApproachIndices import *
 from ._ConstitutiveStiffnessDF_ import __ConstitutiveStiffnessIntegrandDF__
-from ._VolumetricStiffness_ import _VolumetricStiffnessIntegrand_
 #from ._TractionDF_ import __TractionIntegrandDF__
 #from Florence.Tensor import issymetric
 
@@ -112,20 +111,11 @@ class DisplacementFormulation(VariationalPrinciple):
             # COMPUTE ONCE detJ
             detJ = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
 
+        dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
+
         # COMPUTE PARAMETERS FOR MEAN DILATATION METHOD, IT NEEDS TO BE BEFORE COMPUTE HESSIAN AND STRESS
         if material.is_incompressible:
-            dVolume = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
-            MaterialVolume, CurrentVolume = 0.0, 0.0
-            for i in range(AllGauss.shape[0]):
-                CurrentVolume += detJ[i]
-                MaterialVolume += dVolume[i]
-
-            material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
-            # AVERAGE SPATIAL GRADIENT IN PHYSICAL ELEMENT [\frac{1}{v} \int \nabla (N) dv (nodeperelem x ndim)]
-            AverageSpatialGradient = np.einsum('ijk,i->jk',SpatialGradient,detJ)
-            AverageSpatialGradient = AverageSpatialGradient.flatten()
-            stiffness_k = np.einsum('i,j->ij',AverageSpatialGradient,AverageSpatialGradient)
-            stiffness_k *= material.kappa/MaterialVolume
+            stiffness_k = self.VolumetricStiffnessIntegrand(material, SpatialGradient, detJ, dV)
             stiffness += stiffness_k
 
         # LOOP OVER GAUSS POINTS
@@ -162,9 +152,7 @@ class DisplacementFormulation(VariationalPrinciple):
             LagrangeElemCoords, EulerELemCoords, fem_solver.requires_geometry_update)
         # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
         if material.is_incompressible:
-            stiffness_k, pressure = _VolumetricStiffnessIntegrand_(SpatialGradient, detJ, dV, self.nvar)
-            material.pressure = material.kappa*pressure
-            stiffness_k *= material.kappa
+            stiffness_k = self.VolumetricStiffnessIntegrand(material, SpatialGradient, detJ, dV)
         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
         CauchyStressTensor, H_Voigt = material.KineticMeasures(F,elem=elem)
         # COMPUTE LOCAL CONSTITUTIVE STIFFNESS AND TRACTION

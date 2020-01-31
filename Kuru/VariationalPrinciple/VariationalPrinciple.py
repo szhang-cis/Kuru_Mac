@@ -2,6 +2,7 @@ import numpy as np
 from Kuru import QuadratureRule, FunctionSpace , Mesh
 from Kuru.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
 from Kuru.VariationalPrinciple._GeometricStiffness_ import GeometricStiffnessIntegrand as GetGeomStiffness
+from ._VolumetricStiffness_ import _VolumetricStiffnessIntegrand_
 from .DisplacementApproachIndices import FillGeometricB
 #from ._MassIntegrand_ import __MassIntegrand__, __ConstantMassIntegrand__
 
@@ -177,3 +178,34 @@ class VariationalPrinciple(object):
         """Applies to displacement based formulation"""
         return GetGeomStiffness(np.ascontiguousarray(SpatialGradient),CauchyStressTensor, detJ, self.nvar)
 
+    def VolumetricStiffnessIntegrand(self, material, SpatialGradient, detJ, dV):
+        """Computes the volumetric stiffness using Hu-Washizu on Mean Dilatation method"""
+
+        if material.has_low_level_dispatcher:
+            stiffness, MeanVolume = _VolumetricStiffnessIntegrand_(material, SpatialGradient, detJ, dV, self.nvar)
+        else:
+            MaterialVolume = np.sum(dV)
+            if material.has_growth_remodeling is False:
+                CurrentVolume = np.sum(detJ)
+                # AVERAGE SPATIAL GRADIENT IN PHYSICAL ELEMENT [\frac{1}{v}\int\nabla(N)dv(nodeperelem x ndim)]
+                AverageSpatialGradient = np.einsum('ijk,i->jk',SpatialGradient,detJ)
+                AverageSpatialGradient = AverageSpatialGradient.flatten()
+                stiffness = np.einsum('i,j->ij',AverageSpatialGradient,AverageSpatialGradient)
+                MeanVolume = (CurrentVolume-MaterialVolume)/MaterialVolume
+            else:
+                dve = np.true_divide(detJ,material.FieldVariables[:,22])
+                CurrentElasticVolume = np.sum(dve)
+                # AVERAGE SPATIAL GRADIENT IN PHYSICAL ELEMENT [\frac{1}{v}\int\nabla(N)dv(nodeperelem x ndim)]
+                AverageDeformationv = np.einsum('i,ijk,i->jk',material.FieldVariables[:,11],SpatialGradient,dve)
+                AverageDeformationv = AverageDeformationv.flatten()
+                AverageDeformationu = np.einsum('ijk,i->jk',SpatialGradient,dve)
+                AverageDeformationu = AverageDeformationu.flatten()
+                stiffness = np.einsum('i,j->ij',AverageDeformationv,AverageDeformationu)
+                MeanVolume = (CurrentElasticVolume-MaterialVolume)/MaterialVolume
+
+            stiffness = np.true_divide(stiffness,MaterialVolume)
+
+        material.pressure = material.kappa*MeanVolume
+        stiffness *= material.kappa
+
+        return stiffness

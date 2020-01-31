@@ -619,14 +619,18 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE___VolumetricStiffness_
-#define __PYX_HAVE_API___VolumetricStiffness_
+#define __PYX_HAVE__Kuru__MaterialLibrary__LLDispatch__CythonSource___IncompressibleArterialWallMixture_
+#define __PYX_HAVE_API__Kuru__MaterialLibrary__LLDispatch__CythonSource___IncompressibleArterialWallMixture_
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
 #include "numpy/arrayobject.h"
 #include "numpy/ufuncobject.h"
-#include "_VolumetricStiffness_.h"
+#include "ios"
+#include "new"
+#include "stdexcept"
+#include "typeinfo"
+#include "_IncompressibleArterialWallMixture_.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -856,7 +860,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "_VolumetricStiffness_.pyx",
+  "CythonSource/_IncompressibleArterialWallMixture_.pyx",
   "__init__.pxd",
   "type.pxd",
 };
@@ -1086,14 +1090,14 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "_VolumetricStiffness_.pyx":10
+/* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":10
  * cimport numpy as np
  * 
  * ctypedef double Real             # <<<<<<<<<<<<<<
  * 
  * 
  */
-typedef double __pyx_t_21_VolumetricStiffness__Real;
+typedef double __pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real;
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -1301,83 +1305,11 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 /* ExtTypeTest.proto */
 static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
-/* GetItemInt.proto */
-#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
-               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
-#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
-                                                     int is_list, int wraparound, int boundscheck);
-
-/* ObjectGetItem.proto */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
-#else
-#define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
-#endif
-
-/* PyCFunctionFastCall.proto */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
-#else
-#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
-#endif
-
-/* PyFunctionFastCall.proto */
-#if CYTHON_FAST_PYCALL
-#define __Pyx_PyFunction_FastCall(func, args, nargs)\
-    __Pyx_PyFunction_FastCallDict((func), (args), (nargs), NULL)
-#if 1 || PY_VERSION_HEX < 0x030600B1
-static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, int nargs, PyObject *kwargs);
-#else
-#define __Pyx_PyFunction_FastCallDict(func, args, nargs, kwargs) _PyFunction_FastCallDict(func, args, nargs, kwargs)
-#endif
-#define __Pyx_BUILD_ASSERT_EXPR(cond)\
-    (sizeof(char [1 - 2*!(cond)]) - 1)
-#ifndef Py_MEMBER_SIZE
-#define Py_MEMBER_SIZE(type, member) sizeof(((type *)0)->member)
-#endif
-  static size_t __pyx_pyframe_localsplus_offset = 0;
-  #include "frameobject.h"
-  #define __Pxy_PyFrame_Initialize_Offsets()\
-    ((void)__Pyx_BUILD_ASSERT_EXPR(sizeof(PyFrameObject) == offsetof(PyFrameObject, f_localsplus) + Py_MEMBER_SIZE(PyFrameObject, f_localsplus)),\
-     (void)(__pyx_pyframe_localsplus_offset = ((size_t)PyFrame_Type.tp_basicsize) - Py_MEMBER_SIZE(PyFrameObject, f_localsplus)))
-  #define __Pyx_PyFrame_GetLocalsplus(frame)\
-    (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
-#endif
-
-/* PyObjectCall2Args.proto */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
-/* PyObjectCallMethO.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
-#endif
-
-/* PyObjectCallOneArg.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
 /* BufferFallbackError.proto */
 static void __Pyx_RaiseBufferFallbackError(void);
 
-#define __Pyx_BufPtrCContig2d(type, buf, i0, s0, i1, s1) ((type)((char*)buf + i0 * s0) + i1)
-#define __Pyx_BufPtrCContig1d(type, buf, i0, s0) ((type)buf + i0)
 #define __Pyx_BufPtrCContig3d(type, buf, i0, s0, i1, s1, i2, s2) ((type)((char*)buf + i0 * s0 + i1 * s1) + i2)
-#define __Pyx_BufPtrStrided1d(type, buf, i0, s0) (type)((char*)buf + i0 * s0)
+#define __Pyx_BufPtrCContig2d(type, buf, i0, s0, i1, s1) ((type)((char*)buf + i0 * s0) + i1)
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
@@ -1416,6 +1348,44 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
+
+/* PyCFunctionFastCall.proto */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
+#else
+#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
+#endif
+
+/* PyFunctionFastCall.proto */
+#if CYTHON_FAST_PYCALL
+#define __Pyx_PyFunction_FastCall(func, args, nargs)\
+    __Pyx_PyFunction_FastCallDict((func), (args), (nargs), NULL)
+#if 1 || PY_VERSION_HEX < 0x030600B1
+static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, int nargs, PyObject *kwargs);
+#else
+#define __Pyx_PyFunction_FastCallDict(func, args, nargs, kwargs) _PyFunction_FastCallDict(func, args, nargs, kwargs)
+#endif
+#define __Pyx_BUILD_ASSERT_EXPR(cond)\
+    (sizeof(char [1 - 2*!(cond)]) - 1)
+#ifndef Py_MEMBER_SIZE
+#define Py_MEMBER_SIZE(type, member) sizeof(((type *)0)->member)
+#endif
+  static size_t __pyx_pyframe_localsplus_offset = 0;
+  #include "frameobject.h"
+  #define __Pxy_PyFrame_Initialize_Offsets()\
+    ((void)__Pyx_BUILD_ASSERT_EXPR(sizeof(PyFrameObject) == offsetof(PyFrameObject, f_localsplus) + Py_MEMBER_SIZE(PyFrameObject, f_localsplus)),\
+     (void)(__pyx_pyframe_localsplus_offset = ((size_t)PyFrame_Type.tp_basicsize) - Py_MEMBER_SIZE(PyFrameObject, f_localsplus)))
+  #define __Pyx_PyFrame_GetLocalsplus(frame)\
+    (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
+#endif
+
+/* PyObjectCallMethO.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
+#endif
+
+/* PyObjectCallOneArg.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
 /* DictGetItem.proto */
 #if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
@@ -1534,6 +1504,48 @@ typedef struct {
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
+/* CppExceptionConversion.proto */
+#ifndef __Pyx_CppExn2PyErr
+#include <new>
+#include <typeinfo>
+#include <stdexcept>
+#include <ios>
+static void __Pyx_CppExn2PyErr() {
+  try {
+    if (PyErr_Occurred())
+      ; // let the latest Python exn pass through and ignore the current one
+    else
+      throw;
+  } catch (const std::bad_alloc& exn) {
+    PyErr_SetString(PyExc_MemoryError, exn.what());
+  } catch (const std::bad_cast& exn) {
+    PyErr_SetString(PyExc_TypeError, exn.what());
+  } catch (const std::bad_typeid& exn) {
+    PyErr_SetString(PyExc_TypeError, exn.what());
+  } catch (const std::domain_error& exn) {
+    PyErr_SetString(PyExc_ValueError, exn.what());
+  } catch (const std::invalid_argument& exn) {
+    PyErr_SetString(PyExc_ValueError, exn.what());
+  } catch (const std::ios_base::failure& exn) {
+    PyErr_SetString(PyExc_IOError, exn.what());
+  } catch (const std::out_of_range& exn) {
+    PyErr_SetString(PyExc_IndexError, exn.what());
+  } catch (const std::overflow_error& exn) {
+    PyErr_SetString(PyExc_OverflowError, exn.what());
+  } catch (const std::range_error& exn) {
+    PyErr_SetString(PyExc_ArithmeticError, exn.what());
+  } catch (const std::underflow_error& exn) {
+    PyErr_SetString(PyExc_ArithmeticError, exn.what());
+  } catch (const std::exception& exn) {
+    PyErr_SetString(PyExc_RuntimeError, exn.what());
+  }
+  catch (...)
+  {
+    PyErr_SetString(PyExc_RuntimeError, "Unknown exception");
+  }
+}
+#endif
 
 /* RealImag.proto */
 #if CYTHON_CCOMPLEX
@@ -1694,149 +1706,143 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 
-/* Module declarations from '_VolumetricStiffness_' */
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real = { "Real", NULL, sizeof(__pyx_t_21_VolumetricStiffness__Real), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "_VolumetricStiffness_"
-extern int __pyx_module_is_main__VolumetricStiffness_;
-int __pyx_module_is_main__VolumetricStiffness_ = 0;
+/* Module declarations from 'Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_' */
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real = { "Real", NULL, sizeof(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real), { 0 }, 0, 'R', 0, 0 };
+#define __Pyx_MODULE_NAME "Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_"
+extern int __pyx_module_is_main_Kuru__MaterialLibrary__LLDispatch__CythonSource___IncompressibleArterialWallMixture_;
+int __pyx_module_is_main_Kuru__MaterialLibrary__LLDispatch__CythonSource___IncompressibleArterialWallMixture_ = 0;
 
-/* Implementation of '_VolumetricStiffness_' */
+/* Implementation of 'Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_' */
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_ImportError;
-static const char __pyx_k_dV[] = "dV";
+static const char __pyx_k_F[] = "F";
+static const char __pyx_k_mu[] = "mu";
 static const char __pyx_k_np[] = "np";
-static const char __pyx_k_detJ[] = "detJ";
+static const char __pyx_k_k1c[] = "k1c";
+static const char __pyx_k_k1m[] = "k1m";
+static const char __pyx_k_k2c[] = "k2c";
+static const char __pyx_k_k2m[] = "k2m";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_ndim[] = "ndim";
-static const char __pyx_k_nvar[] = "nvar";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_dtype[] = "dtype";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_zeros[] = "zeros";
-static const char __pyx_k_Growth[] = "Growth";
 static const char __pyx_k_import[] = "__import__";
+static const char __pyx_k_nfibre[] = "nfibre";
+static const char __pyx_k_nfield[] = "nfield";
 static const char __pyx_k_ngauss[] = "ngauss";
-static const char __pyx_k_density[] = "density";
+static const char __pyx_k_stress[] = "stress";
 static const char __pyx_k_float64[] = "float64";
+static const char __pyx_k_hessian[] = "hessian";
+static const char __pyx_k_mat_obj[] = "mat_obj";
 static const char __pyx_k_material[] = "material";
+static const char __pyx_k_pressure[] = "pressure";
 static const char __pyx_k_ValueError[] = "ValueError";
-static const char __pyx_k_local_size[] = "local_size";
 static const char __pyx_k_ImportError[] = "ImportError";
-static const char __pyx_k_mean_volume[] = "mean_volume";
-static const char __pyx_k_nodeperelem[] = "nodeperelem";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
-static const char __pyx_k_FieldVariables[] = "FieldVariables";
-static const char __pyx_k_SpatialGradient[] = "SpatialGradient";
-static const char __pyx_k_ascontiguousarray[] = "ascontiguousarray";
+static const char __pyx_k_KineticMeasures[] = "KineticMeasures";
+static const char __pyx_k_field_variables[] = "field_variables";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_VolumetricStiffness[] = "_VolumetricStiffness_";
-static const char __pyx_k_volumetric_stiffness[] = "volumetric_stiffness";
-static const char __pyx_k_has_growth_remodeling[] = "has_growth_remodeling";
-static const char __pyx_k_VolumetricStiffness__pyx[] = "_VolumetricStiffness_.pyx";
+static const char __pyx_k_anisotropic_orientations[] = "anisotropic_orientations";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
-static const char __pyx_k_VolumetricStiffnessIntegrand[] = "_VolumetricStiffnessIntegrand_";
+static const char __pyx_k_Kuru_MaterialLibrary_LLDispatch[] = "Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
+static const char __pyx_k_CythonSource__IncompressibleArte[] = "CythonSource/_IncompressibleArterialWallMixture_.pyx";
 static const char __pyx_k_Format_string_allocated_too_shor[] = "Format string allocated too short, see comment in numpy.pxd";
 static const char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte order not supported";
 static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not Fortran contiguous";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
-static PyObject *__pyx_n_s_FieldVariables;
+static PyObject *__pyx_kp_s_CythonSource__IncompressibleArte;
+static PyObject *__pyx_n_s_F;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
-static PyObject *__pyx_n_s_Growth;
 static PyObject *__pyx_n_s_ImportError;
+static PyObject *__pyx_n_s_KineticMeasures;
+static PyObject *__pyx_n_s_Kuru_MaterialLibrary_LLDispatch;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
-static PyObject *__pyx_n_s_SpatialGradient;
 static PyObject *__pyx_n_s_ValueError;
-static PyObject *__pyx_n_s_VolumetricStiffness;
-static PyObject *__pyx_n_s_VolumetricStiffnessIntegrand;
-static PyObject *__pyx_kp_s_VolumetricStiffness__pyx;
-static PyObject *__pyx_n_s_ascontiguousarray;
+static PyObject *__pyx_n_s_anisotropic_orientations;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_dV;
-static PyObject *__pyx_n_s_density;
-static PyObject *__pyx_n_s_detJ;
 static PyObject *__pyx_n_s_dtype;
+static PyObject *__pyx_n_s_field_variables;
 static PyObject *__pyx_n_s_float64;
-static PyObject *__pyx_n_s_has_growth_remodeling;
+static PyObject *__pyx_n_s_hessian;
 static PyObject *__pyx_n_s_import;
-static PyObject *__pyx_n_s_local_size;
+static PyObject *__pyx_n_s_k1c;
+static PyObject *__pyx_n_s_k1m;
+static PyObject *__pyx_n_s_k2c;
+static PyObject *__pyx_n_s_k2m;
 static PyObject *__pyx_n_s_main;
+static PyObject *__pyx_n_s_mat_obj;
 static PyObject *__pyx_n_s_material;
-static PyObject *__pyx_n_s_mean_volume;
+static PyObject *__pyx_n_s_mu;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_u_ndarray_is_not_C_contiguous;
 static PyObject *__pyx_kp_u_ndarray_is_not_Fortran_contiguou;
 static PyObject *__pyx_n_s_ndim;
+static PyObject *__pyx_n_s_nfibre;
+static PyObject *__pyx_n_s_nfield;
 static PyObject *__pyx_n_s_ngauss;
-static PyObject *__pyx_n_s_nodeperelem;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
-static PyObject *__pyx_n_s_nvar;
+static PyObject *__pyx_n_s_pressure;
 static PyObject *__pyx_n_s_range;
+static PyObject *__pyx_n_s_stress;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
-static PyObject *__pyx_n_s_volumetric_stiffness;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_material, PyArrayObject *__pyx_v_SpatialGradient, PyArrayObject *__pyx_v_detJ, PyArrayObject *__pyx_v_dV, int __pyx_v_nvar); /* proto */
+static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__KineticMeasures(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_material, PyArrayObject *__pyx_v_F, PyArrayObject *__pyx_v_anisotropic_orientations, PyArrayObject *__pyx_v_field_variables); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
-static PyObject *__pyx_int_1;
-static PyObject *__pyx_int_11;
-static PyObject *__pyx_int_22;
+static PyObject *__pyx_int_3;
+static PyObject *__pyx_int_6;
 static PyObject *__pyx_tuple_;
-static PyObject *__pyx_slice__2;
+static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
 static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_tuple__8;
-static PyObject *__pyx_tuple__9;
-static PyObject *__pyx_tuple__10;
-static PyObject *__pyx_tuple__11;
-static PyObject *__pyx_tuple__12;
-static PyObject *__pyx_codeobj__13;
+static PyObject *__pyx_codeobj__9;
 /* Late includes */
 
-/* "_VolumetricStiffness_.pyx":19
- *         const int ndim, const int nvar, const int nodeperelem, const int nguass)
+/* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":23
  * 
- * def _VolumetricStiffnessIntegrand_(material, np.ndarray[Real, ndim=3, mode='c'] SpatialGradient,             # <<<<<<<<<<<<<<
- *     np.ndarray[Real, ndim=1] detJ, np.ndarray[Real, ndim=1] dV, int nvar):
  * 
+ * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,             # <<<<<<<<<<<<<<
+ *         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_21_VolumetricStiffness__1_VolumetricStiffnessIntegrand_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_21_VolumetricStiffness__1_VolumetricStiffnessIntegrand_ = {"_VolumetricStiffnessIntegrand_", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_21_VolumetricStiffness__1_VolumetricStiffnessIntegrand_, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_21_VolumetricStiffness__1_VolumetricStiffnessIntegrand_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__1KineticMeasures(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__1KineticMeasures = {"KineticMeasures", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__1KineticMeasures, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__1KineticMeasures(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_material = 0;
-  PyArrayObject *__pyx_v_SpatialGradient = 0;
-  PyArrayObject *__pyx_v_detJ = 0;
-  PyArrayObject *__pyx_v_dV = 0;
-  int __pyx_v_nvar;
+  PyArrayObject *__pyx_v_F = 0;
+  PyArrayObject *__pyx_v_anisotropic_orientations = 0;
+  PyArrayObject *__pyx_v_field_variables = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("_VolumetricStiffnessIntegrand_ (wrapper)", 0);
+  __Pyx_RefNannySetupContext("KineticMeasures (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_material,&__pyx_n_s_SpatialGradient,&__pyx_n_s_detJ,&__pyx_n_s_dV,&__pyx_n_s_nvar,0};
-    PyObject* values[5] = {0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_material,&__pyx_n_s_F,&__pyx_n_s_anisotropic_orientations,&__pyx_n_s_field_variables,0};
+    PyObject* values[4] = {0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-        CYTHON_FALLTHROUGH;
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -1855,59 +1861,51 @@ static PyObject *__pyx_pw_21_VolumetricStiffness__1_VolumetricStiffnessIntegrand
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
-        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_SpatialGradient)) != 0)) kw_args--;
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_F)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_VolumetricStiffnessIntegrand_", 1, 5, 5, 1); __PYX_ERR(0, 19, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 4, 4, 1); __PYX_ERR(0, 23, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_detJ)) != 0)) kw_args--;
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_anisotropic_orientations)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_VolumetricStiffnessIntegrand_", 1, 5, 5, 2); __PYX_ERR(0, 19, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 4, 4, 2); __PYX_ERR(0, 23, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
-        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dV)) != 0)) kw_args--;
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_field_variables)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_VolumetricStiffnessIntegrand_", 1, 5, 5, 3); __PYX_ERR(0, 19, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  4:
-        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_nvar)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("_VolumetricStiffnessIntegrand_", 1, 5, 5, 4); __PYX_ERR(0, 19, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 4, 4, 3); __PYX_ERR(0, 23, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_VolumetricStiffnessIntegrand_") < 0)) __PYX_ERR(0, 19, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "KineticMeasures") < 0)) __PYX_ERR(0, 23, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
     }
     __pyx_v_material = values[0];
-    __pyx_v_SpatialGradient = ((PyArrayObject *)values[1]);
-    __pyx_v_detJ = ((PyArrayObject *)values[2]);
-    __pyx_v_dV = ((PyArrayObject *)values[3]);
-    __pyx_v_nvar = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_nvar == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 20, __pyx_L3_error)
+    __pyx_v_F = ((PyArrayObject *)values[1]);
+    __pyx_v_anisotropic_orientations = ((PyArrayObject *)values[2]);
+    __pyx_v_field_variables = ((PyArrayObject *)values[3]);
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_VolumetricStiffnessIntegrand_", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 19, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("KineticMeasures", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 23, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_VolumetricStiffness_._VolumetricStiffnessIntegrand_", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_.KineticMeasures", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_SpatialGradient), __pyx_ptype_5numpy_ndarray, 1, "SpatialGradient", 0))) __PYX_ERR(0, 19, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_detJ), __pyx_ptype_5numpy_ndarray, 1, "detJ", 0))) __PYX_ERR(0, 20, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_dV), __pyx_ptype_5numpy_ndarray, 1, "dV", 0))) __PYX_ERR(0, 20, __pyx_L1_error)
-  __pyx_r = __pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_(__pyx_self, __pyx_v_material, __pyx_v_SpatialGradient, __pyx_v_detJ, __pyx_v_dV, __pyx_v_nvar);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_F), __pyx_ptype_5numpy_ndarray, 1, "F", 0))) __PYX_ERR(0, 23, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_anisotropic_orientations), __pyx_ptype_5numpy_ndarray, 1, "anisotropic_orientations", 0))) __PYX_ERR(0, 24, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_field_variables), __pyx_ptype_5numpy_ndarray, 1, "field_variables", 0))) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_r = __pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__KineticMeasures(__pyx_self, __pyx_v_material, __pyx_v_F, __pyx_v_anisotropic_orientations, __pyx_v_field_variables);
 
   /* function exit code */
   goto __pyx_L0;
@@ -1918,48 +1916,43 @@ static PyObject *__pyx_pw_21_VolumetricStiffness__1_VolumetricStiffnessIntegrand
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_material, PyArrayObject *__pyx_v_SpatialGradient, PyArrayObject *__pyx_v_detJ, PyArrayObject *__pyx_v_dV, int __pyx_v_nvar) {
-  int __pyx_v_ngauss;
-  int __pyx_v_nodeperelem;
+static PyObject *__pyx_pf_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__KineticMeasures(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_material, PyArrayObject *__pyx_v_F, PyArrayObject *__pyx_v_anisotropic_orientations, PyArrayObject *__pyx_v_field_variables) {
   int __pyx_v_ndim;
-  int __pyx_v_local_size;
-  int __pyx_v_has_growth_remodeling;
-  PyArrayObject *__pyx_v_density = 0;
-  PyArrayObject *__pyx_v_Growth = 0;
-  PyArrayObject *__pyx_v_volumetric_stiffness = 0;
-  PyArrayObject *__pyx_v_mean_volume = 0;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_Growth;
-  __Pyx_Buffer __pyx_pybuffer_Growth;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_SpatialGradient;
-  __Pyx_Buffer __pyx_pybuffer_SpatialGradient;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_dV;
-  __Pyx_Buffer __pyx_pybuffer_dV;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_density;
-  __Pyx_Buffer __pyx_pybuffer_density;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_detJ;
-  __Pyx_Buffer __pyx_pybuffer_detJ;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_mean_volume;
-  __Pyx_Buffer __pyx_pybuffer_mean_volume;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_volumetric_stiffness;
-  __Pyx_Buffer __pyx_pybuffer_volumetric_stiffness;
+  int __pyx_v_ngauss;
+  int __pyx_v_nfibre;
+  int __pyx_v_nfield;
+  PyArrayObject *__pyx_v_stress = 0;
+  PyArrayObject *__pyx_v_hessian = 0;
+  __pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real __pyx_v_pressure;
+  _IncompressibleArterialWallMixture_<__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real>  __pyx_v_mat_obj;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_F;
+  __Pyx_Buffer __pyx_pybuffer_F;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_anisotropic_orientations;
+  __Pyx_Buffer __pyx_pybuffer_anisotropic_orientations;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_field_variables;
+  __Pyx_Buffer __pyx_pybuffer_field_variables;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_hessian;
+  __Pyx_Buffer __pyx_pybuffer_hessian;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_stress;
+  __Pyx_Buffer __pyx_pybuffer_stress;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
+  PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   PyArrayObject *__pyx_t_6 = NULL;
-  PyArrayObject *__pyx_t_7 = NULL;
-  int __pyx_t_8;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
-  PyObject *__pyx_t_11 = NULL;
-  PyObject *__pyx_t_12 = NULL;
-  PyArrayObject *__pyx_t_13 = NULL;
-  PyArrayObject *__pyx_t_14 = NULL;
-  Py_ssize_t __pyx_t_15;
-  Py_ssize_t __pyx_t_16;
+  __pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real __pyx_t_11;
+  _IncompressibleArterialWallMixture_<Real>  __pyx_t_12;
+  __pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real __pyx_t_13;
+  __pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real __pyx_t_14;
+  __pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real __pyx_t_15;
+  __pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real __pyx_t_16;
   Py_ssize_t __pyx_t_17;
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
@@ -1969,539 +1962,480 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
   Py_ssize_t __pyx_t_23;
   Py_ssize_t __pyx_t_24;
   Py_ssize_t __pyx_t_25;
-  __Pyx_RefNannySetupContext("_VolumetricStiffnessIntegrand_", 0);
-  __pyx_pybuffer_density.pybuffer.buf = NULL;
-  __pyx_pybuffer_density.refcount = 0;
-  __pyx_pybuffernd_density.data = NULL;
-  __pyx_pybuffernd_density.rcbuffer = &__pyx_pybuffer_density;
-  __pyx_pybuffer_Growth.pybuffer.buf = NULL;
-  __pyx_pybuffer_Growth.refcount = 0;
-  __pyx_pybuffernd_Growth.data = NULL;
-  __pyx_pybuffernd_Growth.rcbuffer = &__pyx_pybuffer_Growth;
-  __pyx_pybuffer_volumetric_stiffness.pybuffer.buf = NULL;
-  __pyx_pybuffer_volumetric_stiffness.refcount = 0;
-  __pyx_pybuffernd_volumetric_stiffness.data = NULL;
-  __pyx_pybuffernd_volumetric_stiffness.rcbuffer = &__pyx_pybuffer_volumetric_stiffness;
-  __pyx_pybuffer_mean_volume.pybuffer.buf = NULL;
-  __pyx_pybuffer_mean_volume.refcount = 0;
-  __pyx_pybuffernd_mean_volume.data = NULL;
-  __pyx_pybuffernd_mean_volume.rcbuffer = &__pyx_pybuffer_mean_volume;
-  __pyx_pybuffer_SpatialGradient.pybuffer.buf = NULL;
-  __pyx_pybuffer_SpatialGradient.refcount = 0;
-  __pyx_pybuffernd_SpatialGradient.data = NULL;
-  __pyx_pybuffernd_SpatialGradient.rcbuffer = &__pyx_pybuffer_SpatialGradient;
-  __pyx_pybuffer_detJ.pybuffer.buf = NULL;
-  __pyx_pybuffer_detJ.refcount = 0;
-  __pyx_pybuffernd_detJ.data = NULL;
-  __pyx_pybuffernd_detJ.rcbuffer = &__pyx_pybuffer_detJ;
-  __pyx_pybuffer_dV.pybuffer.buf = NULL;
-  __pyx_pybuffer_dV.refcount = 0;
-  __pyx_pybuffernd_dV.data = NULL;
-  __pyx_pybuffernd_dV.rcbuffer = &__pyx_pybuffer_dV;
+  Py_ssize_t __pyx_t_26;
+  Py_ssize_t __pyx_t_27;
+  Py_ssize_t __pyx_t_28;
+  Py_ssize_t __pyx_t_29;
+  __Pyx_RefNannySetupContext("KineticMeasures", 0);
+  __pyx_pybuffer_stress.pybuffer.buf = NULL;
+  __pyx_pybuffer_stress.refcount = 0;
+  __pyx_pybuffernd_stress.data = NULL;
+  __pyx_pybuffernd_stress.rcbuffer = &__pyx_pybuffer_stress;
+  __pyx_pybuffer_hessian.pybuffer.buf = NULL;
+  __pyx_pybuffer_hessian.refcount = 0;
+  __pyx_pybuffernd_hessian.data = NULL;
+  __pyx_pybuffernd_hessian.rcbuffer = &__pyx_pybuffer_hessian;
+  __pyx_pybuffer_F.pybuffer.buf = NULL;
+  __pyx_pybuffer_F.refcount = 0;
+  __pyx_pybuffernd_F.data = NULL;
+  __pyx_pybuffernd_F.rcbuffer = &__pyx_pybuffer_F;
+  __pyx_pybuffer_anisotropic_orientations.pybuffer.buf = NULL;
+  __pyx_pybuffer_anisotropic_orientations.refcount = 0;
+  __pyx_pybuffernd_anisotropic_orientations.data = NULL;
+  __pyx_pybuffernd_anisotropic_orientations.rcbuffer = &__pyx_pybuffer_anisotropic_orientations;
+  __pyx_pybuffer_field_variables.pybuffer.buf = NULL;
+  __pyx_pybuffer_field_variables.refcount = 0;
+  __pyx_pybuffernd_field_variables.data = NULL;
+  __pyx_pybuffernd_field_variables.rcbuffer = &__pyx_pybuffer_field_variables;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer, (PyObject*)__pyx_v_SpatialGradient, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 19, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_F.rcbuffer->pybuffer, (PyObject*)__pyx_v_F, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
   }
-  __pyx_pybuffernd_SpatialGradient.diminfo[0].strides = __pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_SpatialGradient.diminfo[0].shape = __pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_SpatialGradient.diminfo[1].strides = __pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_SpatialGradient.diminfo[1].shape = __pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_SpatialGradient.diminfo[2].strides = __pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_SpatialGradient.diminfo[2].shape = __pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer.shape[2];
+  __pyx_pybuffernd_F.diminfo[0].strides = __pyx_pybuffernd_F.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_F.diminfo[0].shape = __pyx_pybuffernd_F.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_F.diminfo[1].strides = __pyx_pybuffernd_F.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_F.diminfo[1].shape = __pyx_pybuffernd_F.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_F.diminfo[2].strides = __pyx_pybuffernd_F.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_F.diminfo[2].shape = __pyx_pybuffernd_F.rcbuffer->pybuffer.shape[2];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_detJ.rcbuffer->pybuffer, (PyObject*)__pyx_v_detJ, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 19, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_v_anisotropic_orientations, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
   }
-  __pyx_pybuffernd_detJ.diminfo[0].strides = __pyx_pybuffernd_detJ.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_detJ.diminfo[0].shape = __pyx_pybuffernd_detJ.rcbuffer->pybuffer.shape[0];
+  __pyx_pybuffernd_anisotropic_orientations.diminfo[0].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[0].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[1];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_dV.rcbuffer->pybuffer, (PyObject*)__pyx_v_dV, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 19, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer, (PyObject*)__pyx_v_field_variables, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
   }
-  __pyx_pybuffernd_dV.diminfo[0].strides = __pyx_pybuffernd_dV.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_dV.diminfo[0].shape = __pyx_pybuffernd_dV.rcbuffer->pybuffer.shape[0];
+  __pyx_pybuffernd_field_variables.diminfo[0].strides = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_field_variables.diminfo[0].shape = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_field_variables.diminfo[1].strides = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_field_variables.diminfo[1].shape = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.shape[1];
 
-  /* "_VolumetricStiffness_.pyx":22
- *     np.ndarray[Real, ndim=1] detJ, np.ndarray[Real, ndim=1] dV, int nvar):
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":27
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  * 
- *     cdef int ngauss = SpatialGradient.shape[0]             # <<<<<<<<<<<<<<
- *     cdef int nodeperelem = SpatialGradient.shape[1]
- *     cdef int ndim = SpatialGradient.shape[2]
+ *     cdef int ndim = F.shape[2]             # <<<<<<<<<<<<<<
+ *     cdef int ngauss = F.shape[0]
+ *     cdef int nfibre = anisotropic_orientations.shape[0]
  */
-  __pyx_v_ngauss = (__pyx_v_SpatialGradient->dimensions[0]);
+  __pyx_v_ndim = (__pyx_v_F->dimensions[2]);
 
-  /* "_VolumetricStiffness_.pyx":23
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":28
  * 
- *     cdef int ngauss = SpatialGradient.shape[0]
- *     cdef int nodeperelem = SpatialGradient.shape[1]             # <<<<<<<<<<<<<<
- *     cdef int ndim = SpatialGradient.shape[2]
- *     cdef int local_size = nvar*nodeperelem
+ *     cdef int ndim = F.shape[2]
+ *     cdef int ngauss = F.shape[0]             # <<<<<<<<<<<<<<
+ *     cdef int nfibre = anisotropic_orientations.shape[0]
+ *     cdef int nfield = field_variables.shape[1]
  */
-  __pyx_v_nodeperelem = (__pyx_v_SpatialGradient->dimensions[1]);
+  __pyx_v_ngauss = (__pyx_v_F->dimensions[0]);
 
-  /* "_VolumetricStiffness_.pyx":24
- *     cdef int ngauss = SpatialGradient.shape[0]
- *     cdef int nodeperelem = SpatialGradient.shape[1]
- *     cdef int ndim = SpatialGradient.shape[2]             # <<<<<<<<<<<<<<
- *     cdef int local_size = nvar*nodeperelem
- * 
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":29
+ *     cdef int ndim = F.shape[2]
+ *     cdef int ngauss = F.shape[0]
+ *     cdef int nfibre = anisotropic_orientations.shape[0]             # <<<<<<<<<<<<<<
+ *     cdef int nfield = field_variables.shape[1]
+ *     cdef np.ndarray[Real, ndim=3, mode='c'] stress, hessian
  */
-  __pyx_v_ndim = (__pyx_v_SpatialGradient->dimensions[2]);
+  __pyx_v_nfibre = (__pyx_v_anisotropic_orientations->dimensions[0]);
 
-  /* "_VolumetricStiffness_.pyx":25
- *     cdef int nodeperelem = SpatialGradient.shape[1]
- *     cdef int ndim = SpatialGradient.shape[2]
- *     cdef int local_size = nvar*nodeperelem             # <<<<<<<<<<<<<<
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":30
+ *     cdef int ngauss = F.shape[0]
+ *     cdef int nfibre = anisotropic_orientations.shape[0]
+ *     cdef int nfield = field_variables.shape[1]             # <<<<<<<<<<<<<<
+ *     cdef np.ndarray[Real, ndim=3, mode='c'] stress, hessian
  * 
- *     cdef int has_growth_remodeling                    = material.has_growth_remodeling
  */
-  __pyx_v_local_size = (__pyx_v_nvar * __pyx_v_nodeperelem);
+  __pyx_v_nfield = (__pyx_v_field_variables->dimensions[1]);
 
-  /* "_VolumetricStiffness_.pyx":27
- *     cdef int local_size = nvar*nodeperelem
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":33
+ *     cdef np.ndarray[Real, ndim=3, mode='c'] stress, hessian
  * 
- *     cdef int has_growth_remodeling                    = material.has_growth_remodeling             # <<<<<<<<<<<<<<
- *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)
- *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
+ *     stress = np.zeros((ngauss,ndim,ndim),dtype=np.float64)             # <<<<<<<<<<<<<<
+ *     if ndim==3:
+ *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_has_growth_remodeling); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_has_growth_remodeling = __pyx_t_2;
-
-  /* "_VolumetricStiffness_.pyx":28
- * 
- *     cdef int has_growth_remodeling                    = material.has_growth_remodeling
- *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)             # <<<<<<<<<<<<<<
- *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
- *     if material.has_growth_remodeling:
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ngauss); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_ndim); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_ndim); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float64); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple_, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 28, __pyx_L1_error)
-  __pyx_t_6 = ((PyArrayObject *)__pyx_t_5);
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_density.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
-      __pyx_v_density = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_density.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 28, __pyx_L1_error)
-    } else {__pyx_pybuffernd_density.diminfo[0].strides = __pyx_pybuffernd_density.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_density.diminfo[0].shape = __pyx_pybuffernd_density.rcbuffer->pybuffer.shape[0];
-    }
-  }
-  __pyx_t_6 = 0;
-  __pyx_v_density = ((PyArrayObject *)__pyx_t_5);
-  __pyx_t_5 = 0;
-
-  /* "_VolumetricStiffness_.pyx":29
- *     cdef int has_growth_remodeling                    = material.has_growth_remodeling
- *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)
- *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)             # <<<<<<<<<<<<<<
- *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple_, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 29, __pyx_L1_error)
-  __pyx_t_7 = ((PyArrayObject *)__pyx_t_4);
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Growth.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
-      __pyx_v_Growth = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_Growth.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 29, __pyx_L1_error)
-    } else {__pyx_pybuffernd_Growth.diminfo[0].strides = __pyx_pybuffernd_Growth.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Growth.diminfo[0].shape = __pyx_pybuffernd_Growth.rcbuffer->pybuffer.shape[0];
-    }
-  }
-  __pyx_t_7 = 0;
-  __pyx_v_Growth = ((PyArrayObject *)__pyx_t_4);
-  __pyx_t_4 = 0;
-
-  /* "_VolumetricStiffness_.pyx":30
- *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)
- *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
- *     if material.has_growth_remodeling:             # <<<<<<<<<<<<<<
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
- */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_has_growth_remodeling); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 30, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 30, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (__pyx_t_8) {
-
-    /* "_VolumetricStiffness_.pyx":31
- *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
- *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])             # <<<<<<<<<<<<<<
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
- * 
- */
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_ascontiguousarray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_FieldVariables); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_tuple__3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
-      }
-    }
-    __pyx_t_4 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 31, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 31, __pyx_L1_error)
-    __pyx_t_6 = ((PyArrayObject *)__pyx_t_4);
-    {
-      __Pyx_BufFmt_StackElem __pyx_stack[1];
-      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_density.rcbuffer->pybuffer);
-      __pyx_t_2 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_density.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
-      if (unlikely(__pyx_t_2 < 0)) {
-        PyErr_Fetch(&__pyx_t_9, &__pyx_t_10, &__pyx_t_11);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_density.rcbuffer->pybuffer, (PyObject*)__pyx_v_density, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
-          Py_XDECREF(__pyx_t_9); Py_XDECREF(__pyx_t_10); Py_XDECREF(__pyx_t_11);
-          __Pyx_RaiseBufferFallbackError();
-        } else {
-          PyErr_Restore(__pyx_t_9, __pyx_t_10, __pyx_t_11);
-        }
-        __pyx_t_9 = __pyx_t_10 = __pyx_t_11 = 0;
-      }
-      __pyx_pybuffernd_density.diminfo[0].strides = __pyx_pybuffernd_density.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_density.diminfo[0].shape = __pyx_pybuffernd_density.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 31, __pyx_L1_error)
-    }
-    __pyx_t_6 = 0;
-    __Pyx_DECREF_SET(__pyx_v_density, ((PyArrayObject *)__pyx_t_4));
-    __pyx_t_4 = 0;
-
-    /* "_VolumetricStiffness_.pyx":32
- *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])             # <<<<<<<<<<<<<<
- * 
- *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,
- */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_ascontiguousarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_FieldVariables); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetItem(__pyx_t_1, __pyx_tuple__4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 32, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_1)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_1);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5);
-    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 32, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 32, __pyx_L1_error)
-    __pyx_t_7 = ((PyArrayObject *)__pyx_t_4);
-    {
-      __Pyx_BufFmt_StackElem __pyx_stack[1];
-      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_Growth.rcbuffer->pybuffer);
-      __pyx_t_2 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Growth.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
-      if (unlikely(__pyx_t_2 < 0)) {
-        PyErr_Fetch(&__pyx_t_11, &__pyx_t_10, &__pyx_t_9);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Growth.rcbuffer->pybuffer, (PyObject*)__pyx_v_Growth, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
-          Py_XDECREF(__pyx_t_11); Py_XDECREF(__pyx_t_10); Py_XDECREF(__pyx_t_9);
-          __Pyx_RaiseBufferFallbackError();
-        } else {
-          PyErr_Restore(__pyx_t_11, __pyx_t_10, __pyx_t_9);
-        }
-        __pyx_t_11 = __pyx_t_10 = __pyx_t_9 = 0;
-      }
-      __pyx_pybuffernd_Growth.diminfo[0].strides = __pyx_pybuffernd_Growth.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Growth.diminfo[0].shape = __pyx_pybuffernd_Growth.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 32, __pyx_L1_error)
-    }
-    __pyx_t_7 = 0;
-    __Pyx_DECREF_SET(__pyx_v_Growth, ((PyArrayObject *)__pyx_t_4));
-    __pyx_t_4 = 0;
-
-    /* "_VolumetricStiffness_.pyx":30
- *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)
- *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
- *     if material.has_growth_remodeling:             # <<<<<<<<<<<<<<
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
- */
-  }
-
-  /* "_VolumetricStiffness_.pyx":34
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
- * 
- *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,             # <<<<<<<<<<<<<<
- *         local_size),dtype=np.float64)
- *     cdef np.ndarray[Real, ndim=1, mode='c'] mean_volume = np.zeros(1,dtype=np.float64)
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_local_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-
-  /* "_VolumetricStiffness_.pyx":35
- * 
- *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,
- *         local_size),dtype=np.float64)             # <<<<<<<<<<<<<<
- *     cdef np.ndarray[Real, ndim=1, mode='c'] mean_volume = np.zeros(1,dtype=np.float64)
- * 
- */
-  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_local_size); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-
-  /* "_VolumetricStiffness_.pyx":34
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
- * 
- *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,             # <<<<<<<<<<<<<<
- *         local_size),dtype=np.float64)
- *     cdef np.ndarray[Real, ndim=1, mode='c'] mean_volume = np.zeros(1,dtype=np.float64)
- */
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
-  __pyx_t_4 = 0;
-  __pyx_t_5 = 0;
-  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_t_4);
+  __pyx_t_1 = 0;
+  __pyx_t_3 = 0;
+  __pyx_t_4 = 0;
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_6 = ((PyArrayObject *)__pyx_t_1);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_stress.rcbuffer->pybuffer);
+    __pyx_t_7 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_stress.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack);
+    if (unlikely(__pyx_t_7 < 0)) {
+      PyErr_Fetch(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10);
+      if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_stress.rcbuffer->pybuffer, (PyObject*)__pyx_v_stress, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
+        Py_XDECREF(__pyx_t_8); Py_XDECREF(__pyx_t_9); Py_XDECREF(__pyx_t_10);
+        __Pyx_RaiseBufferFallbackError();
+      } else {
+        PyErr_Restore(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+      }
+      __pyx_t_8 = __pyx_t_9 = __pyx_t_10 = 0;
+    }
+    __pyx_pybuffernd_stress.diminfo[0].strides = __pyx_pybuffernd_stress.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_stress.diminfo[0].shape = __pyx_pybuffernd_stress.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_stress.diminfo[1].strides = __pyx_pybuffernd_stress.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_stress.diminfo[1].shape = __pyx_pybuffernd_stress.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_stress.diminfo[2].strides = __pyx_pybuffernd_stress.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_stress.diminfo[2].shape = __pyx_pybuffernd_stress.rcbuffer->pybuffer.shape[2];
+    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 33, __pyx_L1_error)
+  }
+  __pyx_t_6 = 0;
+  __pyx_v_stress = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_VolumetricStiffness_.pyx":35
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":34
  * 
- *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,
- *         local_size),dtype=np.float64)             # <<<<<<<<<<<<<<
- *     cdef np.ndarray[Real, ndim=1, mode='c'] mean_volume = np.zeros(1,dtype=np.float64)
- * 
+ *     stress = np.zeros((ngauss,ndim,ndim),dtype=np.float64)
+ *     if ndim==3:             # <<<<<<<<<<<<<<
+ *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)
+ *     elif ndim==2:
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float64); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_12) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  switch (__pyx_v_ndim) {
+    case 3:
 
-  /* "_VolumetricStiffness_.pyx":34
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
- * 
- *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,             # <<<<<<<<<<<<<<
- *         local_size),dtype=np.float64)
- *     cdef np.ndarray[Real, ndim=1, mode='c'] mean_volume = np.zeros(1,dtype=np.float64)
+    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":35
+ *     stress = np.zeros((ngauss,ndim,ndim),dtype=np.float64)
+ *     if ndim==3:
+ *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)             # <<<<<<<<<<<<<<
+ *     elif ndim==2:
+ *         hessian = np.zeros((ngauss,3,3),dtype=np.float64)
  */
-  __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_12) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_12, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 34, __pyx_L1_error)
-  __pyx_t_13 = ((PyArrayObject *)__pyx_t_12);
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_volumetric_stiffness.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
-      __pyx_v_volumetric_stiffness = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_volumetric_stiffness.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 34, __pyx_L1_error)
-    } else {__pyx_pybuffernd_volumetric_stiffness.diminfo[0].strides = __pyx_pybuffernd_volumetric_stiffness.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_volumetric_stiffness.diminfo[0].shape = __pyx_pybuffernd_volumetric_stiffness.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_volumetric_stiffness.diminfo[1].strides = __pyx_pybuffernd_volumetric_stiffness.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_volumetric_stiffness.diminfo[1].shape = __pyx_pybuffernd_volumetric_stiffness.rcbuffer->pybuffer.shape[1];
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ngauss); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
+    __Pyx_INCREF(__pyx_int_6);
+    __Pyx_GIVEREF(__pyx_int_6);
+    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_int_6);
+    __Pyx_INCREF(__pyx_int_6);
+    __Pyx_GIVEREF(__pyx_int_6);
+    PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_int_6);
+    __pyx_t_1 = 0;
+    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_4);
+    __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float64); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_6 = ((PyArrayObject *)__pyx_t_3);
+    {
+      __Pyx_BufFmt_StackElem __pyx_stack[1];
+      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer);
+      __pyx_t_7 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack);
+      if (unlikely(__pyx_t_7 < 0)) {
+        PyErr_Fetch(&__pyx_t_10, &__pyx_t_9, &__pyx_t_8);
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer, (PyObject*)__pyx_v_hessian, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
+          Py_XDECREF(__pyx_t_10); Py_XDECREF(__pyx_t_9); Py_XDECREF(__pyx_t_8);
+          __Pyx_RaiseBufferFallbackError();
+        } else {
+          PyErr_Restore(__pyx_t_10, __pyx_t_9, __pyx_t_8);
+        }
+        __pyx_t_10 = __pyx_t_9 = __pyx_t_8 = 0;
+      }
+      __pyx_pybuffernd_hessian.diminfo[0].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_hessian.diminfo[0].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_hessian.diminfo[1].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_hessian.diminfo[1].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_hessian.diminfo[2].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_hessian.diminfo[2].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[2];
+      if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
     }
-  }
-  __pyx_t_13 = 0;
-  __pyx_v_volumetric_stiffness = ((PyArrayObject *)__pyx_t_12);
-  __pyx_t_12 = 0;
+    __pyx_t_6 = 0;
+    __pyx_v_hessian = ((PyArrayObject *)__pyx_t_3);
+    __pyx_t_3 = 0;
 
-  /* "_VolumetricStiffness_.pyx":36
- *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,
- *         local_size),dtype=np.float64)
- *     cdef np.ndarray[Real, ndim=1, mode='c'] mean_volume = np.zeros(1,dtype=np.float64)             # <<<<<<<<<<<<<<
+    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":34
  * 
- *     _VolumetricStiffnessFiller_(&volumetric_stiffness[0,0], &mean_volume[0], &SpatialGradient[0,0,0],
+ *     stress = np.zeros((ngauss,ndim,ndim),dtype=np.float64)
+ *     if ndim==3:             # <<<<<<<<<<<<<<
+ *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)
+ *     elif ndim==2:
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_float64); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_12, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple_, __pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 36, __pyx_L1_error)
-  __pyx_t_14 = ((PyArrayObject *)__pyx_t_3);
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mean_volume.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_21_VolumetricStiffness__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
-      __pyx_v_mean_volume = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mean_volume.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 36, __pyx_L1_error)
-    } else {__pyx_pybuffernd_mean_volume.diminfo[0].strides = __pyx_pybuffernd_mean_volume.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mean_volume.diminfo[0].shape = __pyx_pybuffernd_mean_volume.rcbuffer->pybuffer.shape[0];
+    break;
+    case 2:
+
+    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":37
+ *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)
+ *     elif ndim==2:
+ *         hessian = np.zeros((ngauss,3,3),dtype=np.float64)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef Real pressure = material.pressure
+ */
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_ngauss); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_3);
+    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
+    __Pyx_INCREF(__pyx_int_3);
+    __Pyx_GIVEREF(__pyx_int_3);
+    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_int_3);
+    __Pyx_INCREF(__pyx_int_3);
+    __Pyx_GIVEREF(__pyx_int_3);
+    PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_int_3);
+    __pyx_t_3 = 0;
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_float64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 37, __pyx_L1_error)
+    __pyx_t_6 = ((PyArrayObject *)__pyx_t_2);
+    {
+      __Pyx_BufFmt_StackElem __pyx_stack[1];
+      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer);
+      __pyx_t_7 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack);
+      if (unlikely(__pyx_t_7 < 0)) {
+        PyErr_Fetch(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10);
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer, (PyObject*)__pyx_v_hessian, &__Pyx_TypeInfo_nn___pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
+          Py_XDECREF(__pyx_t_8); Py_XDECREF(__pyx_t_9); Py_XDECREF(__pyx_t_10);
+          __Pyx_RaiseBufferFallbackError();
+        } else {
+          PyErr_Restore(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+        }
+        __pyx_t_8 = __pyx_t_9 = __pyx_t_10 = 0;
+      }
+      __pyx_pybuffernd_hessian.diminfo[0].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_hessian.diminfo[0].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_hessian.diminfo[1].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_hessian.diminfo[1].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_hessian.diminfo[2].strides = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_hessian.diminfo[2].shape = __pyx_pybuffernd_hessian.rcbuffer->pybuffer.shape[2];
+      if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 37, __pyx_L1_error)
     }
-  }
-  __pyx_t_14 = 0;
-  __pyx_v_mean_volume = ((PyArrayObject *)__pyx_t_3);
-  __pyx_t_3 = 0;
+    __pyx_t_6 = 0;
+    __pyx_v_hessian = ((PyArrayObject *)__pyx_t_2);
+    __pyx_t_2 = 0;
 
-  /* "_VolumetricStiffness_.pyx":38
- *     cdef np.ndarray[Real, ndim=1, mode='c'] mean_volume = np.zeros(1,dtype=np.float64)
- * 
- *     _VolumetricStiffnessFiller_(&volumetric_stiffness[0,0], &mean_volume[0], &SpatialGradient[0,0,0],             # <<<<<<<<<<<<<<
- *         &detJ[0], &dV[0], &density[0], &Growth[0], has_growth_remodeling, ndim, nvar, nodeperelem, ngauss)
+    /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":36
+ *     if ndim==3:
+ *         hessian = np.zeros((ngauss,6,6),dtype=np.float64)
+ *     elif ndim==2:             # <<<<<<<<<<<<<<
+ *         hessian = np.zeros((ngauss,3,3),dtype=np.float64)
  * 
  */
-  __pyx_t_15 = 0;
-  __pyx_t_16 = 0;
+    break;
+    default: break;
+  }
+
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":39
+ *         hessian = np.zeros((ngauss,3,3),dtype=np.float64)
+ * 
+ *     cdef Real pressure = material.pressure             # <<<<<<<<<<<<<<
+ * 
+ *     cdef _IncompressibleArterialWallMixture_[Real] mat_obj = _IncompressibleArterialWallMixture_()
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_pressure); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 39, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_pressure = __pyx_t_11;
+
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":41
+ *     cdef Real pressure = material.pressure
+ * 
+ *     cdef _IncompressibleArterialWallMixture_[Real] mat_obj = _IncompressibleArterialWallMixture_()             # <<<<<<<<<<<<<<
+ *     mat_obj.SetParameters(material.mu,material.k1m,material.k2m,material.k1c,material.k2c)
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,
+ */
+  try {
+    __pyx_t_12 = _IncompressibleArterialWallMixture_<Real> ();
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 41, __pyx_L1_error)
+  }
+  __pyx_v_mat_obj = ((_IncompressibleArterialWallMixture_<__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real> )__pyx_t_12);
+
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":42
+ * 
+ *     cdef _IncompressibleArterialWallMixture_[Real] mat_obj = _IncompressibleArterialWallMixture_()
+ *     mat_obj.SetParameters(material.mu,material.k1m,material.k2m,material.k1c,material.k2c)             # <<<<<<<<<<<<<<
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0], pressure)
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_mu); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_15 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_15 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_16 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_16 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  try {
+    __pyx_v_mat_obj.SetParameters(__pyx_t_11, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 42, __pyx_L1_error)
+  }
+
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":43
+ *     cdef _IncompressibleArterialWallMixture_[Real] mat_obj = _IncompressibleArterialWallMixture_()
+ *     mat_obj.SetParameters(material.mu,material.k1m,material.k2m,material.k1c,material.k2c)
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,             # <<<<<<<<<<<<<<
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0], pressure)
+ * 
+ */
   __pyx_t_17 = 0;
   __pyx_t_18 = 0;
   __pyx_t_19 = 0;
   __pyx_t_20 = 0;
-
-  /* "_VolumetricStiffness_.pyx":39
- * 
- *     _VolumetricStiffnessFiller_(&volumetric_stiffness[0,0], &mean_volume[0], &SpatialGradient[0,0,0],
- *         &detJ[0], &dV[0], &density[0], &Growth[0], has_growth_remodeling, ndim, nvar, nodeperelem, ngauss)             # <<<<<<<<<<<<<<
- * 
- *     return volumetric_stiffness, mean_volume[0]
- */
   __pyx_t_21 = 0;
   __pyx_t_22 = 0;
   __pyx_t_23 = 0;
   __pyx_t_24 = 0;
+  __pyx_t_25 = 0;
 
-  /* "_VolumetricStiffness_.pyx":38
- *     cdef np.ndarray[Real, ndim=1, mode='c'] mean_volume = np.zeros(1,dtype=np.float64)
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":44
+ *     mat_obj.SetParameters(material.mu,material.k1m,material.k2m,material.k1c,material.k2c)
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0], pressure)             # <<<<<<<<<<<<<<
  * 
- *     _VolumetricStiffnessFiller_(&volumetric_stiffness[0,0], &mean_volume[0], &SpatialGradient[0,0,0],             # <<<<<<<<<<<<<<
- *         &detJ[0], &dV[0], &density[0], &Growth[0], has_growth_remodeling, ndim, nvar, nodeperelem, ngauss)
+ *     return stress, hessian
+ */
+  __pyx_t_26 = 0;
+  __pyx_t_27 = 0;
+  __pyx_t_28 = 0;
+  __pyx_t_29 = 0;
+
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":43
+ *     cdef _IncompressibleArterialWallMixture_[Real] mat_obj = _IncompressibleArterialWallMixture_()
+ *     mat_obj.SetParameters(material.mu,material.k1m,material.k2m,material.k1c,material.k2c)
+ *     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,             # <<<<<<<<<<<<<<
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0], pressure)
  * 
  */
-  _VolumetricStiffnessFiller_((&(*__Pyx_BufPtrCContig2d(__pyx_t_21_VolumetricStiffness__Real *, __pyx_pybuffernd_volumetric_stiffness.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_volumetric_stiffness.diminfo[0].strides, __pyx_t_16, __pyx_pybuffernd_volumetric_stiffness.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_21_VolumetricStiffness__Real *, __pyx_pybuffernd_mean_volume.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_mean_volume.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig3d(__pyx_t_21_VolumetricStiffness__Real *, __pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_SpatialGradient.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_SpatialGradient.diminfo[1].strides, __pyx_t_20, __pyx_pybuffernd_SpatialGradient.diminfo[2].strides))), (&(*__Pyx_BufPtrStrided1d(__pyx_t_21_VolumetricStiffness__Real *, __pyx_pybuffernd_detJ.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_detJ.diminfo[0].strides))), (&(*__Pyx_BufPtrStrided1d(__pyx_t_21_VolumetricStiffness__Real *, __pyx_pybuffernd_dV.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_dV.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_21_VolumetricStiffness__Real *, __pyx_pybuffernd_density.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_density.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_21_VolumetricStiffness__Real *, __pyx_pybuffernd_Growth.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_Growth.diminfo[0].strides))), __pyx_v_has_growth_remodeling, __pyx_v_ndim, __pyx_v_nvar, __pyx_v_nodeperelem, __pyx_v_ngauss);
+  try {
+    __pyx_v_mat_obj.KineticMeasures((&(*__Pyx_BufPtrCContig3d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_stress.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_stress.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_stress.diminfo[1].strides, __pyx_t_19, __pyx_pybuffernd_stress.diminfo[2].strides))), (&(*__Pyx_BufPtrCContig3d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_hessian.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_hessian.diminfo[0].strides, __pyx_t_21, __pyx_pybuffernd_hessian.diminfo[1].strides, __pyx_t_22, __pyx_pybuffernd_hessian.diminfo[2].strides))), __pyx_v_ndim, __pyx_v_ngauss, (&(*__Pyx_BufPtrCContig3d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_F.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_F.diminfo[0].strides, __pyx_t_24, __pyx_pybuffernd_F.diminfo[1].strides, __pyx_t_25, __pyx_pybuffernd_F.diminfo[2].strides))), __pyx_v_nfibre, (&(*__Pyx_BufPtrCContig2d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_anisotropic_orientations.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_anisotropic_orientations.diminfo[1].strides))), __pyx_v_nfield, (&(*__Pyx_BufPtrCContig2d(__pyx_t_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.buf, __pyx_t_28, __pyx_pybuffernd_field_variables.diminfo[0].strides, __pyx_t_29, __pyx_pybuffernd_field_variables.diminfo[1].strides))), __pyx_v_pressure);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 43, __pyx_L1_error)
+  }
 
-  /* "_VolumetricStiffness_.pyx":41
- *         &detJ[0], &dV[0], &density[0], &Growth[0], has_growth_remodeling, ndim, nvar, nodeperelem, ngauss)
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":46
+ *             &anisotropic_orientations[0,0], nfield, &field_variables[0,0], pressure)
  * 
- *     return volumetric_stiffness, mean_volume[0]             # <<<<<<<<<<<<<<
+ *     return stress, hessian             # <<<<<<<<<<<<<<
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_25 = 0;
-  __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrCContig1d(__pyx_t_21_VolumetricStiffness__Real *, __pyx_pybuffernd_mean_volume.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_mean_volume.diminfo[0].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 41, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_INCREF(((PyObject *)__pyx_v_volumetric_stiffness));
-  __Pyx_GIVEREF(((PyObject *)__pyx_v_volumetric_stiffness));
-  PyTuple_SET_ITEM(__pyx_t_12, 0, ((PyObject *)__pyx_v_volumetric_stiffness));
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_t_3);
-  __pyx_t_3 = 0;
-  __pyx_r = __pyx_t_12;
-  __pyx_t_12 = 0;
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_INCREF(((PyObject *)__pyx_v_stress));
+  __Pyx_GIVEREF(((PyObject *)__pyx_v_stress));
+  PyTuple_SET_ITEM(__pyx_t_2, 0, ((PyObject *)__pyx_v_stress));
+  __Pyx_INCREF(((PyObject *)__pyx_v_hessian));
+  __Pyx_GIVEREF(((PyObject *)__pyx_v_hessian));
+  PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)__pyx_v_hessian));
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "_VolumetricStiffness_.pyx":19
- *         const int ndim, const int nvar, const int nodeperelem, const int nguass)
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":23
  * 
- * def _VolumetricStiffnessIntegrand_(material, np.ndarray[Real, ndim=3, mode='c'] SpatialGradient,             # <<<<<<<<<<<<<<
- *     np.ndarray[Real, ndim=1] detJ, np.ndarray[Real, ndim=1] dV, int nvar):
  * 
+ * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,             # <<<<<<<<<<<<<<
+ *         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_12);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_Growth.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_dV.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_density.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_detJ.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mean_volume.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_volumetric_stiffness.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_F.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_stress.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("_VolumetricStiffness_._VolumetricStiffnessIntegrand_", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_.KineticMeasures", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_Growth.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_SpatialGradient.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_dV.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_density.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_detJ.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mean_volume.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_volumetric_stiffness.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_F.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_hessian.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_stress.rcbuffer->pybuffer);
   __pyx_L2:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_density);
-  __Pyx_XDECREF((PyObject *)__pyx_v_Growth);
-  __Pyx_XDECREF((PyObject *)__pyx_v_volumetric_stiffness);
-  __Pyx_XDECREF((PyObject *)__pyx_v_mean_volume);
+  __Pyx_XDECREF((PyObject *)__pyx_v_stress);
+  __Pyx_XDECREF((PyObject *)__pyx_v_hessian);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -2624,7 +2558,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 272, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 272, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2680,7 +2614,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             info.buf = PyArray_DATA(self)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 276, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 276, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2938,7 +2872,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 306, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 306, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3818,7 +3752,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 856, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 856, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3886,7 +3820,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 860, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 860, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3995,7 +3929,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 880, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 880, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_Raise(__pyx_t_4, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -4623,7 +4557,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1038, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1038, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4752,7 +4686,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1044, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1044, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4878,7 +4812,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1050, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1050, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4932,17 +4866,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec__VolumetricStiffness_(PyObject* module); /*proto*/
+static int __pyx_pymod_exec__IncompressibleArterialWallMixture_(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec__VolumetricStiffness_},
+  {Py_mod_exec, (void*)__pyx_pymod_exec__IncompressibleArterialWallMixture_},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "_VolumetricStiffness_",
+    "_IncompressibleArterialWallMixture_",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -4971,46 +4905,47 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_n_s_FieldVariables, __pyx_k_FieldVariables, sizeof(__pyx_k_FieldVariables), 0, 0, 1, 1},
+  {&__pyx_kp_s_CythonSource__IncompressibleArte, __pyx_k_CythonSource__IncompressibleArte, sizeof(__pyx_k_CythonSource__IncompressibleArte), 0, 0, 1, 0},
+  {&__pyx_n_s_F, __pyx_k_F, sizeof(__pyx_k_F), 0, 0, 1, 1},
   {&__pyx_kp_u_Format_string_allocated_too_shor, __pyx_k_Format_string_allocated_too_shor, sizeof(__pyx_k_Format_string_allocated_too_shor), 0, 1, 0, 0},
   {&__pyx_kp_u_Format_string_allocated_too_shor_2, __pyx_k_Format_string_allocated_too_shor_2, sizeof(__pyx_k_Format_string_allocated_too_shor_2), 0, 1, 0, 0},
-  {&__pyx_n_s_Growth, __pyx_k_Growth, sizeof(__pyx_k_Growth), 0, 0, 1, 1},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
+  {&__pyx_n_s_KineticMeasures, __pyx_k_KineticMeasures, sizeof(__pyx_k_KineticMeasures), 0, 0, 1, 1},
+  {&__pyx_n_s_Kuru_MaterialLibrary_LLDispatch, __pyx_k_Kuru_MaterialLibrary_LLDispatch, sizeof(__pyx_k_Kuru_MaterialLibrary_LLDispatch), 0, 0, 1, 1},
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
-  {&__pyx_n_s_SpatialGradient, __pyx_k_SpatialGradient, sizeof(__pyx_k_SpatialGradient), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
-  {&__pyx_n_s_VolumetricStiffness, __pyx_k_VolumetricStiffness, sizeof(__pyx_k_VolumetricStiffness), 0, 0, 1, 1},
-  {&__pyx_n_s_VolumetricStiffnessIntegrand, __pyx_k_VolumetricStiffnessIntegrand, sizeof(__pyx_k_VolumetricStiffnessIntegrand), 0, 0, 1, 1},
-  {&__pyx_kp_s_VolumetricStiffness__pyx, __pyx_k_VolumetricStiffness__pyx, sizeof(__pyx_k_VolumetricStiffness__pyx), 0, 0, 1, 0},
-  {&__pyx_n_s_ascontiguousarray, __pyx_k_ascontiguousarray, sizeof(__pyx_k_ascontiguousarray), 0, 0, 1, 1},
+  {&__pyx_n_s_anisotropic_orientations, __pyx_k_anisotropic_orientations, sizeof(__pyx_k_anisotropic_orientations), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_dV, __pyx_k_dV, sizeof(__pyx_k_dV), 0, 0, 1, 1},
-  {&__pyx_n_s_density, __pyx_k_density, sizeof(__pyx_k_density), 0, 0, 1, 1},
-  {&__pyx_n_s_detJ, __pyx_k_detJ, sizeof(__pyx_k_detJ), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
+  {&__pyx_n_s_field_variables, __pyx_k_field_variables, sizeof(__pyx_k_field_variables), 0, 0, 1, 1},
   {&__pyx_n_s_float64, __pyx_k_float64, sizeof(__pyx_k_float64), 0, 0, 1, 1},
-  {&__pyx_n_s_has_growth_remodeling, __pyx_k_has_growth_remodeling, sizeof(__pyx_k_has_growth_remodeling), 0, 0, 1, 1},
+  {&__pyx_n_s_hessian, __pyx_k_hessian, sizeof(__pyx_k_hessian), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
-  {&__pyx_n_s_local_size, __pyx_k_local_size, sizeof(__pyx_k_local_size), 0, 0, 1, 1},
+  {&__pyx_n_s_k1c, __pyx_k_k1c, sizeof(__pyx_k_k1c), 0, 0, 1, 1},
+  {&__pyx_n_s_k1m, __pyx_k_k1m, sizeof(__pyx_k_k1m), 0, 0, 1, 1},
+  {&__pyx_n_s_k2c, __pyx_k_k2c, sizeof(__pyx_k_k2c), 0, 0, 1, 1},
+  {&__pyx_n_s_k2m, __pyx_k_k2m, sizeof(__pyx_k_k2m), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+  {&__pyx_n_s_mat_obj, __pyx_k_mat_obj, sizeof(__pyx_k_mat_obj), 0, 0, 1, 1},
   {&__pyx_n_s_material, __pyx_k_material, sizeof(__pyx_k_material), 0, 0, 1, 1},
-  {&__pyx_n_s_mean_volume, __pyx_k_mean_volume, sizeof(__pyx_k_mean_volume), 0, 0, 1, 1},
+  {&__pyx_n_s_mu, __pyx_k_mu, sizeof(__pyx_k_mu), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_kp_u_ndarray_is_not_C_contiguous, __pyx_k_ndarray_is_not_C_contiguous, sizeof(__pyx_k_ndarray_is_not_C_contiguous), 0, 1, 0, 0},
   {&__pyx_kp_u_ndarray_is_not_Fortran_contiguou, __pyx_k_ndarray_is_not_Fortran_contiguou, sizeof(__pyx_k_ndarray_is_not_Fortran_contiguou), 0, 1, 0, 0},
   {&__pyx_n_s_ndim, __pyx_k_ndim, sizeof(__pyx_k_ndim), 0, 0, 1, 1},
+  {&__pyx_n_s_nfibre, __pyx_k_nfibre, sizeof(__pyx_k_nfibre), 0, 0, 1, 1},
+  {&__pyx_n_s_nfield, __pyx_k_nfield, sizeof(__pyx_k_nfield), 0, 0, 1, 1},
   {&__pyx_n_s_ngauss, __pyx_k_ngauss, sizeof(__pyx_k_ngauss), 0, 0, 1, 1},
-  {&__pyx_n_s_nodeperelem, __pyx_k_nodeperelem, sizeof(__pyx_k_nodeperelem), 0, 0, 1, 1},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_kp_s_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
-  {&__pyx_n_s_nvar, __pyx_k_nvar, sizeof(__pyx_k_nvar), 0, 0, 1, 1},
+  {&__pyx_n_s_pressure, __pyx_k_pressure, sizeof(__pyx_k_pressure), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
+  {&__pyx_n_s_stress, __pyx_k_stress, sizeof(__pyx_k_stress), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
-  {&__pyx_n_s_volumetric_stiffness, __pyx_k_volumetric_stiffness, sizeof(__pyx_k_volumetric_stiffness), 0, 0, 1, 1},
   {&__pyx_n_s_zeros, __pyx_k_zeros, sizeof(__pyx_k_zeros), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
@@ -5028,42 +4963,6 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "_VolumetricStiffness_.pyx":28
- * 
- *     cdef int has_growth_remodeling                    = material.has_growth_remodeling
- *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)             # <<<<<<<<<<<<<<
- *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
- *     if material.has_growth_remodeling:
- */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_1); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple_);
-  __Pyx_GIVEREF(__pyx_tuple_);
-
-  /* "_VolumetricStiffness_.pyx":31
- *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
- *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])             # <<<<<<<<<<<<<<
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
- * 
- */
-  __pyx_slice__2 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__2);
-  __Pyx_GIVEREF(__pyx_slice__2);
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_slice__2, __pyx_int_11); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
-
-  /* "_VolumetricStiffness_.pyx":32
- *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])             # <<<<<<<<<<<<<<
- * 
- *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,
- */
-  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice__2, __pyx_int_22); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 32, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__4);
-  __Pyx_GIVEREF(__pyx_tuple__4);
-
   /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":272
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_C_CONTIGUOUS)):
@@ -5071,9 +4970,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 272, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__5);
-  __Pyx_GIVEREF(__pyx_tuple__5);
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 272, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple_);
+  __Pyx_GIVEREF(__pyx_tuple_);
 
   /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":276
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
@@ -5082,9 +4981,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *             info.buf = PyArray_DATA(self)
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 276, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(1, 276, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__2);
+  __Pyx_GIVEREF(__pyx_tuple__2);
 
   /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":306
  *                 if ((descr.byteorder == c'>' and little_endian) or
@@ -5093,9 +4992,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 306, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__7);
-  __Pyx_GIVEREF(__pyx_tuple__7);
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 306, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__3);
+  __Pyx_GIVEREF(__pyx_tuple__3);
 
   /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":856
  * 
@@ -5104,9 +5003,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 856, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__8);
-  __Pyx_GIVEREF(__pyx_tuple__8);
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 856, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
 
   /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":880
  *             t = child.type_num
@@ -5115,9 +5014,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 880, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__9);
-  __Pyx_GIVEREF(__pyx_tuple__9);
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 880, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
 
   /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1038
  *         _import_array()
@@ -5126,9 +5025,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 1038, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__10);
-  __Pyx_GIVEREF(__pyx_tuple__10);
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 1038, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__6);
+  __Pyx_GIVEREF(__pyx_tuple__6);
 
   /* "../../../../.local/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1044
  *         _import_umath()
@@ -5137,21 +5036,21 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(1, 1044, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__11);
-  __Pyx_GIVEREF(__pyx_tuple__11);
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 1044, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__7);
+  __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "_VolumetricStiffness_.pyx":19
- *         const int ndim, const int nvar, const int nodeperelem, const int nguass)
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":23
  * 
- * def _VolumetricStiffnessIntegrand_(material, np.ndarray[Real, ndim=3, mode='c'] SpatialGradient,             # <<<<<<<<<<<<<<
- *     np.ndarray[Real, ndim=1] detJ, np.ndarray[Real, ndim=1] dV, int nvar):
  * 
+ * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,             # <<<<<<<<<<<<<<
+ *         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  */
-  __pyx_tuple__12 = PyTuple_Pack(14, __pyx_n_s_material, __pyx_n_s_SpatialGradient, __pyx_n_s_detJ, __pyx_n_s_dV, __pyx_n_s_nvar, __pyx_n_s_ngauss, __pyx_n_s_nodeperelem, __pyx_n_s_ndim, __pyx_n_s_local_size, __pyx_n_s_has_growth_remodeling, __pyx_n_s_density, __pyx_n_s_Growth, __pyx_n_s_volumetric_stiffness, __pyx_n_s_mean_volume); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 19, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(5, 0, 14, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_VolumetricStiffness__pyx, __pyx_n_s_VolumetricStiffnessIntegrand, 19, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(12, __pyx_n_s_material, __pyx_n_s_F, __pyx_n_s_anisotropic_orientations, __pyx_n_s_field_variables, __pyx_n_s_ndim, __pyx_n_s_ngauss, __pyx_n_s_nfibre, __pyx_n_s_nfield, __pyx_n_s_stress, __pyx_n_s_hessian, __pyx_n_s_pressure, __pyx_n_s_mat_obj); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(4, 0, 12, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_CythonSource__IncompressibleArte, __pyx_n_s_KineticMeasures, 23, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5161,9 +5060,8 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_11 = PyInt_FromLong(11); if (unlikely(!__pyx_int_11)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_22 = PyInt_FromLong(22); if (unlikely(!__pyx_int_22)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_3 = PyInt_FromLong(3); if (unlikely(!__pyx_int_3)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_6 = PyInt_FromLong(6); if (unlikely(!__pyx_int_6)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -5279,11 +5177,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC init_VolumetricStiffness_(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC init_VolumetricStiffness_(void)
+__Pyx_PyMODINIT_FUNC init_IncompressibleArterialWallMixture_(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC init_IncompressibleArterialWallMixture_(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit__VolumetricStiffness_(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit__VolumetricStiffness_(void)
+__Pyx_PyMODINIT_FUNC PyInit__IncompressibleArterialWallMixture_(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit__IncompressibleArterialWallMixture_(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -5350,7 +5248,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec__VolumetricStiffness_(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec__IncompressibleArterialWallMixture_(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -5359,7 +5257,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec__VolumetricStiffness_(PyObject *__
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module '_VolumetricStiffness_' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module '_IncompressibleArterialWallMixture_' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -5374,7 +5272,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit__VolumetricStiffness_(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit__IncompressibleArterialWallMixture_(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -5413,7 +5311,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("_VolumetricStiffness_", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("_IncompressibleArterialWallMixture_", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -5432,14 +5330,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main__VolumetricStiffness_) {
+  if (__pyx_module_is_main_Kuru__MaterialLibrary__LLDispatch__CythonSource___IncompressibleArterialWallMixture_) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "_VolumetricStiffness_")) {
-      if (unlikely(PyDict_SetItemString(modules, "_VolumetricStiffness_", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_")) {
+      if (unlikely(PyDict_SetItemString(modules, "Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -5460,7 +5358,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "_VolumetricStiffness_.pyx":7
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":7
  * #cython: nonecheck=False
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -5472,19 +5370,19 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_VolumetricStiffness_.pyx":19
- *         const int ndim, const int nvar, const int nodeperelem, const int nguass)
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":23
  * 
- * def _VolumetricStiffnessIntegrand_(material, np.ndarray[Real, ndim=3, mode='c'] SpatialGradient,             # <<<<<<<<<<<<<<
- *     np.ndarray[Real, ndim=1] detJ, np.ndarray[Real, ndim=1] dV, int nvar):
  * 
+ * def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,             # <<<<<<<<<<<<<<
+ *         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
+ *         np.ndarray[Real,ndim=2,mode='c'] field_variables):
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_21_VolumetricStiffness__1_VolumetricStiffnessIntegrand_, NULL, __pyx_n_s_VolumetricStiffness); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4Kuru_15MaterialLibrary_10LLDispatch_12CythonSource_35_IncompressibleArterialWallMixture__1KineticMeasures, NULL, __pyx_n_s_Kuru_MaterialLibrary_LLDispatch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_VolumetricStiffnessIntegrand, __pyx_t_1) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_KineticMeasures, __pyx_t_1) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_VolumetricStiffness_.pyx":1
+  /* "Kuru/MaterialLibrary/LLDispatch/CythonSource/_IncompressibleArterialWallMixture_.pyx":1
  * #cython: profile=False             # <<<<<<<<<<<<<<
  * #cython: infer_types=True
  * #cython: boundscheck=False
@@ -5509,11 +5407,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init _VolumetricStiffness_", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init _VolumetricStiffness_");
+    PyErr_SetString(PyExc_ImportError, "init Kuru.MaterialLibrary.LLDispatch.CythonSource._IncompressibleArterialWallMixture_");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -6363,353 +6261,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
     return 0;
 }
 
-/* GetItemInt */
-  static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
-    PyObject *r;
-    if (!j) return NULL;
-    r = PyObject_GetItem(o, j);
-    Py_DECREF(j);
-    return r;
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyList_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
-        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyTuple_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
-        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
-                                                     CYTHON_NCP_UNUSED int wraparound,
-                                                     CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
-        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
-            PyObject *r = PyList_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    }
-    else if (PyTuple_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
-        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
-            PyObject *r = PyTuple_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return NULL;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_item(o, i);
-        }
-    }
-#else
-    if (is_list || PySequence_Check(o)) {
-        return PySequence_GetItem(o, i);
-    }
-#endif
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-}
-
-/* ObjectGetItem */
-  #if CYTHON_USE_TYPE_SLOTS
-static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
-    PyObject *runerr;
-    Py_ssize_t key_value;
-    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
-    if (unlikely(!(m && m->sq_item))) {
-        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
-        return NULL;
-    }
-    key_value = __Pyx_PyIndex_AsSsize_t(index);
-    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
-        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
-    }
-    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
-        PyErr_Clear();
-        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
-    }
-    return NULL;
-}
-static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
-    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
-    if (likely(m && m->mp_subscript)) {
-        return m->mp_subscript(obj, key);
-    }
-    return __Pyx_PyObject_GetIndex(obj, key);
-}
-#endif
-
-/* PyCFunctionFastCall */
-  #if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
-    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
-    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
-    PyObject *self = PyCFunction_GET_SELF(func);
-    int flags = PyCFunction_GET_FLAGS(func);
-    assert(PyCFunction_Check(func));
-    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
-    assert(nargs >= 0);
-    assert(nargs == 0 || args != NULL);
-    /* _PyCFunction_FastCallDict() must not be called with an exception set,
-       because it may clear it (directly or indirectly) and so the
-       caller loses its exception */
-    assert(!PyErr_Occurred());
-    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
-        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
-    } else {
-        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
-    }
-}
-#endif
-
-/* PyFunctionFastCall */
-  #if CYTHON_FAST_PYCALL
-static PyObject* __Pyx_PyFunction_FastCallNoKw(PyCodeObject *co, PyObject **args, Py_ssize_t na,
-                                               PyObject *globals) {
-    PyFrameObject *f;
-    PyThreadState *tstate = __Pyx_PyThreadState_Current;
-    PyObject **fastlocals;
-    Py_ssize_t i;
-    PyObject *result;
-    assert(globals != NULL);
-    /* XXX Perhaps we should create a specialized
-       PyFrame_New() that doesn't take locals, but does
-       take builtins without sanity checking them.
-       */
-    assert(tstate != NULL);
-    f = PyFrame_New(tstate, co, globals, NULL);
-    if (f == NULL) {
-        return NULL;
-    }
-    fastlocals = __Pyx_PyFrame_GetLocalsplus(f);
-    for (i = 0; i < na; i++) {
-        Py_INCREF(*args);
-        fastlocals[i] = *args++;
-    }
-    result = PyEval_EvalFrameEx(f,0);
-    ++tstate->recursion_depth;
-    Py_DECREF(f);
-    --tstate->recursion_depth;
-    return result;
-}
-#if 1 || PY_VERSION_HEX < 0x030600B1
-static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, int nargs, PyObject *kwargs) {
-    PyCodeObject *co = (PyCodeObject *)PyFunction_GET_CODE(func);
-    PyObject *globals = PyFunction_GET_GLOBALS(func);
-    PyObject *argdefs = PyFunction_GET_DEFAULTS(func);
-    PyObject *closure;
-#if PY_MAJOR_VERSION >= 3
-    PyObject *kwdefs;
-#endif
-    PyObject *kwtuple, **k;
-    PyObject **d;
-    Py_ssize_t nd;
-    Py_ssize_t nk;
-    PyObject *result;
-    assert(kwargs == NULL || PyDict_Check(kwargs));
-    nk = kwargs ? PyDict_Size(kwargs) : 0;
-    if (Py_EnterRecursiveCall((char*)" while calling a Python object")) {
-        return NULL;
-    }
-    if (
-#if PY_MAJOR_VERSION >= 3
-            co->co_kwonlyargcount == 0 &&
-#endif
-            likely(kwargs == NULL || nk == 0) &&
-            co->co_flags == (CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE)) {
-        if (argdefs == NULL && co->co_argcount == nargs) {
-            result = __Pyx_PyFunction_FastCallNoKw(co, args, nargs, globals);
-            goto done;
-        }
-        else if (nargs == 0 && argdefs != NULL
-                 && co->co_argcount == Py_SIZE(argdefs)) {
-            /* function called with no arguments, but all parameters have
-               a default value: use default values as arguments .*/
-            args = &PyTuple_GET_ITEM(argdefs, 0);
-            result =__Pyx_PyFunction_FastCallNoKw(co, args, Py_SIZE(argdefs), globals);
-            goto done;
-        }
-    }
-    if (kwargs != NULL) {
-        Py_ssize_t pos, i;
-        kwtuple = PyTuple_New(2 * nk);
-        if (kwtuple == NULL) {
-            result = NULL;
-            goto done;
-        }
-        k = &PyTuple_GET_ITEM(kwtuple, 0);
-        pos = i = 0;
-        while (PyDict_Next(kwargs, &pos, &k[i], &k[i+1])) {
-            Py_INCREF(k[i]);
-            Py_INCREF(k[i+1]);
-            i += 2;
-        }
-        nk = i / 2;
-    }
-    else {
-        kwtuple = NULL;
-        k = NULL;
-    }
-    closure = PyFunction_GET_CLOSURE(func);
-#if PY_MAJOR_VERSION >= 3
-    kwdefs = PyFunction_GET_KW_DEFAULTS(func);
-#endif
-    if (argdefs != NULL) {
-        d = &PyTuple_GET_ITEM(argdefs, 0);
-        nd = Py_SIZE(argdefs);
-    }
-    else {
-        d = NULL;
-        nd = 0;
-    }
-#if PY_MAJOR_VERSION >= 3
-    result = PyEval_EvalCodeEx((PyObject*)co, globals, (PyObject *)NULL,
-                               args, nargs,
-                               k, (int)nk,
-                               d, (int)nd, kwdefs, closure);
-#else
-    result = PyEval_EvalCodeEx(co, globals, (PyObject *)NULL,
-                               args, nargs,
-                               k, (int)nk,
-                               d, (int)nd, closure);
-#endif
-    Py_XDECREF(kwtuple);
-done:
-    Py_LeaveRecursiveCall();
-    return result;
-}
-#endif
-#endif
-
-/* PyObjectCall2Args */
-  static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args, *result = NULL;
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyFunction_FastCall(function, args, 2);
-    }
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyCFunction_FastCall(function, args, 2);
-    }
-    #endif
-    args = PyTuple_New(2);
-    if (unlikely(!args)) goto done;
-    Py_INCREF(arg1);
-    PyTuple_SET_ITEM(args, 0, arg1);
-    Py_INCREF(arg2);
-    PyTuple_SET_ITEM(args, 1, arg2);
-    Py_INCREF(function);
-    result = __Pyx_PyObject_Call(function, args, NULL);
-    Py_DECREF(args);
-    Py_DECREF(function);
-done:
-    return result;
-}
-
-/* PyObjectCallMethO */
-  #if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
-    PyObject *self, *result;
-    PyCFunction cfunc;
-    cfunc = PyCFunction_GET_FUNCTION(func);
-    self = PyCFunction_GET_SELF(func);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = cfunc(self, arg);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
-
-/* PyObjectCallOneArg */
-  #if CYTHON_COMPILING_IN_CPYTHON
-static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_New(1);
-    if (unlikely(!args)) return NULL;
-    Py_INCREF(arg);
-    PyTuple_SET_ITEM(args, 0, arg);
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
-    return result;
-}
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, &arg, 1);
-    }
-#endif
-    if (likely(PyCFunction_Check(func))) {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
-            return __Pyx_PyObject_CallMethO(func, arg);
-#if CYTHON_FAST_PYCCALL
-        } else if (PyCFunction_GET_FLAGS(func) & METH_FASTCALL) {
-            return __Pyx_PyCFunction_FastCall(func, &arg, 1);
-#endif
-        }
-    }
-    return __Pyx__PyObject_CallOneArg(func, arg);
-}
-#else
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_Pack(1, arg);
-    if (unlikely(!args)) return NULL;
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
-    return result;
-}
-#endif
-
 /* BufferFallbackError */
   static void __Pyx_RaiseBufferFallbackError(void) {
   PyErr_SetString(PyExc_ValueError,
@@ -6896,6 +6447,208 @@ static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject 
 bad:
     Py_XDECREF(owned_instance);
     return;
+}
+#endif
+
+/* PyCFunctionFastCall */
+  #if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
+    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
+    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
+    PyObject *self = PyCFunction_GET_SELF(func);
+    int flags = PyCFunction_GET_FLAGS(func);
+    assert(PyCFunction_Check(func));
+    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
+    assert(nargs >= 0);
+    assert(nargs == 0 || args != NULL);
+    /* _PyCFunction_FastCallDict() must not be called with an exception set,
+       because it may clear it (directly or indirectly) and so the
+       caller loses its exception */
+    assert(!PyErr_Occurred());
+    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
+        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
+    } else {
+        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
+    }
+}
+#endif
+
+/* PyFunctionFastCall */
+  #if CYTHON_FAST_PYCALL
+static PyObject* __Pyx_PyFunction_FastCallNoKw(PyCodeObject *co, PyObject **args, Py_ssize_t na,
+                                               PyObject *globals) {
+    PyFrameObject *f;
+    PyThreadState *tstate = __Pyx_PyThreadState_Current;
+    PyObject **fastlocals;
+    Py_ssize_t i;
+    PyObject *result;
+    assert(globals != NULL);
+    /* XXX Perhaps we should create a specialized
+       PyFrame_New() that doesn't take locals, but does
+       take builtins without sanity checking them.
+       */
+    assert(tstate != NULL);
+    f = PyFrame_New(tstate, co, globals, NULL);
+    if (f == NULL) {
+        return NULL;
+    }
+    fastlocals = __Pyx_PyFrame_GetLocalsplus(f);
+    for (i = 0; i < na; i++) {
+        Py_INCREF(*args);
+        fastlocals[i] = *args++;
+    }
+    result = PyEval_EvalFrameEx(f,0);
+    ++tstate->recursion_depth;
+    Py_DECREF(f);
+    --tstate->recursion_depth;
+    return result;
+}
+#if 1 || PY_VERSION_HEX < 0x030600B1
+static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, int nargs, PyObject *kwargs) {
+    PyCodeObject *co = (PyCodeObject *)PyFunction_GET_CODE(func);
+    PyObject *globals = PyFunction_GET_GLOBALS(func);
+    PyObject *argdefs = PyFunction_GET_DEFAULTS(func);
+    PyObject *closure;
+#if PY_MAJOR_VERSION >= 3
+    PyObject *kwdefs;
+#endif
+    PyObject *kwtuple, **k;
+    PyObject **d;
+    Py_ssize_t nd;
+    Py_ssize_t nk;
+    PyObject *result;
+    assert(kwargs == NULL || PyDict_Check(kwargs));
+    nk = kwargs ? PyDict_Size(kwargs) : 0;
+    if (Py_EnterRecursiveCall((char*)" while calling a Python object")) {
+        return NULL;
+    }
+    if (
+#if PY_MAJOR_VERSION >= 3
+            co->co_kwonlyargcount == 0 &&
+#endif
+            likely(kwargs == NULL || nk == 0) &&
+            co->co_flags == (CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE)) {
+        if (argdefs == NULL && co->co_argcount == nargs) {
+            result = __Pyx_PyFunction_FastCallNoKw(co, args, nargs, globals);
+            goto done;
+        }
+        else if (nargs == 0 && argdefs != NULL
+                 && co->co_argcount == Py_SIZE(argdefs)) {
+            /* function called with no arguments, but all parameters have
+               a default value: use default values as arguments .*/
+            args = &PyTuple_GET_ITEM(argdefs, 0);
+            result =__Pyx_PyFunction_FastCallNoKw(co, args, Py_SIZE(argdefs), globals);
+            goto done;
+        }
+    }
+    if (kwargs != NULL) {
+        Py_ssize_t pos, i;
+        kwtuple = PyTuple_New(2 * nk);
+        if (kwtuple == NULL) {
+            result = NULL;
+            goto done;
+        }
+        k = &PyTuple_GET_ITEM(kwtuple, 0);
+        pos = i = 0;
+        while (PyDict_Next(kwargs, &pos, &k[i], &k[i+1])) {
+            Py_INCREF(k[i]);
+            Py_INCREF(k[i+1]);
+            i += 2;
+        }
+        nk = i / 2;
+    }
+    else {
+        kwtuple = NULL;
+        k = NULL;
+    }
+    closure = PyFunction_GET_CLOSURE(func);
+#if PY_MAJOR_VERSION >= 3
+    kwdefs = PyFunction_GET_KW_DEFAULTS(func);
+#endif
+    if (argdefs != NULL) {
+        d = &PyTuple_GET_ITEM(argdefs, 0);
+        nd = Py_SIZE(argdefs);
+    }
+    else {
+        d = NULL;
+        nd = 0;
+    }
+#if PY_MAJOR_VERSION >= 3
+    result = PyEval_EvalCodeEx((PyObject*)co, globals, (PyObject *)NULL,
+                               args, nargs,
+                               k, (int)nk,
+                               d, (int)nd, kwdefs, closure);
+#else
+    result = PyEval_EvalCodeEx(co, globals, (PyObject *)NULL,
+                               args, nargs,
+                               k, (int)nk,
+                               d, (int)nd, closure);
+#endif
+    Py_XDECREF(kwtuple);
+done:
+    Py_LeaveRecursiveCall();
+    return result;
+}
+#endif
+#endif
+
+/* PyObjectCallMethO */
+  #if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
+    PyObject *self, *result;
+    PyCFunction cfunc;
+    cfunc = PyCFunction_GET_FUNCTION(func);
+    self = PyCFunction_GET_SELF(func);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = cfunc(self, arg);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+/* PyObjectCallOneArg */
+  #if CYTHON_COMPILING_IN_CPYTHON
+static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_New(1);
+    if (unlikely(!args)) return NULL;
+    Py_INCREF(arg);
+    PyTuple_SET_ITEM(args, 0, arg);
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
+}
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+#if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(func)) {
+        return __Pyx_PyFunction_FastCall(func, &arg, 1);
+    }
+#endif
+    if (likely(PyCFunction_Check(func))) {
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
+            return __Pyx_PyObject_CallMethO(func, arg);
+#if CYTHON_FAST_PYCCALL
+        } else if (PyCFunction_GET_FLAGS(func) & METH_FASTCALL) {
+            return __Pyx_PyCFunction_FastCall(func, &arg, 1);
+#endif
+        }
+    }
+    return __Pyx__PyObject_CallOneArg(func, arg);
+}
+#else
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_Pack(1, arg);
+    if (unlikely(!args)) return NULL;
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
 }
 #endif
 
@@ -7451,29 +7204,7 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 #endif
 
 
-  /* CIntFromPyVerify */
-  #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
-#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
-#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
-    {\
-        func_type value = func_value;\
-        if (sizeof(target_type) < sizeof(func_type)) {\
-            if (unlikely(value != (func_type) (target_type) value)) {\
-                func_type zero = 0;\
-                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
-                    return (target_type) -1;\
-                if (is_unsigned && unlikely(value < zero))\
-                    goto raise_neg_overflow;\
-                else\
-                    goto raise_overflow;\
-            }\
-        }\
-        return (target_type) value;\
-    }
-
-/* CIntToPy */
+  /* CIntToPy */
   static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
@@ -7813,6 +7544,28 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
         }
     #endif
 #endif
+
+/* CIntFromPyVerify */
+  #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
+#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
+#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
+    {\
+        func_type value = func_value;\
+        if (sizeof(target_type) < sizeof(func_type)) {\
+            if (unlikely(value != (func_type) (target_type) value)) {\
+                func_type zero = 0;\
+                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
+                    return (target_type) -1;\
+                if (is_unsigned && unlikely(value < zero))\
+                    goto raise_neg_overflow;\
+                else\
+                    goto raise_overflow;\
+            }\
+        }\
+        return (target_type) value;\
+    }
 
 /* CIntToPy */
   static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__NPY_TYPES(enum NPY_TYPES value) {

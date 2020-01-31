@@ -34,8 +34,8 @@ class ArterialWallMixture(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        self.has_low_level_dispatcher = True
-        #self.has_low_level_dispatcher = False
+        #self.has_low_level_dispatcher = True
+        self.has_low_level_dispatcher = False
 
         # FIELD VARIABLES AS GROWTH_&_REMODELING AND/OR DEPOSITION STRETCHES, ETC
         self.has_growth_remodeling = True
@@ -71,6 +71,7 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
+        J *= self.FieldVariables[gcounter][22]
         if J<0.0:
             print(F)
             print(J)
@@ -103,9 +104,9 @@ class ArterialWallMixture(Material):
         Gh_ela[2,2] = self.FieldVariables[gcounter][8]
         Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
         F_ela = np.dot(F,Gh_ela)
-        F_ela_e = np.dot(F_ela,F_g_inv)
-        J_ela = np.linalg.det(F_ela_e)
-        b_ela = np.dot(F_ela_e,F_ela_e.T)
+        #F_ela_e = np.dot(F_ela,F_g_inv)
+        J_ela = np.linalg.det(F_ela)
+        b_ela = np.dot(F_ela,F_ela.T)
 
         if self.ndim == 3:
             trb = trace(b_ela)
@@ -164,6 +165,7 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
+        J *= self.FieldVariables[gcounter][22]
         if J<0.0:
             print(F)
             print(J)
@@ -196,9 +198,9 @@ class ArterialWallMixture(Material):
         Gh_ela[2,2] = self.FieldVariables[gcounter][8]
         Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
         F_ela = np.dot(F,Gh_ela)
-        F_ela_e = np.dot(F_ela,F_g_inv)
-        J_ela = np.linalg.det(F_ela_e)
-        b_ela = np.dot(F_ela_e,F_ela_e.T)
+        #F_ela_e = np.dot(F_ela,F_g_inv)
+        J_ela = np.linalg.det(F_ela)
+        b_ela = np.dot(F_ela,F_ela.T)
 
         if self.ndim == 3:
             trb = trace(b_ela)
@@ -251,6 +253,7 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
+        J *= self.FieldVariables[gcounter][22]
 
         #SMC AND COLLAGEN FIBRES
         fibre_stress = np.zeros((5),dtype=np.float64)
@@ -310,6 +313,7 @@ class ArterialWallMixture(Material):
         for gcounter in range(gpoints):
             Fp = F[gcounter,:,:]
             J = np.linalg.det(Fp)
+            J *= self.FieldVariables[gcounter][22]
 
             #SMC AND COLLAGEN FIBRES
             for fibre_i in [1,2,3,4,5]:

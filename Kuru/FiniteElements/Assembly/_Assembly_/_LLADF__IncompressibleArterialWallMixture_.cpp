@@ -619,15 +619,15 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE___LLADF__ArterialWallMixture_
-#define __PYX_HAVE_API___LLADF__ArterialWallMixture_
+#define __PYX_HAVE___LLADF__IncompressibleArterialWallMixture_
+#define __PYX_HAVE_API___LLADF__IncompressibleArterialWallMixture_
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
 #include "numpy/arrayobject.h"
 #include "numpy/ufuncobject.h"
 #include <stdint.h>
-#include "_LLADF__ArterialWallMixture_.h"
+#include "_LLADF__IncompressibleArterialWallMixture_.h"
 #include "pythread.h"
 #include <stdlib.h>
 #include "pystate.h"
@@ -860,7 +860,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "_LLADF__ArterialWallMixture_.pyx",
+  "_LLADF__IncompressibleArterialWallMixture_.pyx",
   "__init__.pxd",
   "stringsource",
   "type.pxd",
@@ -1163,32 +1163,32 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "_LLADF__ArterialWallMixture_.pyx":5
+/* "_LLADF__IncompressibleArterialWallMixture_.pyx":5
  * from libc.stdint cimport int64_t, uint64_t
  * 
  * ctypedef int64_t Integer             # <<<<<<<<<<<<<<
  * ctypedef uint64_t UInteger
  * ctypedef double Real
  */
-typedef int64_t __pyx_t_28_LLADF__ArterialWallMixture__Integer;
+typedef int64_t __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer;
 
-/* "_LLADF__ArterialWallMixture_.pyx":6
+/* "_LLADF__IncompressibleArterialWallMixture_.pyx":6
  * 
  * ctypedef int64_t Integer
  * ctypedef uint64_t UInteger             # <<<<<<<<<<<<<<
  * ctypedef double Real
  * 
  */
-typedef uint64_t __pyx_t_28_LLADF__ArterialWallMixture__UInteger;
+typedef uint64_t __pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger;
 
-/* "_LLADF__ArterialWallMixture_.pyx":7
+/* "_LLADF__IncompressibleArterialWallMixture_.pyx":7
  * ctypedef int64_t Integer
  * ctypedef uint64_t UInteger
  * ctypedef double Real             # <<<<<<<<<<<<<<
  * 
  * 
  */
-typedef double __pyx_t_28_LLADF__ArterialWallMixture__Real;
+typedef double __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real;
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -1982,13 +1982,13 @@ static int __Pyx_ValidateAndInit_memviewslice(
                 PyObject *original_obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_28_LLADF__ArterialWallMixture__Real(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real(PyObject *, int writable_flag);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* None.proto */
-static CYTHON_INLINE __pyx_t_28_LLADF__ArterialWallMixture__Integer __Pyx_pow___pyx_t_28_LLADF__ArterialWallMixture__Integer(__pyx_t_28_LLADF__ArterialWallMixture__Integer, __pyx_t_28_LLADF__ArterialWallMixture__Integer);
+static CYTHON_INLINE __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __Pyx_pow___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer, __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int64_t(int64_t value);
@@ -2164,7 +2164,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 
 /* Module declarations from 'libc.stdint' */
 
-/* Module declarations from '_LLADF__ArterialWallMixture_' */
+/* Module declarations from '_LLADF__IncompressibleArterialWallMixture_' */
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
 static PyTypeObject *__pyx_memoryview_type = 0;
@@ -2209,15 +2209,15 @@ static void __pyx_memoryview_refcount_objects_in_slice(char *, Py_ssize_t *, Py_
 static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size_t, void *, int); /*proto*/
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__UInteger = { "UInteger", NULL, sizeof(__pyx_t_28_LLADF__ArterialWallMixture__UInteger), { 0 }, 0, IS_UNSIGNED(__pyx_t_28_LLADF__ArterialWallMixture__UInteger) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_28_LLADF__ArterialWallMixture__UInteger), 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real = { "Real", NULL, sizeof(__pyx_t_28_LLADF__ArterialWallMixture__Real), { 0 }, 0, 'R', 0, 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Integer = { "Integer", NULL, sizeof(__pyx_t_28_LLADF__ArterialWallMixture__Integer), { 0 }, 0, IS_UNSIGNED(__pyx_t_28_LLADF__ArterialWallMixture__Integer) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_28_LLADF__ArterialWallMixture__Integer), 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger = { "UInteger", NULL, sizeof(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger), { 0 }, 0, IS_UNSIGNED(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger), 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real = { "Real", NULL, sizeof(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real), { 0 }, 0, 'R', 0, 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer = { "Integer", NULL, sizeof(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer), { 0 }, 0, IS_UNSIGNED(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer), 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_int = { "int", NULL, sizeof(int), { 0 }, 0, IS_UNSIGNED(int) ? 'U' : 'I', IS_UNSIGNED(int), 0 };
-#define __Pyx_MODULE_NAME "_LLADF__ArterialWallMixture_"
-extern int __pyx_module_is_main__LLADF__ArterialWallMixture_;
-int __pyx_module_is_main__LLADF__ArterialWallMixture_ = 0;
+#define __Pyx_MODULE_NAME "_LLADF__IncompressibleArterialWallMixture_"
+extern int __pyx_module_is_main__LLADF__IncompressibleArterialWallMixture_;
+int __pyx_module_is_main__LLADF__IncompressibleArterialWallMixture_ = 0;
 
-/* Implementation of '_LLADF__ArterialWallMixture_' */
+/* Implementation of '_LLADF__IncompressibleArterialWallMixture_' */
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
@@ -2348,6 +2348,7 @@ static const char __pyx_k_local_cols_stiffness[] = "local_cols_stiffness";
 static const char __pyx_k_local_rows_stiffness[] = "local_rows_stiffness";
 static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
+static const char __pyx_k_has_growth_remodeling[] = "has_growth_remodeling";
 static const char __pyx_k_MemoryView_of_r_object[] = "<MemoryView of %r object>";
 static const char __pyx_k_MemoryView_of_r_at_0x_x[] = "<MemoryView of %r at 0x%x>";
 static const char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>";
@@ -2357,13 +2358,12 @@ static const char __pyx_k_requires_geometry_update[] = "requires_geometry_update
 static const char __pyx_k_squeeze_sparsity_pattern[] = "squeeze_sparsity_pattern";
 static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %d: %d.";
 static const char __pyx_k_is_transversely_isotropic[] = "is_transversely_isotropic";
-static const char __pyx_k_LLADF__ArterialWallMixture[] = "_LLADF__ArterialWallMixture_";
 static const char __pyx_k_recompute_sparsity_pattern[] = "recompute_sparsity_pattern";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
-static const char __pyx_k_LLADF__ArterialWallMixture__pyx[] = "_LLADF__ArterialWallMixture_.pyx";
+static const char __pyx_k_LLADF__IncompressibleArterialWa[] = "_LLADF__IncompressibleArterialWallMixture_";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
@@ -2383,6 +2383,7 @@ static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not F
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_unable_to_allocate_shape_and_str[] = "unable to allocate shape and strides.";
+static const char __pyx_k_LLADF__IncompressibleArterialWa_2[] = "_LLADF__IncompressibleArterialWallMixture_.pyx";
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
 static PyObject *__pyx_n_s_ASCII;
 static PyObject *__pyx_n_s_AllGauss;
@@ -2407,8 +2408,8 @@ static PyObject *__pyx_kp_s_Invalid_mode_expected_c_or_fortr;
 static PyObject *__pyx_kp_s_Invalid_shape_in_axis_d_d;
 static PyObject *__pyx_n_s_J_stiff;
 static PyObject *__pyx_n_s_Jm;
-static PyObject *__pyx_n_s_LLADF__ArterialWallMixture;
-static PyObject *__pyx_kp_s_LLADF__ArterialWallMixture__pyx;
+static PyObject *__pyx_n_s_LLADF__IncompressibleArterialWa;
+static PyObject *__pyx_kp_s_LLADF__IncompressibleArterialWa_2;
 static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_kp_s_MemoryView_of_r_at_0x_x;
 static PyObject *__pyx_kp_s_MemoryView_of_r_object;
@@ -2455,6 +2456,7 @@ static PyObject *__pyx_n_s_function_space;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
 static PyObject *__pyx_n_s_has_field_variables;
+static PyObject *__pyx_n_s_has_growth_remodeling;
 static PyObject *__pyx_n_s_id;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_indices;
@@ -2542,7 +2544,7 @@ static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMixture_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fem_solver, PyObject *__pyx_v_function_space, PyObject *__pyx_v_formulation, PyObject *__pyx_v_mesh, PyObject *__pyx_v_material, __Pyx_memviewslice __pyx_v_Eulerx); /* proto */
+static PyObject *__pyx_pf_42_LLADF__IncompressibleArterialWallMixture___LLADF__IncompressibleArterialWallMixture_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fem_solver, PyObject *__pyx_v_function_space, PyObject *__pyx_v_formulation, PyObject *__pyx_v_mesh, PyObject *__pyx_v_material, __Pyx_memviewslice __pyx_v_Eulerx); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
@@ -2633,18 +2635,18 @@ static PyObject *__pyx_codeobj__29;
 static PyObject *__pyx_codeobj__36;
 /* Late includes */
 
-/* "_LLADF__ArterialWallMixture_.pyx":51
+/* "_LLADF__IncompressibleArterialWallMixture_.pyx":52
  * 
  * 
- * def _LLADF__ArterialWallMixture_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
+ * def _LLADF__IncompressibleArterialWallMixture_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_28_LLADF__ArterialWallMixture__1_LLADF__ArterialWallMixture_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_28_LLADF__ArterialWallMixture__1_LLADF__ArterialWallMixture_ = {"_LLADF__ArterialWallMixture_", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_28_LLADF__ArterialWallMixture__1_LLADF__ArterialWallMixture_, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_28_LLADF__ArterialWallMixture__1_LLADF__ArterialWallMixture_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_42_LLADF__IncompressibleArterialWallMixture__1_LLADF__IncompressibleArterialWallMixture_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_42_LLADF__IncompressibleArterialWallMixture__1_LLADF__IncompressibleArterialWallMixture_ = {"_LLADF__IncompressibleArterialWallMixture_", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_42_LLADF__IncompressibleArterialWallMixture__1_LLADF__IncompressibleArterialWallMixture_, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_42_LLADF__IncompressibleArterialWallMixture__1_LLADF__IncompressibleArterialWallMixture_(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_fem_solver = 0;
   PyObject *__pyx_v_function_space = 0;
   PyObject *__pyx_v_formulation = 0;
@@ -2653,7 +2655,7 @@ static PyObject *__pyx_pw_28_LLADF__ArterialWallMixture__1_LLADF__ArterialWallMi
   __Pyx_memviewslice __pyx_v_Eulerx = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("_LLADF__ArterialWallMixture_ (wrapper)", 0);
+  __Pyx_RefNannySetupContext("_LLADF__IncompressibleArterialWallMixture_ (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_fem_solver,&__pyx_n_s_function_space,&__pyx_n_s_formulation,&__pyx_n_s_mesh,&__pyx_n_s_material,&__pyx_n_s_Eulerx,0};
     PyObject* values[6] = {0,0,0,0,0,0};
@@ -2685,35 +2687,35 @@ static PyObject *__pyx_pw_28_LLADF__ArterialWallMixture__1_LLADF__ArterialWallMi
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_function_space)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LLADF__ArterialWallMixture_", 1, 6, 6, 1); __PYX_ERR(0, 51, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__IncompressibleArterialWallMixture_", 1, 6, 6, 1); __PYX_ERR(0, 52, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_formulation)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LLADF__ArterialWallMixture_", 1, 6, 6, 2); __PYX_ERR(0, 51, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__IncompressibleArterialWallMixture_", 1, 6, 6, 2); __PYX_ERR(0, 52, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_mesh)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LLADF__ArterialWallMixture_", 1, 6, 6, 3); __PYX_ERR(0, 51, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__IncompressibleArterialWallMixture_", 1, 6, 6, 3); __PYX_ERR(0, 52, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_material)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LLADF__ArterialWallMixture_", 1, 6, 6, 4); __PYX_ERR(0, 51, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__IncompressibleArterialWallMixture_", 1, 6, 6, 4); __PYX_ERR(0, 52, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Eulerx)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_LLADF__ArterialWallMixture_", 1, 6, 6, 5); __PYX_ERR(0, 51, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_LLADF__IncompressibleArterialWallMixture_", 1, 6, 6, 5); __PYX_ERR(0, 52, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_LLADF__ArterialWallMixture_") < 0)) __PYX_ERR(0, 51, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_LLADF__IncompressibleArterialWallMixture_") < 0)) __PYX_ERR(0, 52, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 6) {
       goto __pyx_L5_argtuple_error;
@@ -2730,37 +2732,38 @@ static PyObject *__pyx_pw_28_LLADF__ArterialWallMixture__1_LLADF__ArterialWallMi
     __pyx_v_formulation = values[2];
     __pyx_v_mesh = values[3];
     __pyx_v_material = values[4];
-    __pyx_v_Eulerx = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_28_LLADF__ArterialWallMixture__Real(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_Eulerx.memview)) __PYX_ERR(0, 51, __pyx_L3_error)
+    __pyx_v_Eulerx = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_Eulerx.memview)) __PYX_ERR(0, 52, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_LLADF__ArterialWallMixture_", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 51, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_LLADF__IncompressibleArterialWallMixture_", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 52, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_LLADF__ArterialWallMixture_._LLADF__ArterialWallMixture_", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("_LLADF__IncompressibleArterialWallMixture_._LLADF__IncompressibleArterialWallMixture_", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMixture_(__pyx_self, __pyx_v_fem_solver, __pyx_v_function_space, __pyx_v_formulation, __pyx_v_mesh, __pyx_v_material, __pyx_v_Eulerx);
+  __pyx_r = __pyx_pf_42_LLADF__IncompressibleArterialWallMixture___LLADF__IncompressibleArterialWallMixture_(__pyx_self, __pyx_v_fem_solver, __pyx_v_function_space, __pyx_v_formulation, __pyx_v_mesh, __pyx_v_material, __pyx_v_Eulerx);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMixture_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fem_solver, PyObject *__pyx_v_function_space, PyObject *__pyx_v_formulation, PyObject *__pyx_v_mesh, PyObject *__pyx_v_material, __Pyx_memviewslice __pyx_v_Eulerx) {
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_ndim;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_nvar;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_ngauss;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_nelem;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_nodeperelem;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_nnode;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_H_VoigtSize;
+static PyObject *__pyx_pf_42_LLADF__IncompressibleArterialWallMixture___LLADF__IncompressibleArterialWallMixture_(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fem_solver, PyObject *__pyx_v_function_space, PyObject *__pyx_v_formulation, PyObject *__pyx_v_mesh, PyObject *__pyx_v_material, __Pyx_memviewslice __pyx_v_Eulerx) {
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_ndim;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_nvar;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_ngauss;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_nelem;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_nodeperelem;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_nnode;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_H_VoigtSize;
   PyArrayObject *__pyx_v_elements = 0;
   PyArrayObject *__pyx_v_points = 0;
   PyArrayObject *__pyx_v_Bases = 0;
   PyArrayObject *__pyx_v_Jm = 0;
   PyArrayObject *__pyx_v_AllGauss = 0;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_requires_geometry_update;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_requires_geometry_update;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_has_growth_remodeling;
   PyArrayObject *__pyx_v_local_rows_stiffness = 0;
   PyArrayObject *__pyx_v_local_cols_stiffness = 0;
   CYTHON_UNUSED PyArrayObject *__pyx_v_local_rows_mass = 0;
@@ -2775,17 +2778,17 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   int __pyx_v_squeeze_sparsity_pattern;
   int __pyx_v_recompute_sparsity_pattern;
   PyArrayObject *__pyx_v_T = 0;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_nfibre;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_v_nfield;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_nfibre;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_v_nfield;
   PyArrayObject *__pyx_v_anisotropic_orientations = 0;
   PyArrayObject *__pyx_v_field_variables = 0;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_v_mu;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_v_kappa;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_v_k1m;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_v_k2m;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_v_k1c;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_v_k2c;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_v_rho;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_v_mu;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_v_kappa;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_v_k1m;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_v_k2m;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_v_k1c;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_v_k2c;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_v_rho;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_AllGauss;
   __Pyx_Buffer __pyx_pybuffer_AllGauss;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_Bases;
@@ -2827,7 +2830,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __pyx_t_28_LLADF__ArterialWallMixture__Integer __pyx_t_2;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   PyArrayObject *__pyx_t_4 = NULL;
   PyArrayObject *__pyx_t_5 = NULL;
@@ -2857,12 +2860,12 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   PyArrayObject *__pyx_t_29 = NULL;
   PyArrayObject *__pyx_t_30 = NULL;
   PyArrayObject *__pyx_t_31 = NULL;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_t_32;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_t_33;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_t_34;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_t_35;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_t_36;
-  __pyx_t_28_LLADF__ArterialWallMixture__Real __pyx_t_37;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_t_32;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_t_33;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_t_34;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_t_35;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_t_36;
+  __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real __pyx_t_37;
   Py_ssize_t __pyx_t_38;
   Py_ssize_t __pyx_t_39;
   Py_ssize_t __pyx_t_40;
@@ -2892,7 +2895,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   Py_ssize_t __pyx_t_64;
   Py_ssize_t __pyx_t_65;
   Py_ssize_t __pyx_t_66;
-  __Pyx_RefNannySetupContext("_LLADF__ArterialWallMixture_", 0);
+  __Pyx_RefNannySetupContext("_LLADF__IncompressibleArterialWallMixture_", 0);
   __pyx_pybuffer_elements.pybuffer.buf = NULL;
   __pyx_pybuffer_elements.refcount = 0;
   __pyx_pybuffernd_elements.data = NULL;
@@ -2970,131 +2973,131 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_pybuffernd_field_variables.data = NULL;
   __pyx_pybuffernd_field_variables.rcbuffer = &__pyx_pybuffer_field_variables;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":54
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":55
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  *     cdef Integer ndim                       = formulation.ndim             # <<<<<<<<<<<<<<
  *     cdef Integer nvar                       = formulation.nvar
  *     cdef Integer ngauss                     = function_space.AllGauss.shape[0]
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_ndim); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_ndim); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_ndim = __pyx_t_2;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":55
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":56
  *     #GET VARIABLES FOR DISPATCHING TO C
  *     cdef Integer ndim                       = formulation.ndim
  *     cdef Integer nvar                       = formulation.nvar             # <<<<<<<<<<<<<<
  *     cdef Integer ngauss                     = function_space.AllGauss.shape[0]
  *     cdef Integer nelem                      = mesh.nelem
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_nvar); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_nvar); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nvar = __pyx_t_2;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":56
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":57
  *     cdef Integer ndim                       = formulation.ndim
  *     cdef Integer nvar                       = formulation.nvar
  *     cdef Integer ngauss                     = function_space.AllGauss.shape[0]             # <<<<<<<<<<<<<<
  *     cdef Integer nelem                      = mesh.nelem
  *     cdef Integer nodeperelem                = mesh.elements.shape[1]
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_function_space, __pyx_n_s_AllGauss); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_function_space, __pyx_n_s_AllGauss); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_ngauss = __pyx_t_2;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":57
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":58
  *     cdef Integer nvar                       = formulation.nvar
  *     cdef Integer ngauss                     = function_space.AllGauss.shape[0]
  *     cdef Integer nelem                      = mesh.nelem             # <<<<<<<<<<<<<<
  *     cdef Integer nodeperelem                = mesh.elements.shape[1]
  *     cdef Integer nnode                      = mesh.points.shape[0]
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_nelem); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_nelem); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nelem = __pyx_t_2;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":58
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":59
  *     cdef Integer ngauss                     = function_space.AllGauss.shape[0]
  *     cdef Integer nelem                      = mesh.nelem
  *     cdef Integer nodeperelem                = mesh.elements.shape[1]             # <<<<<<<<<<<<<<
  *     cdef Integer nnode                      = mesh.points.shape[0]
  *     cdef Integer H_VoigtSize                = material.H_VoigtSize
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_elements); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_elements); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nodeperelem = __pyx_t_2;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":59
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":60
  *     cdef Integer nelem                      = mesh.nelem
  *     cdef Integer nodeperelem                = mesh.elements.shape[1]
  *     cdef Integer nnode                      = mesh.points.shape[0]             # <<<<<<<<<<<<<<
  *     cdef Integer H_VoigtSize                = material.H_VoigtSize
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nnode = __pyx_t_2;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":60
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":61
  *     cdef Integer nodeperelem                = mesh.elements.shape[1]
  *     cdef Integer nnode                      = mesh.points.shape[0]
  *     cdef Integer H_VoigtSize                = material.H_VoigtSize             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] elements = mesh.elements
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_H_VoigtSize); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_H_VoigtSize); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_H_VoigtSize = __pyx_t_2;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":62
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":63
  *     cdef Integer H_VoigtSize                = material.H_VoigtSize
  * 
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] elements = mesh.elements             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Real,ndim=2, mode='c'] points       = mesh.points
  *     cdef np.ndarray[Real,ndim=2, mode='c'] Bases        = function_space.Bases
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_elements); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_elements); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 63, __pyx_L1_error)
   __pyx_t_4 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_4, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_4, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_elements = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_elements.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 62, __pyx_L1_error)
+      __PYX_ERR(0, 63, __pyx_L1_error)
     } else {__pyx_pybuffernd_elements.diminfo[0].strides = __pyx_pybuffernd_elements.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_elements.diminfo[0].shape = __pyx_pybuffernd_elements.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_elements.diminfo[1].strides = __pyx_pybuffernd_elements.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_elements.diminfo[1].shape = __pyx_pybuffernd_elements.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -3102,22 +3105,22 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_elements = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":63
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":64
  * 
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] elements = mesh.elements
  *     cdef np.ndarray[Real,ndim=2, mode='c'] points       = mesh.points             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Real,ndim=2, mode='c'] Bases        = function_space.Bases
  *     cdef np.ndarray[Real,ndim=3, mode='c'] Jm           = function_space.Jm
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 63, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 64, __pyx_L1_error)
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_points.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_points.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_points = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_points.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 63, __pyx_L1_error)
+      __PYX_ERR(0, 64, __pyx_L1_error)
     } else {__pyx_pybuffernd_points.diminfo[0].strides = __pyx_pybuffernd_points.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_points.diminfo[0].shape = __pyx_pybuffernd_points.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_points.diminfo[1].strides = __pyx_pybuffernd_points.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_points.diminfo[1].shape = __pyx_pybuffernd_points.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -3125,22 +3128,22 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_points = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":64
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":65
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] elements = mesh.elements
  *     cdef np.ndarray[Real,ndim=2, mode='c'] points       = mesh.points
  *     cdef np.ndarray[Real,ndim=2, mode='c'] Bases        = function_space.Bases             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Real,ndim=3, mode='c'] Jm           = function_space.Jm
  *     cdef np.ndarray[Real,ndim=1, mode='c'] AllGauss     = function_space.AllGauss.flatten()
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_function_space, __pyx_n_s_Bases); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_function_space, __pyx_n_s_Bases); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 64, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 65, __pyx_L1_error)
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Bases.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Bases.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_Bases = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_Bases.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 64, __pyx_L1_error)
+      __PYX_ERR(0, 65, __pyx_L1_error)
     } else {__pyx_pybuffernd_Bases.diminfo[0].strides = __pyx_pybuffernd_Bases.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Bases.diminfo[0].shape = __pyx_pybuffernd_Bases.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_Bases.diminfo[1].strides = __pyx_pybuffernd_Bases.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_Bases.diminfo[1].shape = __pyx_pybuffernd_Bases.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -3148,22 +3151,22 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_Bases = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":65
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":66
  *     cdef np.ndarray[Real,ndim=2, mode='c'] points       = mesh.points
  *     cdef np.ndarray[Real,ndim=2, mode='c'] Bases        = function_space.Bases
  *     cdef np.ndarray[Real,ndim=3, mode='c'] Jm           = function_space.Jm             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Real,ndim=1, mode='c'] AllGauss     = function_space.AllGauss.flatten()
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_function_space, __pyx_n_s_Jm); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_function_space, __pyx_n_s_Jm); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 66, __pyx_L1_error)
   __pyx_t_7 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Jm.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_Jm.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
       __pyx_v_Jm = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_Jm.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 65, __pyx_L1_error)
+      __PYX_ERR(0, 66, __pyx_L1_error)
     } else {__pyx_pybuffernd_Jm.diminfo[0].strides = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Jm.diminfo[0].shape = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_Jm.diminfo[1].strides = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_Jm.diminfo[1].shape = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_Jm.diminfo[2].strides = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_Jm.diminfo[2].shape = __pyx_pybuffernd_Jm.rcbuffer->pybuffer.shape[2];
     }
   }
@@ -3171,16 +3174,16 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_Jm = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":66
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":67
  *     cdef np.ndarray[Real,ndim=2, mode='c'] Bases        = function_space.Bases
  *     cdef np.ndarray[Real,ndim=3, mode='c'] Jm           = function_space.Jm
  *     cdef np.ndarray[Real,ndim=1, mode='c'] AllGauss     = function_space.AllGauss.flatten()             # <<<<<<<<<<<<<<
  * 
  *     cdef Integer requires_geometry_update               = fem_solver.requires_geometry_update
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_function_space, __pyx_n_s_AllGauss); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_function_space, __pyx_n_s_AllGauss); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_flatten); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_flatten); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -3195,16 +3198,16 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 66, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 67, __pyx_L1_error)
   __pyx_t_9 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_AllGauss.rcbuffer->pybuffer, (PyObject*)__pyx_t_9, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_AllGauss.rcbuffer->pybuffer, (PyObject*)__pyx_t_9, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_AllGauss = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 66, __pyx_L1_error)
+      __PYX_ERR(0, 67, __pyx_L1_error)
     } else {__pyx_pybuffernd_AllGauss.diminfo[0].strides = __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_AllGauss.diminfo[0].shape = __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3212,35 +3215,48 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_AllGauss = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":68
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":69
  *     cdef np.ndarray[Real,ndim=1, mode='c'] AllGauss     = function_space.AllGauss.flatten()
  * 
  *     cdef Integer requires_geometry_update               = fem_solver.requires_geometry_update             # <<<<<<<<<<<<<<
+ *     cdef Integer has_growth_remodeling                  = material.has_growth_remodeling
  * 
- *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_stiffness   = formulation.local_rows
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_requires_geometry_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_requires_geometry_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_requires_geometry_update = __pyx_t_2;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":70
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":70
+ * 
  *     cdef Integer requires_geometry_update               = fem_solver.requires_geometry_update
+ *     cdef Integer has_growth_remodeling                  = material.has_growth_remodeling             # <<<<<<<<<<<<<<
+ * 
+ *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_stiffness   = formulation.local_rows
+ */
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_has_growth_remodeling); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_1); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_has_growth_remodeling = __pyx_t_2;
+
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":72
+ *     cdef Integer has_growth_remodeling                  = material.has_growth_remodeling
  * 
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_stiffness   = formulation.local_rows             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_stiffness   = formulation.local_columns
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_local_rows); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_local_rows); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 70, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 72, __pyx_L1_error)
   __pyx_t_10 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer, (PyObject*)__pyx_t_10, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer, (PyObject*)__pyx_t_10, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_local_rows_stiffness = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 70, __pyx_L1_error)
+      __PYX_ERR(0, 72, __pyx_L1_error)
     } else {__pyx_pybuffernd_local_rows_stiffness.diminfo[0].strides = __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_local_rows_stiffness.diminfo[0].shape = __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3248,22 +3264,22 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_local_rows_stiffness = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":71
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":73
  * 
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_stiffness   = formulation.local_rows
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_stiffness   = formulation.local_columns             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_mass        = formulation.local_rows_mass
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_local_columns); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_local_columns); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 71, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 73, __pyx_L1_error)
   __pyx_t_11 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer, (PyObject*)__pyx_t_11, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer, (PyObject*)__pyx_t_11, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_local_cols_stiffness = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 71, __pyx_L1_error)
+      __PYX_ERR(0, 73, __pyx_L1_error)
     } else {__pyx_pybuffernd_local_cols_stiffness.diminfo[0].strides = __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_local_cols_stiffness.diminfo[0].shape = __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3271,22 +3287,22 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_local_cols_stiffness = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":73
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":75
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_stiffness   = formulation.local_columns
  * 
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_mass        = formulation.local_rows_mass             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_mass        = formulation.local_columns_mass
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_local_rows_mass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_local_rows_mass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 73, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 75, __pyx_L1_error)
   __pyx_t_12 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_local_rows_mass = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 73, __pyx_L1_error)
+      __PYX_ERR(0, 75, __pyx_L1_error)
     } else {__pyx_pybuffernd_local_rows_mass.diminfo[0].strides = __pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_local_rows_mass.diminfo[0].shape = __pyx_pybuffernd_local_rows_mass.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3294,22 +3310,22 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_local_rows_mass = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":74
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":76
  * 
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_mass        = formulation.local_rows_mass
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_mass        = formulation.local_columns_mass             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[int,ndim=1,mode='c'] I_stiff        = np.zeros(1,np.int32)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_local_columns_mass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_formulation, __pyx_n_s_local_columns_mass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 76, __pyx_L1_error)
   __pyx_t_13 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_local_cols_mass = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 74, __pyx_L1_error)
+      __PYX_ERR(0, 76, __pyx_L1_error)
     } else {__pyx_pybuffernd_local_cols_mass.diminfo[0].strides = __pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_local_cols_mass.diminfo[0].shape = __pyx_pybuffernd_local_cols_mass.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3317,21 +3333,21 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_local_cols_mass = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":76
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":78
  *     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_mass        = formulation.local_columns_mass
  * 
  *     cdef np.ndarray[int,ndim=1,mode='c'] I_stiff        = np.zeros(1,np.int32)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[int,ndim=1,mode='c'] J_stiff        = np.zeros(1,np.int32)
  *     cdef np.ndarray[Real,ndim=1,mode='c'] V_stiff       = np.zeros(1,np.float64)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = NULL;
@@ -3349,7 +3365,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -3358,14 +3374,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   } else
   #endif
   {
-    __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     if (__pyx_t_8) {
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -3376,18 +3392,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_GIVEREF(__pyx_t_14);
     PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_15, __pyx_t_14);
     __pyx_t_14 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 76, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 78, __pyx_L1_error)
   __pyx_t_17 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_I_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_17, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_I_stiff = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 76, __pyx_L1_error)
+      __PYX_ERR(0, 78, __pyx_L1_error)
     } else {__pyx_pybuffernd_I_stiff.diminfo[0].strides = __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_I_stiff.diminfo[0].shape = __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3395,21 +3411,21 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_I_stiff = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":77
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":79
  * 
  *     cdef np.ndarray[int,ndim=1,mode='c'] I_stiff        = np.zeros(1,np.int32)
  *     cdef np.ndarray[int,ndim=1,mode='c'] J_stiff        = np.zeros(1,np.int32)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Real,ndim=1,mode='c'] V_stiff       = np.zeros(1,np.float64)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -3427,7 +3443,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_16)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -3436,14 +3452,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_16)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   } else
   #endif
   {
-    __pyx_t_8 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 79, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -3454,18 +3470,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_GIVEREF(__pyx_t_14);
     PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_15, __pyx_t_14);
     __pyx_t_14 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 77, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 79, __pyx_L1_error)
   __pyx_t_18 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_J_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_18, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_J_stiff = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 77, __pyx_L1_error)
+      __PYX_ERR(0, 79, __pyx_L1_error)
     } else {__pyx_pybuffernd_J_stiff.diminfo[0].strides = __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_J_stiff.diminfo[0].shape = __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3473,21 +3489,21 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_J_stiff = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":78
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":80
  *     cdef np.ndarray[int,ndim=1,mode='c'] I_stiff        = np.zeros(1,np.int32)
  *     cdef np.ndarray[int,ndim=1,mode='c'] J_stiff        = np.zeros(1,np.int32)
  *     cdef np.ndarray[Real,ndim=1,mode='c'] V_stiff       = np.zeros(1,np.float64)             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_float64); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_float64); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
   __pyx_t_16 = NULL;
@@ -3505,7 +3521,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_8)) {
     PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -3514,14 +3530,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
     PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   } else
   #endif
   {
-    __pyx_t_3 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     if (__pyx_t_16) {
       __Pyx_GIVEREF(__pyx_t_16); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_16); __pyx_t_16 = NULL;
@@ -3532,18 +3548,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_GIVEREF(__pyx_t_14);
     PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_15, __pyx_t_14);
     __pyx_t_14 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 78, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 80, __pyx_L1_error)
   __pyx_t_19 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_V_stiff = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 78, __pyx_L1_error)
+      __PYX_ERR(0, 80, __pyx_L1_error)
     } else {__pyx_pybuffernd_V_stiff.diminfo[0].strides = __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_V_stiff.diminfo[0].shape = __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3551,21 +3567,21 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_V_stiff = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":80
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":82
  *     cdef np.ndarray[Real,ndim=1,mode='c'] V_stiff       = np.zeros(1,np.float64)
  * 
  *     cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements          = np.zeros((1,1),np.uint64)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_int64); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_int64); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = NULL;
@@ -3583,7 +3599,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_tuple_, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -3592,14 +3608,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_tuple_, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   } else
   #endif
   {
-    __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     if (__pyx_t_8) {
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -3610,18 +3626,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_GIVEREF(__pyx_t_14);
     PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_15, __pyx_t_14);
     __pyx_t_14 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 80, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 82, __pyx_L1_error)
   __pyx_t_20 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_t_20, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_t_20, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_sorter = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_sorter.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 80, __pyx_L1_error)
+      __PYX_ERR(0, 82, __pyx_L1_error)
     } else {__pyx_pybuffernd_sorter.diminfo[0].strides = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sorter.diminfo[0].shape = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_sorter.diminfo[1].strides = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_sorter.diminfo[1].shape = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -3629,21 +3645,21 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_sorter = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":81
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":83
  * 
  *     cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements          = np.zeros((1,1),np.uint64)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices             = np.zeros(1,np.int32)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_uint64); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_uint64); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -3661,7 +3677,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_16)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_tuple_, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -3670,14 +3686,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_16)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_tuple_, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   } else
   #endif
   {
-    __pyx_t_8 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 83, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -3688,18 +3704,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_GIVEREF(__pyx_t_14);
     PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_15, __pyx_t_14);
     __pyx_t_14 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 83, __pyx_L1_error)
   __pyx_t_21 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_21, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_21, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_sorted_elements = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 81, __pyx_L1_error)
+      __PYX_ERR(0, 83, __pyx_L1_error)
     } else {__pyx_pybuffernd_sorted_elements.diminfo[0].strides = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sorted_elements.diminfo[0].shape = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_sorted_elements.diminfo[1].strides = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_sorted_elements.diminfo[1].shape = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -3707,21 +3723,21 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_sorted_elements = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":82
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":84
  *     cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements          = np.zeros((1,1),np.uint64)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices             = np.zeros(1,np.int32)
  *     cdef int squeeze_sparsity_pattern                                   = fem_solver.squeeze_sparsity_pattern
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
   __pyx_t_16 = NULL;
@@ -3739,7 +3755,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_8)) {
     PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -3748,14 +3764,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
     PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   } else
   #endif
   {
-    __pyx_t_3 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     if (__pyx_t_16) {
       __Pyx_GIVEREF(__pyx_t_16); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_16); __pyx_t_16 = NULL;
@@ -3766,18 +3782,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_GIVEREF(__pyx_t_14);
     PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_15, __pyx_t_14);
     __pyx_t_14 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 82, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 84, __pyx_L1_error)
   __pyx_t_22 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer, (PyObject*)__pyx_t_22, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_data_global_indices = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 82, __pyx_L1_error)
+      __PYX_ERR(0, 84, __pyx_L1_error)
     } else {__pyx_pybuffernd_data_global_indices.diminfo[0].strides = __pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_data_global_indices.diminfo[0].shape = __pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3785,21 +3801,21 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_data_global_indices = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":83
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":85
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements          = np.zeros((1,1),np.uint64)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices             = np.zeros(1,np.int32)             # <<<<<<<<<<<<<<
  *     cdef int squeeze_sparsity_pattern                                   = fem_solver.squeeze_sparsity_pattern
  *     cdef int recompute_sparsity_pattern                                 = fem_solver.recompute_sparsity_pattern
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = NULL;
@@ -3817,7 +3833,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -3826,14 +3842,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_int_1, __pyx_t_14};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   } else
   #endif
   {
-    __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     if (__pyx_t_8) {
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -3844,18 +3860,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_GIVEREF(__pyx_t_14);
     PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_15, __pyx_t_14);
     __pyx_t_14 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 83, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 85, __pyx_L1_error)
   __pyx_t_23 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer, (PyObject*)__pyx_t_23, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_data_local_indices = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 83, __pyx_L1_error)
+      __PYX_ERR(0, 85, __pyx_L1_error)
     } else {__pyx_pybuffernd_data_local_indices.diminfo[0].strides = __pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_data_local_indices.diminfo[0].shape = __pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3863,65 +3879,65 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_data_local_indices = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":84
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":86
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices             = np.zeros(1,np.int32)
  *     cdef int squeeze_sparsity_pattern                                   = fem_solver.squeeze_sparsity_pattern             # <<<<<<<<<<<<<<
  *     cdef int recompute_sparsity_pattern                                 = fem_solver.recompute_sparsity_pattern
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_squeeze_sparsity_pattern); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_squeeze_sparsity_pattern); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_15 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_15 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_squeeze_sparsity_pattern = __pyx_t_15;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":85
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":87
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices             = np.zeros(1,np.int32)
  *     cdef int squeeze_sparsity_pattern                                   = fem_solver.squeeze_sparsity_pattern
  *     cdef int recompute_sparsity_pattern                                 = fem_solver.recompute_sparsity_pattern             # <<<<<<<<<<<<<<
  * 
  *     if fem_solver.recompute_sparsity_pattern:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_recompute_sparsity_pattern); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_recompute_sparsity_pattern); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_15 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_15 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_recompute_sparsity_pattern = __pyx_t_15;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":87
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":89
  *     cdef int recompute_sparsity_pattern                                 = fem_solver.recompute_sparsity_pattern
  * 
  *     if fem_solver.recompute_sparsity_pattern:             # <<<<<<<<<<<<<<
  *         I_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
  *         J_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_recompute_sparsity_pattern); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_recompute_sparsity_pattern); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_24) {
 
-    /* "_LLADF__ArterialWallMixture_.pyx":88
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":90
  * 
  *     if fem_solver.recompute_sparsity_pattern:
  *         I_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)             # <<<<<<<<<<<<<<
  *         J_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
  *         V_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.float64)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_28_LLADF__ArterialWallMixture__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_14 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_3); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_3); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_int32); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_int32); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -3939,7 +3955,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_16)) {
       PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_14, __pyx_t_8};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -3949,7 +3965,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_16)) {
       PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_14, __pyx_t_8};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -3957,7 +3973,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     } else
     #endif
     {
-      __pyx_t_25 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_25 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_25);
       if (__pyx_t_3) {
         __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_25, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -3968,12 +3984,12 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
       PyTuple_SET_ITEM(__pyx_t_25, 1+__pyx_t_15, __pyx_t_8);
       __pyx_t_14 = 0;
       __pyx_t_8 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_25, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_25, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
     }
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 88, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 90, __pyx_L1_error)
     __pyx_t_17 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -3990,32 +4006,32 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_26 = __pyx_t_27 = __pyx_t_28 = 0;
       }
       __pyx_pybuffernd_I_stiff.diminfo[0].strides = __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_I_stiff.diminfo[0].shape = __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 90, __pyx_L1_error)
     }
     __pyx_t_17 = 0;
     __Pyx_DECREF_SET(__pyx_v_I_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":89
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":91
  *     if fem_solver.recompute_sparsity_pattern:
  *         I_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
  *         J_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)             # <<<<<<<<<<<<<<
  *         V_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.float64)
  *     else:
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_25 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_zeros); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __pyx_t_25 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_zeros); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_25);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_16 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_28_LLADF__ArterialWallMixture__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __pyx_t_16 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_16); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_16); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_int32); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
     __pyx_t_16 = NULL;
@@ -4033,7 +4049,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_25)) {
       PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_t_8, __pyx_t_14};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_25, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_25, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4043,7 +4059,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_25)) {
       PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_t_8, __pyx_t_14};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_25, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_25, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4051,7 +4067,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     } else
     #endif
     {
-      __pyx_t_3 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       if (__pyx_t_16) {
         __Pyx_GIVEREF(__pyx_t_16); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_16); __pyx_t_16 = NULL;
@@ -4062,12 +4078,12 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
       PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_15, __pyx_t_14);
       __pyx_t_8 = 0;
       __pyx_t_14 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_25, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_25, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
     __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 89, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 91, __pyx_L1_error)
     __pyx_t_18 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -4084,32 +4100,32 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_28 = __pyx_t_27 = __pyx_t_26 = 0;
       }
       __pyx_pybuffernd_J_stiff.diminfo[0].strides = __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_J_stiff.diminfo[0].shape = __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 89, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 91, __pyx_L1_error)
     }
     __pyx_t_18 = 0;
     __Pyx_DECREF_SET(__pyx_v_J_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":90
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":92
  *         I_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
  *         J_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
  *         V_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.float64)             # <<<<<<<<<<<<<<
  *     else:
  *         I_stiff = fem_solver.indptr
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_25, __pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_25, __pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_25);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
-    __pyx_t_25 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_28_LLADF__ArterialWallMixture__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __pyx_t_25 = __Pyx_PyInt_From_int64_t((__Pyx_pow___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer((__pyx_v_nvar * __pyx_v_nodeperelem), 2) * __pyx_v_nelem)); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_25);
-    __pyx_t_14 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_25); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_25); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_25, __pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_25, __pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_25);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_float64); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_float64); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
     __pyx_t_25 = NULL;
@@ -4127,7 +4143,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[3] = {__pyx_t_25, __pyx_t_14, __pyx_t_8};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_25); __pyx_t_25 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -4137,7 +4153,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[3] = {__pyx_t_25, __pyx_t_14, __pyx_t_8};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_25); __pyx_t_25 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -4145,7 +4161,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     } else
     #endif
     {
-      __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 90, __pyx_L1_error)
+      __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 92, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       if (__pyx_t_25) {
         __Pyx_GIVEREF(__pyx_t_25); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_25); __pyx_t_25 = NULL;
@@ -4156,20 +4172,20 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
       PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_15, __pyx_t_8);
       __pyx_t_14 = 0;
       __pyx_t_8 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 90, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 92, __pyx_L1_error)
     __pyx_t_19 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer);
-      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
+      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
       if (unlikely(__pyx_t_15 < 0)) {
         PyErr_Fetch(&__pyx_t_26, &__pyx_t_27, &__pyx_t_28);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_v_V_stiff, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_v_V_stiff, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
           Py_XDECREF(__pyx_t_26); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_28);
           __Pyx_RaiseBufferFallbackError();
         } else {
@@ -4178,13 +4194,13 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_26 = __pyx_t_27 = __pyx_t_28 = 0;
       }
       __pyx_pybuffernd_V_stiff.diminfo[0].strides = __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_V_stiff.diminfo[0].shape = __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 90, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 92, __pyx_L1_error)
     }
     __pyx_t_19 = 0;
     __Pyx_DECREF_SET(__pyx_v_V_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":87
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":89
  *     cdef int recompute_sparsity_pattern                                 = fem_solver.recompute_sparsity_pattern
  * 
  *     if fem_solver.recompute_sparsity_pattern:             # <<<<<<<<<<<<<<
@@ -4194,7 +4210,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     goto __pyx_L3;
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":92
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":94
  *         V_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.float64)
  *     else:
  *         I_stiff = fem_solver.indptr             # <<<<<<<<<<<<<<
@@ -4202,9 +4218,9 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
  *         V_stiff = np.zeros(fem_solver.indices.shape[0],dtype=np.float64)
  */
   /*else*/ {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_indptr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_indptr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 92, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 94, __pyx_L1_error)
     __pyx_t_17 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -4221,22 +4237,22 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_28 = __pyx_t_27 = __pyx_t_26 = 0;
       }
       __pyx_pybuffernd_I_stiff.diminfo[0].strides = __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_I_stiff.diminfo[0].shape = __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 92, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 94, __pyx_L1_error)
     }
     __pyx_t_17 = 0;
     __Pyx_DECREF_SET(__pyx_v_I_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":93
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":95
  *     else:
  *         I_stiff = fem_solver.indptr
  *         J_stiff = fem_solver.indices             # <<<<<<<<<<<<<<
  *         V_stiff = np.zeros(fem_solver.indices.shape[0],dtype=np.float64)
  *         data_global_indices = fem_solver.data_global_indices
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_indices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_indices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 93, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 95, __pyx_L1_error)
     __pyx_t_18 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -4253,60 +4269,60 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_26 = __pyx_t_27 = __pyx_t_28 = 0;
       }
       __pyx_pybuffernd_J_stiff.diminfo[0].strides = __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_J_stiff.diminfo[0].shape = __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 93, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 95, __pyx_L1_error)
     }
     __pyx_t_18 = 0;
     __Pyx_DECREF_SET(__pyx_v_J_stiff, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":94
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":96
  *         I_stiff = fem_solver.indptr
  *         J_stiff = fem_solver.indices
  *         V_stiff = np.zeros(fem_solver.indices.shape[0],dtype=np.float64)             # <<<<<<<<<<<<<<
  *         data_global_indices = fem_solver.data_global_indices
  *         data_local_indices = fem_solver.data_local_indices
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_indices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_indices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_16, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_16, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_16 = PyTuple_New(1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_16 = PyTuple_New(1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_float64); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_float64); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_14) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_14) < 0) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, __pyx_t_1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, __pyx_t_1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 94, __pyx_L1_error)
+    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 96, __pyx_L1_error)
     __pyx_t_19 = ((PyArrayObject *)__pyx_t_14);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer);
-      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
+      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack);
       if (unlikely(__pyx_t_15 < 0)) {
         PyErr_Fetch(&__pyx_t_28, &__pyx_t_27, &__pyx_t_26);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_v_V_stiff, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_V_stiff.rcbuffer->pybuffer, (PyObject*)__pyx_v_V_stiff, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
           Py_XDECREF(__pyx_t_28); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_26);
           __Pyx_RaiseBufferFallbackError();
         } else {
@@ -4315,22 +4331,22 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_28 = __pyx_t_27 = __pyx_t_26 = 0;
       }
       __pyx_pybuffernd_V_stiff.diminfo[0].strides = __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_V_stiff.diminfo[0].shape = __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 94, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 96, __pyx_L1_error)
     }
     __pyx_t_19 = 0;
     __Pyx_DECREF_SET(__pyx_v_V_stiff, ((PyArrayObject *)__pyx_t_14));
     __pyx_t_14 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":95
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":97
  *         J_stiff = fem_solver.indices
  *         V_stiff = np.zeros(fem_solver.indices.shape[0],dtype=np.float64)
  *         data_global_indices = fem_solver.data_global_indices             # <<<<<<<<<<<<<<
  *         data_local_indices = fem_solver.data_local_indices
  *         if fem_solver.squeeze_sparsity_pattern:
  */
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_data_global_indices); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_data_global_indices); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 97, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
-    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 95, __pyx_L1_error)
+    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 97, __pyx_L1_error)
     __pyx_t_22 = ((PyArrayObject *)__pyx_t_14);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -4347,22 +4363,22 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_26 = __pyx_t_27 = __pyx_t_28 = 0;
       }
       __pyx_pybuffernd_data_global_indices.diminfo[0].strides = __pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_data_global_indices.diminfo[0].shape = __pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 95, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 97, __pyx_L1_error)
     }
     __pyx_t_22 = 0;
     __Pyx_DECREF_SET(__pyx_v_data_global_indices, ((PyArrayObject *)__pyx_t_14));
     __pyx_t_14 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":96
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":98
  *         V_stiff = np.zeros(fem_solver.indices.shape[0],dtype=np.float64)
  *         data_global_indices = fem_solver.data_global_indices
  *         data_local_indices = fem_solver.data_local_indices             # <<<<<<<<<<<<<<
  *         if fem_solver.squeeze_sparsity_pattern:
  *             sorter = mesh.element_sorter
  */
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_data_local_indices); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_data_local_indices); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 98, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
-    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 96, __pyx_L1_error)
+    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 98, __pyx_L1_error)
     __pyx_t_23 = ((PyArrayObject *)__pyx_t_14);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -4379,43 +4395,43 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_28 = __pyx_t_27 = __pyx_t_26 = 0;
       }
       __pyx_pybuffernd_data_local_indices.diminfo[0].strides = __pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_data_local_indices.diminfo[0].shape = __pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 96, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
     }
     __pyx_t_23 = 0;
     __Pyx_DECREF_SET(__pyx_v_data_local_indices, ((PyArrayObject *)__pyx_t_14));
     __pyx_t_14 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":97
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":99
  *         data_global_indices = fem_solver.data_global_indices
  *         data_local_indices = fem_solver.data_local_indices
  *         if fem_solver.squeeze_sparsity_pattern:             # <<<<<<<<<<<<<<
  *             sorter = mesh.element_sorter
  *             sorted_elements = mesh.sorted_elements
  */
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_squeeze_sparsity_pattern); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_squeeze_sparsity_pattern); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 99, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
-    __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 99, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     if (__pyx_t_24) {
 
-      /* "_LLADF__ArterialWallMixture_.pyx":98
+      /* "_LLADF__IncompressibleArterialWallMixture_.pyx":100
  *         data_local_indices = fem_solver.data_local_indices
  *         if fem_solver.squeeze_sparsity_pattern:
  *             sorter = mesh.element_sorter             # <<<<<<<<<<<<<<
  *             sorted_elements = mesh.sorted_elements
  * 
  */
-      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_element_sorter); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_element_sorter); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 100, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
-      if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 98, __pyx_L1_error)
+      if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 100, __pyx_L1_error)
       __pyx_t_20 = ((PyArrayObject *)__pyx_t_14);
       {
         __Pyx_BufFmt_StackElem __pyx_stack[1];
         __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer);
-        __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_t_20, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
+        __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_t_20, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
         if (unlikely(__pyx_t_15 < 0)) {
           PyErr_Fetch(&__pyx_t_26, &__pyx_t_27, &__pyx_t_28);
-          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_v_sorter, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer, (PyObject*)__pyx_v_sorter, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
             Py_XDECREF(__pyx_t_26); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_28);
             __Pyx_RaiseBufferFallbackError();
           } else {
@@ -4424,30 +4440,30 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
           __pyx_t_26 = __pyx_t_27 = __pyx_t_28 = 0;
         }
         __pyx_pybuffernd_sorter.diminfo[0].strides = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sorter.diminfo[0].shape = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_sorter.diminfo[1].strides = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_sorter.diminfo[1].shape = __pyx_pybuffernd_sorter.rcbuffer->pybuffer.shape[1];
-        if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
+        if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 100, __pyx_L1_error)
       }
       __pyx_t_20 = 0;
       __Pyx_DECREF_SET(__pyx_v_sorter, ((PyArrayObject *)__pyx_t_14));
       __pyx_t_14 = 0;
 
-      /* "_LLADF__ArterialWallMixture_.pyx":99
+      /* "_LLADF__IncompressibleArterialWallMixture_.pyx":101
  *         if fem_solver.squeeze_sparsity_pattern:
  *             sorter = mesh.element_sorter
  *             sorted_elements = mesh.sorted_elements             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[Real,ndim=1,mode='c'] T = np.zeros(mesh.points.shape[0]*nvar,np.float64)
  */
-      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_sorted_elements); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 99, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_sorted_elements); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 101, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
-      if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 99, __pyx_L1_error)
+      if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 101, __pyx_L1_error)
       __pyx_t_21 = ((PyArrayObject *)__pyx_t_14);
       {
         __Pyx_BufFmt_StackElem __pyx_stack[1];
         __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer);
-        __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_21, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
+        __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_t_21, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
         if (unlikely(__pyx_t_15 < 0)) {
           PyErr_Fetch(&__pyx_t_28, &__pyx_t_27, &__pyx_t_26);
-          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_v_sorted_elements, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer, (PyObject*)__pyx_v_sorted_elements, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
             Py_XDECREF(__pyx_t_28); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_26);
             __Pyx_RaiseBufferFallbackError();
           } else {
@@ -4456,13 +4472,13 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
           __pyx_t_28 = __pyx_t_27 = __pyx_t_26 = 0;
         }
         __pyx_pybuffernd_sorted_elements.diminfo[0].strides = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sorted_elements.diminfo[0].shape = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_sorted_elements.diminfo[1].strides = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_sorted_elements.diminfo[1].shape = __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.shape[1];
-        if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 99, __pyx_L1_error)
+        if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 101, __pyx_L1_error)
       }
       __pyx_t_21 = 0;
       __Pyx_DECREF_SET(__pyx_v_sorted_elements, ((PyArrayObject *)__pyx_t_14));
       __pyx_t_14 = 0;
 
-      /* "_LLADF__ArterialWallMixture_.pyx":97
+      /* "_LLADF__IncompressibleArterialWallMixture_.pyx":99
  *         data_global_indices = fem_solver.data_global_indices
  *         data_local_indices = fem_solver.data_local_indices
  *         if fem_solver.squeeze_sparsity_pattern:             # <<<<<<<<<<<<<<
@@ -4473,35 +4489,35 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   }
   __pyx_L3:;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":101
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":103
  *             sorted_elements = mesh.sorted_elements
  * 
  *     cdef np.ndarray[Real,ndim=1,mode='c'] T = np.zeros(mesh.points.shape[0]*nvar,np.float64)             # <<<<<<<<<<<<<<
  * 
  *     cdef Integer nfibre = 0, nfield=0
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_mesh, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_int64_t(__pyx_v_nvar); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int64_t(__pyx_v_nvar); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_8 = PyNumber_Multiply(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_8 = PyNumber_Multiply(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -4519,7 +4535,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_16)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_8, __pyx_t_1};
-    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 103, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4529,7 +4545,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_16)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_8, __pyx_t_1};
-    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 103, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4537,7 +4553,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else
   #endif
   {
-    __pyx_t_25 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_25 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 103, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_25);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_25, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -4548,18 +4564,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     PyTuple_SET_ITEM(__pyx_t_25, 1+__pyx_t_15, __pyx_t_1);
     __pyx_t_8 = 0;
     __pyx_t_1 = 0;
-    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_25, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_25, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 103, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
   }
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-  if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 101, __pyx_L1_error)
+  if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 103, __pyx_L1_error)
   __pyx_t_29 = ((PyArrayObject *)__pyx_t_14);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_T.rcbuffer->pybuffer, (PyObject*)__pyx_t_29, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_T.rcbuffer->pybuffer, (PyObject*)__pyx_t_29, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_T = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_T.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 101, __pyx_L1_error)
+      __PYX_ERR(0, 103, __pyx_L1_error)
     } else {__pyx_pybuffernd_T.diminfo[0].strides = __pyx_pybuffernd_T.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_T.diminfo[0].shape = __pyx_pybuffernd_T.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -4567,7 +4583,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_T = ((PyArrayObject *)__pyx_t_14);
   __pyx_t_14 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":103
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":105
  *     cdef np.ndarray[Real,ndim=1,mode='c'] T = np.zeros(mesh.points.shape[0]*nvar,np.float64)
  * 
  *     cdef Integer nfibre = 0, nfield=0             # <<<<<<<<<<<<<<
@@ -4577,21 +4593,21 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_nfibre = 0;
   __pyx_v_nfield = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":104
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":106
  * 
  *     cdef Integer nfibre = 0, nfield=0
  *     cdef np.ndarray[Real,ndim=3,mode='c'] anisotropic_orientations = np.zeros((1,1,1),np.float64)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Real,ndim=2,mode='c'] field_variables = np.zeros((1,1),np.float64)
  *     if material.is_transversely_isotropic:
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  __pyx_t_25 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_zeros); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_25 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_zeros); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_25);
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
   __pyx_t_16 = NULL;
@@ -4609,7 +4625,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_25)) {
     PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_tuple__2, __pyx_t_1};
-    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_25, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_25, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4618,14 +4634,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_25)) {
     PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_tuple__2, __pyx_t_1};
-    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_25, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_25, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else
   #endif
   {
-    __pyx_t_8 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (__pyx_t_16) {
       __Pyx_GIVEREF(__pyx_t_16); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_16); __pyx_t_16 = NULL;
@@ -4636,18 +4652,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_15, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_25, __pyx_t_8, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_25, __pyx_t_8, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
-  if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 104, __pyx_L1_error)
+  if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 106, __pyx_L1_error)
   __pyx_t_30 = ((PyArrayObject *)__pyx_t_14);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_t_30, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_t_30, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
       __pyx_v_anisotropic_orientations = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 104, __pyx_L1_error)
+      __PYX_ERR(0, 106, __pyx_L1_error)
     } else {__pyx_pybuffernd_anisotropic_orientations.diminfo[0].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[0].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_anisotropic_orientations.diminfo[2].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_anisotropic_orientations.diminfo[2].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[2];
     }
   }
@@ -4655,21 +4671,21 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_anisotropic_orientations = ((PyArrayObject *)__pyx_t_14);
   __pyx_t_14 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":105
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":107
  *     cdef Integer nfibre = 0, nfield=0
  *     cdef np.ndarray[Real,ndim=3,mode='c'] anisotropic_orientations = np.zeros((1,1,1),np.float64)
  *     cdef np.ndarray[Real,ndim=2,mode='c'] field_variables = np.zeros((1,1),np.float64)             # <<<<<<<<<<<<<<
  *     if material.is_transversely_isotropic:
  *         anisotropic_orientations = material.anisotropic_orientations
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_25, __pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_25, __pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_25);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_25, __pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_25, __pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_25);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
   __pyx_t_25 = NULL;
@@ -4687,7 +4703,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_8)) {
     PyObject *__pyx_temp[3] = {__pyx_t_25, __pyx_tuple_, __pyx_t_1};
-    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 105, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_25); __pyx_t_25 = 0;
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4696,14 +4712,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
     PyObject *__pyx_temp[3] = {__pyx_t_25, __pyx_tuple_, __pyx_t_1};
-    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 105, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_25); __pyx_t_25 = 0;
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else
   #endif
   {
-    __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 105, __pyx_L1_error)
+    __pyx_t_16 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     if (__pyx_t_25) {
       __Pyx_GIVEREF(__pyx_t_25); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_25); __pyx_t_25 = NULL;
@@ -4714,18 +4730,18 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_15, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_16, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 105, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_16, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 107, __pyx_L1_error)
   __pyx_t_31 = ((PyArrayObject *)__pyx_t_14);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer, (PyObject*)__pyx_t_31, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer, (PyObject*)__pyx_t_31, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_field_variables = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 105, __pyx_L1_error)
+      __PYX_ERR(0, 107, __pyx_L1_error)
     } else {__pyx_pybuffernd_field_variables.diminfo[0].strides = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_field_variables.diminfo[0].shape = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_field_variables.diminfo[1].strides = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_field_variables.diminfo[1].shape = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -4733,37 +4749,37 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_field_variables = ((PyArrayObject *)__pyx_t_14);
   __pyx_t_14 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":106
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":108
  *     cdef np.ndarray[Real,ndim=3,mode='c'] anisotropic_orientations = np.zeros((1,1,1),np.float64)
  *     cdef np.ndarray[Real,ndim=2,mode='c'] field_variables = np.zeros((1,1),np.float64)
  *     if material.is_transversely_isotropic:             # <<<<<<<<<<<<<<
  *         anisotropic_orientations = material.anisotropic_orientations
  *         nfibre = material.anisotropic_orientations.shape[1]
  */
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_is_transversely_isotropic); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_is_transversely_isotropic); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   if (__pyx_t_24) {
 
-    /* "_LLADF__ArterialWallMixture_.pyx":107
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":109
  *     cdef np.ndarray[Real,ndim=2,mode='c'] field_variables = np.zeros((1,1),np.float64)
  *     if material.is_transversely_isotropic:
  *         anisotropic_orientations = material.anisotropic_orientations             # <<<<<<<<<<<<<<
  *         nfibre = material.anisotropic_orientations.shape[1]
  *     if material.has_field_variables:
  */
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_anisotropic_orientations); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 107, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_anisotropic_orientations); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 109, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
-    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 107, __pyx_L1_error)
+    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 109, __pyx_L1_error)
     __pyx_t_30 = ((PyArrayObject *)__pyx_t_14);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer);
-      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_t_30, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack);
+      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_t_30, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack);
       if (unlikely(__pyx_t_15 < 0)) {
         PyErr_Fetch(&__pyx_t_26, &__pyx_t_27, &__pyx_t_28);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_v_anisotropic_orientations, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer, (PyObject*)__pyx_v_anisotropic_orientations, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 3, 0, __pyx_stack) == -1)) {
           Py_XDECREF(__pyx_t_26); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_28);
           __Pyx_RaiseBufferFallbackError();
         } else {
@@ -4772,32 +4788,32 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_26 = __pyx_t_27 = __pyx_t_28 = 0;
       }
       __pyx_pybuffernd_anisotropic_orientations.diminfo[0].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[0].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_anisotropic_orientations.diminfo[1].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_anisotropic_orientations.diminfo[2].strides = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_anisotropic_orientations.diminfo[2].shape = __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.shape[2];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 107, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 109, __pyx_L1_error)
     }
     __pyx_t_30 = 0;
     __Pyx_DECREF_SET(__pyx_v_anisotropic_orientations, ((PyArrayObject *)__pyx_t_14));
     __pyx_t_14 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":108
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":110
  *     if material.is_transversely_isotropic:
  *         anisotropic_orientations = material.anisotropic_orientations
  *         nfibre = material.anisotropic_orientations.shape[1]             # <<<<<<<<<<<<<<
  *     if material.has_field_variables:
  *         field_variables = material.field_variables
  */
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_anisotropic_orientations); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 108, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_anisotropic_orientations); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_shape); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 108, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_shape); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-    __pyx_t_14 = __Pyx_GetItemInt(__pyx_t_8, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 108, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_GetItemInt(__pyx_t_8, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_14); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_14); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     __pyx_v_nfibre = __pyx_t_2;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":106
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":108
  *     cdef np.ndarray[Real,ndim=3,mode='c'] anisotropic_orientations = np.zeros((1,1,1),np.float64)
  *     cdef np.ndarray[Real,ndim=2,mode='c'] field_variables = np.zeros((1,1),np.float64)
  *     if material.is_transversely_isotropic:             # <<<<<<<<<<<<<<
@@ -4806,37 +4822,37 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
  */
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":109
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":111
  *         anisotropic_orientations = material.anisotropic_orientations
  *         nfibre = material.anisotropic_orientations.shape[1]
  *     if material.has_field_variables:             # <<<<<<<<<<<<<<
  *         field_variables = material.field_variables
  *         nfield = material.field_variables.shape[1]
  */
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_has_field_variables); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_has_field_variables); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   if (__pyx_t_24) {
 
-    /* "_LLADF__ArterialWallMixture_.pyx":110
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":112
  *         nfibre = material.anisotropic_orientations.shape[1]
  *     if material.has_field_variables:
  *         field_variables = material.field_variables             # <<<<<<<<<<<<<<
  *         nfield = material.field_variables.shape[1]
  * 
  */
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_field_variables); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_field_variables); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
-    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 110, __pyx_L1_error)
+    if (!(likely(((__pyx_t_14) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_14, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 112, __pyx_L1_error)
     __pyx_t_31 = ((PyArrayObject *)__pyx_t_14);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer);
-      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer, (PyObject*)__pyx_t_31, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
+      __pyx_t_15 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer, (PyObject*)__pyx_t_31, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack);
       if (unlikely(__pyx_t_15 < 0)) {
         PyErr_Fetch(&__pyx_t_28, &__pyx_t_27, &__pyx_t_26);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer, (PyObject*)__pyx_v_field_variables, &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_field_variables.rcbuffer->pybuffer, (PyObject*)__pyx_v_field_variables, &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) {
           Py_XDECREF(__pyx_t_28); Py_XDECREF(__pyx_t_27); Py_XDECREF(__pyx_t_26);
           __Pyx_RaiseBufferFallbackError();
         } else {
@@ -4845,32 +4861,32 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
         __pyx_t_28 = __pyx_t_27 = __pyx_t_26 = 0;
       }
       __pyx_pybuffernd_field_variables.diminfo[0].strides = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_field_variables.diminfo[0].shape = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_field_variables.diminfo[1].strides = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_field_variables.diminfo[1].shape = __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 110, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 112, __pyx_L1_error)
     }
     __pyx_t_31 = 0;
     __Pyx_DECREF_SET(__pyx_v_field_variables, ((PyArrayObject *)__pyx_t_14));
     __pyx_t_14 = 0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":111
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":113
  *     if material.has_field_variables:
  *         field_variables = material.field_variables
  *         nfield = material.field_variables.shape[1]             # <<<<<<<<<<<<<<
  * 
  *     cdef Real mu=0.,kappa=0.,k1m=0,k2m=0.,k1c=0,k2c=0.
  */
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_field_variables); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_field_variables); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_shape); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_shape); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-    __pyx_t_14 = __Pyx_GetItemInt(__pyx_t_8, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_GetItemInt(__pyx_t_8, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_14); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_As_int64_t(__pyx_t_14); if (unlikely((__pyx_t_2 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     __pyx_v_nfield = __pyx_t_2;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":109
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":111
  *         anisotropic_orientations = material.anisotropic_orientations
  *         nfibre = material.anisotropic_orientations.shape[1]
  *     if material.has_field_variables:             # <<<<<<<<<<<<<<
@@ -4879,7 +4895,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
  */
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":113
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":115
  *         nfield = material.field_variables.shape[1]
  * 
  *     cdef Real mu=0.,kappa=0.,k1m=0,k2m=0.,k1c=0,k2c=0.             # <<<<<<<<<<<<<<
@@ -4893,36 +4909,36 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_k1c = 0.0;
   __pyx_v_k2c = 0.;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":115
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":117
  *     cdef Real mu=0.,kappa=0.,k1m=0,k2m=0.,k1c=0,k2c=0.
  * 
  *     mu, kappa, k1m, k2m, k1c, k2c = material.mu, material.kappa, material.k1m, material.k2m, material.k1c, material.k2c             # <<<<<<<<<<<<<<
  * 
  *     cdef Real rho = material.rho
  */
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_mu); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_mu); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_32 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_32 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_32 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_32 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_kappa); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_kappa); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_33 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_33 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_33 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_33 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1m); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1m); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_34 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_34 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_34 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_34 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2m); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2m); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_35 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_35 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_35 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_35 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1c); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k1c); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_36 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_36 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_36 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_36 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2c); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_k2c); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __pyx_v_mu = __pyx_t_32;
   __pyx_v_kappa = __pyx_t_33;
@@ -4931,23 +4947,23 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   __pyx_v_k1c = __pyx_t_36;
   __pyx_v_k2c = __pyx_t_37;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":117
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":119
  *     mu, kappa, k1m, k2m, k1c, k2c = material.mu, material.kappa, material.k1m, material.k2m, material.k1c, material.k2c
  * 
  *     cdef Real rho = material.rho             # <<<<<<<<<<<<<<
  * 
- *     _GlobalAssemblyDF__ArterialWallMixture_(&points[0,0],
+ *     _GlobalAssemblyDF__IncompressibleArterialWallMixture_(&points[0,0],
  */
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_rho); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_rho); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_14); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __pyx_v_rho = __pyx_t_37;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":119
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":121
  *     cdef Real rho = material.rho
  * 
- *     _GlobalAssemblyDF__ArterialWallMixture_(&points[0,0],             # <<<<<<<<<<<<<<
+ *     _GlobalAssemblyDF__IncompressibleArterialWallMixture_(&points[0,0],             # <<<<<<<<<<<<<<
  *                             &elements[0,0],
  *                             &Eulerx[0,0],
  */
@@ -4964,12 +4980,12 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_39 >= __pyx_pybuffernd_points.diminfo[1].shape)) __pyx_t_15 = 1;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 119, __pyx_L1_error)
+    __PYX_ERR(0, 121, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":120
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":122
  * 
- *     _GlobalAssemblyDF__ArterialWallMixture_(&points[0,0],
+ *     _GlobalAssemblyDF__IncompressibleArterialWallMixture_(&points[0,0],
  *                             &elements[0,0],             # <<<<<<<<<<<<<<
  *                             &Eulerx[0,0],
  *                             &Bases[0,0],
@@ -4987,11 +5003,11 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_41 >= __pyx_pybuffernd_elements.diminfo[1].shape)) __pyx_t_15 = 1;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 120, __pyx_L1_error)
+    __PYX_ERR(0, 122, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":121
- *     _GlobalAssemblyDF__ArterialWallMixture_(&points[0,0],
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":123
+ *     _GlobalAssemblyDF__IncompressibleArterialWallMixture_(&points[0,0],
  *                             &elements[0,0],
  *                             &Eulerx[0,0],             # <<<<<<<<<<<<<<
  *                             &Bases[0,0],
@@ -5010,10 +5026,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_43 >= __pyx_v_Eulerx.shape[1])) __pyx_t_15 = 1;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 121, __pyx_L1_error)
+    __PYX_ERR(0, 123, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":122
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":124
  *                             &elements[0,0],
  *                             &Eulerx[0,0],
  *                             &Bases[0,0],             # <<<<<<<<<<<<<<
@@ -5033,10 +5049,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_45 >= __pyx_pybuffernd_Bases.diminfo[1].shape)) __pyx_t_15 = 1;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 122, __pyx_L1_error)
+    __PYX_ERR(0, 124, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":123
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":125
  *                             &Eulerx[0,0],
  *                             &Bases[0,0],
  *                             &Jm[0,0,0],             # <<<<<<<<<<<<<<
@@ -5061,10 +5077,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_48 >= __pyx_pybuffernd_Jm.diminfo[2].shape)) __pyx_t_15 = 2;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 123, __pyx_L1_error)
+    __PYX_ERR(0, 125, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":124
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":126
  *                             &Bases[0,0],
  *                             &Jm[0,0,0],
  *                             &AllGauss[0],             # <<<<<<<<<<<<<<
@@ -5079,10 +5095,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_49 >= __pyx_pybuffernd_AllGauss.diminfo[0].shape)) __pyx_t_15 = 0;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 124, __pyx_L1_error)
+    __PYX_ERR(0, 126, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":133
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":135
  *                             H_VoigtSize,
  *                             requires_geometry_update,
  *                             &local_rows_stiffness[0],             # <<<<<<<<<<<<<<
@@ -5097,10 +5113,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_50 >= __pyx_pybuffernd_local_rows_stiffness.diminfo[0].shape)) __pyx_t_15 = 0;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 133, __pyx_L1_error)
+    __PYX_ERR(0, 135, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":134
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":136
  *                             requires_geometry_update,
  *                             &local_rows_stiffness[0],
  *                             &local_cols_stiffness[0],             # <<<<<<<<<<<<<<
@@ -5115,10 +5131,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_51 >= __pyx_pybuffernd_local_cols_stiffness.diminfo[0].shape)) __pyx_t_15 = 0;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 134, __pyx_L1_error)
+    __PYX_ERR(0, 136, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":135
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":137
  *                             &local_rows_stiffness[0],
  *                             &local_cols_stiffness[0],
  *                             &I_stiff[0],             # <<<<<<<<<<<<<<
@@ -5133,10 +5149,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_52 >= __pyx_pybuffernd_I_stiff.diminfo[0].shape)) __pyx_t_15 = 0;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 135, __pyx_L1_error)
+    __PYX_ERR(0, 137, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":136
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":138
  *                             &local_cols_stiffness[0],
  *                             &I_stiff[0],
  *                             &J_stiff[0],             # <<<<<<<<<<<<<<
@@ -5151,10 +5167,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_53 >= __pyx_pybuffernd_J_stiff.diminfo[0].shape)) __pyx_t_15 = 0;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 136, __pyx_L1_error)
+    __PYX_ERR(0, 138, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":137
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":139
  *                             &I_stiff[0],
  *                             &J_stiff[0],
  *                             &V_stiff[0],             # <<<<<<<<<<<<<<
@@ -5169,10 +5185,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_54 >= __pyx_pybuffernd_V_stiff.diminfo[0].shape)) __pyx_t_15 = 0;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 137, __pyx_L1_error)
+    __PYX_ERR(0, 139, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":138
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":140
  *                             &J_stiff[0],
  *                             &V_stiff[0],
  *                             &T[0],             # <<<<<<<<<<<<<<
@@ -5187,10 +5203,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_55 >= __pyx_pybuffernd_T.diminfo[0].shape)) __pyx_t_15 = 0;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 138, __pyx_L1_error)
+    __PYX_ERR(0, 140, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":141
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":143
  *                             recompute_sparsity_pattern,
  *                             squeeze_sparsity_pattern,
  *                             &data_local_indices[0],             # <<<<<<<<<<<<<<
@@ -5205,10 +5221,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_56 >= __pyx_pybuffernd_data_local_indices.diminfo[0].shape)) __pyx_t_15 = 0;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 141, __pyx_L1_error)
+    __PYX_ERR(0, 143, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":142
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":144
  *                             squeeze_sparsity_pattern,
  *                             &data_local_indices[0],
  *                             &data_global_indices[0],             # <<<<<<<<<<<<<<
@@ -5223,10 +5239,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_57 >= __pyx_pybuffernd_data_global_indices.diminfo[0].shape)) __pyx_t_15 = 0;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 142, __pyx_L1_error)
+    __PYX_ERR(0, 144, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":143
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":145
  *                             &data_local_indices[0],
  *                             &data_global_indices[0],
  *                             &sorted_elements[0,0],             # <<<<<<<<<<<<<<
@@ -5246,10 +5262,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_59 >= __pyx_pybuffernd_sorted_elements.diminfo[1].shape)) __pyx_t_15 = 1;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 143, __pyx_L1_error)
+    __PYX_ERR(0, 145, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":144
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":146
  *                             &data_global_indices[0],
  *                             &sorted_elements[0,0],
  *                             &sorter[0,0],             # <<<<<<<<<<<<<<
@@ -5269,10 +5285,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_61 >= __pyx_pybuffernd_sorter.diminfo[1].shape)) __pyx_t_15 = 1;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 144, __pyx_L1_error)
+    __PYX_ERR(0, 146, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":152
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":154
  *                             k1c,
  *                             k2c,
  *                             &anisotropic_orientations[0,0,0],             # <<<<<<<<<<<<<<
@@ -5297,15 +5313,15 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_64 >= __pyx_pybuffernd_anisotropic_orientations.diminfo[2].shape)) __pyx_t_15 = 2;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 152, __pyx_L1_error)
+    __PYX_ERR(0, 154, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":154
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":156
  *                             &anisotropic_orientations[0,0,0],
  *                             nfibre,
  *                             &field_variables[0,0],             # <<<<<<<<<<<<<<
- *                             nfield
- *                             )
+ *                             nfield,
+ *                             has_growth_remodeling
  */
   __pyx_t_65 = 0;
   __pyx_t_66 = 0;
@@ -5320,32 +5336,32 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
   } else if (unlikely(__pyx_t_66 >= __pyx_pybuffernd_field_variables.diminfo[1].shape)) __pyx_t_15 = 1;
   if (unlikely(__pyx_t_15 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_15);
-    __PYX_ERR(0, 154, __pyx_L1_error)
+    __PYX_ERR(0, 156, __pyx_L1_error)
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":119
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":121
  *     cdef Real rho = material.rho
  * 
- *     _GlobalAssemblyDF__ArterialWallMixture_(&points[0,0],             # <<<<<<<<<<<<<<
+ *     _GlobalAssemblyDF__IncompressibleArterialWallMixture_(&points[0,0],             # <<<<<<<<<<<<<<
  *                             &elements[0,0],
  *                             &Eulerx[0,0],
  */
-  _GlobalAssemblyDF__ArterialWallMixture_((&(*__Pyx_BufPtrCContig2d(__pyx_t_28_LLADF__ArterialWallMixture__Real *, __pyx_pybuffernd_points.rcbuffer->pybuffer.buf, __pyx_t_38, __pyx_pybuffernd_points.diminfo[0].strides, __pyx_t_39, __pyx_pybuffernd_points.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_28_LLADF__ArterialWallMixture__UInteger *, __pyx_pybuffernd_elements.rcbuffer->pybuffer.buf, __pyx_t_40, __pyx_pybuffernd_elements.diminfo[0].strides, __pyx_t_41, __pyx_pybuffernd_elements.diminfo[1].strides))), (&(*((__pyx_t_28_LLADF__ArterialWallMixture__Real *) ( /* dim=1 */ ((char *) (((__pyx_t_28_LLADF__ArterialWallMixture__Real *) ( /* dim=0 */ (__pyx_v_Eulerx.data + __pyx_t_42 * __pyx_v_Eulerx.strides[0]) )) + __pyx_t_43)) )))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_28_LLADF__ArterialWallMixture__Real *, __pyx_pybuffernd_Bases.rcbuffer->pybuffer.buf, __pyx_t_44, __pyx_pybuffernd_Bases.diminfo[0].strides, __pyx_t_45, __pyx_pybuffernd_Bases.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig3d(__pyx_t_28_LLADF__ArterialWallMixture__Real *, __pyx_pybuffernd_Jm.rcbuffer->pybuffer.buf, __pyx_t_46, __pyx_pybuffernd_Jm.diminfo[0].strides, __pyx_t_47, __pyx_pybuffernd_Jm.diminfo[1].strides, __pyx_t_48, __pyx_pybuffernd_Jm.diminfo[2].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_28_LLADF__ArterialWallMixture__Real *, __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.buf, __pyx_t_49, __pyx_pybuffernd_AllGauss.diminfo[0].strides))), __pyx_v_ndim, __pyx_v_nvar, __pyx_v_ngauss, __pyx_v_nelem, __pyx_v_nodeperelem, __pyx_v_nnode, __pyx_v_H_VoigtSize, __pyx_v_requires_geometry_update, (&(*__Pyx_BufPtrCContig1d(__pyx_t_28_LLADF__ArterialWallMixture__Integer *, __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.buf, __pyx_t_50, __pyx_pybuffernd_local_rows_stiffness.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_28_LLADF__ArterialWallMixture__Integer *, __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.buf, __pyx_t_51, __pyx_pybuffernd_local_cols_stiffness.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.buf, __pyx_t_52, __pyx_pybuffernd_I_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.buf, __pyx_t_53, __pyx_pybuffernd_J_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_28_LLADF__ArterialWallMixture__Real *, __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.buf, __pyx_t_54, __pyx_pybuffernd_V_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_28_LLADF__ArterialWallMixture__Real *, __pyx_pybuffernd_T.rcbuffer->pybuffer.buf, __pyx_t_55, __pyx_pybuffernd_T.diminfo[0].strides))), __pyx_v_recompute_sparsity_pattern, __pyx_v_squeeze_sparsity_pattern, (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer.buf, __pyx_t_56, __pyx_pybuffernd_data_local_indices.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer.buf, __pyx_t_57, __pyx_pybuffernd_data_global_indices.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_28_LLADF__ArterialWallMixture__UInteger *, __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.buf, __pyx_t_58, __pyx_pybuffernd_sorted_elements.diminfo[0].strides, __pyx_t_59, __pyx_pybuffernd_sorted_elements.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_28_LLADF__ArterialWallMixture__Integer *, __pyx_pybuffernd_sorter.rcbuffer->pybuffer.buf, __pyx_t_60, __pyx_pybuffernd_sorter.diminfo[0].strides, __pyx_t_61, __pyx_pybuffernd_sorter.diminfo[1].strides))), __pyx_v_rho, __pyx_v_mu, __pyx_v_kappa, __pyx_v_k1m, __pyx_v_k2m, __pyx_v_k1c, __pyx_v_k2c, (&(*__Pyx_BufPtrCContig3d(__pyx_t_28_LLADF__ArterialWallMixture__Real *, __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.buf, __pyx_t_62, __pyx_pybuffernd_anisotropic_orientations.diminfo[0].strides, __pyx_t_63, __pyx_pybuffernd_anisotropic_orientations.diminfo[1].strides, __pyx_t_64, __pyx_pybuffernd_anisotropic_orientations.diminfo[2].strides))), __pyx_v_nfibre, (&(*__Pyx_BufPtrCContig2d(__pyx_t_28_LLADF__ArterialWallMixture__Real *, __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.buf, __pyx_t_65, __pyx_pybuffernd_field_variables.diminfo[0].strides, __pyx_t_66, __pyx_pybuffernd_field_variables.diminfo[1].strides))), __pyx_v_nfield);
+  _GlobalAssemblyDF__IncompressibleArterialWallMixture_((&(*__Pyx_BufPtrCContig2d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_points.rcbuffer->pybuffer.buf, __pyx_t_38, __pyx_pybuffernd_points.diminfo[0].strides, __pyx_t_39, __pyx_pybuffernd_points.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger *, __pyx_pybuffernd_elements.rcbuffer->pybuffer.buf, __pyx_t_40, __pyx_pybuffernd_elements.diminfo[0].strides, __pyx_t_41, __pyx_pybuffernd_elements.diminfo[1].strides))), (&(*((__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *) ( /* dim=1 */ ((char *) (((__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *) ( /* dim=0 */ (__pyx_v_Eulerx.data + __pyx_t_42 * __pyx_v_Eulerx.strides[0]) )) + __pyx_t_43)) )))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_Bases.rcbuffer->pybuffer.buf, __pyx_t_44, __pyx_pybuffernd_Bases.diminfo[0].strides, __pyx_t_45, __pyx_pybuffernd_Bases.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig3d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_Jm.rcbuffer->pybuffer.buf, __pyx_t_46, __pyx_pybuffernd_Jm.diminfo[0].strides, __pyx_t_47, __pyx_pybuffernd_Jm.diminfo[1].strides, __pyx_t_48, __pyx_pybuffernd_Jm.diminfo[2].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_AllGauss.rcbuffer->pybuffer.buf, __pyx_t_49, __pyx_pybuffernd_AllGauss.diminfo[0].strides))), __pyx_v_ndim, __pyx_v_nvar, __pyx_v_ngauss, __pyx_v_nelem, __pyx_v_nodeperelem, __pyx_v_nnode, __pyx_v_H_VoigtSize, __pyx_v_requires_geometry_update, (&(*__Pyx_BufPtrCContig1d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer *, __pyx_pybuffernd_local_rows_stiffness.rcbuffer->pybuffer.buf, __pyx_t_50, __pyx_pybuffernd_local_rows_stiffness.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer *, __pyx_pybuffernd_local_cols_stiffness.rcbuffer->pybuffer.buf, __pyx_t_51, __pyx_pybuffernd_local_cols_stiffness.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_I_stiff.rcbuffer->pybuffer.buf, __pyx_t_52, __pyx_pybuffernd_I_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_J_stiff.rcbuffer->pybuffer.buf, __pyx_t_53, __pyx_pybuffernd_J_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_V_stiff.rcbuffer->pybuffer.buf, __pyx_t_54, __pyx_pybuffernd_V_stiff.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_T.rcbuffer->pybuffer.buf, __pyx_t_55, __pyx_pybuffernd_T.diminfo[0].strides))), __pyx_v_recompute_sparsity_pattern, __pyx_v_squeeze_sparsity_pattern, (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_data_local_indices.rcbuffer->pybuffer.buf, __pyx_t_56, __pyx_pybuffernd_data_local_indices.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig1d(int *, __pyx_pybuffernd_data_global_indices.rcbuffer->pybuffer.buf, __pyx_t_57, __pyx_pybuffernd_data_global_indices.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__UInteger *, __pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer.buf, __pyx_t_58, __pyx_pybuffernd_sorted_elements.diminfo[0].strides, __pyx_t_59, __pyx_pybuffernd_sorted_elements.diminfo[1].strides))), (&(*__Pyx_BufPtrCContig2d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer *, __pyx_pybuffernd_sorter.rcbuffer->pybuffer.buf, __pyx_t_60, __pyx_pybuffernd_sorter.diminfo[0].strides, __pyx_t_61, __pyx_pybuffernd_sorter.diminfo[1].strides))), __pyx_v_rho, __pyx_v_mu, __pyx_v_kappa, __pyx_v_k1m, __pyx_v_k2m, __pyx_v_k1c, __pyx_v_k2c, (&(*__Pyx_BufPtrCContig3d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_anisotropic_orientations.rcbuffer->pybuffer.buf, __pyx_t_62, __pyx_pybuffernd_anisotropic_orientations.diminfo[0].strides, __pyx_t_63, __pyx_pybuffernd_anisotropic_orientations.diminfo[1].strides, __pyx_t_64, __pyx_pybuffernd_anisotropic_orientations.diminfo[2].strides))), __pyx_v_nfibre, (&(*__Pyx_BufPtrCContig2d(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real *, __pyx_pybuffernd_field_variables.rcbuffer->pybuffer.buf, __pyx_t_65, __pyx_pybuffernd_field_variables.diminfo[0].strides, __pyx_t_66, __pyx_pybuffernd_field_variables.diminfo[1].strides))), __pyx_v_nfield, __pyx_v_has_growth_remodeling);
 
-  /* "_LLADF__ArterialWallMixture_.pyx":159
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":162
  * 
  * 
  *     if fem_solver.recompute_sparsity_pattern:             # <<<<<<<<<<<<<<
  *         return I_stiff, J_stiff, V_stiff, T
  *     else:
  */
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_recompute_sparsity_pattern); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_fem_solver, __pyx_n_s_recompute_sparsity_pattern); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_24 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely(__pyx_t_24 < 0)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   if (__pyx_t_24) {
 
-    /* "_LLADF__ArterialWallMixture_.pyx":160
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":163
  * 
  *     if fem_solver.recompute_sparsity_pattern:
  *         return I_stiff, J_stiff, V_stiff, T             # <<<<<<<<<<<<<<
@@ -5353,7 +5369,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
  *         return V_stiff, T
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_14 = PyTuple_New(4); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 160, __pyx_L1_error)
+    __pyx_t_14 = PyTuple_New(4); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 163, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_INCREF(((PyObject *)__pyx_v_I_stiff));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_I_stiff));
@@ -5371,7 +5387,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __pyx_t_14 = 0;
     goto __pyx_L0;
 
-    /* "_LLADF__ArterialWallMixture_.pyx":159
+    /* "_LLADF__IncompressibleArterialWallMixture_.pyx":162
  * 
  * 
  *     if fem_solver.recompute_sparsity_pattern:             # <<<<<<<<<<<<<<
@@ -5380,14 +5396,14 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
  */
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":162
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":165
  *         return I_stiff, J_stiff, V_stiff, T
  *     else:
  *         return V_stiff, T             # <<<<<<<<<<<<<<
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_14 = PyTuple_New(2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __pyx_t_14 = PyTuple_New(2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_INCREF(((PyObject *)__pyx_v_V_stiff));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_V_stiff));
@@ -5400,10 +5416,10 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     goto __pyx_L0;
   }
 
-  /* "_LLADF__ArterialWallMixture_.pyx":51
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":52
  * 
  * 
- * def _LLADF__ArterialWallMixture_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
+ * def _LLADF__IncompressibleArterialWallMixture_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  */
@@ -5440,7 +5456,7 @@ static PyObject *__pyx_pf_28_LLADF__ArterialWallMixture___LLADF__ArterialWallMix
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_sorted_elements.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_sorter.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("_LLADF__ArterialWallMixture_._LLADF__ArterialWallMixture_", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("_LLADF__IncompressibleArterialWallMixture_._LLADF__IncompressibleArterialWallMixture_", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -20803,7 +20819,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "_LLADF__ArterialWallMixture_.array", /*tp_name*/
+  "_LLADF__IncompressibleArterialWallMixture_.array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -20911,7 +20927,7 @@ static PyMethodDef __pyx_methods_Enum[] = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "_LLADF__ArterialWallMixture_.Enum", /*tp_name*/
+  "_LLADF__IncompressibleArterialWallMixture_.Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -21161,7 +21177,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "_LLADF__ArterialWallMixture_.memoryview", /*tp_name*/
+  "_LLADF__IncompressibleArterialWallMixture_.memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -21288,7 +21304,7 @@ static struct PyGetSetDef __pyx_getsets__memoryviewslice[] = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "_LLADF__ArterialWallMixture_._memoryviewslice", /*tp_name*/
+  "_LLADF__IncompressibleArterialWallMixture_._memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -21359,17 +21375,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec__LLADF__ArterialWallMixture_(PyObject* module); /*proto*/
+static int __pyx_pymod_exec__LLADF__IncompressibleArterialWallMixture_(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec__LLADF__ArterialWallMixture_},
+  {Py_mod_exec, (void*)__pyx_pymod_exec__LLADF__IncompressibleArterialWallMixture_},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "_LLADF__ArterialWallMixture_",
+    "_LLADF__IncompressibleArterialWallMixture_",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -21421,8 +21437,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Invalid_shape_in_axis_d_d, __pyx_k_Invalid_shape_in_axis_d_d, sizeof(__pyx_k_Invalid_shape_in_axis_d_d), 0, 0, 1, 0},
   {&__pyx_n_s_J_stiff, __pyx_k_J_stiff, sizeof(__pyx_k_J_stiff), 0, 0, 1, 1},
   {&__pyx_n_s_Jm, __pyx_k_Jm, sizeof(__pyx_k_Jm), 0, 0, 1, 1},
-  {&__pyx_n_s_LLADF__ArterialWallMixture, __pyx_k_LLADF__ArterialWallMixture, sizeof(__pyx_k_LLADF__ArterialWallMixture), 0, 0, 1, 1},
-  {&__pyx_kp_s_LLADF__ArterialWallMixture__pyx, __pyx_k_LLADF__ArterialWallMixture__pyx, sizeof(__pyx_k_LLADF__ArterialWallMixture__pyx), 0, 0, 1, 0},
+  {&__pyx_n_s_LLADF__IncompressibleArterialWa, __pyx_k_LLADF__IncompressibleArterialWa, sizeof(__pyx_k_LLADF__IncompressibleArterialWa), 0, 0, 1, 1},
+  {&__pyx_kp_s_LLADF__IncompressibleArterialWa_2, __pyx_k_LLADF__IncompressibleArterialWa_2, sizeof(__pyx_k_LLADF__IncompressibleArterialWa_2), 0, 0, 1, 0},
   {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_kp_s_MemoryView_of_r_at_0x_x, __pyx_k_MemoryView_of_r_at_0x_x, sizeof(__pyx_k_MemoryView_of_r_at_0x_x), 0, 0, 1, 0},
   {&__pyx_kp_s_MemoryView_of_r_object, __pyx_k_MemoryView_of_r_object, sizeof(__pyx_k_MemoryView_of_r_object), 0, 0, 1, 0},
@@ -21469,6 +21485,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
   {&__pyx_n_s_has_field_variables, __pyx_k_has_field_variables, sizeof(__pyx_k_has_field_variables), 0, 0, 1, 1},
+  {&__pyx_n_s_has_growth_remodeling, __pyx_k_has_growth_remodeling, sizeof(__pyx_k_has_growth_remodeling), 0, 0, 1, 1},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_indices, __pyx_k_indices, sizeof(__pyx_k_indices), 0, 0, 1, 1},
@@ -21578,25 +21595,25 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "_LLADF__ArterialWallMixture_.pyx":80
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":82
  *     cdef np.ndarray[Real,ndim=1,mode='c'] V_stiff       = np.zeros(1,np.float64)
  * 
  *     cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements          = np.zeros((1,1),np.uint64)
  *     cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)
  */
-  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_1, __pyx_int_1); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_1, __pyx_int_1); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "_LLADF__ArterialWallMixture_.pyx":104
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":106
  * 
  *     cdef Integer nfibre = 0, nfield=0
  *     cdef np.ndarray[Real,ndim=3,mode='c'] anisotropic_orientations = np.zeros((1,1,1),np.float64)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[Real,ndim=2,mode='c'] field_variables = np.zeros((1,1),np.float64)
  *     if material.is_transversely_isotropic:
  */
-  __pyx_tuple__2 = PyTuple_Pack(3, __pyx_int_1, __pyx_int_1, __pyx_int_1); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(3, __pyx_int_1, __pyx_int_1, __pyx_int_1); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
@@ -21869,17 +21886,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
 
-  /* "_LLADF__ArterialWallMixture_.pyx":51
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":52
  * 
  * 
- * def _LLADF__ArterialWallMixture_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
+ * def _LLADF__IncompressibleArterialWallMixture_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  */
-  __pyx_tuple__28 = PyTuple_Pack(44, __pyx_n_s_fem_solver, __pyx_n_s_function_space, __pyx_n_s_formulation, __pyx_n_s_mesh, __pyx_n_s_material, __pyx_n_s_Eulerx, __pyx_n_s_ndim, __pyx_n_s_nvar, __pyx_n_s_ngauss, __pyx_n_s_nelem, __pyx_n_s_nodeperelem, __pyx_n_s_nnode, __pyx_n_s_H_VoigtSize, __pyx_n_s_elements, __pyx_n_s_points, __pyx_n_s_Bases, __pyx_n_s_Jm, __pyx_n_s_AllGauss, __pyx_n_s_requires_geometry_update, __pyx_n_s_local_rows_stiffness, __pyx_n_s_local_cols_stiffness, __pyx_n_s_local_rows_mass, __pyx_n_s_local_cols_mass, __pyx_n_s_I_stiff, __pyx_n_s_J_stiff, __pyx_n_s_V_stiff, __pyx_n_s_sorter, __pyx_n_s_sorted_elements, __pyx_n_s_data_global_indices, __pyx_n_s_data_local_indices, __pyx_n_s_squeeze_sparsity_pattern, __pyx_n_s_recompute_sparsity_pattern, __pyx_n_s_T, __pyx_n_s_nfibre, __pyx_n_s_nfield, __pyx_n_s_anisotropic_orientations, __pyx_n_s_field_variables, __pyx_n_s_mu, __pyx_n_s_kappa, __pyx_n_s_k1m, __pyx_n_s_k2m, __pyx_n_s_k1c, __pyx_n_s_k2c, __pyx_n_s_rho); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_tuple__28 = PyTuple_Pack(45, __pyx_n_s_fem_solver, __pyx_n_s_function_space, __pyx_n_s_formulation, __pyx_n_s_mesh, __pyx_n_s_material, __pyx_n_s_Eulerx, __pyx_n_s_ndim, __pyx_n_s_nvar, __pyx_n_s_ngauss, __pyx_n_s_nelem, __pyx_n_s_nodeperelem, __pyx_n_s_nnode, __pyx_n_s_H_VoigtSize, __pyx_n_s_elements, __pyx_n_s_points, __pyx_n_s_Bases, __pyx_n_s_Jm, __pyx_n_s_AllGauss, __pyx_n_s_requires_geometry_update, __pyx_n_s_has_growth_remodeling, __pyx_n_s_local_rows_stiffness, __pyx_n_s_local_cols_stiffness, __pyx_n_s_local_rows_mass, __pyx_n_s_local_cols_mass, __pyx_n_s_I_stiff, __pyx_n_s_J_stiff, __pyx_n_s_V_stiff, __pyx_n_s_sorter, __pyx_n_s_sorted_elements, __pyx_n_s_data_global_indices, __pyx_n_s_data_local_indices, __pyx_n_s_squeeze_sparsity_pattern, __pyx_n_s_recompute_sparsity_pattern, __pyx_n_s_T, __pyx_n_s_nfibre, __pyx_n_s_nfield, __pyx_n_s_anisotropic_orientations, __pyx_n_s_field_variables, __pyx_n_s_mu, __pyx_n_s_kappa, __pyx_n_s_k1m, __pyx_n_s_k2m, __pyx_n_s_k1c, __pyx_n_s_k2c, __pyx_n_s_rho); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
-  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(6, 0, 44, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_LLADF__ArterialWallMixture__pyx, __pyx_n_s_LLADF__ArterialWallMixture, 51, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(6, 0, 45, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_LLADF__IncompressibleArterialWa_2, __pyx_n_s_LLADF__IncompressibleArterialWa, 52, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 52, __pyx_L1_error)
 
   /* "View.MemoryView":286
  *         return self.name
@@ -22124,11 +22141,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC init_LLADF__ArterialWallMixture_(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC init_LLADF__ArterialWallMixture_(void)
+__Pyx_PyMODINIT_FUNC init_LLADF__IncompressibleArterialWallMixture_(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC init_LLADF__IncompressibleArterialWallMixture_(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit__LLADF__ArterialWallMixture_(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit__LLADF__ArterialWallMixture_(void)
+__Pyx_PyMODINIT_FUNC PyInit__LLADF__IncompressibleArterialWallMixture_(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit__LLADF__IncompressibleArterialWallMixture_(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -22195,7 +22212,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec__LLADF__ArterialWallMixture_(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec__LLADF__IncompressibleArterialWallMixture_(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -22205,7 +22222,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec__LLADF__ArterialWallMixture_(PyObj
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module '_LLADF__ArterialWallMixture_' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module '_LLADF__IncompressibleArterialWallMixture_' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -22220,7 +22237,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit__LLADF__ArterialWallMixture_(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit__LLADF__IncompressibleArterialWallMixture_(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -22259,7 +22276,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("_LLADF__ArterialWallMixture_", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("_LLADF__IncompressibleArterialWallMixture_", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -22278,14 +22295,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main__LLADF__ArterialWallMixture_) {
+  if (__pyx_module_is_main__LLADF__IncompressibleArterialWallMixture_) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name_2, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "_LLADF__ArterialWallMixture_")) {
-      if (unlikely(PyDict_SetItemString(modules, "_LLADF__ArterialWallMixture_", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "_LLADF__IncompressibleArterialWallMixture_")) {
+      if (unlikely(PyDict_SetItemString(modules, "_LLADF__IncompressibleArterialWallMixture_", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -22306,7 +22323,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "_LLADF__ArterialWallMixture_.pyx":1
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * from libc.stdint cimport int64_t, uint64_t
@@ -22316,19 +22333,19 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":51
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":52
  * 
  * 
- * def _LLADF__ArterialWallMixture_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
+ * def _LLADF__IncompressibleArterialWallMixture_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):             # <<<<<<<<<<<<<<
  * 
  *     #GET VARIABLES FOR DISPATCHING TO C
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_28_LLADF__ArterialWallMixture__1_LLADF__ArterialWallMixture_, NULL, __pyx_n_s_LLADF__ArterialWallMixture); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_42_LLADF__IncompressibleArterialWallMixture__1_LLADF__IncompressibleArterialWallMixture_, NULL, __pyx_n_s_LLADF__IncompressibleArterialWa); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LLADF__ArterialWallMixture, __pyx_t_1) < 0) __PYX_ERR(0, 51, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LLADF__IncompressibleArterialWa, __pyx_t_1) < 0) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_LLADF__ArterialWallMixture_.pyx":1
+  /* "_LLADF__IncompressibleArterialWallMixture_.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * from libc.stdint cimport int64_t, uint64_t
@@ -22498,11 +22515,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init _LLADF__ArterialWallMixture_", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init _LLADF__IncompressibleArterialWallMixture_", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init _LLADF__ArterialWallMixture_");
+    PyErr_SetString(PyExc_ImportError, "init _LLADF__IncompressibleArterialWallMixture_");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -25609,7 +25626,7 @@ no_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_28_LLADF__ArterialWallMixture__Real(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
     int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_FOLLOW), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
@@ -25620,7 +25637,7 @@ no_fail:
     }
     retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
                                                  (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 2,
-                                                 &__Pyx_TypeInfo_nn___pyx_t_28_LLADF__ArterialWallMixture__Real, stack,
+                                                 &__Pyx_TypeInfo_nn___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Real, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
         goto __pyx_fail;
@@ -25685,8 +25702,8 @@ __pyx_fail:
 }
 
 /* None */
-  static CYTHON_INLINE __pyx_t_28_LLADF__ArterialWallMixture__Integer __Pyx_pow___pyx_t_28_LLADF__ArterialWallMixture__Integer(__pyx_t_28_LLADF__ArterialWallMixture__Integer b, __pyx_t_28_LLADF__ArterialWallMixture__Integer e) {
-    __pyx_t_28_LLADF__ArterialWallMixture__Integer t = b;
+  static CYTHON_INLINE __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer __Pyx_pow___pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer(__pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer b, __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer e) {
+    __pyx_t_42_LLADF__IncompressibleArterialWallMixture__Integer t = b;
     switch (e) {
         case 3:
             t *= b;

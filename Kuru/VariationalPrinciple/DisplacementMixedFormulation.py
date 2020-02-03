@@ -1,4 +1,4 @@
-#import numpy as np
+import numpy as np
 from .VariationalPrinciple import VariationalPrinciple
 #from Florence import QuadratureRule, FunctionSpace
 
@@ -9,9 +9,9 @@ from ._ConstitutiveStiffnessDF_ import __ConstitutiveStiffnessIntegrandDF__
 #from ._TractionDF_ import __TractionIntegrandDF__
 #from Florence.Tensor import issymetric
 
-__all__ = ["DisplacementFormulationShell"]
+__all__ = ["DisplacementMixedFormulation"]
 
-class DisplacementFormulationShell(VariationalPrinciple):
+class DisplacementMixedFormulation(VariationalPrinciple):
 
     def __init__(self, mesh, variables_order=(1,),
         quadrature_rules=None, quadrature_type=None, function_spaces=None, compute_post_quadrature=True,
@@ -25,23 +25,19 @@ class DisplacementFormulationShell(VariationalPrinciple):
             self.variables_order = (self.variables_order,)
         self.variables_order = variables_order
 
-        super(DisplacementFormulationShell, self).__init__(mesh,variables_order=self.variables_order,
+        super(DisplacementMixedFormulation, self).__init__(mesh,variables_order=self.variables_order,
             quadrature_type=quadrature_type,quadrature_rules=quadrature_rules,function_spaces=function_spaces,
             compute_post_quadrature=compute_post_quadrature)
 
-        self.fields = "shell_mechanics"
-
-        if self.ndim is 3:
-            self.nvar = self.ndim + 2
-        elif self.ndim is 2:
-            self.nvar = self.ndim + 1
+        self.fields = "mechanics"
+        self.nvar = self.ndim
 
         self.GetQuadraturesAndFunctionSpaces(mesh, variables_order=variables_order,
             quadrature_rules=quadrature_rules, quadrature_type=quadrature_type,
             function_spaces=function_spaces, compute_post_quadrature=compute_post_quadrature,
             equally_spaced_bases=equally_spaced_bases, quadrature_degree=quadrature_degree)
 
-    def GetElementalMatrices(self, elem, function_space, mesh, material, fem_solver, Eulerx, Eulerr):
+    def GetElementalMatrices(self, elem, function_space, mesh, material, fem_solver, Eulerx):
 
         massel=[]
         # GET THE FIELDS AT THE ELEMENT LEVEL
@@ -107,7 +103,7 @@ class DisplacementFormulationShell(VariationalPrinciple):
             ParentGradientx = np.einsum('ijk,jl->kil',Jm, EulerELemCoords)
             # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N) (ngauss x nodesperelem x ndim)]
             SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx),Jm)
-            # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE)
+            # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE) (dv = dV*J)
             detJ = np.einsum('i,i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)),np.abs(StrainTensors['J']))
         else:
             # SPATIAL GRADIENT AND MATERIAL GRADIENT TENSORS ARE EQUAL
@@ -115,6 +111,12 @@ class DisplacementFormulationShell(VariationalPrinciple):
             # COMPUTE ONCE detJ
             detJ = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
 
+        dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
+
+        # COMPUTE PARAMETERS FOR MEAN DILATATION METHOD, IT NEEDS TO BE BEFORE COMPUTE HESSIAN AND STRESS
+        if material.is_incompressible:
+            stiffness_k = self.VolumetricStiffnessIntegrand(material, SpatialGradient, detJ, dV)
+            stiffness += stiffness_k
 
         # LOOP OVER GAUSS POINTS
         for counter in range(AllGauss.shape[0]):
@@ -140,15 +142,17 @@ class DisplacementFormulationShell(VariationalPrinciple):
             # INTEGRATE STIFFNESS
             stiffness += BDB_1*detJ[counter]
 
-
         return stiffness, tractionforce
 
     def __GetLocalStiffness__(self, function_space, material, LagrangeElemCoords, EulerELemCoords, fem_solver, elem=0):
         """Get stiffness matrix of the system"""
 
         # GET LOCAL KINEMATICS
-        SpatialGradient, F, detJ = _KinematicMeasures_(function_space.Jm, function_space.AllGauss[:,0],
+        SpatialGradient, F, detJ, dV = _KinematicMeasures_(function_space.Jm, function_space.AllGauss[:,0],
             LagrangeElemCoords, EulerELemCoords, fem_solver.requires_geometry_update)
+        # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
+        if material.is_incompressible:
+            stiffness_k = self.VolumetricStiffnessIntegrand(material, SpatialGradient, detJ, dV)
         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
         CauchyStressTensor, H_Voigt = material.KineticMeasures(F,elem=elem)
         # COMPUTE LOCAL CONSTITUTIVE STIFFNESS AND TRACTION
@@ -157,6 +161,8 @@ class DisplacementFormulationShell(VariationalPrinciple):
         # COMPUTE GEOMETRIC STIFFNESS
         if material.nature != "linear":
             stiffness += self.__GeometricStiffnessIntegrand__(SpatialGradient,CauchyStressTensor,detJ)
+        if material.is_incompressible:
+            stiffness += stiffness_k
 
         return stiffness, tractionforce
 

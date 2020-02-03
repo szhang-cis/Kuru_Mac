@@ -25,7 +25,6 @@ class ArterialWallMixture(Material):
         self.is_transversely_isotropic = True
         self.energy_type = "internal_energy"
         self.nature = "nonlinear"
-        #self.fields = "mechanics"
         self.fields = "mechanics"
 
         if self.ndim==3:
@@ -71,7 +70,6 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
-        J *= self.FieldVariables[gcounter][22]
         if J<0.0:
             print(F)
             print(J)
@@ -104,9 +102,9 @@ class ArterialWallMixture(Material):
         Gh_ela[2,2] = self.FieldVariables[gcounter][8]
         Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
         F_ela = np.dot(F,Gh_ela)
-        #F_ela_e = np.dot(F_ela,F_g_inv)
-        J_ela = np.linalg.det(F_ela)
-        b_ela = np.dot(F_ela,F_ela.T)
+        F_ela_e = np.dot(F_ela,F_g_inv)
+        J_ela = np.linalg.det(F_ela_e)
+        b_ela = np.dot(F_ela_e,F_ela_e.T)
 
         if self.ndim == 3:
             trb = trace(b_ela)
@@ -143,7 +141,7 @@ class ArterialWallMixture(Material):
             outerFN_e = outerFN/lambda_r**2
             # Anisotropic Stiffness for this key
             expo = np.exp(k2*(innerFN_e-1.)**2)
-            if np.isnan(expo) or np.isinf(expo): exit('Fibre model is NaN or Inf: '+str(expo))
+            if np.isnan(expo) or np.isinf(expo): exit('Fibre model is NaN or Inf: '+str(expo)+', I4: '+str(innerFN_e))
             H_Voigt += 4.*k1/J*(1.+2.*k2*(innerFN_e-1.)**2)*expo*einsum('ij,kl',outerFN_e,outerFN_e)
             # Active stress for SMC
             if fibre_i is 1:
@@ -165,7 +163,6 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
-        J *= self.FieldVariables[gcounter][22]
         if J<0.0:
             print(F)
             print(J)
@@ -198,9 +195,9 @@ class ArterialWallMixture(Material):
         Gh_ela[2,2] = self.FieldVariables[gcounter][8]
         Gh_ela = np.dot(Rotation.T,np.dot(Gh_ela,Rotation))
         F_ela = np.dot(F,Gh_ela)
-        #F_ela_e = np.dot(F_ela,F_g_inv)
-        J_ela = np.linalg.det(F_ela)
-        b_ela = np.dot(F_ela,F_ela.T)
+        F_ela_e = np.dot(F_ela,F_g_inv)
+        J_ela = np.linalg.det(F_ela_e)
+        b_ela = np.dot(F_ela_e,F_ela_e.T)
 
         if self.ndim == 3:
             trb = trace(b_ela)
@@ -234,7 +231,7 @@ class ArterialWallMixture(Material):
             outerFN_e = outerFN/lambda_r**2
             # Anisotropic Stiffness for this key
             expo = np.exp(k2*(innerFN_e-1.)**2)
-            if np.isnan(expo) or np.isinf(expo): exit('Fibre model is NaN or Inf: '+str(expo))
+            if np.isnan(expo) or np.isinf(expo): exit('Fibre model is NaN or Inf: '+str(expo)+', I4: '+str(innerFN_e))
             stress += 2.*k1/J*(innerFN_e-1.)*expo*outerFN_e
             # Active stress for SMC
             if fibre_i is 1:
@@ -253,7 +250,6 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
-        J *= self.FieldVariables[gcounter][22]
 
         #SMC AND COLLAGEN FIBRES
         fibre_stress = np.zeros((5),dtype=np.float64)
@@ -284,6 +280,10 @@ class ArterialWallMixture(Material):
             outerFN_e = outerFN/lambda_r**2
             # Anisotropic Stress for this fibre
             anisotropic_term = 2.*k1/J*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*outerFN_e
+            if fibre_i is 3:
+                anisotropic_term /= 2.
+            elif fibre_i is 4:
+                anisotropic_term /= 2.
             # Active stress for SMC
             if fibre_i is 1:
                 den0 = 1050.0
@@ -299,7 +299,7 @@ class ArterialWallMixture(Material):
             # Fibre softness for remodeling
             stiffness = 2.*(4.*k2*innerFN_e*(innerFN_e-1.)**2 + 4.*innerFN_e-2.)*k1*\
                 np.sqrt(innerFN_e)*np.exp(k2*(innerFN_e-1.)**2)
-            softness[fibre_i-1]=np.sqrt(innerFN)/(innerFN_e*stiffness)
+            softness[fibre_i-1] = np.sqrt(innerFN)/(innerFN_e*stiffness)
 
         return fibre_stress,softness
 
@@ -313,7 +313,6 @@ class ArterialWallMixture(Material):
         for gcounter in range(gpoints):
             Fp = F[gcounter,:,:]
             J = np.linalg.det(Fp)
-            J *= self.FieldVariables[gcounter][22]
 
             #SMC AND COLLAGEN FIBRES
             for fibre_i in [1,2,3,4,5]:

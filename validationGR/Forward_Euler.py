@@ -33,8 +33,8 @@ def Directions(mesh):
         # Define the anisotropic orientations
         direction[elem][1][:]=tangential
         direction[elem][2][:]=directrix
-        direction[elem][3][:]=np.multiply(directrix,np.cos(np.pi/4)) + np.multiply(tangential,np.sin(np.pi/4))
-        direction[elem][4][:]=np.multiply(directrix,np.cos(np.pi/4)) - np.multiply(tangential,np.sin(np.pi/4))
+        direction[elem][3][:]=np.multiply(directrix,np.cos(np.pi/4.)) + np.multiply(tangential,np.sin(np.pi/4.))
+        direction[elem][4][:]=np.multiply(directrix,np.cos(np.pi/4.)) - np.multiply(tangential,np.sin(np.pi/4.))
         direction[elem][5][:]=tangential
 
     return direction
@@ -125,18 +125,17 @@ def GetGrowthRemodeling(time,Delta_t,mesh,GrowthRemodeling,Stress_H,FibreStress,
         AxialCoord = mesh.points[node,1]
         # Update elastin density
         elastin_rate = -GrowthRemodeling[node][0]/T_ela - \
-            (D_max/t_dam)*np.multiply(np.exp(-0.5*(AxialCoord/L_dam)**2 - time/t_dam),den0_e)
+            (D_max/t_dam)*np.exp(-0.5*(AxialCoord/L_dam)**2 - time/t_dam)*den0_e
         GrowthRemodeling[node][0] += Delta_t*elastin_rate
         den_tot = GrowthRemodeling[node][0]
         for key in [1,2,3,4,5]:
             # fibres density rates
             DeltaStress = FibreStress[node][key-1] - Stress_H[node][key-1]
-            density_rate = gain*np.multiply(GrowthRemodeling[node][key],
-                np.divide(DeltaStress,Stress_H[node][key-1]))
+            density_rate = gain*GrowthRemodeling[node][key]*DeltaStress/Stress_H[node][key-1]
             GrowthRemodeling[node][key] += Delta_t*density_rate
             # fibres remodeling rates
-            lambda_r_dot = np.divide(density_rate,GrowthRemodeling[node][key]) + 1./turnover
-            remodeling_rate = np.multiply(np.multiply(lambda_r_dot,DeltaStress),Softness[node][key-1])
+            lambda_r_dot = density_rate/GrowthRemodeling[node][key] + 1./turnover
+            remodeling_rate = lambda_r_dot*DeltaStress*Softness[node][key-1]
             GrowthRemodeling[node][key+5] += Delta_t*remodeling_rate
             den_tot += GrowthRemodeling[node][key]
         GrowthRemodeling[node][11] = den_tot/den0_tot
@@ -238,6 +237,7 @@ material = ArterialWallMixture(ndim,
 
 #==================  FORMULATION  =========================
 formulation = DisplacementFormulation(mesh)
+#formulation = DisplacementMixedFormulation(mesh)
 
 #===============  BOUNDARY CONDITIONS  ====================
 # Dirichlet Boundary Conditions
@@ -308,18 +308,31 @@ print('... Homeostatic step finished')
 
 # HOMEOSTATIC POSTPROCESS
 solution.StressRecovery()
-#DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
+DeformationGradient = solution.recovered_fields['F'][-1,:,:,:]
+CauchyStress = solution.recovered_fields['CauchyStress'][-1,:,:]
 Stress_H = solution.recovered_fields['FibreStress'][-1,:,:]
 FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
 Softness = solution.recovered_fields['Softness'][-1,:,:]
 # Update mesh coordinates
 TotalDisplacements = solution.sol[:,:,-1]
-#euler_x = mesh.points + TotalDisplacements
-mesh.points += TotalDisplacements
-file_out = open("growth_remodeling.txt","w+")
-file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f \n'%(0,1000.*np.sqrt(mesh.points[0,0]**2+mesh.points[0,2]**2),field_variables[0,11],field_variables[0,12],field_variables[0,13],field_variables[0,14],field_variables[0,15],field_variables[0,16],field_variables[0,17],field_variables[0,18],field_variables[0,19],field_variables[0,20],field_variables[0,21],field_variables[0,22]))
-file_out.close()
-
+euler_x = mesh.points + TotalDisplacements
+file1 = open("growth_remodeling.txt","w+")
+file1.write('%3d %6.3f '%(0,1000.*np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2)))
+for i in range(11,23):
+    file1.write('%7.3f '%(field_variables[0,i]))
+file1.write('\n')
+file1.close()
+print(Stress_H[0,:])
+file2 = open("kinematics.txt","w+")
+for i in range(3):
+    for j in range(3):
+        file2.write('%5.3f '%(DeformationGradient[0,i,j]))
+for i in range(3):
+    for j in range(3):
+        file2.write('%7.3f '%(CauchyStress[0,i,j]/1000.))
+file2.write('\n')
+file2.close()
+"""
 #=================  REMODELING SOLUTION  =======================
 print('=====================================')
 print('==  COMPUTE GROWTH AND REMODELING  ==')
@@ -327,7 +340,7 @@ print('=====================================')
 # Growth and Remodeling steps [10 days]
 total_time = 5500
 time = 0.0
-Delta_t = 10.0
+Delta_t = 30.0
 step = 0
 while time<total_time:
     # prepare for next step
@@ -348,13 +361,20 @@ while time<total_time:
     #**** STEPS POSTPROCESS ****
     #solution.WriteVTK('ForwardEuler_'+str(step),quantity=0)
     solution.StressRecovery()
+    CauchyStress = solution.recovered_fields['CauchyStress'][-1,:,:]
     FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
     Softness = solution.recovered_fields['Softness'][-1,:,:]
     # Update mesh coordinates
     TotalDisplacements = solution.sol[:,:,-1]
-    #euler_x = mesh.points + TotalDisplacements
-    mesh.points += TotalDisplacements
+    euler_x = mesh.points + TotalDisplacements
     file_out = open("growth_remodeling.txt","a")
-    file_out.write('%3d %f %f %f %f %f %f %f %f %f %f %f %f %f \n'%(0,1000.*np.sqrt(mesh.points[0,0]**2+mesh.points[0,2]**2),field_variables[0,11],field_variables[0,12],field_variables[0,13],field_variables[0,14],field_variables[0,15],field_variables[0,16],field_variables[0,17],field_variables[0,18],field_variables[0,19],field_variables[0,20],field_variables[0,21],field_variables[0,22]))
+    file_out.write('%3d %6.3f '%(0,1000.*np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2)))
+    for i in range(11,23):
+        file_out.write('%7.3f '%(field_variables[0,i]))
+    file_out.write('\n')
     file_out.close()
+    print(FibreStress[0,:])
+    print(F[0,:,:])
+    print(CauchyStress[0,:,:])
+"""
 

@@ -33,8 +33,8 @@ class ArterialWallMixture(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        #self.has_low_level_dispatcher = True
-        self.has_low_level_dispatcher = False
+        self.has_low_level_dispatcher = True
+        #self.has_low_level_dispatcher = False
 
         # FIELD VARIABLES AS GROWTH_&_REMODELING AND/OR DEPOSITION STRETCHES, ETC
         self.has_growth_remodeling = True
@@ -280,10 +280,6 @@ class ArterialWallMixture(Material):
             outerFN_e = outerFN/lambda_r**2
             # Anisotropic Stress for this fibre
             anisotropic_term = 2.*k1/J*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*outerFN_e
-            if fibre_i is 3:
-                anisotropic_term /= 2.
-            elif fibre_i is 4:
-                anisotropic_term /= 2.
             # Active stress for SMC
             if fibre_i is 1:
                 den0 = 1050.0

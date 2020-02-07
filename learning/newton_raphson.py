@@ -89,12 +89,12 @@ def newton_raphson(time,Delta_t,Y,density):
     rtnewt=density
     for j in range(JMAX):
         func,df,err = func_eval(time=time,Delta_t=Delta_t,Y=Y,density=rtnewt,den_=density)
-        print(func)
-        print(df)
+        #print(func)
+        #print(df)
         dx = func/df
-        print(dx)
+        #print(dx)
         rtnewt -= dx
-        print(rtnewt)
+        #print(rtnewt)
         # Convergence.
         if np.absolute(func/res)<1.e-5:
             #print('Iterations: '+str(j))
@@ -119,7 +119,7 @@ while time<10:
     func,df,err = func_eval(time=time,Delta_t=Delta_t,Y=Y,density=backeuler,den_=den_)
     density=241.5*np.exp(-time/T_e)+241.5*(Dm/td)*(T_e*td/(td-T_e))*np.exp(-0.5*(Y/Ld)**2)*\
         (np.exp(-time/T_e)-np.exp(-time/td))
-    exponential = np.exp(-0.5*(Y/0.010)**2 - time/40.0)
+    exponential = np.exp(-0.5*(Y/0.010)**2 - (time-Delta_t)/40.0)
     forweuler = dens + Delta_t*(-dens/(101.*365.25)-(0.5/40.)*np.multiply(exponential,241.5))
     dens = forweuler
     den_=backeuler

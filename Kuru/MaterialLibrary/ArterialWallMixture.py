@@ -2,6 +2,7 @@
 import numpy as np
 from sys import exit
 from numpy import einsum
+from scipy.linalg import polar
 from .MaterialBase import Material
 from Kuru.Tensor import trace, Voigt #, makezero
 
@@ -308,6 +309,7 @@ class ArterialWallMixture(Material):
         I = np.eye(self.ndim,self.ndim,dtype=np.float64)
         for gcounter in range(gpoints):
             Fp = F[gcounter,:,:]
+            R,U = polar(Fp)
             J = np.linalg.det(Fp)
 
             #SMC AND COLLAGEN FIBRES
@@ -335,7 +337,7 @@ class ArterialWallMixture(Material):
                 innerFN_e = innerFN/lambda_r**2
                 outerFN_e = outerFN/lambda_r**2
                 # Anisotropic Stress for this fibre
-                anisotropic_term = 2.*k1/J*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*outerFN_e
+                anisotropic_term = 2.*k1*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*outerFN_e/J
                 # Active stress for SMC
                 if fibre_i is 1:
                     den0 = 1050.0
@@ -343,14 +345,16 @@ class ArterialWallMixture(Material):
                     stretch_m = 1.4
                     stretch_a = 1.0
                     stretch_0 = 0.8
-                    anisotropic_term += (s_act/(J*den0*innerFN))*\
-                        (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*outerFN
+                    anisotropic_term += (s_act/(den0*innerFN))*\
+                        (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*outerFN/J
+                # CoRotated Stress
+                anisotropic_term = np.dot(R.T,np.dot(anisotropic_term,R))
                 # Stress in the direction of the component
                 outerN = einsum('i,j',N,N)
                 fibre_stress[gcounter][fibre_i-1] = np.tensordot(anisotropic_term,outerN)
                 # Fibre softness for remodeling
                 stiffness = 2.*(4.*k2*innerFN_e*(innerFN_e-1.)**2 + 4.*innerFN_e-2.)*k1*\
-                    np.sqrt(innerFN_e)*np.exp(k2*(innerFN_e-1.)**2)
+                    np.sqrt(innerFN_e)*np.exp(k2*(innerFN_e-1.)**2)/self.FieldVariables[gcounter][22]
                 softness[gcounter][fibre_i-1]=np.sqrt(innerFN)/(innerFN_e*stiffness)
 
         return fibre_stress,softness

@@ -48,11 +48,11 @@ def GetRadialStretch(mesh,material):
     R = 0.010
     H = 0.00141
     for node in range(mesh.nnode):
-        kappa = material.kappa*material.growth_remodeling[node,0]
-        mu3D = material.mu3D*material.growth_remodeling[node,0]
-        stretch_r = material.deposition_stretch['Radial'][node]
-        stretch_t = material.deposition_stretch['Tangential']
-        stretch_z = material.deposition_stretch['Axial']
+        kappa = material.kappa*material.field_variables[node,11]
+        mu3D = material.mu*material.field_variables[node,11]
+        stretch_r = material.field_variables[node,0]
+        stretch_t = material.field_variables[node,4]
+        stretch_z = material.field_variables[node,8]
         radius = np.sqrt(mesh.points[node,0]**2+mesh.points[node,2]**2)
         JMAX=21
         for j in range(JMAX):
@@ -68,7 +68,7 @@ def GetRadialStretch(mesh,material):
             dx = func/df
             stretch_r -= dx
             if np.absolute(dx)<1.e-6:
-                material.deposition_stretch['Radial'][node] = stretch_r
+                material.field_variables[node,0] = stretch_r
                 break
 
     print("Radial deposition stretch is ready")
@@ -124,23 +124,50 @@ def GrowthRemodelingRates(time,GrowthRemodeling0,mesh,Stress_H,FibreStress,Softn
     den0_e = 241.5
     # Fribres turnover and remodeling
     turnover = 101.0
-    gain = 0.13/turnover
+    gain = 0.05/turnover
     # Compute GrowthRemodeling
     Rates = np.zeros((mesh.nnode,11),dtype=np.float64)
     for node in range(mesh.nnode):
         AxialCoord = mesh.points[node,1]
         # Update elastin density
-        Rates[node][0] = -GrowthRemodeling0[node][0]/T_ela - \
-            (D_max/t_dam)*np.exp(-0.5*(AxialCoord/L_dam)**2 - time/t_dam)*den0_e
+        Rates[node,0] = -GrowthRemodeling0[node,0]/T_ela - \
+            (D_max/t_dam)*np.exp(-0.5*(AxialCoord/L_dam)**2)*np.exp(-(time)/t_dam)*den0_e
         for key in [1,2,3,4,5]:
             # fibres density rates
-            DeltaStress = FibreStress[node][key-1] - Stress_H[node][key-1]
-            Rates[node][key] = gain*GrowthRemodeling0[node][key]*DeltaStress/Stress_H[node][key-1]
+            DeltaStress = FibreStress[node,key-1] - Stress_H[node,key-1]
+            Rates[node,key] = gain*GrowthRemodeling0[node,key]*DeltaStress/Stress_H[node,key-1]
             # fibres remodeling rates
-            lambda_r_dot = Rates[node][key]/GrowthRemodeling0[node][key] + 1./turnover
-            Rates[node][key+5] = lambda_r_dot*DeltaStress*Softness[node][key-1]
+            Rates[node,key+5] = (gain*DeltaStress/Stress_H[node,key-1] + 1./turnover)*\
+                    DeltaStress*Softness[node,key-1]
 
     return Rates
+
+#============================================================
+#======= EXPLICIT FORWARD-EULER METHOD INTEGRAND  ===========
+#============================================================
+def ForwardEuler_Integrand(time,Delta_t,Stress_H,FibreStress,Softness,
+        fem_solver,formulation,mesh,material,boundary_condition):
+
+    den0_tot = 1050.0
+    growth_remodeling0 = np.copy(material.field_variables[:,11:23])
+    growth_remodeling = np.copy(material.field_variables[:,11:23])
+    #**** K1: f(t_n,y_n)
+    k1 = GrowthRemodelingRates(time,growth_remodeling0,mesh,Stress_H,FibreStress,Softness)
+    growth_remodeling[:,:11] = growth_remodeling0[:,:11] + Delta_t*k1
+    den_tot = np.zeros((mesh.nnode),dtype=np.float64)
+    for i in range(6):
+        den_tot += growth_remodeling[:,i]
+    growth_remodeling[:,11] = den_tot/den0_tot
+    # solution k1
+    material.field_variables[:,11:23] = growth_remodeling
+    solution = fem_solver.Solve(formulation=formulation, mesh=mesh, material=material,
+            boundary_condition=boundary_condition)
+    
+    # Check Residual
+    if np.isnan(fem_solver.norm_residual) or fem_solver.norm_residual>1e06:
+        exit('MODEL DID NOT CONVERGE!')
+
+    return solution
 
 #============================================================
 #========== EXPLICIT MID-POINT METHOD INTEGRAND  ============
@@ -159,13 +186,12 @@ def MidPoint_Integrand(time,Delta_t,Stress_H,FibreStress,Softness,
         den_tot += growth_remodeling[:,i]
     growth_remodeling[:,11] = den_tot/den0_tot
     # solution k1
-    
-    material.field_variables[:,11:23] = growth_remodeling
-    solution = fem_solver.Solve(formulation=formulation, mesh=mesh, material=material,
-            boundary_condition=boundary_condition)
-    solution.StressRecovery()
-    FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
-    Softness = solution.recovered_fields['Softness'][-1,:,:]
+    #material.field_variables[:,11:23] = growth_remodeling
+    #solution = fem_solver.Solve(formulation=formulation, mesh=mesh, material=material,
+    #        boundary_condition=boundary_condition)
+    #solution.StressRecovery()
+    #FibreStress = solution.recovered_fields['FibreStress'][-1,:,:]
+    #Softness = solution.recovered_fields['Softness'][-1,:,:]
     
     #**** K2: f(t_n+h/2,y_n+k1/2)
     k2 = GrowthRemodelingRates(time+Delta_t/2.,growth_remodeling,mesh,Stress_H,FibreStress,Softness)
@@ -175,12 +201,12 @@ def MidPoint_Integrand(time,Delta_t,Stress_H,FibreStress,Softness,
         den_tot += growth_remodeling[:,i]
     growth_remodeling[:,11] = den_tot/den0_tot
     # solution k2
-    material.field_variables[:,11:23] = growth_remodeling
+    material.field_variables[:,11:23] = np.copy(growth_remodeling)
     solution = fem_solver.Solve(formulation=formulation, mesh=mesh, material=material,
             boundary_condition=boundary_condition)
     # Check Residual
-    if np.isnan(fem_solver.norm_residual) or fem_solver.norm_residual>1e06:
-        exit('MODEL DID NOT CONVERGE!')
+    #if np.isnan(fem_solver.norm_residual) or fem_solver.norm_residual>1e06:
+    #    exit('MODEL DID NOT CONVERGE!')
 
     return solution
 
@@ -254,8 +280,8 @@ def RungeKutta_Integrand(time,Delta_t,Stress_H,FibreStress,Softness,
             boundary_condition=boundary_condition)
 
     # Check Residual
-    if np.isnan(fem_solver.norm_residual) or fem_solver.norm_residual>1e06:
-        exit('MODEL DID NOT CONVERGE!')
+    #if np.isnan(fem_solver.norm_residual) or fem_solver.norm_residual>1e06:
+    #    exit('MODEL DID NOT CONVERGE!')
 
     return solution
 
@@ -412,7 +438,7 @@ def BackwardEuler_Integrand(time,Delta_t,Stress_H,FibreStress,Softness,
 #============================================================
 #===============  HOMOGENIZED CMT  ==========================
 #============================================================
-def HomogenizedConstrainedMixtureTheory(p=1,TimeIntegrand='mid_point'):
+def HomogenizedConstrainedMixtureTheory(p=1,TimeIntegrand="forward_euler"):
 
     ProblemPath = os.path.dirname(os.getcwd())
     mesh_file = ProblemPath + '/Quarter_Ring.msh'
@@ -484,9 +510,9 @@ def HomogenizedConstrainedMixtureTheory(p=1,TimeIntegrand='mid_point'):
     #mu2D = 0.0
 
     # Define hyperelastic material for mesh
-    material = IncompressibleArterialWallMixture(ndim,
+    material = ArterialWallMixture(ndim,
             mu=72.0,
-            kappa=72.0*100.0,
+            kappa=72.0*33.0,
             k1m=7.6,
             k2m=11.4,
             k1c=568.0,
@@ -500,13 +526,13 @@ def HomogenizedConstrainedMixtureTheory(p=1,TimeIntegrand='mid_point'):
 
     # Homogenization of stresses to a thin-walled case
     #GetRadialStretch(mesh,material)
-    #print(material.deposition_stretch['Radial'][:])
+    #print(material.field_variables[:,0])
     #GetTangentialPenalty(mesh,material)
-    #print(material.mu2D[:])
+    #print(material.field_variables[:])
 
     #==================  FORMULATION  =========================
-    #formulation = DisplacementFormulation(mesh)
-    formulation = DisplacementMixedFormulation(mesh)
+    formulation = DisplacementFormulation(mesh)
+    #formulation = DisplacementMixedFormulation(mesh)
 
     #===============  BOUNDARY CONDITIONS  ====================
     # Dirichlet Boundary Conditions
@@ -588,7 +614,7 @@ def HomogenizedConstrainedMixtureTheory(p=1,TimeIntegrand='mid_point'):
     file1 = open("growth_remodeling.txt","w+")
     file1.write('%3d %6.3f '%(0,1000.*np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2)))
     for i in range(11,23):
-        file1.write('%7.3f '%(field_variables[0,i]))
+        file1.write('%7.3f '%(material.field_variables[0,i]))
     file1.write('\n')
     file1.close()
     file2 = open("kinematics.txt","w+")
@@ -632,6 +658,9 @@ def HomogenizedConstrainedMixtureTheory(p=1,TimeIntegrand='mid_point'):
         elif TimeIntegrand == "backward_euler":
             solution = BackwardEuler_Integrand(time,Delta_t,Stress_H,FibreStress,Softness,
                 fem_solver_gr,formulation,mesh,material,boundary_condition)
+        elif TimeIntegrand == "forward_euler":
+            solution = ForwardEuler_Integrand(time-Delta_t,Delta_t,Stress_H,FibreStress,Softness,
+                fem_solver_gr,formulation,mesh,material,boundary_condition)
         else:
             raise ValueError('Integrator not recognized')
         #**** STEPS POSTPROCESS ****
@@ -648,7 +677,7 @@ def HomogenizedConstrainedMixtureTheory(p=1,TimeIntegrand='mid_point'):
         file1 = open("growth_remodeling.txt","a")
         file1.write('%3d %6.3f '%(0,1000.*np.sqrt(euler_x[0,0]**2+euler_x[0,2]**2)))
         for i in range(11,23):
-            file1.write('%7.3f '%(field_variables[0,i]))
+            file1.write('%7.3f '%(material.field_variables[0,i]))
         file1.write('\n')
         file1.close()
         file2 = open("kinematics.txt","a")
@@ -668,4 +697,4 @@ def HomogenizedConstrainedMixtureTheory(p=1,TimeIntegrand='mid_point'):
     
 
 if __name__ == "__main__":
-    HomogenizedConstrainedMixtureTheory(TimeIntegrand="backward_euler")
+    HomogenizedConstrainedMixtureTheory(TimeIntegrand="mid_point")

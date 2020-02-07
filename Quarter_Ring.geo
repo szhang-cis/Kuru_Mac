@@ -8,7 +8,7 @@ Extrude {0, 0.001, 0} {
   Line{1};
 }
 Extrude {{0, 1, 0}, {0, 0, 0}, Pi/2} {
-  Surface{5};Layers{12};Recombine;
+  Surface{5};Layers{24};Recombine;
 }
 //Thickness divisions
 Transfinite Line {1,2,7,9} = 2 Using Progression 1;

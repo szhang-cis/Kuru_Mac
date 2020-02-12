@@ -1,1 +1,0 @@
-from .LegendreTransform import LegendreTransform

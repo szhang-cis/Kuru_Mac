@@ -40,8 +40,8 @@ void _GlobalAssemblyDF__ArterialWallMixture_(const Real *points,
 			Real k2c,
 			const Real *anisotropic_orientations,
 			Integer nfibre,
-			const Real *field_variables,
-			Integer nfield
+			const Real *state_variables,
+			Integer nstatv
                         ) {
 
     Integer ndof = nvar*nodeperelem;
@@ -49,13 +49,13 @@ void _GlobalAssemblyDF__ArterialWallMixture_(const Real *points,
 
     Real *LagrangeElemCoords        = allocate<Real>(nodeperelem*ndim);
     Real *EulerElemCoords           = allocate<Real>(nodeperelem*ndim);
-    Real *ElemFieldVariables        = allocate<Real>(nodeperelem*nfield);
+    Real *ElemStateVariables        = allocate<Real>(nodeperelem*nstatv);
 
     Real *F                         = allocate<Real>(ngauss*ndim*ndim);
     Real *SpatialGradient           = allocate<Real>(ngauss*nodeperelem*ndim);
     Real *detJ                      = allocate<Real>(ngauss);
     Real *dV                        = allocate<Real>(ngauss);
-    Real *GaussFieldVariables       = allocate<Real>(ngauss*nfield);
+    Real *GaussStateVariables       = allocate<Real>(ngauss*nstatv);
 
     Real *stress                    = allocate<Real>(ngauss*ndim*ndim);
     Real *hessian                   = allocate<Real>(ngauss*H_VoigtSize*H_VoigtSize);
@@ -76,8 +76,8 @@ void _GlobalAssemblyDF__ArterialWallMixture_(const Real *points,
                 LagrangeElemCoords[i*ndim+j] = points[inode*ndim+j];
                 EulerElemCoords[i*ndim+j] = Eulerx[inode*ndim+j];
             }
-            for (Integer k=0; k<nfield; ++k) {
-                ElemFieldVariables[i*nfield+k] = field_variables[inode*nfield+k];
+            for (Integer k=0; k<nstatv; ++k) {
+                ElemStateVariables[i*nstatv+k] = state_variables[inode*nstatv+k];
             }
         }
 
@@ -101,17 +101,17 @@ void _GlobalAssemblyDF__ArterialWallMixture_(const Real *points,
 
         // MAP FIELD VARIABLES FROM NODES TO GAUSS POINTS
         //GaussFieldVariables = np.einsum('ki,kj->ij',Bases,ElemFieldVariables)
-        std::fill(GaussFieldVariables,GaussFieldVariables+ngauss*nfield,0.);
+        std::fill(GaussStateVariables,GaussStateVariables+ngauss*nstatv,0.);
         for (Integer i=0; i<ngauss; ++i) {
-            for (Integer j=0; j<nfield; ++j) {
+            for (Integer j=0; j<nstatv; ++j) {
                 for (Integer k=0; k<nodeperelem; ++k) {
-                GaussFieldVariables[i*nfield+j] += Bases[k*ngauss+i]*ElemFieldVariables[k*nfield+j];
+                GaussStateVariables[i*nstatv+j] += Bases[k*ngauss+i]*ElemStateVariables[k*nstatv+j];
                 }
             }
         }
 
         // COMPUTE KINETIC MEASURES
-        mat_obj.KineticMeasures(stress, hessian, ndim, ngauss, F, nfibre, &anisotropic_orientations[elem*nfibre*ndim], nfield, GaussFieldVariables);
+        mat_obj.KineticMeasures(stress, hessian, ndim, ngauss, F, nfibre, &anisotropic_orientations[elem*nfibre*ndim], nstatv, GaussStateVariables);
 
         // COMPUTE CONSTITUTIVE STIFFNESS AND TRACTION
         std::fill(stiffness,stiffness+local_capacity,0.);
@@ -191,7 +191,7 @@ void _GlobalAssemblyDF__ArterialWallMixture_(const Real *points,
     deallocate(stiffness);
     deallocate(geometric_stiffness);
 
-    deallocate(GaussFieldVariables);
+    deallocate(GaussStateVariables);
 }
 
 

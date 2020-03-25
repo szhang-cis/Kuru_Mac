@@ -9,5 +9,6 @@ from .Solver import *
 #from .Utils import PWD, RSWD
 from .PostProcessing import *
 from .FiniteElements import AssemblyFollowerForces #AssembleMass, AssembleForm
+from .TimeIntegrators import *
 
 __version__ = "0.1.5"

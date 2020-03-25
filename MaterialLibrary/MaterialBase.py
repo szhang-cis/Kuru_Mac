@@ -1,5 +1,5 @@
 from __future__ import print_function
-#import numpy as np
+import numpy as np
 #from Florence.Utils import insensitive
 from warnings import warn
 
@@ -51,7 +51,19 @@ class Material(object):
         self.anisotropic_orientations = anisotropic_orientations
 
         self.has_low_level_dispatcher = False
-        self.has_field_variables = False
+        self.has_state_variables = False
         self.has_growth_remodeling = False
 
+
+    def MappingStateVariables(self,mesh,function_space,elem=0):
+        """
+        Function to map the field variables to the Gauss points in the element.
+        """
+        Bases = function_space.Bases
+
+        # Field variables at element nodes
+        ElemStateVariables = self.state_variables[mesh.elements[elem,:],:]
+
+        # Field variables at gauss points
+        self.StateVariables = np.einsum('ij,ik->jk',Bases,ElemStateVariables)
 

@@ -43,8 +43,8 @@ cdef extern from "_LLADF__ArterialWallMixture_.h" nogil:
                             Real k2c,
                             const Real *anisotropic_orientations,
                             Integer nfibre,
-                            const Real *field_variables,
-                            Integer nfield
+                            const Real *state_variables,
+                            Integer nstatv
                             )
 
 
@@ -77,12 +77,12 @@ def _LLADF__ArterialWallMixture_(fem_solver, function_space, formulation, mesh, 
     cdef np.ndarray[int,ndim=1,mode='c'] J_stiff        = np.zeros(1,np.int32)
     cdef np.ndarray[Real,ndim=1,mode='c'] V_stiff       = np.zeros(1,np.float64)
 
-    cdef np.ndarray[Integer,ndim=2, mode='c'] sorter                    = np.zeros((1,1),np.int64)
-    cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements          = np.zeros((1,1),np.uint64)
-    cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices            = np.zeros(1,np.int32)
-    cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices             = np.zeros(1,np.int32)
-    cdef int squeeze_sparsity_pattern                                   = fem_solver.squeeze_sparsity_pattern
-    cdef int recompute_sparsity_pattern                                 = fem_solver.recompute_sparsity_pattern
+    cdef np.ndarray[Integer,ndim=2, mode='c'] sorter            = np.zeros((1,1),np.int64)
+    cdef np.ndarray[UInteger,ndim=2, mode='c'] sorted_elements  = np.zeros((1,1),np.uint64)
+    cdef np.ndarray[int,ndim=1,mode='c'] data_global_indices    = np.zeros(1,np.int32)
+    cdef np.ndarray[int,ndim=1,mode='c'] data_local_indices     = np.zeros(1,np.int32)
+    cdef int squeeze_sparsity_pattern                       = fem_solver.squeeze_sparsity_pattern
+    cdef int recompute_sparsity_pattern                     = fem_solver.recompute_sparsity_pattern
 
     if fem_solver.recompute_sparsity_pattern:
         I_stiff        = np.zeros(int((nvar*nodeperelem)**2*nelem),np.int32)
@@ -102,17 +102,17 @@ def _LLADF__ArterialWallMixture_(fem_solver, function_space, formulation, mesh, 
 
     cdef Integer nfibre = 0, nfield=0
     cdef np.ndarray[Real,ndim=3,mode='c'] anisotropic_orientations = np.zeros((1,1,1),np.float64)
-    cdef np.ndarray[Real,ndim=2,mode='c'] field_variables = np.zeros((1,1),np.float64)
+    cdef np.ndarray[Real,ndim=2,mode='c'] state_variables = np.zeros((1,1),np.float64)
     if material.is_transversely_isotropic:
         anisotropic_orientations = material.anisotropic_orientations
         nfibre = material.anisotropic_orientations.shape[1]
-    if material.has_field_variables:
-        field_variables = material.field_variables
-        nfield = material.field_variables.shape[1]
+    if material.has_state_variables:
+        state_variables = material.state_variables
+        nstatv = material.state_variables.shape[1]
 
     cdef Real mu=0.,kappa=0.,k1m=0,k2m=0.,k1c=0,k2c=0.
 
-    mu, kappa, k1m, k2m, k1c, k2c = material.mu, material.kappa, material.k1m, material.k2m, material.k1c, material.k2c
+    mu,kappa,k1m,k2m,k1c,k2c = material.mu,material.kappa,material.k1m,material.k2m,material.k1c, material.k2c
 
     cdef Real rho = material.rho
 
@@ -151,8 +151,8 @@ def _LLADF__ArterialWallMixture_(fem_solver, function_space, formulation, mesh, 
                             k2c,
                             &anisotropic_orientations[0,0,0],
                             nfibre,
-                            &field_variables[0,0],
-                            nfield
+                            &state_variables[0,0],
+                            nstatv
                             )
 
 

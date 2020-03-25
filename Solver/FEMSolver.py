@@ -1,5 +1,5 @@
 from __future__ import print_function
-#import gc, os, sys
+import gc, os, sys
 #import multiprocessing
 from copy import deepcopy
 from warnings import warn
@@ -43,7 +43,10 @@ class FEMSolver(object):
         requires_arc_length=False,
         has_moving_boundary=False,
         has_prestress=True,
+        has_growth_remodeling=False,
         number_of_load_increments=1,
+        number_of_time_increments=1,
+        time_factor=None,
         load_factor=None,
         newton_raphson_tolerance=1.0e-6,
         newton_raphson_solution_tolerance=None,
@@ -100,16 +103,19 @@ class FEMSolver(object):
         self.requires_arc_length = requires_arc_length
         self.has_moving_boundary = has_moving_boundary
         self.has_prestress = has_prestress
+        self.has_growth_remodeling = has_growth_remodeling
         self.is_mass_computed = False
         self.mass_type = mass_type # "consistent" or "lumped"
         self.total_time = float(total_time)
+        self.number_of_time_increments = number_of_time_increments
+        self.number_of_load_increments = number_of_load_increments
+        self.time_factor = time_factor
+        self.load_factor = load_factor
         self.save_results = save_results
         # SAVE AT EVERY N TIME STEP WHERE N=save_frequency
         self.save_frequency = int(memory_store_frequency)
         self.incremental_solution_save_frequency = incremental_solution_save_frequency
 
-        self.number_of_load_increments = number_of_load_increments
-        self.load_factor = load_factor
         self.newton_raphson_tolerance = newton_raphson_tolerance
         self.newton_raphson_solution_tolerance = newton_raphson_solution_tolerance
         self.maximum_iteration_for_newton_raphson = maximum_iteration_for_newton_raphson
@@ -172,8 +178,8 @@ class FEMSolver(object):
     def __save_state__(self):
         self.__initialdict__ = deepcopy(self.__dict__)
 
-    def __checkdata__(self, material, boundary_condition,
-        formulation, mesh, function_spaces, solver, contact_formulation=None):
+    def __checkdata__(self, material, boundary_condition, formulation, mesh, function_spaces, 
+            solver, contact_formulation=None, growth_remodeling=None):
         """Checks the state of data for FEMSolver"""
 
         # INITIAL CHECKS
@@ -195,6 +201,13 @@ class FEMSolver(object):
         else:
             self.contact_formulation = None
             self.has_contact = False
+        # GROWTH REMODELING FORMULATION
+        if material.has_growth_remodeling:
+            self.has_growth_remodeling = True
+            if growth_remodeling is None:
+                raise ValueError("No Growth and Remodeling integrator")
+        else:
+            self.has_growth_remodeling = False
 
         # GET FUNCTION SPACES FROM THE FORMULATION
         if function_spaces is None:
@@ -345,8 +358,8 @@ class FEMSolver(object):
         ##############################################################################
 
         ##############################################################################
-        if material.has_field_variables:
-            material.MappingFieldVariables(mesh,function_spaces[0])
+        if material.has_state_variables:
+            material.MappingStateVariables(mesh,function_spaces[0])
         # AT THE MOMENT ALL HESSIANS SEEMINGLY HAVE THE SAME SIGNATURE SO THIS IS O.K.
         try:
             F = np.eye(material.ndim,material.ndim)[None,:,:]
@@ -443,7 +456,7 @@ class FEMSolver(object):
     def Solve(self, formulation=None, mesh=None,
         material=None, boundary_condition=None,
         function_spaces=None, solver=None,
-        contact_formulation=None,
+        contact_formulation=None, growth_remodeling=None,
         Eulerx=None):
         """Main solution routine for FEMSolver """
 
@@ -453,8 +466,9 @@ class FEMSolver(object):
 
         # CHECK DATA CONSISTENCY
         #---------------------------------------------------------------------------#
-        function_spaces, solver = self.__checkdata__(material, boundary_condition,
-            formulation, mesh, function_spaces, solver, contact_formulation=contact_formulation)
+        function_spaces, solver = self.__checkdata__(material, boundary_condition, formulation, 
+                mesh, function_spaces, solver, contact_formulation=contact_formulation,
+                growth_remodeling=growth_remodeling)
 
         # PRINT INFO
         #---------------------------------------------------------------------------#
@@ -473,17 +487,25 @@ class FEMSolver(object):
         #---------------------------------------------------------------------------#
 
         # INITIATE DATA FOR THE ANALYSIS
-        NodalForces, Residual = np.zeros((mesh.points.shape[0]*formulation.nvar,1),dtype=np.float64), \
+        NodalForces, Residual = np.zeros((mesh.points.shape[0]*formulation.nvar,1),dtype=np.float64),\
             np.zeros((mesh.points.shape[0]*formulation.nvar,1),dtype=np.float64)
         # SET NON-LINEAR PARAMETERS
-        self.NRConvergence = { 'Increment_'+str(Increment) : [] for Increment in range(self.number_of_load_increments) }
+        if not self.has_growth_remodeling:
+            self.NRConvergence = { 'Increment_'+str(Increment) : [] for Increment in range(\
+                    self.number_of_load_increments) }
+        else:
+            self.NRConvergence = { 'Increment_'+str(Increment) : [] for Increment in range(\
+                    self.number_of_time_increments) }
 
         # ALLOCATE FOR SOLUTION FIELDS
         if self.save_frequency == 1:
-            TotalDisp = np.zeros((mesh.points.shape[0],formulation.nvar,self.number_of_load_increments),dtype=np.float64)
+            TotalDisp = np.zeros((mesh.points.shape[0],formulation.nvar,
+                self.number_of_time_increments),dtype=np.float64)
+                #self.number_of_load_increments),dtype=np.float64)
         else:
             TotalDisp = np.zeros((mesh.points.shape[0],formulation.nvar,
-                int(self.number_of_load_increments/self.save_frequency)),dtype=np.float64)
+                int(self.number_of_time_increments/self.save_frequency)),dtype=np.float64)
+                #int(self.number_of_load_increments/self.save_frequency)),dtype=np.float64)
 
         # PRE-ASSEMBLY
         print('Assembling the system and acquiring neccessary information for the analysis...')
@@ -552,20 +574,25 @@ class FEMSolver(object):
                     mesh, TotalDisp, Eulerx, material, boundary_condition, self)
 
         else:
-            if self.nonlinear_iterative_technique == "newton_raphson" or \
-                self.nonlinear_iterative_technique == "modified_newton_raphson" or \
-                self.nonlinear_iterative_technique == "line_search_newton_raphson" or \
-                self.nonlinear_iterative_technique == "snes":
-                TotalDisp = self.StaticSolver(function_spaces, formulation, solver,
-                    K, NeumannForces, NodalForces, Residual,
-                    mesh, TotalDisp, Eulerx, material, boundary_condition)
-            elif self.nonlinear_iterative_technique == "arc_length":
-                from FEMSolverArcLength import StaticSolverArcLength
-                TotalDisp = StaticSolverArcLength(self,function_spaces, formulation, solver,
-                    K, NeumannForces, NodalForces, Residual,
-                    mesh, TotalDisp, Eulerx, material, boundary_condition)
+            if self.has_growth_remodeling:
+                TotalDisp = growth_remodeling.Solver(function_spaces, formulation, solver, K, 
+                        NeumannForces, NodalForces, Residual, mesh, TotalDisp, Eulerx, material, 
+                        boundary_condition, self)
             else:
-                raise RuntimeError("Iterative technique for nonlinear solver not understood")
+                if self.nonlinear_iterative_technique == "newton_raphson" or \
+                    self.nonlinear_iterative_technique == "modified_newton_raphson" or \
+                    self.nonlinear_iterative_technique == "line_search_newton_raphson" or \
+                    self.nonlinear_iterative_technique == "snes":
+                    TotalDisp = self.StaticSolver(function_spaces, formulation, solver,
+                        K, NeumannForces, NodalForces, Residual,
+                        mesh, TotalDisp, Eulerx, material, boundary_condition)
+                elif self.nonlinear_iterative_technique == "arc_length":
+                    from FEMSolverArcLength import StaticSolverArcLength
+                    TotalDisp = StaticSolverArcLength(self,function_spaces, formulation, solver,
+                        K, NeumannForces, NodalForces, Residual,
+                        mesh, TotalDisp, Eulerx, material, boundary_condition)
+                else:
+                    raise RuntimeError("Iterative technique for nonlinear solver not understood")
 
         # LOG LEVEL CONTROLLER
         if self.report_log_level == 0:

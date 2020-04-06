@@ -1,5 +1,6 @@
 from __future__ import print_function
-import numpy as np #, scipy as sp, sys, os, gc
+import sys
+import numpy as np #, scipy as sp, os, gc
 from copy import deepcopy
 #from warnings import warn
 from time import time
@@ -391,8 +392,10 @@ class BoundaryCondition(object):
         # MUCH FASTER APPROACH
         # F = F - (stiffness[:,self.columns_out]*AppliedDirichlet*LoadFactor)[:,None]
         nnz_cols = ~np.isclose(AppliedDirichlet,0.0)
-        F[self.columns_in] = F[self.columns_in] - (stiffness[self.columns_in,:][:,
-            self.columns_out[nnz_cols]]*AppliedDirichlet[nnz_cols]*LoadFactor)[:,None]
+        if self.columns_out[nnz_cols].shape[0]==0:
+            F[self.columns_in] = F[self.columns_in]
+        else:
+            F[self.columns_in] = F[self.columns_in] - (stiffness[self.columns_in,:][:,self.columns_out[nnz_cols]]*AppliedDirichlet[nnz_cols]*LoadFactor)[:,None]
 
         if only_residual:
             return F

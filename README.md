@@ -2,7 +2,18 @@
 
 This is a Finite-Element code to solve my tesis problem about Growth and Remodeling of aneurysms on the Aorta artery. The code is mainly base on Florence.
 
-- I have added some routines in Assembly to get effect of follower loads (pressure).
+- New follower load (pressure) in Assembly module.
+- New ArterialWallMixture in Material Library.
+- New Explicit Growth and Remodeling time integrator.
+
+Prerequisites:
+
+- Fastor
+- Cython
+- NumPy
+- SciPy
+- OpenBLAS
+
 
 compilar:
 ./Tensor --> make
@@ -14,3 +25,5 @@ compilar:
 ./VariationalPrinciple/_ConstitutiveStiffness_ --> make
 ./MaterialLibrary/LLDispatch --> make MATERIAL=material_name
 ./FiniteElements/Assembly/_Assembly_ --> make ASSEMBLY_NAME=assembler_name
+
+- Time integrator schema, explain.

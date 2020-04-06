@@ -2,7 +2,7 @@ from __future__ import print_function
 import os, sys, gc
 #from time import time
 #from copy import deepcopy
-#import numpy as np
+import numpy as np
 #import numpy.linalg as la
 from warnings import warn
 from Kuru import FunctionSpace, QuadratureRule
@@ -17,6 +17,7 @@ from Kuru import FunctionSpace, QuadratureRule
 from Kuru.FiniteElements.LocalAssembly.KinematicMeasures import *
 from Kuru.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
 from Kuru import Mesh
+#from Kuru import FEMSolver
 #from Florence.MeshGeneration import vtk_writer
 #from Florence.Utils import constant_camera_view
 
@@ -80,6 +81,9 @@ class PostProcess(object):
     def SetFEMSolver(self,fem_solver):
         self.fem_solver = fem_solver
 
+    def SetGrowthRemodeling(self,gr_variables):
+        self.gr_variables = gr_variables
+
     def StressRecovery(self, steps=None, average_derived_quantities=True):
 
         """
@@ -134,13 +138,13 @@ class PostProcess(object):
         requires_geometry_update = True # ALWAYS TRUE FOR THIS ROUTINE
         TotalDisp = self.sol[:,:]
 
-        if hasattr(self,"number_of_load_increments"):
-            LoadIncrement = self.number_of_load_increments
+        if hasattr(self,"number_of_time_increments"):
+            TimeIncrement = self.number_of_time_increments
         else:
-            LoadIncrement = fem_solver.number_of_load_increments
-        increments = range(LoadIncrement)
+            TimeIncrement = fem_solver.number_of_time_increments
+        increments = range(TimeIncrement)
         if steps is not None:
-            LoadIncrement = len(steps)
+            TimeIncrement = len(steps)
             increments = steps
 
         # COMPUTE THE COMMON/NEIGHBOUR NODES ONCE
@@ -149,15 +153,14 @@ class PostProcess(object):
 
         F = np.zeros((nelem,nodeperelem,ndim,ndim))
         CauchyStressTensor = np.zeros((nelem,nodeperelem,ndim,ndim))
-        # DEFINE CONSTITUENT STRESSES FOR GROWTH-REMODELING PROBLEM
-        FibreStress = np.zeros((nelem,nodeperelem,5))  # 5-fibres
-        Softness = np.zeros((nelem,nodeperelem,5))  # 5-fibres
 
         MainDict = {}
-        MainDict['F'] = np.zeros((LoadIncrement,npoint,ndim,ndim))
-        MainDict['CauchyStress'] = np.zeros((LoadIncrement,npoint,ndim,ndim))
-        MainDict['FibreStress'] = np.zeros((LoadIncrement,npoint,5))
-        MainDict['Softness'] = np.zeros((LoadIncrement,npoint,5))
+        MainDict['F'] = np.zeros((TimeIncrement,npoint,ndim,ndim))
+        MainDict['CauchyStress'] = np.zeros((TimeIncrement,npoint,ndim,ndim))
+        
+        if material.has_state_variables:
+            FibreStress = np.zeros((nelem,nodeperelem,5))
+            MainDict['FibreStress'] = np.zeros((TimeIncrement,npoint,5))
 
         for incr, Increment in enumerate(increments):
             if TotalDisp.ndim == 3:
@@ -171,7 +174,7 @@ class PostProcess(object):
                 LagrangeElemCoords = points[elements[elem,:],:]
                 EulerELemCoords = Eulerx[elements[elem,:],:]
                 # GROWTH-REMODELING VALUES FOR THIS ELEMENT
-                material.MappingFieldVariables(mesh,Domain,elem)
+                material.MappingStateVariables(mesh,Domain,elem)
 
                 if material.has_low_level_dispatcher:
 
@@ -188,18 +191,10 @@ class PostProcess(object):
                             CurrentVolume = np.sum(detJ)
                         material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
-                    if self.formulation.fields == "electro_mechanics":
-                        # GET ELECTRIC FIELD
-                        ElectricFieldx[elem,:,:] = - np.einsum('ijk,j',SpatialGradient,ElectricPotentialElem)
-                        # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
-                        _D_dum ,CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],
-                                ElectricFieldx[elem,:,:], elem=elem)
-                        ElectricDisplacementx[elem,:,:] = _D_dum[:,:,0]
-                    elif self.formulation.fields == "mechanics":
-                        # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
-                        CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
-                        if material.has_field_variables:
-                            FibreStress[elem,:,:],Softness[elem,:,:] = material.LLConstituentStress(F[elem,:,:,:],elem)
+                    # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
+                    CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
+                    if material.has_state_variables:
+                        FibreStress[elem,:,:], _ = material.LLConstituentStress(F[elem,:,:,:],elem=elem)
 
                 else:
                     # GAUSS LOOP IN VECTORISED FORM
@@ -234,19 +229,9 @@ class PostProcess(object):
                     # LOOP OVER GAUSS POINTS
                     for counter in range(AllGauss.shape[0]):
 
-                        if material.energy_type == "enthalpy":
-                            # COMPUTE CAUCHY STRESS TENSOR
-                            CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
-                            if material.has_field_variables:
-                                FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
-                                    StrainTensors,elem,counter)
-
-                        elif material.energy_type == "internal_energy":
-                            # COMPUTE CAUCHY STRESS TENSOR
-                            CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
-                            if material.has_field_variables:
-                                FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
-                                    StrainTensors,elem,counter)
+                        CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
+                        if material.has_state_variables:
+                            FibreStress[elem,counter,:],_ = material.ConsituentStress(StrainTensors,elem,counter)
 
 
             if average_derived_quantities:
@@ -257,14 +242,14 @@ class PostProcess(object):
                     for uelem in range(ncommon_nodes):
                         MainDict['F'][incr,inode,:,:] += F[Els[uelem],Pos[uelem],:,:]
                         MainDict['CauchyStress'][incr,inode,:,:] += CauchyStressTensor[Els[uelem],Pos[uelem],:,:]
-                        MainDict['FibreStress'][incr,inode,:] += FibreStress[Els[uelem],Pos[uelem],:]
-                        MainDict['Softness'][incr,inode,:] += Softness[Els[uelem],Pos[uelem],:]
+                        if material.has_state_variables:
+                            MainDict['FibreStress'][incr,inode,:] += FibreStress[Els[uelem],Pos[uelem],:]
 
                     # AVERAGE OUT
                     MainDict['F'][incr,inode,:,:] /= ncommon_nodes
                     MainDict['CauchyStress'][incr,inode,:,:] /= ncommon_nodes
-                    MainDict['FibreStress'][incr,inode,:] /= ncommon_nodes
-                    MainDict['Softness'][incr,inode,:] /= ncommon_nodes
+                    if material.has_state_variables:
+                        MainDict['FibreStress'][incr,inode,:] /= ncommon_nodes
 
             else:
                 for inode in all_nodes:
@@ -274,8 +259,8 @@ class PostProcess(object):
                     uelem = 0
                     MainDict['F'][incr,inode,:,:] = F[Els[uelem],Pos[uelem],:,:]
                     MainDict['CauchyStress'][incr,inode,:,:] = CauchyStressTensor[Els[uelem],Pos[uelem],:,:]
-                    MainDict['FibreStress'][incr,inode,:] = FibreStress[Els[uelem],Pos[uelem],:]
-                    MainDict['Softness'][incr,inode,:] = Softness[Els[uelem],Pos[uelem],:]
+                    if material.has_state_variables:
+                        MainDict['FibreStress'][incr,inode,:] = FibreStress[Els[uelem],Pos[uelem],:]
 
 
         self.recovered_fields = MainDict
@@ -287,112 +272,121 @@ class PostProcess(object):
 
             Variables (quantity) numbering:
 
-                quantity    mechanics 2D    mechanics 3D    electro_mechanics 2D    electro_mechanics 3D
+                quantity    mechanics 2D    mechanics 3D    growth_remodeling 2D    growth_remodeling 3D
                 ----------------------------------------------------------------------------------------
                 0           ux              ux              ux                      ux
                 ----------------------------------------------------------------------------------------
                 1           uy              uy              uy                      uy
                 ----------------------------------------------------------------------------------------
-                2           F_xx            uz              phi                     uz
+                2           F_xx            uz              F_xx                    uz
                 ----------------------------------------------------------------------------------------
-                3           F_xy            F_xx            F_xx                    phi
+                3           F_xy            F_xx            F_xy                    F_xx
                 ----------------------------------------------------------------------------------------
-                4           F_yx            F_xy            F_xy                    F_xx
+                4           F_yx            F_xy            F_yx                    F_xy
                 ----------------------------------------------------------------------------------------
-                5           F_yy            F_xz            F_yx                    F_xy
+                5           F_yy            F_xz            F_yy                    F_xz
                 ----------------------------------------------------------------------------------------
-                6           H_xx            F_yx            F_yy                    F_xz
+                6           H_xx            F_yx            J                       F_yx
                 ----------------------------------------------------------------------------------------
-                7           H_xy            F_yy            H_xx                    F_yx
+                7           H_xy            F_yy            C_xx                    F_yy
                 ----------------------------------------------------------------------------------------
-                8           H_yx            F_yz            H_xy                    F_yy
+                8           H_yx            F_yz            C_xy                    F_yz
                 ----------------------------------------------------------------------------------------
-                9           H_yy            F_zx            H_yx                    F_yz
+                9           H_yy            F_zx            C_yy                    F_zx
                 ----------------------------------------------------------------------------------------
-                10          J               F_zy            H_yy                    F_zx
+                10          J               F_zy            detC                    F_zy
                 ----------------------------------------------------------------------------------------
-                11          C_xx            F_zz            J                       F_zy
+                11          C_xx            F_zz            e_xx                    F_zz
                 ----------------------------------------------------------------------------------------
-                12          C_xy            H_xx            C_xx                    F_zz
+                12          C_xy            H_xx            e_xy                    J
                 ----------------------------------------------------------------------------------------
-                13          C_yy            H_xy            C_xy                    H_xx
+                13          C_yy            H_xy            e_yy                    C_xx
                 ----------------------------------------------------------------------------------------
-                14          G_xx            H_xz            C_yy                    H_xy
+                14          G_xx            H_xz            e_hyd                   C_xy
                 ----------------------------------------------------------------------------------------
-                15          G_xy            H_yx            G_xx                    H_xz
+                15          G_xy            H_yx            e_VM                    C_xz
                 ----------------------------------------------------------------------------------------
-                16          G_yy            H_yy            G_xy                    H_yx
+                16          G_yy            H_yy            s_xx                    C_yy
                 ----------------------------------------------------------------------------------------
-                17          detC            H_yz            G_yy                    H_yy
+                17          detC            H_yz            s_xy                    C_yz
                 ----------------------------------------------------------------------------------------
-                18          S_xx            H_zx            detC                    H_yz
+                18          S_xx            H_zx            s_yy                    C_zz
                 ----------------------------------------------------------------------------------------
-                19          S_xy            H_zy            S_xx                    H_zx
+                19          S_xy            H_zy            p_hyd                   detC
                 ----------------------------------------------------------------------------------------
-                20          S_yy            H_zz            S_xy                    H_zy
+                20          S_yy            H_zz            s_VM                    e_xx
                 ----------------------------------------------------------------------------------------
-                21          p_hyd           J               S_yy                    H_zz
+                21          p_hyd           J               s_m                     e_xy
                 ----------------------------------------------------------------------------------------
-                22                          C_xx            E_x                     J
+                22          None            C_xx            s_c1                    e_xz
                 ----------------------------------------------------------------------------------------
-                23                          C_xy            E_y                     C_xx
+                23          None            C_xy            s_c2                    e_yy
                 ----------------------------------------------------------------------------------------
-                24                          C_xz            D_x                     C_xy
+                24          None            C_xz            s_c3                    e_yz
                 ----------------------------------------------------------------------------------------
-                25                          C_yy            D_y                     C_xz
+                25          None            C_yy            s_c4                    e_zz
                 ----------------------------------------------------------------------------------------
-                26                          C_yz            p_hyd                   C_yy
+                26          None            C_yz            den_e                   e_hyd
                 ----------------------------------------------------------------------------------------
-                27                          C_zz                                    C_yz
+                27          None            C_zz            den_m                   e_VM
                 ----------------------------------------------------------------------------------------
-                28                          G_xx                                    C_zz
+                28          None            G_xx            den_c1                  s_xx
                 ----------------------------------------------------------------------------------------
-                29                          G_xy                                    G_xx
+                29          None            G_xy            den_c2                  s_xy
                 ----------------------------------------------------------------------------------------
-                30                          G_xz                                    G_xy
+                30          None            G_xz            den_c3                  s_xz
                 ----------------------------------------------------------------------------------------
-                31                          G_yy                                    G_xz
+                31          None            G_yy            den_c4                  s_yy
                 ----------------------------------------------------------------------------------------
-                32                          G_yz                                    G_yx
+                32          None            G_yz            growth                  s_yz
                 ----------------------------------------------------------------------------------------
-                33                          G_zz                                    G_yy
+                33          None            G_zz            rem_m                   s_zz
                 ----------------------------------------------------------------------------------------
-                34                          detC                                    G_zz
+                34          None            detC            rem_c1                  p_hyd
                 ----------------------------------------------------------------------------------------
-                35                          S_xx                                    detC
+                35          None            S_xx            rem_c2                  s_VM
                 ----------------------------------------------------------------------------------------
-                36                          S_xy                                    S_xx
+                36          None            S_xy            rem_c3                  s_m
                 ----------------------------------------------------------------------------------------
-                37                          S_xz                                    S_xy
+                37          None            S_xz            rem_c4                  s_c1
                 ----------------------------------------------------------------------------------------
-                38                          S_yy                                    S_xz
+                38          None            S_yy            None                    s_c2
                 ----------------------------------------------------------------------------------------
-                39                          S_yz                                    S_yy
+                39          None            S_yz            None                    s_c3
                 ----------------------------------------------------------------------------------------
-                40                          S_zz                                    S_yz
+                40          None            S_zz            None                    s_c4
                 ----------------------------------------------------------------------------------------
-                41                          p_hyd                                   S_zz
+                41          None            p_hyd           None                    den_e
                 ----------------------------------------------------------------------------------------
-                42                                                                  E_x
+                42          None            None            None                    den_m
                 ----------------------------------------------------------------------------------------
-                43                                                                  E_y
+                43          None            None            None                    den_c1
                 ----------------------------------------------------------------------------------------
-                44                                                                  E_z
+                44          None            None            None                    den_c2
                 ----------------------------------------------------------------------------------------
-                45                                                                  D_x
+                45          None            None            None                    den_c3
                 ----------------------------------------------------------------------------------------
-                46                                                                  D_y
+                46          None            None            None                    den_c4
                 ----------------------------------------------------------------------------------------
-                47                                                                  D_z
+                47          None            None            None                    growth
                 ----------------------------------------------------------------------------------------
-                48                                                                  p_hyd
+                48          None            None            None                    rem_m
+                ----------------------------------------------------------------------------------------
+                49          None            None            None                    rem_c1
+                ----------------------------------------------------------------------------------------
+                50          None            None            None                    rem_c2
+                ----------------------------------------------------------------------------------------
+                51          None            None            None                    rem_c3
+                ----------------------------------------------------------------------------------------
+                52          None            None            None                    rem_c4
                 ----------------------------------------------------------------------------------------
 
 
 
 
-            where S represents Cauchy stress tensor, E the electric field, D the electric
-            displacements and p_hyd the hydrostatic pressure
+
+            where S represents Cauchy stress tensor, E the strain tenosr, {S_m,S_ci} the fibre stresses,
+            {den_e,den_m,den_ci} the densities and {rem_m,rem_ci} the fibre remodelig
         """
         namer = None
         if num > 48:
@@ -411,18 +405,19 @@ class PostProcess(object):
             line = line.strip()
             if "quantity" in line and "mechanics" in line and "2D" in line and "3D" in line:
                 line_number = counter
-            if counter > line_number+1 and counter < line_number+100:
+            if counter > line_number+1 and counter < line_number+110:
                 spl = list(filter(None, line.split(" ")))
                 if spl[0] == str(num):
-                    if self.nvar == 2 and self.ndim==2:
+                    if self.nvar == 2 and self.ndim==2 and self.material.has_state_variables is False:
                         namer = spl[-4]
-                    elif self.nvar == 3 and self.ndim==2:
+                    elif self.nvar == 2 and self.ndim==2 and self.material.has_state_variables is True:
                         namer = spl[-2]
-                    elif self.nvar == 3 and self.ndim==3:
+                    elif self.nvar == 3 and self.ndim==3 and self.material.has_state_variables is False:
                         namer = spl[-3]
-                    elif self.nvar == 4:
+                    elif self.nvar == 3 and self.ndim==3 and self.material.has_state_variables is True:
                         namer = spl[-1]
                     break
+               
 
         if print_name:
             print('Quantity corresponds to ' + str(namer))
@@ -436,6 +431,235 @@ class PostProcess(object):
         elif "phi" in namer:
             namer = "\phi"
         return namer
+
+    def GetAugmentedSolution(self, steps=None, average_derived_quantities=True, parallelise=False):
+        """This function modifies self.sol to augmented_sol and returns the augmented solution
+            augmented_sol
+        """
+
+        if self.sol.shape[1] > self.nvar:
+            return self.sol
+
+        import inspect
+        curframe = inspect.currentframe()
+        calframe = inspect.getouterframes(curframe, 2)[1][3]
+        if calframe != "ParallelGetAugmentedSolution":
+            print("Computing recovered quantities. This is going to take some time...")
+
+        if self.fem_solver is None:
+            raise ValueError("FEM solver not set for post-processing")
+        if steps is None:
+            if self.fem_solver.number_of_time_increments == 1:
+                parallelise = False
+        else:
+            if len(steps) == 1:
+                parallelise = False
+
+        if parallelise:
+            from multiprocessing import Pool, cpu_count
+            from contextlib import closing
+            if self.ncpu is None:
+                self.ncpu = cpu_count()
+            if self.parallel_model is None:
+                self.parallel_model = "pool"
+
+            if steps is not None:
+                increments = steps
+            else:
+                increments = range(self.fem_solver.number_of_time_increments)
+            increments = np.array(increments).flatten()
+            partitioned_steps = np.array_split(increments,self.ncpu)
+
+            pps = []
+            for ip in range(len(partitioned_steps)):
+                pp = deepcopy(self)
+                pp.number_of_time_increments = len(partitioned_steps[ip])
+                zipper_object = ParallelGetAugmentedSolutionZipper(pp,
+                    steps=partitioned_steps[ip], average_derived_quantities=average_derived_quantities)
+                pps.append(zipper_object)
+
+            # Pool
+            if self.parallel_model == "pool":
+                with closing(Pool(self.ncpu)) as pool:
+                    res = pool.map(ParallelGetAugmentedSolution,pps)
+                    pool.terminate()
+
+            # Thread Pool
+            elif self.parallel_model == "thread_pool":
+                import multiprocessing.dummy
+                with closing(multiprocessing.dummy.Pool(self.ncpu)) as pool:
+                    res = pool.map(ParallelGetAugmentedSolution,pps)
+                    pool.terminate()
+
+            else:
+                raise ValueError("Parallel model not understood")
+
+            # Serial
+            # res = []
+            # for ip in range(len(partitioned_steps)):
+            #     res.append(ParallelGetAugmentedSolution(pps[ip]))
+
+
+            ndim = self.formulation.ndim
+            fields = self.formulation.fields
+            nnode = self.mesh.points.shape[0]
+            if fields == "mechanics" and ndim == 2:
+                augmented_sol = np.zeros((nnode,22,len(increments)),dtype=np.float64)
+            elif fields == "mechanics" and ndim == 3:
+                augmented_sol = np.zeros((nnode,42,len(increments)),dtype=np.float64)
+
+            for ip in range(len(partitioned_steps)):
+                augmented_sol[:,:,partitioned_steps[ip]] = res[ip]
+
+            self.sol = augmented_sol
+            return augmented_sol
+
+
+        # GET RECOVERED VARIABLES ALL VARIABLE CHECKS ARE DONE IN STRESS RECOVERY
+        self.StressRecovery(steps=steps, average_derived_quantities=average_derived_quantities)
+
+        ndim = self.formulation.ndim
+        fields = self.formulation.fields
+        nnode = self.mesh.points.shape[0]
+        if hasattr(self, "number_of_time_increments"):
+            increments = self.number_of_time_increments
+        else:
+            if self.sol.ndim == 3:
+                increments = self.sol.shape[2]
+            else:
+                increments = 1
+            if steps is not None:
+                increments = len(steps)
+            else:
+                if increments != self.fem_solver.number_of_time_increments:
+                    raise ValueError("Incosistent number of time increments between FEMSolver and provided solution")
+
+        # Get tensors
+        if ndim == 2:
+            I=np.eye(2)
+        elif ndim == 3:
+            I=np.eye(3)
+        F = self.recovered_fields['F']
+        J = np.linalg.det(F)
+        C = np.einsum('ijlk,ijkm->ijlm',np.einsum('ijlk',F),F)
+        detC = J**2
+        Cauchy = self.recovered_fields['CauchyStress']
+        p_hyd = 1./3.*np.einsum('ijkk',Cauchy)
+        # Get tensor for just mechanics fields or for growth and remodeling
+        if self.material.has_state_variables is False:
+            H = np.einsum('ij,ijlk->ijkl',J,np.linalg.inv(F))
+            G = np.einsum('ijlk,ijkm->ijlm',np.einsum('ijlk',H),H)
+            # Reshape
+            H = np.einsum('lijk',H).reshape(nnode,ndim**2,increments)
+            G = np.einsum('lijk',G).reshape(nnode,ndim**2,increments)
+        else:
+            b_inv = np.einsum('ijlk,ijkm->ijlm',np.linalg.inv(F),np.linalg.inv(F))
+            e = 1./2.*(I-b_inv)
+            e_hyd = 1./3.*np.einsum('ijkk',e)
+            e_d = e - np.einsum('ij,kl->ijkl',e_hyd,I)
+            e_VM = np.sqrt(2./3.*np.einsum('ijkl,ijkl->ij',e_d,e_d))
+            s_d = Cauchy - np.einsum('ij,kl->ijkl',p_hyd,I)
+            s_VM = np.sqrt(3./2.*np.einsum('ijkl,ijkl->ij',s_d,s_d))
+            FibreStress = self.recovered_fields['FibreStress']
+            # Reshape
+            e = np.einsum('lijk',e).reshape(nnode,ndim**2,increments)
+            e_hyd = np.einsum('ji',e_hyd).reshape(nnode,increments)
+            e_VM = np.einsum('ji',e_VM).reshape(nnode,increments)
+            s_VM = np.einsum('ji',s_VM).reshape(nnode,increments)
+            FibreStress = np.einsum('lij',FibreStress).reshape(nnode,5,increments)
+        # Reshape tensors
+        F = np.einsum('lijk',F).reshape(nnode,ndim**2,increments)
+        J = J.reshape(nnode,increments)
+        C = np.einsum('lijk',C).reshape(nnode,ndim**2,increments)
+        detC = detC.reshape(nnode,increments)
+        Cauchy = np.einsum('lijk',Cauchy).reshape(nnode,ndim**2,increments)
+        p_hyd = np.einsum('ji',p_hyd).reshape(nnode,increments)
+
+
+        if ndim == 2:
+            C = C[:,[0,1,3],:]
+            if material.has_state_variables is False:
+                G = G[:,[0,1,3],:]
+            else:
+                e = e[:,[0,1,3],:]
+            Cauchy = Cauchy[:,[0,1,3],:]
+        elif ndim == 3:
+            C = C[:,[0,1,2,4,5,8],:]
+            if self.material.has_state_variables is False:
+                G = G[:,[0,1,2,4,5,8],:]
+            else:
+                e = e[:,[0,1,2,4,5,8],:]
+            Cauchy = Cauchy[:,[0,1,2,4,5,8],:]
+
+
+        if fields == "mechanics" and ndim == 2 and self.material.has_state_variables is False:
+
+            augmented_sol = np.zeros((nnode,22,increments),dtype=np.float64)
+            augmented_sol[:,:2,:]     = self.sol[:,:2,steps].reshape(augmented_sol[:,:2,:].shape)
+            augmented_sol[:,2:6,:]    = F
+            augmented_sol[:,6:10,:]   = H
+            augmented_sol[:,10,:]     = J
+            augmented_sol[:,11:14,:]  = C
+            augmented_sol[:,14:17,:]  = G
+            augmented_sol[:,17,:]     = detC
+            augmented_sol[:,18:21,:]  = Cauchy
+            augmented_sol[:,21,:]     = p_hyd
+
+        elif fields == "mechanics" and ndim == 3 and self.material.has_state_variables is False:
+
+            augmented_sol = np.zeros((nnode,42,increments),dtype=np.float64)
+            augmented_sol[:,:3,:]     = self.sol[:,:3,steps].reshape(augmented_sol[:,:3,:].shape)
+            augmented_sol[:,3:12,:]   = F
+            augmented_sol[:,12:21,:]  = H
+            augmented_sol[:,21,:]     = J
+            augmented_sol[:,22:28,:]  = C
+            augmented_sol[:,28:34,:]  = G
+            augmented_sol[:,34,:]     = detC
+            augmented_sol[:,35:41,:]  = Cauchy
+            augmented_sol[:,41,:]     = p_hyd
+
+        if fields == "mechanics" and ndim == 2 and self.material.has_state_variables is True:
+
+            augmented_sol = np.zeros((nnode,38,increments),dtype=np.float64)
+            augmented_sol[:,:2,:]     = self.sol[:,:2,steps].reshape(augmented_sol[:,:2,:].shape)
+            augmented_sol[:,2:6,:]    = F
+            augmented_sol[:,6,:]      = J
+            augmented_sol[:,7:10,:]   = C
+            augmented_sol[:,10,:]     = detC
+            augmented_sol[:,11:14,:]  = e
+            augmented_sol[:,14,:]     = e_hyd
+            augmented_sol[:,15,:]     = e_VM
+            augmented_sol[:,16:19,:]  = Cauchy
+            augmented_sol[:,19,:]     = p_hyd
+            augmented_sol[:,20,:]     = s_VM
+            augmented_sol[:,21:26,:]  = FibreStress
+            augmented_sol[:,26:32,:]  = self.gr_variables[:,5:11,steps].reshape(augmented_sol[:,26:32,:].shape) #Densities
+            augmented_sol[:,32,:]     = self.gr_variables[:,11,steps].reshape(augmented_sol[:,32,:].shape)   #Growth
+            augmented_sol[:,33:38,:]  = self.gr_variables[:,:5,steps].reshape(augmented_sol[:,33:38,:].shape)   #Remodeling
+
+        elif fields == "mechanics" and ndim == 3 and self.material.has_state_variables is True:
+
+            augmented_sol = np.zeros((nnode,53,increments),dtype=np.float64)
+            augmented_sol[:,:3,:]     = self.sol[:,:3,steps].reshape(augmented_sol[:,:3,:].shape)
+            augmented_sol[:,3:12,:]   = F
+            augmented_sol[:,12,:]     = J
+            augmented_sol[:,13:19,:]  = C
+            augmented_sol[:,19,:]     = detC
+            augmented_sol[:,20:26,:]  = e
+            augmented_sol[:,26,:]     = e_hyd
+            augmented_sol[:,27,:]     = e_VM
+            augmented_sol[:,28:34,:]  = Cauchy
+            augmented_sol[:,34,:]     = p_hyd
+            augmented_sol[:,35,:]     = s_VM
+            augmented_sol[:,36:41,:]  = FibreStress
+            augmented_sol[:,41:47,:]  = self.gr_variables[:,5:11,steps].reshape(augmented_sol[:,41:47,:].shape)
+            augmented_sol[:,47,:]     = self.gr_variables[:,11,steps].reshape(augmented_sol[:,47,:].shape)
+            augmented_sol[:,48:53,:]  = self.gr_variables[:,:5,steps].reshape(augmented_sol[:,48:53,:].shape)
+
+        self.sol = augmented_sol
+        return augmented_sol
+
+
 
     def WriteVTK(self,filename=None, quantity="all", configuration="deformed", steps=None, write_curved_mesh=True,
         interpolation_degree=10, ProjectionFlags=None, fmt="binary", equally_spaced=False, parallelise=False):
@@ -465,13 +689,6 @@ class PostProcess(object):
             raise ValueError("formulation not set for post-processing")
         if self.sol is None:
             raise ValueError("solution not set for post-processing")
-        if self.formulation.fields == "electrostatics":
-            configuration = "original"
-            tmp = np.copy(self.sol)
-            self.sol = np.zeros((self.sol.shape[0],self.formulation.ndim+1,self.sol.shape[1]))
-            # self.sol[:,:self.formulation.ndim,:] = 0.
-            self.sol[:,-1,:] = tmp
-            quantity = self.formulation.ndim
 
         if isinstance(quantity,int):
             if quantity>=self.sol.shape[1]:
@@ -534,15 +751,11 @@ class PostProcess(object):
         actual_ndim = lmesh.points.shape[1]
 
         ndim = lmesh.points.shape[1]
-        if self.formulation.fields == "electrostatics":
-            sol = self.sol[:lmesh.nnode,...]
-            q_names = ["phi","phi","phi","phi"]
-        else:
-            q_names = [self.QuantityNamer(quant, print_name=False) for quant in iterator]
+        q_names = [self.QuantityNamer(quant, print_name=True) for quant in iterator]
 
-        LoadIncrement = self.sol.shape[2]
+        TimeIncrement = self.sol.shape[2]
 
-        increments = range(LoadIncrement)
+        increments = range(TimeIncrement)
         if steps is not None:
             increments = steps
 
@@ -980,3 +1193,4 @@ class PostProcess(object):
             tmesh.reference_edges = reference_edges
 
         return tmesh
+

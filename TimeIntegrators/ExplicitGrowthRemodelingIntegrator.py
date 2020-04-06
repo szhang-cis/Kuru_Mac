@@ -28,6 +28,9 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         K, NeumannForces, NodalForces, Residual,
         mesh, TotalDisp, Eulerx, material, boundary_condition, fem_solver):
 
+        GRVariables = np.zeros((mesh.points.shape[0],12,fem_solver.number_of_time_increments),
+                dtype=np.float64)
+
         TimeIncrements = fem_solver.number_of_time_increments
         TimeFactor = fem_solver.total_time/TimeIncrements
 
@@ -103,7 +106,8 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             else:
                 Delta_t = TimeFactor
             Rates = self.RatesGrowthRemodeling(mesh, material, FibreStress, Softness)
-            self.ExplicitGrowthRemodeling(mesh, material, IncrementalTime, Delta_t, Rates)
+            GRVariables[:,:,TIncrement] = self.ExplicitGrowthRemodeling(mesh, material, 
+                    IncrementalTime, Delta_t, Rates)
 
             # PRINT LOG IF ASKED FOR
             self.LogSave(fem_solver, formulation, TotalDisp, TIncrement, material)
@@ -133,7 +137,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                     break
 
 
-        return TotalDisp
+        return TotalDisp,GRVariables
 
     def ExplicitGrowthRemodeling(self, mesh, material, IncrementalTime, Delta_t, Rates):
         """ Routine to get the evolution of Growth and Remodeling parameters
@@ -164,4 +168,4 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             for n in range(6):
                 material.state_variables[node,20] += material.state_variables[node,14+n]/den0_tot
 
-
+        return material.state_variables[:,9:21]

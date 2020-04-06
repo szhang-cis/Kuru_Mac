@@ -416,7 +416,7 @@ class FEMSolver(object):
         post_process.SetFormulation(formulation)
         post_process.SetMaterial(material)
         post_process.SetFEMSolver(self)
-        if material.has_growth_remodeling:
+        if self.has_growth_remodeling:
             post_process.SetGrowthRemodeling(gr_variables)
 
         if self.compute_mesh_qualities and self.is_scaled_jacobian_computed is False:

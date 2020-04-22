@@ -1512,7 +1512,7 @@ static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_mean_volume[] = "mean_volume";
 static const char __pyx_k_nodeperelem[] = "nodeperelem";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
-static const char __pyx_k_FieldVariables[] = "FieldVariables";
+static const char __pyx_k_StateVariables[] = "StateVariables";
 static const char __pyx_k_SpatialGradient[] = "SpatialGradient";
 static const char __pyx_k_ascontiguousarray[] = "ascontiguousarray";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
@@ -1529,7 +1529,6 @@ static const char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte 
 static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not Fortran contiguous";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
-static PyObject *__pyx_n_s_FieldVariables;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
 static PyObject *__pyx_n_s_Growth;
@@ -1537,6 +1536,7 @@ static PyObject *__pyx_n_s_ImportError;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_SpatialGradient;
+static PyObject *__pyx_n_s_StateVariables;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_VolumetricStiffness;
 static PyObject *__pyx_n_s_VolumetricStiffnessIntegrand;
@@ -1573,8 +1573,8 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_int_1;
-static PyObject *__pyx_int_11;
-static PyObject *__pyx_int_22;
+static PyObject *__pyx_int_14;
+static PyObject *__pyx_int_20;
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_slice__3;
 static PyObject *__pyx_slice__5;
@@ -1893,7 +1893,7 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
  *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)
  *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)             # <<<<<<<<<<<<<<
  *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
+ *         density = np.ascontiguousarray(material.StateVariables[:,14])
  */
   __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -1931,8 +1931,8 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
  *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)
  *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
  *     if material.has_growth_remodeling:             # <<<<<<<<<<<<<<
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
+ *         density = np.ascontiguousarray(material.StateVariables[:,14])
+ *         Growth  = np.ascontiguousarray(material.StateVariables[:,20])
  */
   __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_has_growth_remodeling); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -1943,8 +1943,8 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
     /* "_VolumetricStiffness_.pyx":31
  *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
  *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])             # <<<<<<<<<<<<<<
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
+ *         density = np.ascontiguousarray(material.StateVariables[:,14])             # <<<<<<<<<<<<<<
+ *         Growth  = np.ascontiguousarray(material.StateVariables[:,20])
  * 
  */
     __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
@@ -1952,7 +1952,7 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_ascontiguousarray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_FieldVariables); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_StateVariables); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_3 = PyObject_GetItem(__pyx_t_5, __pyx_tuple__4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
@@ -2027,8 +2027,8 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
 
     /* "_VolumetricStiffness_.pyx":32
  *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])             # <<<<<<<<<<<<<<
+ *         density = np.ascontiguousarray(material.StateVariables[:,14])
+ *         Growth  = np.ascontiguousarray(material.StateVariables[:,20])             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,
  */
@@ -2037,7 +2037,7 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
     __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_ascontiguousarray); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_FieldVariables); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_material, __pyx_n_s_StateVariables); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_tuple__6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
@@ -2114,13 +2114,13 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
  *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)
  *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
  *     if material.has_growth_remodeling:             # <<<<<<<<<<<<<<
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
+ *         density = np.ascontiguousarray(material.StateVariables[:,14])
+ *         Growth  = np.ascontiguousarray(material.StateVariables[:,20])
  */
   }
 
   /* "_VolumetricStiffness_.pyx":34
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
+ *         Growth  = np.ascontiguousarray(material.StateVariables[:,20])
  * 
  *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,             # <<<<<<<<<<<<<<
  *         local_size),dtype=np.float64)
@@ -2145,7 +2145,7 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
   __Pyx_GOTREF(__pyx_t_5);
 
   /* "_VolumetricStiffness_.pyx":34
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
+ *         Growth  = np.ascontiguousarray(material.StateVariables[:,20])
  * 
  *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,             # <<<<<<<<<<<<<<
  *         local_size),dtype=np.float64)
@@ -2183,7 +2183,7 @@ static PyObject *__pyx_pf_21_VolumetricStiffness___VolumetricStiffnessIntegrand_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "_VolumetricStiffness_.pyx":34
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
+ *         Growth  = np.ascontiguousarray(material.StateVariables[:,20])
  * 
  *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,             # <<<<<<<<<<<<<<
  *         local_size),dtype=np.float64)
@@ -4888,7 +4888,6 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_n_s_FieldVariables, __pyx_k_FieldVariables, sizeof(__pyx_k_FieldVariables), 0, 0, 1, 1},
   {&__pyx_kp_u_Format_string_allocated_too_shor, __pyx_k_Format_string_allocated_too_shor, sizeof(__pyx_k_Format_string_allocated_too_shor), 0, 1, 0, 0},
   {&__pyx_kp_u_Format_string_allocated_too_shor_2, __pyx_k_Format_string_allocated_too_shor_2, sizeof(__pyx_k_Format_string_allocated_too_shor_2), 0, 1, 0, 0},
   {&__pyx_n_s_Growth, __pyx_k_Growth, sizeof(__pyx_k_Growth), 0, 0, 1, 1},
@@ -4896,6 +4895,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_n_s_SpatialGradient, __pyx_k_SpatialGradient, sizeof(__pyx_k_SpatialGradient), 0, 0, 1, 1},
+  {&__pyx_n_s_StateVariables, __pyx_k_StateVariables, sizeof(__pyx_k_StateVariables), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_n_s_VolumetricStiffness, __pyx_k_VolumetricStiffness, sizeof(__pyx_k_VolumetricStiffness), 0, 0, 1, 1},
   {&__pyx_n_s_VolumetricStiffnessIntegrand, __pyx_k_VolumetricStiffnessIntegrand, sizeof(__pyx_k_VolumetricStiffnessIntegrand), 0, 0, 1, 1},
@@ -4960,7 +4960,7 @@ static int __Pyx_InitCachedConstants(void) {
  *     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)
  *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)             # <<<<<<<<<<<<<<
  *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
+ *         density = np.ascontiguousarray(material.StateVariables[:,14])
  */
   __pyx_tuple__2 = PyTuple_Pack(1, __pyx_int_1); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
@@ -4969,28 +4969,28 @@ static int __Pyx_InitCachedConstants(void) {
   /* "_VolumetricStiffness_.pyx":31
  *     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
  *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])             # <<<<<<<<<<<<<<
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
+ *         density = np.ascontiguousarray(material.StateVariables[:,14])             # <<<<<<<<<<<<<<
+ *         Growth  = np.ascontiguousarray(material.StateVariables[:,20])
  * 
  */
   __pyx_slice__3 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__3)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__3);
   __Pyx_GIVEREF(__pyx_slice__3);
-  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice__3, __pyx_int_11); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice__3, __pyx_int_14); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
   /* "_VolumetricStiffness_.pyx":32
  *     if material.has_growth_remodeling:
- *         density = np.ascontiguousarray(material.FieldVariables[:,11])
- *         Growth  = np.ascontiguousarray(material.FieldVariables[:,22])             # <<<<<<<<<<<<<<
+ *         density = np.ascontiguousarray(material.StateVariables[:,14])
+ *         Growth  = np.ascontiguousarray(material.StateVariables[:,20])             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,
  */
   __pyx_slice__5 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__5)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__5);
   __Pyx_GIVEREF(__pyx_slice__5);
-  __pyx_tuple__6 = PyTuple_Pack(2, __pyx_slice__5, __pyx_int_22); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(2, __pyx_slice__5, __pyx_int_20); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
@@ -5123,8 +5123,8 @@ static int __Pyx_InitCachedConstants(void) {
 static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_11 = PyInt_FromLong(11); if (unlikely(!__pyx_int_11)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_22 = PyInt_FromLong(22); if (unlikely(!__pyx_int_22)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_14 = PyInt_FromLong(14); if (unlikely(!__pyx_int_14)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_20 = PyInt_FromLong(20); if (unlikely(!__pyx_int_20)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;

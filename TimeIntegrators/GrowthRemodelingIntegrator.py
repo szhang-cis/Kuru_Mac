@@ -23,10 +23,11 @@ class GrowthRemodelingIntegrator(object):
     """Base class for structural time integerators
     """
 
-    def __init__(self, gain, turnover, **kwargs):
+    def __init__(self, gain, turnover, density_turnover="self", **kwargs):
         self.HomeostaticStress = None
         self.gain = gain
         self.turnover = turnover
+        self.density_turnover = density_turnover
 
 
     def HomeostaticDistortion(self, fem_solver, formulation, TotalDisp, Increment):
@@ -44,7 +45,7 @@ class GrowthRemodelingIntegrator(object):
             sys.exit("Growth and Remodeling solver stop, distortion in Homeostasis is to big")
 
 
-    def LogSave(self, fem_solver, formulation, TotalDisp, Increment, material):
+    def LogSave(self, fem_solver, formulation, TotalDisp, Increment, material, FibreStress):
 
         if fem_solver.print_incremental_log:
             dmesh = Mesh()
@@ -63,6 +64,9 @@ class GrowthRemodelingIntegrator(object):
                     material.state_variables[0,11],material.state_variables[0,12],\
                     material.state_variables[0,13]))
             print("Growth: {:6.3f}".format(material.state_variables[0,20]))
+            print("FibreStress: {:8.1f}, {:8.1f}, {:8.1f}, {:8.1f}, {:8.1f}".\
+                    format(FibreStress[0,0],FibreStress[0,1],FibreStress[0,2],\
+                    FibreStress[0,3],FibreStress[0,4]))
 
         # SAVE INCREMENTAL SOLUTION IF ASKED FOR
         if fem_solver.save_incremental_solution:
@@ -233,7 +237,7 @@ class GrowthRemodelingIntegrator(object):
                 if material.is_incompressible:
                     MaterialVolume = np.sum(dV)
                     if material.has_growth_remodeling:
-                        dve = np.true_divide(detJ,material.FieldVariables[:,22])
+                        dve = np.true_divide(detJ,material.StateVariables[:,20])
                         CurrentVolume = np.sum(dve)
                     else:
                         CurrentVolume = np.sum(detJ)
@@ -266,7 +270,7 @@ class GrowthRemodelingIntegrator(object):
                     dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
                     MaterialVolume = np.sum(dV)
                     if material.has_growth_remodeling:
-                        dve = np.true_divide(detJ,material.FieldVariables[:,20])
+                        dve = np.true_divide(detJ,material.StateVariables[:,20])
                         CurrentVolume = np.sum(dve)
                     else:
                         CurrentVolume = np.sum(detJ)
@@ -311,17 +315,48 @@ class GrowthRemodelingIntegrator(object):
         if self.HomeostaticStress is None:
             raise ValueError("Homeostatic Stress is not fixed")
 
+        #k_s = np.zeros((),dytpe=)
         k_s = self.gain/self.turnover
         Rates = np.zeros((mesh.nnode,10),dtype=np.float64)
-        for node in range(mesh.nnode):
-            for fibre in range(5):
-                DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[node,fibre]
-                # Fibre density rate
-                Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*DeltaStress/\
-                        self.HomeostaticStress[node,fibre]
-                # Fibre remodeling rate
-                Rates[node,fibre] = (k_s*DeltaStress/self.HomeostaticStress[node,fibre] + \
+        # choose a mode of collagen addition, either self-driven or muscle-driven
+        if self.density_turnover is "self":
+            for node in range(mesh.nnode):
+                for fibre in range(5):
+                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[node,fibre]
+                    # Fibre density rate
+                    Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*\
+                        DeltaStress/self.HomeostaticStress[node,fibre]
+                    # Fibre remodeling rate
+                    Rates[node,fibre] = (Rates[node,fibre+5]/material.state_variables[node,fibre+15] + \
                         1./self.turnover)*DeltaStress*Softness[node,fibre]
+        elif self.density_turnover is "muscle":
+            for node in range(mesh.nnode):
+                for fibre in range(5):
+                    DeltaStress_m = FibreStress[node,0] - self.HomeostaticStress[node,0]
+                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[node,fibre]
+                    # Fibre density rate
+                    Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*\
+                        DeltaStress_m/self.HomeostaticStress[node,0]
+                    # Fibre remodeling rate
+                    Rates[node,fibre] = (Rates[node,fibre+5]/material.state_variables[node,fibre+15] + \
+                        1./self.turnover)*DeltaStress*Softness[node,fibre]
+        elif self.density_turnover is "self_sgn":
+            for node in range(mesh.nnode):
+                for fibre in range(5):
+                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[node,fibre]
+                    if DeltaStress > 0.0:
+                        # Fibre density rate
+                        Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*\
+                            DeltaStress/self.HomeostaticStress[node,fibre]
+                        # Fibre remodeling rate
+                        Rates[node,fibre] = (Rates[node,fibre+5]/material.state_variables[node,fibre+15] + \
+                            1./self.turnover)*DeltaStress*Softness[node,fibre]
+                    else:
+                        # Fibre density rate
+                        Rates[node,fibre+5] = 0.0
+                        # Fibre remodeling rate
+                        Rates[node,fibre] = 0.0
+
 
         return Rates
 

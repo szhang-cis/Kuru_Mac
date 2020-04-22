@@ -28,8 +28,8 @@ def _VolumetricStiffnessIntegrand_(material, np.ndarray[Real, ndim=3, mode='c'] 
     cdef np.ndarray[Real, ndim=1, mode='c'] density   = np.zeros(1,dtype=np.float64)
     cdef np.ndarray[Real, ndim=1, mode='c'] Growth    = np.zeros(1,dtype=np.float64)
     if material.has_growth_remodeling:
-        density = np.ascontiguousarray(material.FieldVariables[:,11])
-        Growth  = np.ascontiguousarray(material.FieldVariables[:,22])
+        density = np.ascontiguousarray(material.StateVariables[:,14])
+        Growth  = np.ascontiguousarray(material.StateVariables[:,20])
 
     cdef np.ndarray[Real, ndim=2, mode='c'] volumetric_stiffness = np.zeros((local_size,
         local_size),dtype=np.float64)

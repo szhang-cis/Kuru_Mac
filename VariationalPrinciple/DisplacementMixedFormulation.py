@@ -44,8 +44,8 @@ class DisplacementMixedFormulation(VariationalPrinciple):
         LagrangeElemCoords = mesh.points[mesh.elements[elem,:],:]
         EulerElemCoords = Eulerx[mesh.elements[elem,:],:]
         # GET FIELD VARIABLES AT ELEMENT LEVEL AND BY GAUSS POINT
-        if material.has_field_variables:
-            material.MappingFieldVariables(mesh,function_space,elem)
+        if material.has_state_variables:
+            material.MappingStateVariables(mesh,function_space,elem)
 
         # COMPUTE THE STIFFNESS MATRIX
         if material.has_low_level_dispatcher:

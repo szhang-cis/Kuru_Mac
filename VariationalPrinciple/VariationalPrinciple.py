@@ -193,10 +193,10 @@ class VariationalPrinciple(object):
                 stiffness = np.einsum('i,j->ij',AverageSpatialGradient,AverageSpatialGradient)
                 MeanVolume = (CurrentVolume-MaterialVolume)/MaterialVolume
             else:
-                dve = np.true_divide(detJ,material.FieldVariables[:,22])
+                dve = np.true_divide(detJ,material.StateVariables[:,20])
                 CurrentElasticVolume = np.sum(dve)
                 # AVERAGE SPATIAL GRADIENT IN PHYSICAL ELEMENT [\frac{1}{v}\int\nabla(N)dv(nodeperelem x ndim)]
-                AverageDeformationv = np.einsum('i,ijk,i->jk',material.FieldVariables[:,11],SpatialGradient,dve)
+                AverageDeformationv = np.einsum('i,ijk,i->jk',material.StateVariables[:,14],SpatialGradient,dve)
                 AverageDeformationv = AverageDeformationv.flatten()
                 AverageDeformationu = np.einsum('ijk,i->jk',SpatialGradient,dve)
                 AverageDeformationu = AverageDeformationu.flatten()

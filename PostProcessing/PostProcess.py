@@ -84,6 +84,184 @@ class PostProcess(object):
     def SetGrowthRemodeling(self,gr_variables):
         self.gr_variables = gr_variables
 
+    def NodeStressRecovery(self, mynode=0, steps=None, average_derived_quantities=True):
+
+        """
+            steps:          [list,np.1darray] for which time steps/increments the data should
+                            be recovered
+        """
+
+        if self.mesh is None:
+            raise ValueError("Mesh not set for post-processing")
+        if self.sol is None:
+            raise ValueError("Solution not set for post-processing")
+        if self.formulation is None:
+            raise ValueError("formulation not set for post-processing")
+        if self.material is None:
+            raise ValueError("material not set for post-processing")
+        if self.fem_solver is None:
+            raise ValueError("FEM solver not set for post-processing")
+
+        if self.sol.shape[1] > self.nvar:
+            return
+
+        det = np.linalg.det
+        inv = np.linalg.inv
+
+        mesh = self.mesh
+        fem_solver = self.fem_solver
+        formulation = self.formulation
+        material = self.material
+
+        # GET THE UNDERLYING LINEAR MESH
+        # lmesh = mesh.GetLinearMesh()
+        C = mesh.InferPolynomialDegree() - 1
+        ndim = mesh.InferSpatialDimension()
+
+        elements = mesh.elements
+        points = mesh.points
+        nelem = elements.shape[0]; npoint = points.shape[0]
+        nodeperelem = elements.shape[1]
+
+        # GET QUADRATURE
+        norder = 2*C
+        if norder == 0:
+            norder=1
+        # quadrature = QuadratureRule(qtype="gauss", norder=norder, mesh_type=mesh.element_type, optimal=3)
+        # Domain = FunctionSpace(mesh, quadrature, p=C+1)
+        Domain = FunctionSpace(mesh, p=C+1, evaluate_at_nodes=True)
+        Jm = Domain.Jm
+        AllGauss = Domain.AllGauss
+        Bases = Domain.Bases
+
+        # requires_geometry_update = fem_solver.requires_geometry_update
+        requires_geometry_update = True # ALWAYS TRUE FOR THIS ROUTINE
+        TotalDisp = self.sol[:,:]
+
+        if hasattr(self,"number_of_time_increments"):
+            TimeIncrement = self.number_of_time_increments
+        else:
+            TimeIncrement = fem_solver.number_of_time_increments
+        increments = range(TimeIncrement)
+        if steps is not None:
+            TimeIncrement = len(steps)
+            increments = steps
+
+        # COMPUTE THE COMMON/NEIGHBOUR NODES ONCE
+        Elss, Poss = mesh.GetNodeCommonality()[:2]
+        Els = Elss[mynode]
+        Pos = Poss[mynode]
+        ncommon_nodes = Els.shape[0]
+
+        F = np.zeros((ncommon_nodes,nodeperelem,ndim,ndim))
+        CauchyStressTensor = np.zeros((ncommon_nodes,nodeperelem,ndim,ndim))
+
+        MainDict = {}
+        MainDict['F'] = np.zeros((TimeIncrement,ndim,ndim))
+        MainDict['CauchyStress'] = np.zeros((TimeIncrement,ndim,ndim))
+
+        if material.has_state_variables:
+            FibreStress = np.zeros((ncommon_nodes,nodeperelem,5))
+            MainDict['FibreStress'] = np.zeros((TimeIncrement,5))
+
+        for incr, Increment in enumerate(increments):
+            if TotalDisp.ndim == 3:
+                Eulerx = points + TotalDisp[:,:ndim,Increment]
+            else:
+                Eulerx = points + TotalDisp[:,:ndim]
+
+            # LOOP OVER ELEMENTS
+            for elem in range(ncommon_nodes):
+                # GET THE FIELDS AT THE ELEMENT LEVEL
+                LagrangeElemCoords = points[elements[Els[elem],:],:]
+                EulerELemCoords = Eulerx[elements[Els[elem],:],:]
+                # GROWTH-REMODELING VALUES FOR THIS ELEMENT
+                if material.has_state_variables:
+                    material.state_variables[:,9:21] = self.gr_variables[:,:,Increment]
+                    material.MappingStateVariables(mesh,Domain,Els[elem])
+
+                if material.has_low_level_dispatcher:
+
+                    # GET LOCAL KINEMATICS
+                    SpatialGradient, F[elem,:,:,:], detJ, dV = _KinematicMeasures_(Jm, AllGauss[:,0],
+                            LagrangeElemCoords, EulerELemCoords, requires_geometry_update)
+                    # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
+                    if material.is_incompressible:
+                        MaterialVolume = np.sum(dV)
+                        if material.has_growth_remodeling:
+                            dve = np.true_divide(detJ,material.StateVariables[:,20])
+                            CurrentVolume = np.sum(dve)
+                        else:
+                            CurrentVolume = np.sum(detJ)
+                        material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
+
+                    # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
+                    CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=Els[elem])
+                    if material.has_state_variables:
+                        FibreStress[elem,:,:], _ = material.LLConstituentStress(F[elem,:,:,:],elem=Els[elem])
+
+                else:
+                    # GAUSS LOOP IN VECTORISED FORM
+                    ParentGradientX = np.einsum('ijk,jl->kil', Jm, LagrangeElemCoords)
+                    # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N)]
+                    MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
+                    # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N)]
+                    F[elem,:,:,:] = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
+                    # COMPUTE REMAINING KINEMATIC MEASURES
+                    StrainTensors = KinematicMeasures(F[elem,:,:,:], fem_solver.analysis_nature)
+
+                    # GEOMETRY UPDATE IS A MUST
+                    # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
+                    ParentGradientx = np.einsum('ijk,jl->kil',Jm,EulerELemCoords)
+                    # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N)]
+                    SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx),Jm)
+                    # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE)
+                    detJ = np.einsum('i,i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)),
+                        np.abs(StrainTensors['J']))
+
+                    # COMPUTE PARAMETERS FOR MEAN DILATATION METHOD, IT NEEDS TO BE BEFORE COMPUTE HESSIAN AND STRESS
+                    if material.is_incompressible:
+                        dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
+                        MaterialVolume = np.sum(dV)
+                        if material.has_growth_remodeling:
+                            dve = np.true_divide(detJ,material.StateVariables[:,20])
+                            CurrentVolume = np.sum(dve)
+                        else:
+                            CurrentVolume = np.sum(detJ)
+                        material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
+
+                    # LOOP OVER GAUSS POINTS
+                    for counter in range(AllGauss.shape[0]):
+
+                        CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,Els[elem],counter)
+                        if material.has_state_variables:
+                            FibreStress[elem,counter,:],_ = material.ConstituentStress(StrainTensors,Els[elem],counter)
+
+
+            if average_derived_quantities:
+                for uelem in range(ncommon_nodes):
+                    MainDict['F'][incr,:,:] += F[uelem,Pos[uelem],:,:]
+                    MainDict['CauchyStress'][incr,:,:] += CauchyStressTensor[uelem,Pos[uelem],:,:]
+                    if material.has_state_variables:
+                        MainDict['FibreStress'][incr,:] += FibreStress[uelem,Pos[uelem],:]
+
+                # AVERAGE OUT
+                MainDict['F'][incr,:,:] /= ncommon_nodes
+                MainDict['CauchyStress'][incr,:,:] /= ncommon_nodes
+                if material.has_state_variables:
+                    MainDict['FibreStress'][incr,:] /= ncommon_nodes
+
+            else:
+                uelem = 0
+                MainDict['F'][incr,:,:] = F[uelem,Pos[uelem],:,:]
+                MainDict['CauchyStress'][incr,:,:] = CauchyStressTensor[uelem,Pos[uelem],:,:]
+                if material.has_state_variables:
+                    MainDict['FibreStress'][incr,:] = FibreStress[uelem,Pos[uelem],:]
+
+
+        self.node_recovered_fields = MainDict
+        return
+
     def StressRecovery(self, steps=None, average_derived_quantities=True):
 
         """
@@ -157,7 +335,7 @@ class PostProcess(object):
         MainDict = {}
         MainDict['F'] = np.zeros((TimeIncrement,npoint,ndim,ndim))
         MainDict['CauchyStress'] = np.zeros((TimeIncrement,npoint,ndim,ndim))
-        
+
         if material.has_state_variables:
             FibreStress = np.zeros((nelem,nodeperelem,5))
             MainDict['FibreStress'] = np.zeros((TimeIncrement,npoint,5))
@@ -174,7 +352,9 @@ class PostProcess(object):
                 LagrangeElemCoords = points[elements[elem,:],:]
                 EulerELemCoords = Eulerx[elements[elem,:],:]
                 # GROWTH-REMODELING VALUES FOR THIS ELEMENT
-                material.MappingStateVariables(mesh,Domain,elem)
+                if material.has_state_variables:
+                    material.state_variables[:,9:21] = self.gr_variables[:,:,Increment]
+                    material.MappingStateVariables(mesh,Domain,elem)
 
                 if material.has_low_level_dispatcher:
 
@@ -185,7 +365,7 @@ class PostProcess(object):
                     if material.is_incompressible:
                         MaterialVolume = np.sum(dV)
                         if material.has_growth_remodeling:
-                            dve = np.true_divide(detJ,material.FieldVariables[:,22])
+                            dve = np.true_divide(detJ,material.StateVariables[:,20])
                             CurrentVolume = np.sum(dve)
                         else:
                             CurrentVolume = np.sum(detJ)
@@ -220,7 +400,7 @@ class PostProcess(object):
                         dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
                         MaterialVolume = np.sum(dV)
                         if material.has_growth_remodeling:
-                            dve = np.true_divide(detJ,material.FieldVariables[:,22])
+                            dve = np.true_divide(detJ,material.StateVariables[:,20])
                             CurrentVolume = np.sum(dve)
                         else:
                             CurrentVolume = np.sum(detJ)
@@ -231,7 +411,7 @@ class PostProcess(object):
 
                         CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
                         if material.has_state_variables:
-                            FibreStress[elem,counter,:],_ = material.ConsituentStress(StrainTensors,elem,counter)
+                            FibreStress[elem,counter,:],_ = material.ConstituentStress(StrainTensors,elem,counter)
 
 
             if average_derived_quantities:
@@ -389,7 +569,7 @@ class PostProcess(object):
             {den_e,den_m,den_ci} the densities and {rem_m,rem_ci} the fibre remodelig
         """
         namer = None
-        if num > 48:
+        if num > 52:
             if print_name:
                 print('Quantity corresponds to ' + str(namer))
             return namer

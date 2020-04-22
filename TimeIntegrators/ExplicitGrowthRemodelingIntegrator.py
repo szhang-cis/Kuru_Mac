@@ -51,9 +51,15 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             # CHECK ADAPTIVE LOAD FACTOR
             if fem_solver.time_factor is not None:
                 TimeFactor = fem_solver.time_factor[TIncrement]
+            Delta_t = TimeFactor
 
+            # COMPUTE THE GROWTH AND REMODELING
             if TIncrement != 0:
-                IncrementalTime += TimeFactor
+                Rates = self.RatesGrowthRemodeling(mesh, material, FibreStress, Softness)
+                GRVariables[:,:,TIncrement] = self.ExplicitGrowthRemodeling(mesh, material, 
+                    IncrementalTime, Delta_t, Rates)
+            else:
+                GRVariables[:,:,0] = material.state_variables[:,9:21]
             IncrementalLoad = 1.0
 
             print("=============================")
@@ -96,21 +102,19 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             #CHECK HOMEOSTATIC DISTORTION
             if TIncrement==0:
                 self.HomeostaticDistortion(fem_solver, formulation, TotalDisp, TIncrement)
-            
-            # COMPUTE THE GROWTH AND REMODELING
+
+            # COMPUTE THE FIBRE-STRESS AND SOFTNESS
             FibreStress, Softness = self.GetFibreStressAndSoftness(mesh, formulation, material,
                     fem_solver, Eulerx)
+            # SET HOMEOSTATIC FIBRE-STRESS
             if TIncrement==0:
                 self.HomeostaticStress = FibreStress
-                Delta_t = 0.0
-            else:
-                Delta_t = TimeFactor
-            Rates = self.RatesGrowthRemodeling(mesh, material, FibreStress, Softness)
-            GRVariables[:,:,TIncrement] = self.ExplicitGrowthRemodeling(mesh, material, 
-                    IncrementalTime, Delta_t, Rates)
 
             # PRINT LOG IF ASKED FOR
-            self.LogSave(fem_solver, formulation, TotalDisp, TIncrement, material)
+            self.LogSave(fem_solver, formulation, TotalDisp, TIncrement, material, FibreStress)
+
+            # UPDATE THE TIME
+            IncrementalTime += TimeFactor
 
             print('\nFinished Time increment', TIncrement, 'in', time()-t_increment, 'seconds')
             try:
@@ -169,3 +173,4 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                 material.state_variables[node,20] += material.state_variables[node,14+n]/den0_tot
 
         return material.state_variables[:,9:21]
+

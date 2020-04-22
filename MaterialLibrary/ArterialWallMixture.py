@@ -119,11 +119,11 @@ class ArterialWallMixture(Material):
                 k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
                 k2 = self.k2c
 
+            # Remodeling stretch in fibre direction
             lambda_r = self.StateVariables[gcounter][fibre_i+8]
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)
-            # Remodeling stretch in fibre direction
             # ELASTIC deformation
             innerFN_e = innerFN/lambda_r**2
             outerFN_e = outerFN/lambda_r**2
@@ -257,12 +257,12 @@ class ArterialWallMixture(Material):
                 k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
                 k2 = self.k2c
 
+            # Remodeling along the fibre
             lambda_r = self.StateVariables[gcounter][8+fibre_i]
+            if np.isclose(lambda_r,0.0): exit('Remodeling in fibre is zero at element: '+str(elem))
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)
-            # Remodeling along the fibre
-            if np.isclose(lambda_r,0.0): exit('Remodeling in fibre is zero at element: '+str(elem))
             # Elastic deformation
             innerFN_e = innerFN/lambda_r**2
             outerFN_e = outerFN/lambda_r**2

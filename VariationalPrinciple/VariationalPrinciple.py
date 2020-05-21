@@ -185,7 +185,7 @@ class VariationalPrinciple(object):
             stiffness, MeanVolume = _VolumetricStiffnessIntegrand_(material, SpatialGradient, detJ, dV, self.nvar)
         else:
             MaterialVolume = np.sum(dV)
-            if material.has_growth_remodeling is False:
+            if material.has_state_variables is False:
                 CurrentVolume = np.sum(detJ)
                 # AVERAGE SPATIAL GRADIENT IN PHYSICAL ELEMENT [\frac{1}{v}\int\nabla(N)dv(nodeperelem x ndim)]
                 AverageSpatialGradient = np.einsum('ijk,i->jk',SpatialGradient,detJ)

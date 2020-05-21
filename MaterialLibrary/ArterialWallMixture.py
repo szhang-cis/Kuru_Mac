@@ -34,11 +34,10 @@ class ArterialWallMixture(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        self.has_low_level_dispatcher = True
-        #self.has_low_level_dispatcher = False
+        #self.has_low_level_dispatcher = True
+        self.has_low_level_dispatcher = False
 
         # FIELD VARIABLES AS GROWTH_&_REMODELING AND/OR DEPOSITION STRETCHES, ETC
-        self.has_growth_remodeling = True
         self.has_state_variables = True
 
     def KineticMeasures(self,F, elem=0):

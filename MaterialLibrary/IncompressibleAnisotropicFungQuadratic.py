@@ -32,8 +32,8 @@ class IncompressibleAnisotropicFungQuadratic(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        self.has_low_level_dispatcher = True
-        #self.has_low_level_dispatcher = False
+        #self.has_low_level_dispatcher = True
+        self.has_low_level_dispatcher = False
 
     def KineticMeasures(self,F, elem=0):
         N = self.anisotropic_orientations[elem,:,:]

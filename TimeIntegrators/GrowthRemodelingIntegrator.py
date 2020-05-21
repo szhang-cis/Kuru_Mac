@@ -45,7 +45,7 @@ class GrowthRemodelingIntegrator(object):
             sys.exit("Growth and Remodeling solver stop, distortion in Homeostasis is to big")
 
 
-    def LogSave(self, fem_solver, formulation, TotalDisp, Increment, material, FibreStress):
+    def LogSave(self, fem_solver, formulation, TotalDisp, Increment, materials, FibreStress):
 
         if fem_solver.print_incremental_log:
             dmesh = Mesh()
@@ -56,17 +56,17 @@ class GrowthRemodelingIntegrator(object):
 
             print("\nGrowth and Remodeling properties at central node,")
             print("Densities: {:8.3f}, {:8.3f}, {:8.3f}, {:8.3f}, {:8.3f}, {:8.3f}".\
-                    format(material.state_variables[0,14],material.state_variables[0,15],\
-                    material.state_variables[0,16],material.state_variables[0,17],\
-                    material.state_variables[0,18],material.state_variables[0,19]))
+                    format(materials[0].state_variables[0,14],materials[0].state_variables[0,15],\
+                    materials[0].state_variables[0,16],materials[0].state_variables[0,17],\
+                    materials[0].state_variables[0,18],materials[0].state_variables[0,19]))
             print("Remodeling: {:6.3f}, {:6.3f}, {:6.3f}, {:6.3f}, {:6.3f}".\
-                    format(material.state_variables[0,9],material.state_variables[0,10],\
-                    material.state_variables[0,11],material.state_variables[0,12],\
-                    material.state_variables[0,13]))
-            print("Growth: {:6.3f}".format(material.state_variables[0,20]))
+                    format(materials[0].state_variables[0,9],materials[0].state_variables[0,10],\
+                    materials[0].state_variables[0,11],materials[0].state_variables[0,12],\
+                    materials[0].state_variables[0,13]))
+            print("Growth: {:6.3f}".format(materials[0].state_variables[0,20]))
             print("FibreStress: {:8.1f}, {:8.1f}, {:8.1f}, {:8.1f}, {:8.1f}".\
-                    format(FibreStress[0,0],FibreStress[0,1],FibreStress[0,2],\
-                    FibreStress[0,3],FibreStress[0,4]))
+                    format(FibreStress[0][0,0],FibreStress[0][0,1],FibreStress[0][0,2],\
+                    FibreStress[0][0,3],FibreStress[0][0,4]))
 
         # SAVE INCREMENTAL SOLUTION IF ASKED FOR
         if fem_solver.save_incremental_solution:
@@ -84,7 +84,7 @@ class GrowthRemodelingIntegrator(object):
                 raise ValueError("No file name provided to save incremental solution")
 
     def NewtonRaphson(self, function_spaces, formulation, solver, Increment, K, NodalForces, 
-            Residual, mesh, Eulerx, material, boundary_condition, AppliedDirichletInc, fem_solver):
+            Residual, mesh, Eulerx, materials, boundary_condition, AppliedDirichletInc, fem_solver):
 
         Tolerance = fem_solver.newton_raphson_tolerance
         LoadIncrement = fem_solver.number_of_load_increments
@@ -112,7 +112,7 @@ class GrowthRemodelingIntegrator(object):
             Eulerx += dU[:,:formulation.ndim]
 
             # RE-ASSEMBLE - COMPUTE STIFFNESS AND INTERNAL TRACTION FORCES
-            K, TractionForces = Assemble(fem_solver, function_spaces, formulation, mesh, material, 
+            K, TractionForces = Assemble(fem_solver, function_spaces, formulation, mesh, materials,
                     boundary_condition, Eulerx)[:2]
 
             # FIND THE RESIDUAL
@@ -188,10 +188,8 @@ class GrowthRemodelingIntegrator(object):
         C = mesh.InferPolynomialDegree() - 1
         ndim = mesh.InferSpatialDimension()
 
-        elements = mesh.elements
-        points = mesh.points
-        nelem = elements.shape[0]; npoint = points.shape[0]
-        nodeperelem = elements.shape[1]
+        nelem = mesh.elements.shape[0]; npoint = mesh.points.shape[0]
+        nodeperelem = mesh.elements.shape[1]
 
         # GET QUADRATURE
         norder = 2*C
@@ -207,36 +205,31 @@ class GrowthRemodelingIntegrator(object):
         # requires_geometry_update = fem_solver.requires_geometry_update
         requires_geometry_update = True # ALWAYS TRUE FOR THIS ROUTINE
 
-        # COMPUTE THE COMMON/NEIGHBOUR NODES ONCE
-        all_nodes = np.unique(elements)
-        Elss, Poss = mesh.GetNodeCommonality()[:2]
-
-        F = np.zeros((nelem,nodeperelem,ndim,ndim))
-        StressTensor = np.zeros((nelem,nodeperelem,ndim,ndim))
+        F = np.zeros((material.element_set.shape[0],nodeperelem,ndim,ndim))
         # DEFINE CONSTITUENT STRESSES FOR GROWTH-REMODELING PROBLEM
-        FibreStress = np.zeros((nelem,nodeperelem,5))  # 5-fibres
-        Softness = np.zeros((nelem,nodeperelem,5))  # 5-fibres
+        ElemFibreStress = np.zeros((material.element_set.shape[0],nodeperelem,5))  # 5-fibres
+        ElemSoftness = np.zeros((material.element_set.shape[0],nodeperelem,5))  # 5-fibres
 
-        MainDict = {}
-        MainDict['FibreStress'] = np.zeros((npoint,5))
-        MainDict['Softness'] = np.zeros((npoint,5))
+        FibreStress = np.zeros((material.node_set.shape[0],5))
+        Softness = np.zeros((material.node_set.shape[0],5))
 
         # LOOP OVER ELEMENTS
-        for elem in range(nelem):
+        for ielem in range(material.element_set.shape[0]):
+            elem = material.element_set[ielem]
             # GET THE FIELDS AT THE ELEMENT LEVEL
-            LagrangeElemCoords = points[elements[elem,:],:]
-            EulerELemCoords = Eulerx[elements[elem,:],:]
+            LagrangeElemCoords = mesh.points[mesh.elements[elem,:],:]
+            EulerElemCoords = Eulerx[mesh.elements[elem,:],:]
             # GROWTH-REMODELING VALUES FOR THIS ELEMENT
             material.MappingStateVariables(mesh,Domain,elem)
 
             if material.has_low_level_dispatcher:
                 # GET LOCAL KINEMATICS
-                SpatialGradient, F[elem,:,:,:], detJ, dV = _KinematicMeasures_(Jm, AllGauss[:,0],
-                        LagrangeElemCoords, EulerELemCoords, requires_geometry_update)
+                SpatialGradient, F[ielem,:,:,:], detJ, dV = _KinematicMeasures_(Jm, AllGauss[:,0],
+                        LagrangeElemCoords, EulerElemCoords, requires_geometry_update)
                 # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
                 if material.is_incompressible:
                     MaterialVolume = np.sum(dV)
-                    if material.has_growth_remodeling:
+                    if fem_solver.has_growth_remodeling:
                         dve = np.true_divide(detJ,material.StateVariables[:,20])
                         CurrentVolume = np.sum(dve)
                     else:
@@ -244,7 +237,7 @@ class GrowthRemodelingIntegrator(object):
                     material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
                 # COMPUTE FIBRE STRESS AND SOFTNESS
-                FibreStress[elem,:,:],Softness[elem,:,:] = material.LLConstituentStress(F[elem,:,:,:],elem)
+                FibreStress[ielem,:,:],Softness[ielem,:,:] = material.LLConstituentStress(F[ielem,:,:,:],elem)
 
             else:
                 # GAUSS LOOP IN VECTORISED FORM
@@ -252,13 +245,13 @@ class GrowthRemodelingIntegrator(object):
                 # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N)]
                 MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
                 # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N)]
-                F[elem,:,:,:] = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
+                F[ielem,:,:,:] = np.einsum('ij,kli->kjl', EulerElemCoords, MaterialGradient)
                 # COMPUTE REMAINING KINEMATIC MEASURES
-                StrainTensors = KinematicMeasures(F[elem,:,:,:], fem_solver.analysis_nature)
+                StrainTensors = KinematicMeasures(F[ielem,:,:,:], fem_solver.analysis_nature)
 
                 # GEOMETRY UPDATE IS A MUST
                 # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
-                ParentGradientx = np.einsum('ijk,jl->kil',Jm,EulerELemCoords)
+                ParentGradientx = np.einsum('ijk,jl->kil',Jm,EulerElemCoords)
                 # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N)]
                 SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx),Jm)
                 # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE)
@@ -269,7 +262,7 @@ class GrowthRemodelingIntegrator(object):
                 if material.is_incompressible:
                     dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
                     MaterialVolume = np.sum(dV)
-                    if material.has_growth_remodeling:
+                    if fem_solver.has_growth_remodeling:
                         dve = np.true_divide(detJ,material.StateVariables[:,20])
                         CurrentVolume = np.sum(dve)
                     else:
@@ -279,36 +272,27 @@ class GrowthRemodelingIntegrator(object):
                 # LOOP OVER GAUSS POINTS
                 for counter in range(AllGauss.shape[0]):
                     # COMPUTE FIBRE STRESS AND SOFTNESS
-                    FibreStress[elem,counter,:],Softness[elem,counter,:] = material.ConstituentStress(
+                    ElemFibreStress[ielem,counter,:],ElemSoftness[ielem,counter,:] = material.ConstituentStress(
                         StrainTensors,elem,counter)
 
 
-        if average_derived_quantities:
-            for inode in all_nodes:
-                # Els, Pos = np.where(elements==inode)
-                Els, Pos = Elss[inode], Poss[inode]
-                ncommon_nodes = Els.shape[0]
-                for uelem in range(ncommon_nodes):
-                    MainDict['FibreStress'][inode,:] += FibreStress[Els[uelem],Pos[uelem],:]
-                    MainDict['Softness'][inode,:] += Softness[Els[uelem],Pos[uelem],:]
+        # COMPUTE THE COMMON/NEIGHBOUR NODES ONCE
+        Elss, Poss = material.GetNodeCommonality()[:2]
+        for inode in range(material.node_set.shape[0]):
+            Els, Pos = Elss[inode], Poss[inode]
+            ncommon_nodes = Els.shape[0]
+            for uelem in range(ncommon_nodes):
+                FibreStress[inode,:] += ElemFibreStress[Els[uelem],Pos[uelem],:]
+                Softness[inode,:] += ElemSoftness[Els[uelem],Pos[uelem],:]
 
-                # AVERAGE OUT
-                MainDict['FibreStress'][inode,:] /= ncommon_nodes
-                MainDict['Softness'][inode,:] /= ncommon_nodes
-
-        else:
-            for inode in all_nodes:
-                # Els, Pos = np.where(elements==inode)
-                Els, Pos = Elss[inode], Poss[inode]
-                ncommon_nodes = Els.shape[0]
-                uelem = 0
-                MainDict['FibreStress'][inode,:] = FibreStress[Els[uelem],Pos[uelem],:]
-                MainDict['Softness'][inode,:] = Softness[Els[uelem],Pos[uelem],:]
+            # AVERAGE OUT
+            FibreStress[inode,:] /= ncommon_nodes
+            Softness[inode,:] /= ncommon_nodes
 
 
-        return MainDict['FibreStress'],MainDict['Softness']
+        return FibreStress,Softness
 
-    def RatesGrowthRemodeling(self, mesh, material, FibreStress, Softness):
+    def RatesGrowthRemodeling(self, mesh, material, FibreStress, Softness, imat=0):
         """ This are the rates of Growth and Rmodeling
         """
 
@@ -317,37 +301,37 @@ class GrowthRemodelingIntegrator(object):
 
         #k_s = np.zeros((),dytpe=)
         k_s = self.gain/self.turnover
-        Rates = np.zeros((mesh.nnode,10),dtype=np.float64)
+        Rates = np.zeros((material.node_set.shape[0],10),dtype=np.float64)
         # choose a mode of collagen addition, either self-driven or muscle-driven
         if self.density_turnover is "self":
-            for node in range(mesh.nnode):
+            for node in range(material.node_set.shape[0]):
                 for fibre in range(5):
-                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[node,fibre]
+                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[imat][node,fibre]
                     # Fibre density rate
                     Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*\
-                        DeltaStress/self.HomeostaticStress[node,fibre]
+                        DeltaStress/self.HomeostaticStress[imat][node,fibre]
                     # Fibre remodeling rate
                     Rates[node,fibre] = (Rates[node,fibre+5]/material.state_variables[node,fibre+15] + \
                         1./self.turnover)*DeltaStress*Softness[node,fibre]
         elif self.density_turnover is "muscle":
-            for node in range(mesh.nnode):
+            for node in range(material.node_set.shape[0]):
                 for fibre in range(5):
-                    DeltaStress_m = FibreStress[node,0] - self.HomeostaticStress[node,0]
-                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[node,fibre]
+                    DeltaStress_m = FibreStress[node,0] - self.HomeostaticStress[imat][node,0]
+                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[imat][node,fibre]
                     # Fibre density rate
                     Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*\
-                        DeltaStress_m/self.HomeostaticStress[node,0]
+                        DeltaStress_m/self.HomeostaticStress[imat][node,0]
                     # Fibre remodeling rate
                     Rates[node,fibre] = (Rates[node,fibre+5]/material.state_variables[node,fibre+15] + \
                         1./self.turnover)*DeltaStress*Softness[node,fibre]
         elif self.density_turnover is "self_sgn":
-            for node in range(mesh.nnode):
+            for node in range(material.node_set.shape[0]):
                 for fibre in range(5):
-                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[node,fibre]
+                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[imat][node,fibre]
                     if DeltaStress > 0.0:
                         # Fibre density rate
                         Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*\
-                            DeltaStress/self.HomeostaticStress[node,fibre]
+                            DeltaStress/self.HomeostaticStress[imat][node,fibre]
                         # Fibre remodeling rate
                         Rates[node,fibre] = (Rates[node,fibre+5]/material.state_variables[node,fibre+15] + \
                             1./self.turnover)*DeltaStress*Softness[node,fibre]

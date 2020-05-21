@@ -902,7 +902,7 @@ class Mesh(object):
                     elem_blocks, self.nelem = int(plist[0]), int(plist[1])
                     break
 
-        points, elements, faces, face_to_surface, edges, curve = [], [], [], [], [], []
+        points, elements, element_to_set, faces, face_to_surface, edges, curve = [], [], [], [], [], [], []
         if msh_version == 2:
             # RE-READ
             ns = self.InferNumberOfNodesPerElement(p=1,element_type=element_type)
@@ -920,6 +920,7 @@ class Mesh(object):
                     if line_counter > rem_nelem and line_counter < self.nelem+rem_nelem+1:
                         if int(plist[1]) == el:
                             elements.append([int(i) for i in plist[-ns:]])
+                            element_to_set.append(int(plist[4]))
                         # READ SURFACE INFO - CERTAINLY ONLY IF SURFACE ELEMENT TYPE IS QUADS/TRIS
                         if read_surface_info:
                             if int(plist[1]) == bel:
@@ -1033,8 +1034,13 @@ class Mesh(object):
                 if self.edge_to_curve.shape[0]==0:
                     self.edge_to_curve = None
 
+        # SET OF SETS TO EACH ELEMENTS
+        element_to_set = np.array(element_to_set, dtype=np.int64, copy=True).flatten()
+        element_to_set -= 1
+        self.element_to_set = element_to_set
 
         return
+
 
     def ChangeType(self):
         """Change mesh data type from signed to unsigned"""
@@ -1282,7 +1288,6 @@ class Mesh(object):
         elif ndim==3:
             if self.element_type == "tet" or self.element_type == "hex":
                 assert self.faces is not None
-
 
         if self.IsHighOrder is False:
             if solution is not None:

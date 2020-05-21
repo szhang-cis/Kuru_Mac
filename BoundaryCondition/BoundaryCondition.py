@@ -156,7 +156,7 @@ class BoundaryCondition(object):
             self.applied_pressure = tups[1]
             return tups
 
-    def GetDirichletBoundaryConditions(self, formulation, mesh, material=None, solver=None, fem_solver=None):
+    def GetDirichletBoundaryConditions(self, formulation, mesh, materials=None, solver=None, fem_solver=None):
 
         nvar = formulation.nvar
         ndim = formulation.ndim
@@ -175,7 +175,7 @@ class BoundaryCondition(object):
                     # GET DIRICHLET BOUNDARY CONDITIONS BASED ON THE EXACT GEOMETRY FROM CAD
                     if self.requires_cad:
                         # CALL POSTMESH WRAPPER
-                        nodesDBC, Dirichlet = self.PostMeshWrapper(formulation, mesh, material, solver, fem_solver)
+                        nodesDBC, Dirichlet = self.PostMeshWrapper(formulation, mesh, materials, solver, fem_solver)
                 else:
                     nodesDBC, Dirichlet = self.nodesDBC, self.Dirichlet
 
@@ -263,13 +263,14 @@ class BoundaryCondition(object):
                 'applied_dirichlet':self.applied_dirichlet}
             savemat(self.filename,diri_dict, do_compression=True)
 
-    def ComputeNeumannForces(self, mesh, material, function_spaces, compute_traction_forces=True, compute_body_forces=False):
+
+    def ComputeNeumannForces(self, mesh, materials, function_spaces, compute_traction_forces=True, compute_body_forces=False):
         """Compute/assemble traction and body forces"""
 
         if self.neumann_flags is None:
-            return np.zeros((mesh.points.shape[0]*material.nvar,1),dtype=np.float64)
+            return np.zeros((mesh.points.shape[0]*materials[0].nvar,1),dtype=np.float64)
 
-        nvar = material.nvar
+        nvar = materials[0].nvar
         ndim = mesh.InferSpatialDimension()
 
         if self.neumann_flags.shape[0] == mesh.points.shape[0]:
@@ -310,7 +311,7 @@ class BoundaryCondition(object):
 
             t_tassembly = time()
             if self.analysis_type == "static":
-                F = AssembleForces(self, mesh, material, function_spaces,
+                F = AssembleForces(self, mesh, materials, function_spaces,
                     compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces)
             elif self.analysis_type == "dynamic":
                 if self.neumann_flags.ndim==2:
@@ -321,14 +322,14 @@ class BoundaryCondition(object):
                     for step in range(self.neumann_flags.shape[1]):
                         self.neumann_flags = tmp_flags[:,step]
                         self.applied_neumann = tmp_data[:,:,step]
-                        F[:,step] = AssembleForces(self, mesh, material, function_spaces,
+                        F[:,step] = AssembleForces(self, mesh, materials, function_spaces,
                             compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
 
                     self.neumann_flags = tmp_flags
                     self.applied_neumann = tmp_data
                 else:
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY
-                    F = AssembleForces(self, mesh, material, function_spaces,
+                    F = AssembleForces(self, mesh, materials, function_spaces,
                             compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
 
             print("Assembled external traction forces. Time elapsed is {} seconds".format(time()-t_tassembly))

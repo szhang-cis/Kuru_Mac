@@ -75,8 +75,8 @@ class PostProcess(object):
     def SetFormulation(self,formulation):
         self.formulation = formulation
 
-    def SetMaterial(self,material):
-        self.material = material
+    def SetMaterial(self,materials):
+        self.materials = materials
 
     def SetFEMSolver(self,fem_solver):
         self.fem_solver = fem_solver
@@ -275,8 +275,8 @@ class PostProcess(object):
             raise ValueError("Solution not set for post-processing")
         if self.formulation is None:
             raise ValueError("formulation not set for post-processing")
-        if self.material is None:
-            raise ValueError("material not set for post-processing")
+        if self.materials is None:
+            raise ValueError("materials not set for post-processing")
         if self.fem_solver is None:
             raise ValueError("FEM solver not set for post-processing")
 
@@ -289,7 +289,7 @@ class PostProcess(object):
         mesh = self.mesh
         fem_solver = self.fem_solver
         formulation = self.formulation
-        material = self.material
+        materials = self.materials
 
         # GET THE UNDERLYING LINEAR MESH
         # lmesh = mesh.GetLinearMesh()
@@ -329,118 +329,133 @@ class PostProcess(object):
         all_nodes = np.unique(elements)
         Elss, Poss = mesh.GetNodeCommonality()[:2]
 
-        F = np.zeros((nelem,nodeperelem,ndim,ndim))
-        CauchyStressTensor = np.zeros((nelem,nodeperelem,ndim,ndim))
-
         MainDict = {}
         MainDict['F'] = np.zeros((TimeIncrement,npoint,ndim,ndim))
-        MainDict['CauchyStress'] = np.zeros((TimeIncrement,npoint,ndim,ndim))
-
-        if material.has_state_variables:
-            FibreStress = np.zeros((nelem,nodeperelem,5))
-            MainDict['FibreStress'] = np.zeros((TimeIncrement,npoint,5))
+        MainDict['CauchyStress'] = [[] for i in range(len(materials))]
+        MainDict['FibreStress'] = [[] for i in range(len(materials))]
+        for imat in range(len(materials)):
+            materials[imat].ConectivityOfMaterial(mesh)
+            Elsm, Posm = materials[imat].GetNodeCommonality()[:2]
+            MainDict['CauchyStress'][imat] = np.zeros((TimeIncrement,materials[imat].node_set.shape[0],ndim,ndim))
+            if self.gr_variables is not None:
+                MainDict['FibreStress'][imat] = np.zeros((TimeIncrement,materials[imat].node_set.shape[0],5))
 
         for incr, Increment in enumerate(increments):
+
             if TotalDisp.ndim == 3:
                 Eulerx = points + TotalDisp[:,:ndim,Increment]
             else:
                 Eulerx = points + TotalDisp[:,:ndim]
 
-            # LOOP OVER ELEMENTS
-            for elem in range(nelem):
-                # GET THE FIELDS AT THE ELEMENT LEVEL
-                LagrangeElemCoords = points[elements[elem,:],:]
-                EulerELemCoords = Eulerx[elements[elem,:],:]
-                # GROWTH-REMODELING VALUES FOR THIS ELEMENT
-                if material.has_state_variables:
-                    material.state_variables[:,9:21] = self.gr_variables[:,:,Increment]
-                    material.MappingStateVariables(mesh,Domain,elem)
+            F = np.zeros((nelem,nodeperelem,ndim,ndim))
 
-                if material.has_low_level_dispatcher:
-
-                    # GET LOCAL KINEMATICS
-                    SpatialGradient, F[elem,:,:,:], detJ, dV = _KinematicMeasures_(Jm, AllGauss[:,0],
-                            LagrangeElemCoords, EulerELemCoords, requires_geometry_update)
-                    # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
-                    if material.is_incompressible:
-                        MaterialVolume = np.sum(dV)
-                        if material.has_growth_remodeling:
-                            dve = np.true_divide(detJ,material.StateVariables[:,20])
-                            CurrentVolume = np.sum(dve)
-                        else:
-                            CurrentVolume = np.sum(detJ)
-                        material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
-
-                    # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
-                    CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
+            for imat in range(len(materials)):
+                material = materials[imat]
+                CauchyStress = np.zeros((material.element_set.shape[0],nodeperelem,ndim,ndim))
+                if self.gr_variables is not None:
+                    FibreStress = np.zeros((material.element_set.shape[0],nodeperelem,5))
+                # LOOP OVER ELEMENTS
+                for ielem in range(material.element_set.shape[0]):
+                    elem = material.element_set[ielem]
+                    # GET THE FIELDS AT THE ELEMENT LEVEL
+                    LagrangeElemCoords = points[elements[elem,:],:]
+                    EulerELemCoords = Eulerx[elements[elem,:],:]
+                    # GROWTH-REMODELING VALUES FOR THIS ELEMENT
                     if material.has_state_variables:
-                        FibreStress[elem,:,:], _ = material.LLConstituentStress(F[elem,:,:,:],elem=elem)
+                        material.state_variables[:,9:21] = self.gr_variables[imat][:,:,Increment]
+                        material.MappingStateVariables(mesh,Domain,elem)
 
-                else:
-                    # GAUSS LOOP IN VECTORISED FORM
-                    ParentGradientX = np.einsum('ijk,jl->kil', Jm, LagrangeElemCoords)
-                    # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N)]
-                    MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
-                    # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N)]
-                    F[elem,:,:,:] = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
-                    # COMPUTE REMAINING KINEMATIC MEASURES
-                    StrainTensors = KinematicMeasures(F[elem,:,:,:], fem_solver.analysis_nature)
+                    if material.has_low_level_dispatcher:
 
-                    # GEOMETRY UPDATE IS A MUST
-                    # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
-                    ParentGradientx = np.einsum('ijk,jl->kil',Jm,EulerELemCoords)
-                    # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N)]
-                    SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx),Jm)
-                    # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE)
-                    detJ = np.einsum('i,i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)),
-                        np.abs(StrainTensors['J']))
+                        # GET LOCAL KINEMATICS
+                        SpatialGradient, F[elem,:,:,:], detJ, dV = _KinematicMeasures_(Jm, AllGauss[:,0],
+                                LagrangeElemCoords, EulerELemCoords, requires_geometry_update)
+                        # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
+                        if material.is_incompressible:
+                            MaterialVolume = np.sum(dV)
+                            if material.has_growth_remodeling:
+                                dve = np.true_divide(detJ,material.StateVariables[:,20])
+                                CurrentVolume = np.sum(dve)
+                            else:
+                                CurrentVolume = np.sum(detJ)
+                            material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
-                    # COMPUTE PARAMETERS FOR MEAN DILATATION METHOD, IT NEEDS TO BE BEFORE COMPUTE HESSIAN AND STRESS
-                    if material.is_incompressible:
-                        dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
-                        MaterialVolume = np.sum(dV)
-                        if material.has_growth_remodeling:
-                            dve = np.true_divide(detJ,material.StateVariables[:,20])
-                            CurrentVolume = np.sum(dve)
-                        else:
-                            CurrentVolume = np.sum(detJ)
-                        material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
-
-                    # LOOP OVER GAUSS POINTS
-                    for counter in range(AllGauss.shape[0]):
-
-                        CauchyStressTensor[elem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
+                        # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
+                        CauchyStress[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
                         if material.has_state_variables:
-                            FibreStress[elem,counter,:],_ = material.ConstituentStress(StrainTensors,elem,counter)
+                            FibreStress[elem,:,:], _ = material.LLConstituentStress(F[elem,:,:,:],elem=elem)
 
+                    else:
+                        # GAUSS LOOP IN VECTORISED FORM
+                        ParentGradientX = np.einsum('ijk,jl->kil', Jm, LagrangeElemCoords)
+                        # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N)]
+                        MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
+                        # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N)]
+                        F[elem,:,:,:] = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
+                        # COMPUTE REMAINING KINEMATIC MEASURES
+                        StrainTensors = KinematicMeasures(F[elem,:,:,:], fem_solver.analysis_nature)
+
+                        # GEOMETRY UPDATE IS A MUST
+                        # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
+                        ParentGradientx = np.einsum('ijk,jl->kil',Jm,EulerELemCoords)
+                        # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N)]
+                        SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx),Jm)
+                        # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE)
+                        detJ = np.einsum('i,i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)),
+                            np.abs(StrainTensors['J']))
+
+                        # COMPUTE PARAMETERS FOR MEAN DILATATION METHOD, IT NEEDS TO BE BEFORE COMPUTE HESSIAN AND STRESS
+                        if material.is_incompressible:
+                            dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
+                            MaterialVolume = np.sum(dV)
+                            if material.has_growth_remodeling:
+                                dve = np.true_divide(detJ,material.StateVariables[:,20])
+                                CurrentVolume = np.sum(dve)
+                            else:
+                                CurrentVolume = np.sum(detJ)
+                            material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
+
+                        # LOOP OVER GAUSS POINTS
+                        for counter in range(AllGauss.shape[0]):
+                            CauchyStress[ielem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
+                            if self.gr_variables is not None:
+                                FibreStress[ielem,counter,:],_ = material.ConstituentStress(StrainTensors,elem,counter)
+
+                if average_derived_quantities:
+                    for inode in range(material.node_set.shape[0]):
+                        Els, Pos = Elsm[inode], Posm[inode]
+                        ncommon_nodes = Els.shape[0]
+                        for uelem in range(ncommon_nodes):
+                            MainDict['CauchyStress'][imat][incr,inode,:,:] += CauchyStress[Els[uelem],Pos[uelem],:,:]
+                            if self.gr_variables is not None:
+                                MainDict['FibreStress'][imat][incr,inode,:] += FibreStress[Els[uelem],Pos[uelem],:]
+                        # AVERAGE OUT
+                        MainDict['CauchyStress'][imat][incr,inode,:,:] /= ncommon_nodes
+                        if self.gr_variables is not None:
+                            MainDict['FibreStress'][imat][incr,inode,:] /= ncommon_nodes
+                else:
+                    for inode in all_nodes:
+                        Els, Pos = Elsm[inode], Posm[inode]
+                        ncommon_nodes = Els.shape[0]
+                        uelem = 0
+                        MainDict['CauchyStress'][imat][incr,inode,:,:] = CauchyStress[Els[uelem],Pos[uelem],:,:]
+                        if self.gr_variables is not None:
+                            MainDict['FibreStress'][imat][incr,inode,:] = FibreStress[Els[uelem],Pos[uelem],:]
 
             if average_derived_quantities:
                 for inode in all_nodes:
-                    # Els, Pos = np.where(elements==inode)
                     Els, Pos = Elss[inode], Poss[inode]
                     ncommon_nodes = Els.shape[0]
                     for uelem in range(ncommon_nodes):
                         MainDict['F'][incr,inode,:,:] += F[Els[uelem],Pos[uelem],:,:]
-                        MainDict['CauchyStress'][incr,inode,:,:] += CauchyStressTensor[Els[uelem],Pos[uelem],:,:]
-                        if material.has_state_variables:
-                            MainDict['FibreStress'][incr,inode,:] += FibreStress[Els[uelem],Pos[uelem],:]
-
                     # AVERAGE OUT
                     MainDict['F'][incr,inode,:,:] /= ncommon_nodes
-                    MainDict['CauchyStress'][incr,inode,:,:] /= ncommon_nodes
-                    if material.has_state_variables:
-                        MainDict['FibreStress'][incr,inode,:] /= ncommon_nodes
-
             else:
                 for inode in all_nodes:
-                    # Els, Pos = np.where(elements==inode)
                     Els, Pos = Elss[inode], Poss[inode]
                     ncommon_nodes = Els.shape[0]
                     uelem = 0
                     MainDict['F'][incr,inode,:,:] = F[Els[uelem],Pos[uelem],:,:]
-                    MainDict['CauchyStress'][incr,inode,:,:] = CauchyStressTensor[Els[uelem],Pos[uelem],:,:]
-                    if material.has_state_variables:
-                        MainDict['FibreStress'][incr,inode,:] = FibreStress[Els[uelem],Pos[uelem],:]
 
 
         self.recovered_fields = MainDict
@@ -588,16 +603,16 @@ class PostProcess(object):
             if counter > line_number+1 and counter < line_number+110:
                 spl = list(filter(None, line.split(" ")))
                 if spl[0] == str(num):
-                    if self.nvar == 2 and self.ndim==2 and self.material.has_state_variables is False:
+                    if self.nvar == 2 and self.ndim==2 and self.gr_variables is None:
                         namer = spl[-4]
-                    elif self.nvar == 2 and self.ndim==2 and self.material.has_state_variables is True:
+                    elif self.nvar == 2 and self.ndim==2 and self.gr_variables is not None:
                         namer = spl[-2]
-                    elif self.nvar == 3 and self.ndim==3 and self.material.has_state_variables is False:
+                    elif self.nvar == 3 and self.ndim==3 and self.gr_variables is None:
                         namer = spl[-3]
-                    elif self.nvar == 3 and self.ndim==3 and self.material.has_state_variables is True:
+                    elif self.nvar == 3 and self.ndim==3 and self.gr_variables is not None:
                         namer = spl[-1]
                     break
-               
+
 
         if print_name:
             print('Quantity corresponds to ' + str(namer))
@@ -714,131 +729,143 @@ class PostProcess(object):
                 if increments != self.fem_solver.number_of_time_increments:
                     raise ValueError("Incosistent number of time increments between FEMSolver and provided solution")
 
+
         # Get tensors
         if ndim == 2:
             I=np.eye(2)
         elif ndim == 3:
             I=np.eye(3)
-        F = self.recovered_fields['F']
-        J = np.linalg.det(F)
-        C = np.einsum('ijlk,ijkm->ijlm',np.einsum('ijlk',F),F)
-        detC = J**2
-        Cauchy = self.recovered_fields['CauchyStress']
-        p_hyd = 1./3.*np.einsum('ijkk',Cauchy)
-        # Get tensor for just mechanics fields or for growth and remodeling
-        if self.material.has_state_variables is False:
-            H = np.einsum('ij,ijlk->ijkl',J,np.linalg.inv(F))
-            G = np.einsum('ijlk,ijkm->ijlm',np.einsum('ijlk',H),H)
-            # Reshape
-            H = np.einsum('lijk',H).reshape(nnode,ndim**2,increments)
-            G = np.einsum('lijk',G).reshape(nnode,ndim**2,increments)
-        else:
-            b_inv = np.einsum('ijlk,ijkm->ijlm',np.linalg.inv(F),np.linalg.inv(F))
-            e = 1./2.*(I-b_inv)
-            e_hyd = 1./3.*np.einsum('ijkk',e)
-            e_d = e - np.einsum('ij,kl->ijkl',e_hyd,I)
-            e_VM = np.sqrt(2./3.*np.einsum('ijkl,ijkl->ij',e_d,e_d))
-            s_d = Cauchy - np.einsum('ij,kl->ijkl',p_hyd,I)
-            s_VM = np.sqrt(3./2.*np.einsum('ijkl,ijkl->ij',s_d,s_d))
-            FibreStress = self.recovered_fields['FibreStress']
-            # Reshape
-            e = np.einsum('lijk',e).reshape(nnode,ndim**2,increments)
-            e_hyd = np.einsum('ji',e_hyd).reshape(nnode,increments)
-            e_VM = np.einsum('ji',e_VM).reshape(nnode,increments)
-            s_VM = np.einsum('ji',s_VM).reshape(nnode,increments)
-            FibreStress = np.einsum('lij',FibreStress).reshape(nnode,5,increments)
-        # Reshape tensors
-        F = np.einsum('lijk',F).reshape(nnode,ndim**2,increments)
-        J = J.reshape(nnode,increments)
-        C = np.einsum('lijk',C).reshape(nnode,ndim**2,increments)
-        detC = detC.reshape(nnode,increments)
-        Cauchy = np.einsum('lijk',Cauchy).reshape(nnode,ndim**2,increments)
-        p_hyd = np.einsum('ji',p_hyd).reshape(nnode,increments)
 
+        nnodes = 0
+        for imat in range(len(self.materials)):
+            nnodes += self.materials[imat].node_set.shape[0]
 
-        if ndim == 2:
-            C = C[:,[0,1,3],:]
-            if material.has_state_variables is False:
-                G = G[:,[0,1,3],:]
+        if fields == "mechanics" and ndim == 2 and self.gr_variables is None:
+            augmented_sol = np.zeros((nnodes,22,increments),dtype=np.float64)
+        elif fields == "mechanics" and ndim == 3 and self.gr_variables is None:
+            augmented_sol = np.zeros((nnodes,42,increments),dtype=np.float64)
+        elif fields == "mechanics" and ndim == 2 and self.gr_variables is not None:
+            augmented_sol = np.zeros((nnodes,38,increments),dtype=np.float64)
+        elif fields == "mechanics" and ndim == 3 and self.gr_variables is not None:
+            augmented_sol = np.zeros((nnodes,53,increments),dtype=np.float64)
+
+        nstart = 0
+        nend = 0
+        for imat in range(len(self.materials)):
+            nnode_set = self.materials[imat].node_set.shape[0]
+            nend += nnode_set
+            F = self.recovered_fields['F'][:,self.materials[imat].node_set,:,:]
+            J = np.linalg.det(F)
+            C = np.einsum('ijlk,ijkm->ijlm',np.einsum('ijlk',F),F)
+            detC = J**2
+            Cauchy = self.recovered_fields['CauchyStress'][imat]
+            p_hyd = 1./3.*np.einsum('ijkk',Cauchy)
+            # Get tensor for just mechanics fields or for growth and remodeling
+            if self.gr_variables is None:
+                H = np.einsum('ij,ijlk->ijkl',J,np.linalg.inv(F))
+                G = np.einsum('ijlk,ijkm->ijlm',np.einsum('ijlk',H),H)
+                # Reshape
+                H = np.einsum('lijk',H).reshape(nnode_set,ndim**2,increments)
+                G = np.einsum('lijk',G).reshape(nnode_set,ndim**2,increments)
             else:
-                e = e[:,[0,1,3],:]
-            Cauchy = Cauchy[:,[0,1,3],:]
-        elif ndim == 3:
-            C = C[:,[0,1,2,4,5,8],:]
-            if self.material.has_state_variables is False:
-                G = G[:,[0,1,2,4,5,8],:]
-            else:
-                e = e[:,[0,1,2,4,5,8],:]
-            Cauchy = Cauchy[:,[0,1,2,4,5,8],:]
+                b_inv = np.einsum('ijlk,ijkm->ijlm',np.linalg.inv(F),np.linalg.inv(F))
+                e = 1./2.*(I-b_inv)
+                e_hyd = 1./3.*np.einsum('ijkk',e)
+                e_d = e - np.einsum('ij,kl->ijkl',e_hyd,I)
+                e_VM = np.sqrt(2./3.*np.einsum('ijkl,ijkl->ij',e_d,e_d))
+                s_d = Cauchy - np.einsum('ij,kl->ijkl',p_hyd,I)
+                s_VM = np.sqrt(3./2.*np.einsum('ijkl,ijkl->ij',s_d,s_d))
+                FibreStress = self.recovered_fields['FibreStress'][imat]
+                # Reshape
+                e = np.einsum('lijk',e).reshape(nnode_set,ndim**2,increments)
+                e_hyd = np.einsum('ji',e_hyd).reshape(nnode_set,increments)
+                e_VM = np.einsum('ji',e_VM).reshape(nnode_set,increments)
+                s_VM = np.einsum('ji',s_VM).reshape(nnode_set,increments)
+                FibreStress = np.einsum('lij',FibreStress).reshape(nnode_set,5,increments)
+            # Reshape tensors
+            F = np.einsum('lijk',F).reshape(nnode_set,ndim**2,increments)
+            J = J.reshape(nnode_set,increments)
+            C = np.einsum('lijk',C).reshape(nnode_set,ndim**2,increments)
+            detC = detC.reshape(nnode_set,increments)
+            Cauchy = np.einsum('lijk',Cauchy).reshape(nnode_set,ndim**2,increments)
+            p_hyd = np.einsum('ji',p_hyd).reshape(nnode_set,increments)
 
+            if ndim == 2:
+                C = C[:,[0,1,3],:]
+                if self.gr_variables is None:
+                    G = G[:,[0,1,3],:]
+                else:
+                    e = e[:,[0,1,3],:]
+                Cauchy = Cauchy[:,[0,1,3],:]
+            elif ndim == 3:
+                C = C[:,[0,1,2,4,5,8],:]
+                if self.gr_variables is None:
+                    G = G[:,[0,1,2,4,5,8],:]
+                else:
+                    e = e[:,[0,1,2,4,5,8],:]
+                Cauchy = Cauchy[:,[0,1,2,4,5,8],:]
 
-        if fields == "mechanics" and ndim == 2 and self.material.has_state_variables is False:
+            if fields == "mechanics" and ndim == 2 and self.gr_variables is None:
+                augmented_sol[nstart:nend,:2,:]     = self.sol[self.materials[imat].node_set,:2,steps].reshape(augmented_sol[nstart:nend,:2,:].shape)
+                augmented_sol[nstart:nend,2:6,:]    = F
+                augmented_sol[nstart:nend,6:10,:]   = H
+                augmented_sol[nstart:nend,10,:]     = J
+                augmented_sol[nstart:nend,11:14,:]  = C
+                augmented_sol[nstart:nend,14:17,:]  = G
+                augmented_sol[nstart:nend,17,:]     = detC
+                augmented_sol[nstart:nend,18:21,:]  = Cauchy
+                augmented_sol[nstart:nend,21,:]     = p_hyd
 
-            augmented_sol = np.zeros((nnode,22,increments),dtype=np.float64)
-            augmented_sol[:,:2,:]     = self.sol[:,:2,steps].reshape(augmented_sol[:,:2,:].shape)
-            augmented_sol[:,2:6,:]    = F
-            augmented_sol[:,6:10,:]   = H
-            augmented_sol[:,10,:]     = J
-            augmented_sol[:,11:14,:]  = C
-            augmented_sol[:,14:17,:]  = G
-            augmented_sol[:,17,:]     = detC
-            augmented_sol[:,18:21,:]  = Cauchy
-            augmented_sol[:,21,:]     = p_hyd
+            elif fields == "mechanics" and ndim == 3 and self.gr_variables is None:
+                augmented_sol[nstart:nend,:3,:]     = self.sol[self.materials[imat].node_set,:3,steps].reshape(augmented_sol[nstart:nend,:3,:].shape)
+                augmented_sol[nstart:nend,3:12,:]   = F
+                augmented_sol[nstart:nend,12:21,:]  = H
+                augmented_sol[nstart:nend,21,:]     = J
+                augmented_sol[nstart:nend,22:28,:]  = C
+                augmented_sol[nstart:nend,28:34,:]  = G
+                augmented_sol[nstart:nend,34,:]     = detC
+                augmented_sol[nstart:nend,35:41,:]  = Cauchy
+                augmented_sol[nstart:nend,41,:]     = p_hyd
 
-        elif fields == "mechanics" and ndim == 3 and self.material.has_state_variables is False:
+            elif fields == "mechanics" and ndim == 2 and self.gr_variables is not None:
+                augmented_sol[nstart:nend,:2,:]     = self.sol[self.materials[imat].node_set,:2,steps].reshape(augmented_sol[nstart:nend,:2,:].shape)
+                augmented_sol[nstart:nend,2:6,:]    = F
+                augmented_sol[nstart:nend,6,:]      = J
+                augmented_sol[nstart:nend,7:10,:]   = C
+                augmented_sol[nstart:nend,10,:]     = detC
+                augmented_sol[nstart:nend,11:14,:]  = e
+                augmented_sol[nstart:nend,14,:]     = e_hyd
+                augmented_sol[nstart:nend,15,:]     = e_VM
+                augmented_sol[nstart:nend,16:19,:]  = Cauchy
+                augmented_sol[nstart:nend,19,:]     = p_hyd
+                augmented_sol[nstart:nend,20,:]     = s_VM
+                augmented_sol[nstart:nend,21:26,:]  = FibreStress
+                augmented_sol[nstart:nend,26:32,:]  = self.gr_variables[imat][:,5:11,steps].reshape(augmented_sol[nstart:nend,26:32,:].shape) #Densities
+                augmented_sol[nstart:nend,32,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,32,:].shape)   #Growth
+                augmented_sol[nstart:nend,33:38,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,33:38,:].shape)   #Remodeling
 
-            augmented_sol = np.zeros((nnode,42,increments),dtype=np.float64)
-            augmented_sol[:,:3,:]     = self.sol[:,:3,steps].reshape(augmented_sol[:,:3,:].shape)
-            augmented_sol[:,3:12,:]   = F
-            augmented_sol[:,12:21,:]  = H
-            augmented_sol[:,21,:]     = J
-            augmented_sol[:,22:28,:]  = C
-            augmented_sol[:,28:34,:]  = G
-            augmented_sol[:,34,:]     = detC
-            augmented_sol[:,35:41,:]  = Cauchy
-            augmented_sol[:,41,:]     = p_hyd
+            elif fields == "mechanics" and ndim == 3 and self.gr_variables is not None:
+                augmented_sol[nstart:nend,:3,:]     = self.sol[self.materials[imat].node_set,:3,steps].reshape(augmented_sol[nstart:nend,:3,:].shape)
+                augmented_sol[nstart:nend,3:12,:]   = F
+                augmented_sol[nstart:nend,12,:]     = J
+                augmented_sol[nstart:nend,13:19,:]  = C
+                augmented_sol[nstart:nend,19,:]     = detC
+                augmented_sol[nstart:nend,20:26,:]  = e
+                augmented_sol[nstart:nend,26,:]     = e_hyd
+                augmented_sol[nstart:nend,27,:]     = e_VM
+                augmented_sol[nstart:nend,28:34,:]  = Cauchy
+                augmented_sol[nstart:nend,34,:]     = p_hyd
+                augmented_sol[nstart:nend,35,:]     = s_VM
+                augmented_sol[nstart:nend,36:41,:]  = FibreStress
+                augmented_sol[nstart:nend,41:47,:]  = self.gr_variables[imat][:,5:11,steps].reshape(augmented_sol[nstart:nend,41:47,:].shape)
+                augmented_sol[nstart:nend,47,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,47,:].shape)
+                augmented_sol[nstart:nend,48:53,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,48:53,:].shape)
 
-        if fields == "mechanics" and ndim == 2 and self.material.has_state_variables is True:
-
-            augmented_sol = np.zeros((nnode,38,increments),dtype=np.float64)
-            augmented_sol[:,:2,:]     = self.sol[:,:2,steps].reshape(augmented_sol[:,:2,:].shape)
-            augmented_sol[:,2:6,:]    = F
-            augmented_sol[:,6,:]      = J
-            augmented_sol[:,7:10,:]   = C
-            augmented_sol[:,10,:]     = detC
-            augmented_sol[:,11:14,:]  = e
-            augmented_sol[:,14,:]     = e_hyd
-            augmented_sol[:,15,:]     = e_VM
-            augmented_sol[:,16:19,:]  = Cauchy
-            augmented_sol[:,19,:]     = p_hyd
-            augmented_sol[:,20,:]     = s_VM
-            augmented_sol[:,21:26,:]  = FibreStress
-            augmented_sol[:,26:32,:]  = self.gr_variables[:,5:11,steps].reshape(augmented_sol[:,26:32,:].shape) #Densities
-            augmented_sol[:,32,:]     = self.gr_variables[:,11,steps].reshape(augmented_sol[:,32,:].shape)   #Growth
-            augmented_sol[:,33:38,:]  = self.gr_variables[:,:5,steps].reshape(augmented_sol[:,33:38,:].shape)   #Remodeling
-
-        elif fields == "mechanics" and ndim == 3 and self.material.has_state_variables is True:
-
-            augmented_sol = np.zeros((nnode,53,increments),dtype=np.float64)
-            augmented_sol[:,:3,:]     = self.sol[:,:3,steps].reshape(augmented_sol[:,:3,:].shape)
-            augmented_sol[:,3:12,:]   = F
-            augmented_sol[:,12,:]     = J
-            augmented_sol[:,13:19,:]  = C
-            augmented_sol[:,19,:]     = detC
-            augmented_sol[:,20:26,:]  = e
-            augmented_sol[:,26,:]     = e_hyd
-            augmented_sol[:,27,:]     = e_VM
-            augmented_sol[:,28:34,:]  = Cauchy
-            augmented_sol[:,34,:]     = p_hyd
-            augmented_sol[:,35,:]     = s_VM
-            augmented_sol[:,36:41,:]  = FibreStress
-            augmented_sol[:,41:47,:]  = self.gr_variables[:,5:11,steps].reshape(augmented_sol[:,41:47,:].shape)
-            augmented_sol[:,47,:]     = self.gr_variables[:,11,steps].reshape(augmented_sol[:,47,:].shape)
-            augmented_sol[:,48:53,:]  = self.gr_variables[:,:5,steps].reshape(augmented_sol[:,48:53,:].shape)
+            nstart += nnode_set
 
         self.sol = augmented_sol
-        return augmented_sol
 
+        return augmented_sol
 
 
     def WriteVTK(self,filename=None, quantity="all", configuration="deformed", steps=None, write_curved_mesh=True,
@@ -907,10 +934,27 @@ class PostProcess(object):
         if C == 0:
             write_curved_mesh = False
 
+        nnode = 0
+        for imat in range(len(self.materials)):
+            nnode += self.materials[imat].node_set.shape[0]
+            self.materials[imat].ConectivityOfMaterial(self.mesh)
+
+        points = np.zeros((nnode,self.mesh.points.shape[1]),dtype=np.float64)
+        elements = np.zeros((self.mesh.elements.shape[0],self.mesh.elements.shape[1]),dtype=np.int64)
+        nstart = 0; nend = 0
+        elstart = 0; elend = 0
+        for imat in range(len(self.materials)):
+            nend += self.materials[imat].node_set.shape[0]
+            elend += self.materials[imat].element_set.shape[0]
+            points[nstart:nend,:] = self.mesh.points[self.materials[imat].node_set]
+            elements[elstart:elend,:] = nstart + self.materials[imat].elements
+            nstart += self.materials[imat].node_set.shape[0]
+            elstart += self.materials[imat].element_set.shape[0]
+        self.mesh.points = points
+        self.mesh.elements = elements
 
         # GET LINEAR MESH & SOLUTION
         lmesh, sol = self.mesh.GetLinearMesh(remap=True,solution=self.sol)
-
 
         if lmesh.element_type =='tri':
             cellflag = 5
@@ -981,7 +1025,6 @@ class PostProcess(object):
                 with closing(multiprocessing.dummy.Pool(self.ncpu)) as pool:
                     res = pool.map(ParallelWriteVTK,pps)
                     pool.terminate()
-
             else:
                 raise ValueError("Parallel model not understood")
 
@@ -991,8 +1034,6 @@ class PostProcess(object):
             #     ParallelWriteVTK(pps[ip])
 
             return
-
-
 
         if write_curved_mesh:
 

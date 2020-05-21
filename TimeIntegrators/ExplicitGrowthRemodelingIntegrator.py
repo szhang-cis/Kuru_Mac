@@ -26,10 +26,12 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
     def Solver(self, function_spaces, formulation, solver,
         K, NeumannForces, NodalForces, Residual,
-        mesh, TotalDisp, Eulerx, material, boundary_condition, fem_solver):
+        mesh, TotalDisp, Eulerx, materials, boundary_condition, fem_solver):
 
-        GRVariables = np.zeros((mesh.points.shape[0],12,fem_solver.number_of_time_increments),
-                dtype=np.float64)
+        GRVariables = [[] for i in range(len(materials))]
+        for imat in range(len(materials)):
+            GRVariables[imat] = np.zeros((materials[imat].node_set.shape[0],12,fem_solver.number_of_time_increments),
+                    dtype=np.float64)
 
         TimeIncrements = fem_solver.number_of_time_increments
         TimeFactor = fem_solver.total_time/TimeIncrements
@@ -43,7 +45,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         #TotalDisp = self.GetHomeostaticState(function_spaces, formulation, solver, 
         #        K, NeumannForces, NodalForces, Residual, mesh, TotalDisp, Eulerx, 
         #        material, boundary_condition, fem_solver, AppliedDirichletInc)
-        
+
         IncrementalTime = 0.0
         # TIME LOOP
         for TIncrement in range(TimeIncrements):
@@ -55,11 +57,13 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
             # COMPUTE THE GROWTH AND REMODELING
             if TIncrement != 0:
-                Rates = self.RatesGrowthRemodeling(mesh, material, FibreStress, Softness)
-                GRVariables[:,:,TIncrement] = self.ExplicitGrowthRemodeling(mesh, material, 
-                    IncrementalTime, Delta_t, Rates)
+                for imat in range(len(materials)):
+                    Rates = self.RatesGrowthRemodeling(mesh, materials[imat], FibreStress[imat], Softness[imat], imat)
+                    GRVariables[imat][:,:,TIncrement] = self.ExplicitGrowthRemodeling(mesh, materials[imat],
+                        IncrementalTime, Delta_t, Rates)
             else:
-                GRVariables[:,:,0] = material.state_variables[:,9:21]
+                for imat in range(len(materials)):
+                    GRVariables[imat][:,:,0] = materials[imat].state_variables[:,9:21]
             IncrementalLoad = 1.0
 
             print("=============================")
@@ -91,7 +95,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
             if fem_solver.nonlinear_iterative_technique == "newton_raphson":
                 Eulerx, K, Residual = self.NewtonRaphson(function_spaces, formulation, solver,
-                        TIncrement, K, NodalForces, Residual, mesh, Eulerx, material,
+                        TIncrement, K, NodalForces, Residual, mesh, Eulerx, materials,
                         boundary_condition, AppliedDirichletInc, fem_solver)
             else:
                 raise RuntimeError("Iterative technique for nonlinear solver not understood")
@@ -104,14 +108,19 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                 self.HomeostaticDistortion(fem_solver, formulation, TotalDisp, TIncrement)
 
             # COMPUTE THE FIBRE-STRESS AND SOFTNESS
-            FibreStress, Softness = self.GetFibreStressAndSoftness(mesh, formulation, material,
-                    fem_solver, Eulerx)
+            FibreStress = [[] for i in range(len(materials))]
+            Softness = [[] for i in range(len(materials))]
+            for imat in range(len(materials)):
+                FibreStress[imat], Softness[imat] = self.GetFibreStressAndSoftness(mesh, formulation, materials[imat],
+                        fem_solver, Eulerx)
             # SET HOMEOSTATIC FIBRE-STRESS
             if TIncrement==0:
-                self.HomeostaticStress = FibreStress
+                self.HomeostaticStress = [[] for i in range(len(materials))]
+                for imat in range(len(materials)):
+                    self.HomeostaticStress[imat] = FibreStress[imat]
 
             # PRINT LOG IF ASKED FOR
-            self.LogSave(fem_solver, formulation, TotalDisp, TIncrement, material, FibreStress)
+            self.LogSave(fem_solver, formulation, TotalDisp, TIncrement, materials, FibreStress)
 
             # UPDATE THE TIME
             IncrementalTime += TimeFactor
@@ -156,9 +165,9 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         T_ela = 101.0*365.25
 
         # Loop on nodes
-        for node in range(mesh.nnode):
+        for node in range(material.node_set.shape[0]):
             # Elastin function density in time f(t), analytic solution
-            AxialCoord = mesh.points[node,1]
+            AxialCoord = mesh.points[material.node_set[node],1]
             material.state_variables[node,14] = den0_e*np.exp(-IncrementalTime/T_ela) + \
                 den0_e*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(AxialCoord/L_dam)**2)*\
                 (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))

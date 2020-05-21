@@ -178,7 +178,7 @@ class FEMSolver(object):
     def __save_state__(self):
         self.__initialdict__ = deepcopy(self.__dict__)
 
-    def __checkdata__(self, material, boundary_condition, formulation, mesh, function_spaces, 
+    def __checkdata__(self, materials, boundary_condition, formulation, mesh, function_spaces, 
             solver, contact_formulation=None, growth_remodeling=None):
         """Checks the state of data for FEMSolver"""
 
@@ -190,8 +190,11 @@ class FEMSolver(object):
             raise ValueError("mesh has to be an instance of Florence.Mesh")
         if boundary_condition is None:
             raise ValueError("No boundary conditions detected for the analysis")
-        if material is None:
-            raise ValueError("No material model chosen for the analysis")
+        if isinstance(materials,tuple):
+            if len(materials)==0:
+                raise ValueError("No material model chosen for the analysis")
+        else:
+            raise ValueError("The material should be insterted in a tuple")
         if formulation is None:
             raise ValueError("No variational formulation specified")
         # MONKEY PATCH CONTACT FORMULATION
@@ -202,10 +205,8 @@ class FEMSolver(object):
             self.contact_formulation = None
             self.has_contact = False
         # GROWTH REMODELING FORMULATION
-        if material.has_growth_remodeling:
+        if growth_remodeling is not None:
             self.has_growth_remodeling = True
-            if growth_remodeling is None:
-                raise ValueError("No Growth and Remodeling integrator")
         else:
             self.has_growth_remodeling = False
 
@@ -251,31 +252,33 @@ class FEMSolver(object):
             # PARTITION THE MESH AND PREPARE
             self.PartitionMeshForParallelFEM(mesh,self.no_of_cpu_cores,formulation.nvar)
 
-
-        if material.ndim != mesh.InferSpatialDimension():
-            # THIS HAS TO BE AN ERROR BECAUSE OF THE DYNAMIC NATURE OF MATERIAL
-            raise ValueError("Material model and mesh are incompatible. Change the dimensionality of the material")
+        for imat in range(len(materials)):
+            if materials[imat].ndim != mesh.InferSpatialDimension():
+                # THIS HAS TO BE AN ERROR BECAUSE OF THE DYNAMIC NATURE OF MATERIAL
+                raise ValueError("Material {} model and mesh are incompatible. Change the dimensionality of the material".format(imat))
+            if materials[imat].nvar != formulation.nvar:
+                # THIS HAS TO BE AN ERROR BECAUSE OF THE DYNAMIC NATURE OF MATERIAL
+                raise ValueError("Material {} model and formulation are incompatible.".format(imat))
         ###########################################################################
-        if material.mtype == "LinearElastic" and self.number_of_load_increments > 1 and self.analysis_type=="static":
-            warn("Can not solve a linear elastic model in multiple step. "
-                "The number of load increments is going to be set to one (1). "
-                "Use IncrementalLinearElastic model for incremental soluiton.")
-            self.number_of_load_increments = 1
+#        if material.mtype == "LinearElastic" and self.number_of_load_increments > 1 and self.analysis_type=="static":
+#            warn("Can not solve a linear elastic model in multiple step. "
+#                "The number of load increments is going to be set to one (1). "
+#                "Use IncrementalLinearElastic model for incremental soluiton.")
+#            self.number_of_load_increments = 1
 
         self.has_prestress = False
-        if "nonlinear" not in insensitive(self.analysis_nature) and formulation.fields == "mechanics":
-            # RUN THE SIMULATION WITHIN A NONLINEAR ROUTINE
-            if material.mtype != "IncrementalLinearElastic" and \
-                material.mtype != "LinearElastic" and material.mtype != "TranservselyIsotropicLinearElastic":
-                self.has_prestress = True
-            else:
-                self.has_prestress = False
+#        if "nonlinear" not in insensitive(self.analysis_nature) and formulation.fields == "mechanics":
+#            # RUN THE SIMULATION WITHIN A NONLINEAR ROUTINE
+#            if material.mtype != "IncrementalLinearElastic" and \
+#                material.mtype != "LinearElastic" and material.mtype != "TranservselyIsotropicLinearElastic":
+#                self.has_prestress = True
+#            else:
+#                self.has_prestress = False
 
 
         ##############################################################################
-        if "Explicit" in material.mtype:
-            if self.analysis_subtype == "implicit":
-                raise ValueError("Incorrect material model ({}) used for implicit analysis".format(material.mtype))
+#        if "Explicit" in material.mtype and self.analysis_subtype == "implicit":
+#                raise ValueError("Incorrect material model ({}) used for implicit analysis".format(material.mtype))
         if self.mass_type is None:
             if self.analysis_subtype == "explicit":
                 self.mass_type = "lumped"
@@ -313,12 +316,13 @@ class FEMSolver(object):
 
         # CHECK IF MATERIAL MODEL AND ANALYSIS TYPE ARE COMPATIBLE
         #############################################################################
-        if material.fields != formulation.fields:
-            raise RuntimeError("Incompatible material model and formulation type")
-
-        if material.is_transversely_isotropic or material.is_anisotropic:
-            if material.anisotropic_orientations is None:
-                material.GetFibresOrientation(mesh)
+        for imat in range(len(materials)):
+            if materials[imat].fields != formulation.fields:
+                raise RuntimeError("Incompatible material model and formulation type")
+            if materials[imat].is_transversely_isotropic or materials[imat].is_anisotropic:
+                if materials[imat].anisotropic_orientations is None:
+                    materials[imat].GetFibresOrientation(mesh)
+            materials[imat].ConectivityOfMaterial(mesh)
         ##############################################################################
 
         ##############################################################################
@@ -337,11 +341,12 @@ class FEMSolver(object):
         ##############################################################################
 
         ##############################################################################
-        if self.analysis_type == "dynamic" and material.rho is None:
-            raise ValueError("Material does not seem to have density. Mass matrix cannot be computed")
-        if self.analysis_type == "static" and material.rho is None and self.has_low_level_dispatcher:
-            # FOR LOW-LEVEL DISPATCHER
-            material.rho = 1.0
+        for imat in range(len(materials)):
+            if self.analysis_type == "dynamic" and materials[imat].rho is None:
+                raise ValueError("Material does not seem to have density. Mass matrix cannot be computed")
+            if self.analysis_type == "static" and materials[imat].rho is None and self.has_low_level_dispatcher:
+                # FOR LOW-LEVEL DISPATCHER
+                materials[imat].rho = 1.0
         ##############################################################################
 
         ##############################################################################
@@ -358,15 +363,17 @@ class FEMSolver(object):
         ##############################################################################
 
         ##############################################################################
-        if material.has_state_variables:
-            material.MappingStateVariables(mesh,function_spaces[0])
-        # AT THE MOMENT ALL HESSIANS SEEMINGLY HAVE THE SAME SIGNATURE SO THIS IS O.K.
-        try:
-            F = np.eye(material.ndim,material.ndim)[None,:,:]
-            material.Hessian(KinematicMeasures(F,self.analysis_nature))
-        except TypeError:
-            # CATCH ONLY TypeError. OTHER MATERIAL CONSTANT RELATED ERRORS ARE SELF EXPLANATORY
-            raise ValueError("Material constants for {} does not seem correct".format(material.mtype))
+        for imat in range(len(materials)):
+            if materials[imat].has_state_variables:
+                elem = materials[imat].element_set[0]
+                materials[imat].MappingStateVariables(mesh,function_spaces[0],elem=elem)
+            # AT THE MOMENT ALL HESSIANS SEEMINGLY HAVE THE SAME SIGNATURE SO THIS IS O.K.
+            try:
+                F = np.eye(materials[imat].ndim,materials[imat].ndim)[None,:,:]
+                materials[imat].Hessian(KinematicMeasures(F,self.analysis_nature))
+            except TypeError:
+                # CATCH ONLY TypeError. OTHER MATERIAL CONSTANT RELATED ERRORS ARE SELF EXPLANATORY
+                raise ValueError("Material constants for {} does not seem correct".format(material.mtype))
         ##############################################################################
 
         # CHANGE MESH DATA TYPE
@@ -404,7 +411,7 @@ class FEMSolver(object):
 
         return function_spaces, solver
 
-    def __makeoutput__(self, mesh, TotalDisp, formulation=None, function_spaces=None, material=None,
+    def __makeoutput__(self, mesh, TotalDisp, formulation=None, function_spaces=None, materials=None,
             gr_variables=None):
 
         post_process = PostProcess(formulation.ndim,formulation.nvar)
@@ -414,9 +421,9 @@ class FEMSolver(object):
         post_process.SetMesh(mesh)
         post_process.SetSolution(TotalDisp)
         post_process.SetFormulation(formulation)
-        post_process.SetMaterial(material)
+        post_process.SetMaterial(materials)
         post_process.SetFEMSolver(self)
-        if material.has_growth_remodeling:
+        if gr_variables is not None:
             post_process.SetGrowthRemodeling(gr_variables)
 
         if self.compute_mesh_qualities and self.is_scaled_jacobian_computed is False:
@@ -457,7 +464,7 @@ class FEMSolver(object):
         return post_process
 
     def Solve(self, formulation=None, mesh=None,
-        material=None, boundary_condition=None,
+        materials=None, boundary_condition=None,
         function_spaces=None, solver=None,
         contact_formulation=None, growth_remodeling=None,
         Eulerx=None):
@@ -469,7 +476,7 @@ class FEMSolver(object):
 
         # CHECK DATA CONSISTENCY
         #---------------------------------------------------------------------------#
-        function_spaces, solver = self.__checkdata__(material, boundary_condition, formulation, 
+        function_spaces, solver = self.__checkdata__(materials, boundary_condition, formulation, 
                 mesh, function_spaces, solver, contact_formulation=contact_formulation,
                 growth_remodeling=growth_remodeling)
 
@@ -515,27 +522,27 @@ class FEMSolver(object):
         tAssembly=time()
 
         # APPLY DIRICHELT BOUNDARY CONDITIONS AND GET DIRICHLET RELATED FORCES
-        boundary_condition.GetDirichletBoundaryConditions(formulation, mesh, material, solver, self)
+        boundary_condition.GetDirichletBoundaryConditions(formulation, mesh, materials, solver, self)
 
         # ALLOCATE FOR GEOMETRY - GetDirichletBoundaryConditions CHANGES THE MESH
         # SO EULERX SHOULD BE ALLOCATED AFTERWARDS
         Eulerx = np.copy(mesh.points)
 
         # FIND PURE NEUMANN (EXTERNAL) NODAL FORCE VECTOR
-        NeumannForces = boundary_condition.ComputeNeumannForces(mesh, material, function_spaces,
+        NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces,
             compute_traction_forces=True, compute_body_forces=self.add_self_weight)
 
         # ADOPT A DIFFERENT PATH FOR INCREMENTAL LINEAR ELASTICITY
         if formulation.fields == "mechanics" and self.analysis_nature != "nonlinear":
             if self.analysis_type == "static":
                 # DISPATCH INCREMENTAL LINEAR ELASTICITY SOLVER
-                TotalDisp = self.IncrementalLinearElasticitySolver(function_spaces, formulation, mesh, material,
+                TotalDisp = self.IncrementalLinearElasticitySolver(function_spaces, formulation, mesh, materials,
                     boundary_condition, solver, TotalDisp, Eulerx, NeumannForces)
                 return self.__makeoutput__(mesh, TotalDisp, formulation, function_spaces, material)
 
         # ASSEMBLE STIFFNESS MATRIX AND TRACTION FORCES FOR THE FIRST TIME (INTERNAL ENERGY)
         if self.analysis_type == "static":
-            K, TractionForces, _ = Assemble(self, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)
+            K, TractionForces, _ = Assemble(self, function_spaces, formulation, mesh, materials, boundary_condition, Eulerx)
         else:
             if self.reduce_quadrature_for_quads_hexes:
                 fspace = function_spaces[0] if (mesh.element_type=="hex" or mesh.element_type=="quad") else function_spaces[1]
@@ -580,8 +587,8 @@ class FEMSolver(object):
             if self.has_growth_remodeling:
                 TotalDisp,GRVariables = growth_remodeling.Solver(function_spaces, formulation, 
                         solver, K, NeumannForces, NodalForces, Residual, mesh, TotalDisp, Eulerx, 
-                        material, boundary_condition, self)
-                return self.__makeoutput__(mesh, TotalDisp, formulation, function_spaces, material,
+                        materials, boundary_condition, self)
+                return self.__makeoutput__(mesh, TotalDisp, formulation, function_spaces, materials,
                         gr_variables=GRVariables)
             else:
                 if self.nonlinear_iterative_technique == "newton_raphson" or \
@@ -590,12 +597,12 @@ class FEMSolver(object):
                     self.nonlinear_iterative_technique == "snes":
                     TotalDisp = self.StaticSolver(function_spaces, formulation, solver,
                         K, NeumannForces, NodalForces, Residual,
-                        mesh, TotalDisp, Eulerx, material, boundary_condition)
+                        mesh, TotalDisp, Eulerx, materials, boundary_condition)
                 elif self.nonlinear_iterative_technique == "arc_length":
                     from FEMSolverArcLength import StaticSolverArcLength
                     TotalDisp = StaticSolverArcLength(self,function_spaces, formulation, solver,
                         K, NeumannForces, NodalForces, Residual,
-                        mesh, TotalDisp, Eulerx, material, boundary_condition)
+                        mesh, TotalDisp, Eulerx, materials, boundary_condition)
                 else:
                     raise RuntimeError("Iterative technique for nonlinear solver not understood")
 
@@ -603,11 +610,11 @@ class FEMSolver(object):
         if self.report_log_level == 0:
             sys.stdout = sys.__stdout__
 
-        return self.__makeoutput__(mesh, TotalDisp, formulation, function_spaces, material)
+        return self.__makeoutput__(mesh, TotalDisp, formulation, function_spaces, materials)
 
     def StaticSolver(self, function_spaces, formulation, solver, K,
             NeumannForces, NodalForces, Residual,
-            mesh, TotalDisp, Eulerx, material, boundary_condition):
+            mesh, TotalDisp, Eulerx, materials, boundary_condition):
 
         LoadIncrement = self.number_of_load_increments
         LoadFactor = 1./LoadIncrement
@@ -648,15 +655,15 @@ class FEMSolver(object):
             if self.nonlinear_iterative_technique == "newton_raphson":
                 Eulerx, K, Residual = self.NewtonRaphson(function_spaces, formulation, solver,
                     Increment, K, NodalForces, Residual, mesh, Eulerx,
-                    material, boundary_condition, AppliedDirichletInc)
+                    materials, boundary_condition, AppliedDirichletInc)
             elif self.nonlinear_iterative_technique == "modified_newton_raphson":
                 Eulerx, K, Residual = self.ModifiedNewtonRaphson(function_spaces, formulation, solver,
                     Increment, K, NodalForces, Residual, mesh, Eulerx,
-                    material, boundary_condition, AppliedDirichletInc)
+                    materials, boundary_condition, AppliedDirichletInc)
             elif self.nonlinear_iterative_technique == "line_search_newton_raphson":
                 Eulerx, K, Residual = self.NewtonRaphsonLineSearch(function_spaces, formulation, solver,
                     Increment, K, NodalForces, Residual, mesh, Eulerx,
-                    material, boundary_condition, AppliedDirichletInc)
+                    materials, boundary_condition, AppliedDirichletInc)
             else:
                 raise RuntimeError("Iterative technique for nonlinear solver not understood")
 
@@ -694,7 +701,7 @@ class FEMSolver(object):
         return TotalDisp
 
     def NewtonRaphson(self, function_spaces, formulation, solver,
-        Increment, K, NodalForces, Residual, mesh, Eulerx, material,
+        Increment, K, NodalForces, Residual, mesh, Eulerx, materials,
         boundary_condition, AppliedDirichletInc):
 
         Tolerance = self.newton_raphson_tolerance
@@ -723,7 +730,7 @@ class FEMSolver(object):
             Eulerx += dU[:,:formulation.ndim]
 
             # RE-ASSEMBLE - COMPUTE STIFFNESS AND INTERNAL TRACTION FORCES
-            K, TractionForces = Assemble(self, function_spaces, formulation, mesh, material, boundary_condition, Eulerx)[:2]
+            K, TractionForces = Assemble(self, function_spaces, formulation, mesh, materials, boundary_condition, Eulerx)[:2]
 
             # FIND THE RESIDUAL
             Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] -\
@@ -810,13 +817,15 @@ class FEMSolver(object):
     def PrintPreAnalysisInfo(self, mesh, formulation):
 
         print('Pre-processing the information. Getting paths, solution parameters, mesh info, interpolation info etc...')
-        print('Number of nodes is',mesh.points.shape[0], 'number of DoFs is', mesh.points.shape[0]*formulation.nvar)
+        print('Number of nodes is',mesh.points.shape[0], 'and number of DoFs is', mesh.points.shape[0]*formulation.nvar)
         if formulation.ndim==2:
             print('Number of elements is', mesh.elements.shape[0], \
-                 'and number of boundary nodes is', np.unique(mesh.edges).shape[0])
+                 'and number of boundary nodes is', np.unique(mesh.edges).shape[0], \
+                 ' and number of element sets is', mesh.nset_elem)
         elif formulation.ndim==3:
             print('Number of elements is', mesh.elements.shape[0], \
-                 'and number of boundary nodes is', np.unique(mesh.faces).shape[0])
+                 'and number of boundary nodes is', np.unique(mesh.faces).shape[0], \
+                 ' and number of element sets is', np.unique(mesh.element_to_set).shape[0])
 
     def ComputeSparsityFEM(self, mesh, formulation):
 

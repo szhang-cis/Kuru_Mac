@@ -84,7 +84,7 @@ class PostProcess(object):
     def SetGrowthRemodeling(self,gr_variables):
         self.gr_variables = gr_variables
 
-    def NodeStressRecovery(self, mynode=0, imat=0, steps=None):
+    def NodeStressRecovery(self, mynode=0, imat=0, steps=None, average_derived_quantities=True):
 
         """
             steps:          [list,np.1darray] for which time steps/increments the data should
@@ -147,21 +147,23 @@ class PostProcess(object):
             TimeIncrement = len(steps)
             increments = steps
 
-        material_node = np.where(material.node_set==mynode)[0][0]
         # COMPUTE THE COMMON/NEIGHBOUR NODES ONCE
         Elss, Poss = mesh.GetNodeCommonality()[:2]
+        Els = Elss[mynode]
         Pos = Poss[mynode]
+        ncommon_nodes = Els.shape[0]
 
         MainDict = {}
         MainDict['F'] = np.zeros((TimeIncrement,ndim,ndim))
-        MainDict['CauchyStress'] = np.zeros((TimeIncrement,ndim,ndim))
-        if self.gr_variables is not None:
-            MainDict['FibreStress'] = np.zeros((TimeIncrement,5))
-
         material.ConectivityOfMaterial(mesh)
         Elsm, Posm = material.GetNodeCommonality()[:2]
-        Elm = Elsm[material_node]
+        Elm = Elsm[mynode]
+        Pom = Posm[mynode]
         ncommon_nodes_m = Elm.shape[0]
+        MainDict['CauchyStress'] = np.zeros((TimeIncrement,ndim,ndim))
+        if self.gr_variables is not None:
+            MainDict['FibreStress'] = np.zeros(TimeIncrement,5)
+
 
         for incr, Increment in enumerate(increments):
             if TotalDisp.ndim == 3:
@@ -170,20 +172,19 @@ class PostProcess(object):
                 Eulerx = points + TotalDisp[:,:ndim]
 
             F = np.zeros((ncommon_nodes_m,nodeperelem,ndim,ndim))
-            CauchyStress = np.zeros((ncommon_nodes_m,ndim,ndim))
+            CauchyStress = np.zeros((material.element_set.shape[0],nodeperelem,ndim,ndim))
             if self.gr_variables is not None:
-                FibreStress = np.zeros((ncommon_nodes_m,5))
+                FibreStress = np.zeros((material.element_set.shape[0],nodeperelem,5))
             # LOOP OVER ELEMENTS
-            for i in range(ncommon_nodes_m):
-                ielem = Elm[i]
+            for ielem in range(ncommon_nodes_m):
                 elem = material.element_set[ielem]
                 # GET THE FIELDS AT THE ELEMENT LEVEL
-                LagrangeElemCoords = points[elements[elem,:],:]
-                EulerELemCoords = Eulerx[elements[elem,:],:]
+                LagrangeElemCoords = points[elements[Els[elem],:],:]
+                EulerELemCoords = Eulerx[elements[Els[elem],:],:]
                 # GROWTH-REMODELING VALUES FOR THIS ELEMENT
                 if material.has_state_variables:
-                    material.state_variables[:,9:21] = self.gr_variables[imat][:,:,Increment]
-                    material.MappingStateVariables(mesh,Domain,elem)
+                    material.state_variables[:,9:21] = self.gr_variables[:,:,Increment]
+                    material.MappingStateVariables(mesh,Domain,Els[elem])
 
                 if material.has_low_level_dispatcher:
 
@@ -211,9 +212,9 @@ class PostProcess(object):
                     # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N)]
                     MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
                     # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N)]
-                    F[i,:,:,:] = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
+                    F[elem,:,:,:] = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
                     # COMPUTE REMAINING KINEMATIC MEASURES
-                    StrainTensors = KinematicMeasures(F[i,:,:,:], fem_solver.analysis_nature)
+                    StrainTensors = KinematicMeasures(F[elem,:,:,:], fem_solver.analysis_nature)
 
                     # GEOMETRY UPDATE IS A MUST
                     # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ndim x ndim)]
@@ -235,21 +236,41 @@ class PostProcess(object):
                             CurrentVolume = np.sum(detJ)
                         material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
-                    counter = Pos[i]
-                    CauchyStress[i,:] = material.CauchyStress(StrainTensors,elem,counter)
-                    if self.gr_variables is not None:
-                        FibreStress[i,:],_ = material.ConstituentStress(StrainTensors,elem,counter)
+                    # LOOP OVER GAUSS POINTS
+                    for counter in range(AllGauss.shape[0]):
+                        CauchyStress[ielem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
+                        if material.gr_variables is not None:
+                            FibreStress[ielem,counter,:],_ = material.ConstituentStress(StrainTensors,elem,counter)
 
-            for i in range(ncommon_nodes_m):
-                MainDict['F'][incr,:,:] += F[i,Pos[i],:,:]
-                MainDict['CauchyStress'][incr,:,:] += CauchyStress[i,:,:]
-                if self.gr_variables is not None:
-                    MainDict['FibreStress'][incr,:] += FibreStress[i,:]
-            # AVERAGE OUT
-            MainDict['F'][incr,:,:] /= ncommon_nodes_m
-            MainDict['CauchyStress'][incr,:,:] /= ncommon_nodes_m
-            if self.gr_variables is not None:
-                MainDict['FibreStress'][incr,:] /= ncommon_nodes_m
+            if average_derived_quantities:
+                for inode in range(material.node_set.shape[0]):
+                    Els, Pos = Elsm[inode], Posm[inode]
+                    ncommon_nodes = Els.shape[0]
+                    for uelem in range(ncommon_nodes):
+                        MainDict['CauchyStress'][imat][incr,inode,:,:] += CauchyStress[Els[uelem],Pos[uelem],:,:]
+                        if self.gr_variables is not None:
+                            MainDict['FibreStress'][imat][incr,inode,:] += FibreStress[Els[uelem],Pos[uelem],:]
+                    # AVERAGE OUT
+                    MainDict['CauchyStress'][imat][incr,inode,:,:] /= ncommon_nodes
+                    if self.gr_variables is not None:
+                        MainDict['FibreStress'][imat][incr,inode,:] /= ncommon_nodes
+            else:
+                for inode in all_nodes:
+                    Els, Pos = Elsm[inode], Posm[inode]
+                    ncommon_nodes = Els.shape[0]
+                    uelem = 0
+                    MainDict['CauchyStress'][imat][incr,inode,:,:] = CauchyStress[Els[uelem],Pos[uelem],:,:]
+                    if self.gr_variables is not None:
+                        MainDict['FibreStress'][imat][incr,inode,:] = FibreStress[Els[uelem],Pos[uelem],:]
+
+            if average_derived_quantities:
+                for uelem in range(ncommon_nodes):
+                    MainDict['F'][incr,:,:] += F[uelem,Pos[uelem],:,:]
+                # AVERAGE OUT
+                MainDict['F'][incr,:,:] /= ncommon_nodes
+            else:
+                uelem = 0
+                MainDict['F'][incr,:,:] = F[uelem,Pos[uelem],:,:]
 
 
         self.node_recovered_fields = MainDict

@@ -240,7 +240,6 @@ class IncompressibleArterialWallMixture(Material):
 
     def ConstituentStress(self,StrainTensors,elem=0,gcounter=0):
 
-        density0 = 1050.0
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
@@ -249,7 +248,7 @@ class IncompressibleArterialWallMixture(Material):
         fibre_stress = np.zeros((5),dtype=np.float64)
         softness = np.zeros((5),dtype=np.float64)
         for fibre_i in [1,2,3,4,5]:
-            fraction = self.StateVariables[gcounter][14+fibre_i]/(J*density0)
+            anisotropic_term = 0.
             # Fibre direction
             N = self.anisotropic_orientations[elem][fibre_i][:,None]
             N = np.dot(I,N)[:,0]
@@ -265,20 +264,27 @@ class IncompressibleArterialWallMixture(Material):
             lambda_r = self.StateVariables[gcounter][8+fibre_i]
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
+            outerFN = einsum('i,j',FN,FN)
             # Elastic deformation
             innerFN_e = innerFN/lambda_r**2
+            outerFN_e = outerFN/lambda_r**2
             # Anisotropic Stress for this fibre
-            fibre_stress[fibre_i-1] = 2.*k1*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*innerFN_e/(J*fraction)
+            anisotropic_term = 2.*k1/J*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*outerFN_e
             # Active stress for SMC
             if fibre_i is 1:
+                den0 = 1050.0
                 s_act = 54.0e3*self.StateVariables[gcounter][15]
                 stretch_m = 1.4
                 stretch_a = 1.0
                 stretch_0 = 0.8
-                fibre_stress[0] += (s_act/density0)*(1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)/(J*fraction)
+                anisotropic_term += (s_act/(J*den0*innerFN))*\
+                        (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*outerFN
+            # Stress in the direction of the component
+            outerN = einsum('i,j',N,N)
+            fibre_stress[fibre_i-1] = np.tensordot(anisotropic_term,outerN)
             # Fibre softness for remodeling
-            stiffness = (8.*k2*innerFN_e*(innerFN_e-1.)**2 + 8.*innerFN_e-4.)*k1*\
-                np.sqrt(innerFN_e)*np.exp(k2*(innerFN_e-1.)**2)/(J*fraction)
+            stiffness = 2.*(4.*k2*innerFN_e*(innerFN_e-1.)**2 + 4.*innerFN_e-2.)*k1*\
+                np.sqrt(innerFN_e)*np.exp(k2*(innerFN_e-1.)**2)
             softness[fibre_i-1] = np.sqrt(innerFN)/(innerFN_e*stiffness)
 
         return fibre_stress,softness
@@ -331,7 +337,7 @@ class IncompressibleArterialWallMixture(Material):
                 outerN = einsum('i,j',N,N)
                 fibre_stress[gcounter][fibre_i-1] = np.tensordot(anisotropic_term,outerN)
                 # Fibre softness for remodeling
-                stiffness = 2.*(4.*k2*innerFN_e*(innerFN_e-1.)**2 + 4.*innerFN_e-2.)*k1/J*\
+                stiffness = 2.*(4.*k2*innerFN_e*(innerFN_e-1.)**2 + 4.*innerFN_e-2.)*k1*\
                     np.sqrt(innerFN_e)*np.exp(k2*(innerFN_e-1.)**2)
                 softness[gcounter][fibre_i-1]=np.sqrt(innerFN)/(innerFN_e*stiffness)
 

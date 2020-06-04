@@ -35,8 +35,8 @@ class IncompressibleArterialWallMixture(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        #self.has_low_level_dispatcher = True
-        self.has_low_level_dispatcher = False
+        self.has_low_level_dispatcher = True
+        #self.has_low_level_dispatcher = False
 
         # FIELD VARIABLES AS GROWTH_&_REMODELING AND/OR DEPOSITION STRETCHES, ETC
         self.has_growth_remodeling = True
@@ -63,7 +63,7 @@ class IncompressibleArterialWallMixture(Material):
             print(F)
             print(J)
             exit('Deformation Gradient is negative at element: '+str(elem)+' gauss: '+str(gcounter))
-        # Directional vector for element
+        # Directional tensor for element
         Normal = self.anisotropic_orientations[elem][0][:,None]
         Normal = np.dot(I,Normal)[:,0]
         Tangential = self.anisotropic_orientations[elem][1][:,None]
@@ -80,11 +80,8 @@ class IncompressibleArterialWallMixture(Material):
         outerNormal = einsum('i,j',Normal,Normal)
         outerTangential = I - outerNormal
         F_g = self.StateVariables[gcounter][20]*outerNormal + outerTangential
-        # Remodeling tensor for elastin
-        F_r = np.eye(3,3,dtype=np.float64)
-        F_r[0,0] = self.StateVariables[gcounter][0]
-        F_r[1,1] = self.StateVariables[gcounter][4]
-        F_r[2,2] = self.StateVariables[gcounter][8]
+        # Remodeling tensor for elastin (from cylindric to rectangular coordinates)
+        F_r = self.StateVariables[gcounter][0:9].reshape(3,3)
         F_r = np.dot(Rotation.T,np.dot(F_r,Rotation))
         # Elastin Growth and Remodeling tensor
         F_gr = np.dot(F_r,F_g)
@@ -250,6 +247,8 @@ class IncompressibleArterialWallMixture(Material):
         softness = np.zeros((5),dtype=np.float64)
         for fibre_i in [1,2,3,4,5]:
             fraction = self.StateVariables[gcounter][14+fibre_i]/(J*density0)
+            if fraction == 0.:
+                continue
             # Fibre direction
             N = self.anisotropic_orientations[elem][fibre_i][:,None]
             N = np.dot(I,N)[:,0]
@@ -286,6 +285,7 @@ class IncompressibleArterialWallMixture(Material):
 
     def LLConstituentStress(self,F,elem=0):
 
+        density0 = 1050.0
         gpoints = F.shape[0]
         fibre_stress = np.zeros((gpoints,5),dtype=np.float64)
         softness = np.zeros((gpoints,5),dtype=np.float64)
@@ -296,7 +296,9 @@ class IncompressibleArterialWallMixture(Material):
 
             #SMC AND COLLAGEN FIBRES
             for fibre_i in [1,2,3,4,5]:
-                anisotropic_term = 0.
+                fraction = self.StateVariables[gcounter][14+fibre_i]/(J*density0)
+                if fraction == 0.:
+                    continue
                 # Fibre direction
                 N = self.anisotropic_orientations[elem][fibre_i][:,None]
                 N = np.dot(I,N)[:,0]
@@ -312,12 +314,10 @@ class IncompressibleArterialWallMixture(Material):
                 lambda_r = self.StateVariables[gcounter][8+fibre_i]
                 # TOTAL deformation
                 innerFN = einsum('i,i',FN,FN)
-                outerFN = einsum('i,j',FN,FN)
                 # Elastic deformation
                 innerFN_e = innerFN/lambda_r**2
-                outerFN_e = outerFN/lambda_r**2
                 # Anisotropic Stress for this fibre
-                anisotropic_term = 2.*k1/J*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*outerFN_e
+                fibre_stress[gcounter][fibre_i-1] = 2.*k1*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*innerFN_e/(J*fraction)
                 # Active stress for SMC
                 if fibre_i is 1:
                     den0 = 1050.0
@@ -325,14 +325,10 @@ class IncompressibleArterialWallMixture(Material):
                     stretch_m = 1.4
                     stretch_a = 1.0
                     stretch_0 = 0.8
-                    anisotropic_term += (s_act/(J*den0*innerFN))*\
-                        (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*outerFN
-                # Stress in the direction of the component
-                outerN = einsum('i,j',N,N)
-                fibre_stress[gcounter][fibre_i-1] = np.tensordot(anisotropic_term,outerN)
+                    fibre_stress[gcounter][0] += (s_act/density0)*(1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)/(J*fraction)
                 # Fibre softness for remodeling
-                stiffness = 2.*(4.*k2*innerFN_e*(innerFN_e-1.)**2 + 4.*innerFN_e-2.)*k1/J*\
-                    np.sqrt(innerFN_e)*np.exp(k2*(innerFN_e-1.)**2)
-                softness[gcounter][fibre_i-1]=np.sqrt(innerFN)/(innerFN_e*stiffness)
+                stiffness = (8.*k2*innerFN_e*(innerFN_e-1.)**2 + 8.*innerFN_e-4.)*k1*\
+                    np.sqrt(innerFN_e)*np.exp(k2*(innerFN_e-1.)**2)/(J*fraction)
+                softness[gcounter][fibre_i-1] = np.sqrt(innerFN)/(innerFN_e*stiffness)
 
         return fibre_stress,softness

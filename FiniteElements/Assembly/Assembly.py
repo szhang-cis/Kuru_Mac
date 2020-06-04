@@ -84,7 +84,7 @@ def LowLevelAssembly(fem_solver, function_spaces, formulation, mesh, materials, 
                 mesh, material, Eulerx)
     else:
         stiffness, T, mass = _LowLevelAssembly_(fem_solver, function_spaces[0], formulation, mesh, 
-                material, Eulerx)
+                materials, Eulerx)
 
     # SET FLAG AGAIN - NECESSARY
     if ll_failed:
@@ -94,7 +94,7 @@ def LowLevelAssembly(fem_solver, function_spaces, formulation, mesh, materials, 
         mass = M
 
     if fem_solver.has_moving_boundary:
-        K_pressure, F_pressure = AssemblyFollowerForces(boundary_condition, mesh, material, 
+        K_pressure, F_pressure = AssemblyFollowerForces(boundary_condition, mesh, materials,
                 function_spaces, fem_solver, Eulerx)
         stiffness -= K_pressure
         T -= F_pressure

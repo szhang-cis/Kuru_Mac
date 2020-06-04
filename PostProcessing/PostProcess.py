@@ -173,6 +173,7 @@ class PostProcess(object):
             CauchyStress = np.zeros((ncommon_nodes_m,ndim,ndim))
             if self.gr_variables is not None:
                 FibreStress = np.zeros((ncommon_nodes_m,5))
+
             # LOOP OVER ELEMENTS
             for i in range(ncommon_nodes_m):
                 ielem = Elm[i]
@@ -187,8 +188,10 @@ class PostProcess(object):
 
                 if material.has_low_level_dispatcher:
 
+                    CauchyStressAux = np.zeros((nodeperelem,ndim,ndim))
+                    FibreStressAux = np.zeros((nodeperelem,5))
                     # GET LOCAL KINEMATICS
-                    SpatialGradient, F[elem,:,:,:], detJ, dV = _KinematicMeasures_(Jm, AllGauss[:,0],
+                    SpatialGradient, F[i,:,:,:], detJ, dV = _KinematicMeasures_(Jm, AllGauss[:,0],
                             LagrangeElemCoords, EulerELemCoords, requires_geometry_update)
                     # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
                     if material.is_incompressible:
@@ -201,9 +204,12 @@ class PostProcess(object):
                         material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
                     # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
-                    CauchyStressTensor[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=Els[elem])
-                    if material.has_state_variables:
-                        FibreStress[elem,:,:], _ = material.LLConstituentStress(F[elem,:,:,:],elem=Els[elem])
+                    counter = Pos[i]
+                    CauchyStressAux[:,:], _ = material.KineticMeasures(F[i,:,:,:],elem=elem)
+                    CauchyStress[i,:] = CauchyStressAux[counter,:]
+                    if self.gr_variables is not None:
+                        FibreStressAux[:,:], _ = material.LLConstituentStress(F[i,:,:,:],elem=elem)
+                        FibreStress[i,:] = FibreStressAux[counter,:]
 
                 else:
                     # GAUSS LOOP IN VECTORISED FORM
@@ -355,8 +361,11 @@ class PostProcess(object):
                     EulerELemCoords = Eulerx[elements[elem,:],:]
                     # GROWTH-REMODELING VALUES FOR THIS ELEMENT
                     if material.has_state_variables:
-                        material.state_variables[:,9:21] = self.gr_variables[imat][:,:,Increment]
-                        material.MappingStateVariables(mesh,Domain,elem)
+                        if self.gr_variables is None:
+                            material.MappingStateVariables(mesh,Domain,elem)
+                        elif self.gr_variables is not None:
+                            material.state_variables[:,9:21] = self.gr_variables[imat][:,:,Increment]
+                            material.MappingStateVariables(mesh,Domain,elem)
 
                     if material.has_low_level_dispatcher:
 
@@ -374,9 +383,9 @@ class PostProcess(object):
                             material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
                         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
-                        CauchyStress[elem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
-                        if material.has_state_variables:
-                            FibreStress[elem,:,:], _ = material.LLConstituentStress(F[elem,:,:,:],elem=elem)
+                        CauchyStress[ielem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
+                        if self.gr_variables is not None:
+                            FibreStress[ielem,:,:], _ = material.LLConstituentStress(F[elem,:,:,:],elem=elem)
 
                     else:
                         # GAUSS LOOP IN VECTORISED FORM
@@ -453,6 +462,155 @@ class PostProcess(object):
 
         self.recovered_fields = MainDict
         return
+
+    def ElasticDeformationGradientRecovery(self, steps=None, average_derived_quantities=True):
+
+        """
+            steps:          [list,np.1darray] for which time steps/increments the data should
+                            be recovered
+        """
+
+        if self.mesh is None:
+            raise ValueError("Mesh not set for post-processing")
+        if self.sol is None:
+            raise ValueError("Solution not set for post-processing")
+        if self.formulation is None:
+            raise ValueError("formulation not set for post-processing")
+        if self.materials is None:
+            raise ValueError("materials not set for post-processing")
+        if self.fem_solver is None:
+            raise ValueError("FEM solver not set for post-processing")
+
+        if self.sol.shape[1] > self.nvar:
+            return
+
+        det = np.linalg.det
+        inv = np.linalg.inv
+
+        mesh = self.mesh
+        fem_solver = self.fem_solver
+        formulation = self.formulation
+        materials = self.materials
+
+        # GET THE UNDERLYING LINEAR MESH
+        # lmesh = mesh.GetLinearMesh()
+        C = mesh.InferPolynomialDegree() - 1
+        ndim = mesh.InferSpatialDimension()
+
+        elements = mesh.elements
+        points = mesh.points
+        nelem = elements.shape[0]; npoint = points.shape[0]
+        nodeperelem = elements.shape[1]
+
+        # GET QUADRATURE
+        norder = 2*C
+        if norder == 0:
+            norder=1
+        # quadrature = QuadratureRule(qtype="gauss", norder=norder, mesh_type=mesh.element_type, optimal=3)
+        # Domain = FunctionSpace(mesh, quadrature, p=C+1)
+        Domain = FunctionSpace(mesh, p=C+1, evaluate_at_nodes=True)
+        Jm = Domain.Jm
+        AllGauss = Domain.AllGauss
+        Bases = Domain.Bases
+
+        # requires_geometry_update = fem_solver.requires_geometry_update
+        requires_geometry_update = True # ALWAYS TRUE FOR THIS ROUTINE
+        TotalDisp = self.sol[:,:]
+
+        if hasattr(self,"number_of_time_increments"):
+            TimeIncrement = self.number_of_time_increments
+        else:
+            TimeIncrement = fem_solver.number_of_time_increments
+        increments = range(TimeIncrement)
+        if steps is not None:
+            TimeIncrement = len(steps)
+            increments = steps
+
+        # COMPUTE THE COMMON/NEIGHBOUR NODES ONCE
+        all_nodes = np.unique(elements)
+        Elss, Poss = mesh.GetNodeCommonality()[:2]
+
+        I = np.eye(3,3,dtype=np.float64)
+        DeformationGradient = np.zeros((TimeIncrement,npoint,ndim,ndim))
+
+        for incr, Increment in enumerate(increments):
+
+            if TotalDisp.ndim == 3:
+                Eulerx = points + TotalDisp[:,:ndim,Increment]
+            else:
+                Eulerx = points + TotalDisp[:,:ndim]
+
+            F_e = np.zeros((nelem,ndim,ndim))
+
+            for imat in range(len(materials)):
+                material = materials[imat]
+                # LOOP OVER ELEMENTS
+                for ielem in range(material.element_set.shape[0]):
+                    elem = material.element_set[ielem]
+                    # GET THE FIELDS AT THE ELEMENT LEVEL
+                    LagrangeElemCoords = points[elements[elem,:],:]
+                    EulerELemCoords = Eulerx[elements[elem,:],:]
+                    # GROWTH-REMODELING VALUES FOR THIS ELEMENT
+                    if material.has_state_variables:
+                        if self.gr_variables is None:
+                            material.MappingStateVariables(mesh,Domain,elem)
+                        elif self.gr_variables is not None:
+                            material.state_variables[:,9:21] = self.gr_variables[imat][:,:,Increment]
+                            material.MappingStateVariables(mesh,Domain,elem)
+
+                    if material.has_low_level_dispatcher:
+                        # GET LOCAL KINEMATICS
+                        SpatialGradient, F, detJ, dV = _KinematicMeasures_(Jm, AllGauss[:,0],
+                                LagrangeElemCoords, EulerELemCoords, requires_geometry_update)
+
+                    else:
+                        # GAUSS LOOP IN VECTORISED FORM
+                        ParentGradientX = np.einsum('ijk,jl->kil', Jm, LagrangeElemCoords)
+                        # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N)]
+                        MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
+                        # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N)]
+                        F = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
+
+                    # Directional tensor for element
+                    Normal = material.anisotropic_orientations[elem][0][:,None]
+                    Normal = np.dot(I,Normal)[:,0]
+                    Tangential = material.anisotropic_orientations[elem][1][:,None]
+                    Tangential = np.dot(I,Tangential)[:,0]
+                    Axial = material.anisotropic_orientations[elem][2][:,None]
+                    Axial = np.dot(I,Axial)[:,0]
+                    Rotation = np.eye(3,3,dtype=np.float64)
+                    for i in range(3):
+                        Rotation[0,i] = Normal[i]
+                        Rotation[1,i] = Tangential[i]
+                        Rotation[2,i] = Axial[i]
+
+                    for counter in range(AllGauss.shape[0]):
+                        # cylindric world
+                        F_r = material.StateVariables[counter][0:9].reshape(3,3)
+                        F_r_inv = np.linalg.inv(F_r)
+                        F[counter,:,:] = np.dot(Rotation,np.dot(F[counter,:,:],Rotation.T))
+                        F_e[elem,:,:] += np.dot(F[counter,:,:],F_r_inv)
+                    F_e[elem,:,:] /= AllGauss.shape[0]
+
+            if average_derived_quantities:
+                for inode in all_nodes:
+                    Els, Pos = Elss[inode], Poss[inode]
+                    ncommon_nodes = Els.shape[0]
+                    for uelem in range(ncommon_nodes):
+                        DeformationGradient[incr,inode,:,:] += F_e[Els[uelem],:,:]
+                    # AVERAGE OUT
+                    DeformationGradient[incr,inode,:,:] /= ncommon_nodes
+            else:
+                for inode in all_nodes:
+                    Els, Pos = Elss[inode], Poss[inode]
+                    ncommon_nodes = Els.shape[0]
+                    uelem = 0
+                    DeformationGradient[incr,inode,:,:] = F_e[Els[uelem],:,:]
+
+
+        self.elastic_deformation_gradient = DeformationGradient
+        return
+
 
     def QuantityNamer(self, num, print_name=True):
         """Returns the quantity (for augmented solution i.e. primary and recovered variables)
@@ -927,24 +1085,25 @@ class PostProcess(object):
         if C == 0:
             write_curved_mesh = False
 
-        nnode = 0
-        for imat in range(len(self.materials)):
-            nnode += self.materials[imat].node_set.shape[0]
-            self.materials[imat].ConectivityOfMaterial(self.mesh)
+        if self.sol.shape[1]>3:
+            nnode = 0
+            for imat in range(len(self.materials)):
+                nnode += self.materials[imat].node_set.shape[0]
+                self.materials[imat].ConectivityOfMaterial(self.mesh)
 
-        points = np.zeros((nnode,self.mesh.points.shape[1]),dtype=np.float64)
-        elements = np.zeros((self.mesh.elements.shape[0],self.mesh.elements.shape[1]),dtype=np.int64)
-        nstart = 0; nend = 0
-        elstart = 0; elend = 0
-        for imat in range(len(self.materials)):
-            nend += self.materials[imat].node_set.shape[0]
-            elend += self.materials[imat].element_set.shape[0]
-            points[nstart:nend,:] = self.mesh.points[self.materials[imat].node_set]
-            elements[elstart:elend,:] = nstart + self.materials[imat].elements
-            nstart += self.materials[imat].node_set.shape[0]
-            elstart += self.materials[imat].element_set.shape[0]
-        self.mesh.points = points
-        self.mesh.elements = elements
+            points = np.zeros((nnode,self.mesh.points.shape[1]),dtype=np.float64)
+            elements = np.zeros((self.mesh.elements.shape[0],self.mesh.elements.shape[1]),dtype=np.int64)
+            nstart = 0; nend = 0
+            elstart = 0; elend = 0
+            for imat in range(len(self.materials)):
+                nend += self.materials[imat].node_set.shape[0]
+                elend += self.materials[imat].element_set.shape[0]
+                points[nstart:nend,:] = self.mesh.points[self.materials[imat].node_set]
+                elements[elstart:elend,:] = nstart + self.materials[imat].elements
+                nstart += self.materials[imat].node_set.shape[0]
+                elstart += self.materials[imat].element_set.shape[0]
+            self.mesh.points = points
+            self.mesh.elements = elements
 
         # GET LINEAR MESH & SOLUTION
         lmesh, sol = self.mesh.GetLinearMesh(remap=True,solution=self.sol)

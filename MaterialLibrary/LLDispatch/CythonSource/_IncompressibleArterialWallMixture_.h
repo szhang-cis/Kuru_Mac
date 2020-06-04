@@ -13,8 +13,8 @@ public:
 
     FASTOR_INLINE
     _IncompressibleArterialWallMixture_(U mu, U k1m, U k2m, U k1c, U k2c) {
-        this->mu = mu;
-    	this->k1m = k1m;
+    this->mu = mu;
+    this->k1m = k1m;
 	this->k2m = k2m;
 	this->k1c = k1c;
 	this->k2c = k2c;
@@ -22,7 +22,7 @@ public:
 
     FASTOR_INLINE
     void SetParameters(U mu, U k1m, U k2m, U k1c, U k2c){
-        this->mu = mu;
+    this->mu = mu;
 	this->k1m = k1m;
 	this->k2m = k2m;
 	this->k1c = k1c;
@@ -36,23 +36,23 @@ public:
     _KineticMeasures_(const T *Fnp, const T *Nnp, int nfibre, const T *SVnp, const T pressure)
     {
 
-        // CREATE FASTOR TENSORS
+    // CREATE FASTOR TENSORS
 	// deformation gradient
-        Tensor<T,ndim,ndim> F;
+    Tensor<T,ndim,ndim> F;
 	// local rotation tensor
-        Tensor<T,ndim,ndim> R;
+    Tensor<T,ndim,ndim> R;
 	Tensor<T,ndim> Normal;
 	// elastin deposition stretch in cylindrcal coordinates
-        Tensor<T,ndim,ndim> F_r;
-        // COPY NUMPY ARRAY TO FASTOR TENSORS
-        copy_numpy(F,Fnp);
-        copy_numpy(R,Nnp);
+    Tensor<T,ndim,ndim> F_r;
+    // COPY NUMPY ARRAY TO FASTOR TENSORS
+    copy_numpy(F,Fnp);
+    copy_numpy(R,Nnp);
 	copy_numpy(Normal,Nnp);
-        copy_numpy(F_r,SVnp);
+    copy_numpy(F_r,SVnp);
 
-        // FIND THE KINEMATIC MEASURES
-        Tensor<Real,ndim,ndim> I; I.eye2();
-        auto J = determinant(F);
+    // FIND THE KINEMATIC MEASURES
+    Tensor<Real,ndim,ndim> I; I.eye2();
+    auto J = determinant(F);
 
 	// Growth tensor definition
 	auto outerNormal = outer(Normal,Normal);
@@ -68,28 +68,28 @@ public:
 	// COMPUTE CAUCHY STRESS TENSOR FOR ELASTIN
 	auto F_e = matmul(F,F_gr_inv);
 	auto J_e = determinant(F_e);
-        auto b_e = matmul(F_e,transpose(F_e));
+    auto b_e = matmul(F_e,transpose(F_e));
 	T trb = trace(b_e);
 	if (ndim==2) { trb += 1.; }
 	T coeff0 = std::pow(J_e,-2./3.);
-        Tensor<T,ndim,ndim> stress = (mu*coeff0*(b_e-1./3.*trb*I) + J_e*pressure*I)*SVnp[14]/J;
+    Tensor<T,ndim,ndim> stress = (mu*coeff0*(b_e-1./3.*trb*I) + J_e*pressure*I)*SVnp[14]/J;
 
-        // FIND ELASTICITY TENSOR FOR ELASTIN
-        auto II_ijkl = einsum<Index<i,j>,Index<k,l>>(I,I);
-        auto II_ikjl = permutation<Index<i,k,j,l>>(II_ijkl);
-        auto II_iljk = permutation<Index<i,l,j,k>>(II_ijkl);
+    // FIND ELASTICITY TENSOR FOR ELASTIN
+    auto II_ijkl = einsum<Index<i,j>,Index<k,l>>(I,I);
+    auto II_ikjl = permutation<Index<i,k,j,l>>(II_ijkl);
+    auto II_iljk = permutation<Index<i,l,j,k>>(II_ijkl);
 
 	auto Ib_ijkl = einsum<Index<i,j>,Index<k,l>>(I,b_e);
 	auto bI_ijkl = einsum<Index<i,j>,Index<k,l>>(b_e,I);
 
-        Tensor<T,ndim,ndim,ndim,ndim> elasticity = (2.*mu*coeff0*(1./9.*trb*II_ijkl-
-			1./3.*(Ib_ijkl+bI_ijkl)+1./6.*trb*(II_ikjl+II_iljk))+
-			pressure*J_e*(II_ijkl-(II_ikjl+II_iljk)))*SVnp[14]/J;
+    Tensor<T,ndim,ndim,ndim,ndim> elasticity = (2.*mu*coeff0*(1./9.*trb*II_ijkl-
+		1./3.*(Ib_ijkl+bI_ijkl)+1./6.*trb*(II_ikjl+II_iljk))+
+		pressure*J_e*(II_ijkl-(II_ikjl+II_iljk)))*SVnp[14]/J;
 
 	// LOOP OVER FIBRES ORIENTATIONS
 	for (int n=1; n<nfibre; ++n) {
-           Tensor<T,ndim> N;
-           copy_numpy(N,Nnp+3*n);
+       Tensor<T,ndim> N;
+       copy_numpy(N,Nnp+3*n);
 	   auto FN = matmul(F,N);
 	   // Remodeling stretch along the fibre
 	   T lambda_r = SVnp[8+n];

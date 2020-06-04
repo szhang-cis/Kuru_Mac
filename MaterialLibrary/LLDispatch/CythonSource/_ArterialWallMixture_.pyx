@@ -23,7 +23,7 @@ cdef extern from "_ArterialWallMixture_.h" nogil:
 def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,
         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
         np.ndarray[Real,ndim=2,mode='c'] state_variables):
-    
+
     cdef int ndim = F.shape[2]
     cdef int ngauss = F.shape[0]
     cdef int nfibre = anisotropic_orientations.shape[0]

@@ -237,7 +237,7 @@ class GrowthRemodelingIntegrator(object):
                     material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
                 # COMPUTE FIBRE STRESS AND SOFTNESS
-                FibreStress[ielem,:,:],Softness[ielem,:,:] = material.LLConstituentStress(F[ielem,:,:,:],elem)
+                ElemFibreStress[ielem,:,:],ElemSoftness[ielem,:,:] = material.LLConstituentStress(F[ielem,:,:,:],elem)
 
             else:
                 # GAUSS LOOP IN VECTORISED FORM
@@ -292,7 +292,7 @@ class GrowthRemodelingIntegrator(object):
 
         return FibreStress,Softness
 
-    def RatesGrowthRemodeling(self, mesh, material, FibreStress, Softness, imat=0):
+    def RatesGrowthRemodeling(self, mesh, materials, FibreStress, Softness, imat=0):
         """ This are the rates of Growth and Rmodeling
         """
 
@@ -301,40 +301,51 @@ class GrowthRemodelingIntegrator(object):
 
         #k_s = np.zeros((),dytpe=)
         k_s = self.gain/self.turnover
-        Rates = np.zeros((material.node_set.shape[0],10),dtype=np.float64)
+        Rates = np.zeros((materials[imat].node_set.shape[0],10),dtype=np.float64)
+
         # choose a mode of collagen addition, either self-driven or muscle-driven
+        # each fibre density is driven by its own stress
         if self.density_turnover is "self":
-            for node in range(material.node_set.shape[0]):
+            for node in range(materials[imat].node_set.shape[0]):
                 for fibre in range(5):
-                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[imat][node,fibre]
+                    if self.HomeostaticStress[imat][node,fibre] == 0.:
+                        continue
+                    DeltaStress = FibreStress[imat][node,fibre] - self.HomeostaticStress[imat][node,fibre]
                     # Fibre density rate
-                    Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*\
+                    Rates[node,fibre+5] = k_s*materials[imat].state_variables[node,fibre+15]*\
                         DeltaStress/self.HomeostaticStress[imat][node,fibre]
                     # Fibre remodeling rate
-                    Rates[node,fibre] = (Rates[node,fibre+5]/material.state_variables[node,fibre+15] + \
-                        1./self.turnover)*DeltaStress*Softness[node,fibre]
+                    Rates[node,fibre] = (Rates[node,fibre+5]/materials[imat].state_variables[node,fibre+15] + \
+                        1./self.turnover)*DeltaStress*Softness[imat][node,fibre]
+
+        # each fibre density is driven by muscle stress
         elif self.density_turnover is "muscle":
-            for node in range(material.node_set.shape[0]):
+            for node in range(materials[imat].node_set.shape[0]):
                 for fibre in range(5):
-                    DeltaStress_m = FibreStress[node,0] - self.HomeostaticStress[imat][node,0]
-                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[imat][node,fibre]
+                    if self.HomeostaticStress[imat][node,fibre] == 0.:
+                        continue
+                    # assuming the material 0 is the media
+                    DeltaStress_m = FibreStress[0][node,0] - self.HomeostaticStress[0][node,0]
+                    DeltaStress = FibreStress[imat][node,fibre] - self.HomeostaticStress[imat][node,fibre]
                     # Fibre density rate
-                    Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*\
-                        DeltaStress_m/self.HomeostaticStress[imat][node,0]
+                    Rates[node,fibre+5] = k_s*materials[imat].state_variables[node,fibre+15]*\
+                        DeltaStress_m/self.HomeostaticStress[0][node,0]
                     # Fibre remodeling rate
-                    Rates[node,fibre] = (Rates[node,fibre+5]/material.state_variables[node,fibre+15] + \
-                        1./self.turnover)*DeltaStress*Softness[node,fibre]
+                    Rates[node,fibre] = (Rates[node,fibre+5]/materials[imat].state_variables[node,fibre+15] + \
+                        1./self.turnover)*DeltaStress*Softness[imat][node,fibre]
+
+        # each fibre density is driven by its own stress and mass is added just when de delta is positive
         elif self.density_turnover is "self_sgn":
-            for node in range(material.node_set.shape[0]):
+            for node in range(materials[imat].node_set.shape[0]):
                 for fibre in range(5):
-                    DeltaStress = FibreStress[node,fibre] - self.HomeostaticStress[imat][node,fibre]
+                    DeltaStress = FibreStress[imat][node,fibre] - self.HomeostaticStress[imat][node,fibre]
                     if DeltaStress > 0.0:
                         # Fibre density rate
-                        Rates[node,fibre+5] = k_s*material.state_variables[node,fibre+15]*\
+                        Rates[node,fibre+5] = k_s*materials[imat].state_variables[node,fibre+15]*\
                             DeltaStress/self.HomeostaticStress[imat][node,fibre]
                         # Fibre remodeling rate
-                        Rates[node,fibre] = (Rates[node,fibre+5]/material.state_variables[node,fibre+15] + \
-                            1./self.turnover)*DeltaStress*Softness[node,fibre]
+                        Rates[node,fibre] = (Rates[node,fibre+5]/materials[imat].state_variables[node,fibre+15] + \
+                            1./self.turnover)*DeltaStress*Softness[imat][node,fibre]
                     else:
                         # Fibre density rate
                         Rates[node,fibre+5] = 0.0
@@ -343,4 +354,5 @@ class GrowthRemodelingIntegrator(object):
 
 
         return Rates
+
 

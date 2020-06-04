@@ -21,7 +21,7 @@ def _KinematicMeasures_(np.ndarray[Real, ndim=3, mode='c'] Jm,
     np.ndarray[Real, ndim=1] AllGauss,
     np.ndarray[Real, ndim=2, mode='c'] LagrangeElemCoords, 
     np.ndarray[Real, ndim=2, mode='c'] EulerElemCoords, requires_geometry_update):
-    
+
     cdef int ndim = Jm.shape[0]
     cdef int nodeperelem = Jm.shape[1]
     cdef int ngauss = Jm.shape[2]

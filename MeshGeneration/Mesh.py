@@ -1056,6 +1056,7 @@ class Mesh(object):
             if isinstance(self.faces,np.ndarray):
                 self.faces = np.ascontiguousarray(self.faces.astype(np.uint64))
 
+    @property
     def IsHighOrder(self):
         is_high_order = False
         if self.InferPolynomialDegree() > 1:

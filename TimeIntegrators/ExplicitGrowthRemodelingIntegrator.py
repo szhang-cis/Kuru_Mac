@@ -24,9 +24,14 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
     def __init__(self, gain, turnover, **kwargs):
         super(ExplicitGrowthRemodelingIntegrator, self).__init__(gain, turnover, **kwargs)
 
+
+
     def Solver(self, function_spaces, formulation, solver,
         K, NeumannForces, NodalForces, Residual,
         mesh, TotalDisp, Eulerx, materials, boundary_condition, fem_solver):
+
+        if len(materials)>1 and self.density_turnover=="muscle":
+            warn("More than one material. I will assume the first material is the Media")
 
         GRVariables = [[] for i in range(len(materials))]
         for imat in range(len(materials)):
@@ -58,11 +63,12 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             # COMPUTE THE GROWTH AND REMODELING
             if TIncrement != 0:
                 for imat in range(len(materials)):
-                    Rates = self.RatesGrowthRemodeling(mesh, materials[imat], FibreStress[imat], Softness[imat], imat)
+                    Rates = self.RatesGrowthRemodeling(mesh, materials, FibreStress, Softness, imat)
                     GRVariables[imat][:,:,TIncrement] = self.ExplicitGrowthRemodeling(mesh, materials[imat],
                         IncrementalTime, Delta_t, Rates)
             else:
                 for imat in range(len(materials)):
+                    materials[imat].den0_e = np.copy(materials[imat].state_variables[:,14])
                     GRVariables[imat][:,:,0] = materials[imat].state_variables[:,9:21]
             IncrementalLoad = 1.0
 
@@ -158,7 +164,6 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
         # Elastin degradation
         den0_tot = 1050.0
-        den0_e = 241.5
         D_max = 0.5
         L_dam = 0.010
         t_dam = 40.0
@@ -168,8 +173,8 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         for node in range(material.node_set.shape[0]):
             # Elastin function density in time f(t), analytic solution
             AxialCoord = mesh.points[material.node_set[node],1]
-            material.state_variables[node,14] = den0_e*np.exp(-IncrementalTime/T_ela) + \
-                den0_e*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(AxialCoord/L_dam)**2)*\
+            material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela) + \
+                material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(AxialCoord/L_dam)**2)*\
                 (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))
             # Time Integration of fibre densities
             for fibre in range(5):

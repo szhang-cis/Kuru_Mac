@@ -425,6 +425,8 @@ class FEMSolver(object):
         post_process.SetFEMSolver(self)
         if gr_variables is not None:
             post_process.SetGrowthRemodeling(gr_variables)
+        else:
+            post_process.SetGrowthRemodeling(None)
 
         if self.compute_mesh_qualities and self.is_scaled_jacobian_computed is False:
             # COMPUTE QUALITY MEASURES
@@ -508,14 +510,20 @@ class FEMSolver(object):
                     self.number_of_time_increments) }
 
         # ALLOCATE FOR SOLUTION FIELDS
-        if self.save_frequency == 1:
-            TotalDisp = np.zeros((mesh.points.shape[0],formulation.nvar,
-                self.number_of_time_increments),dtype=np.float64)
-                #self.number_of_load_increments),dtype=np.float64)
+        if self.has_growth_remodeling:
+            if self.save_frequency == 1:
+                TotalDisp = np.zeros((mesh.points.shape[0],formulation.nvar,
+                    self.number_of_time_increments),dtype=np.float64)
+            else:
+                TotalDisp = np.zeros((mesh.points.shape[0],formulation.nvar,
+                    int(self.number_of_time_increments/self.save_frequency)),dtype=np.float64)
         else:
-            TotalDisp = np.zeros((mesh.points.shape[0],formulation.nvar,
-                int(self.number_of_time_increments/self.save_frequency)),dtype=np.float64)
-                #int(self.number_of_load_increments/self.save_frequency)),dtype=np.float64)
+            if self.save_frequency == 1:
+                TotalDisp = np.zeros((mesh.points.shape[0],formulation.nvar,
+                    self.number_of_load_increments),dtype=np.float64)
+            else:
+                TotalDisp = np.zeros((mesh.points.shape[0],formulation.nvar,
+                    int(self.number_of_load_increments/self.save_frequency)),dtype=np.float64)
 
         # PRE-ASSEMBLY
         print('Assembling the system and acquiring neccessary information for the analysis...')

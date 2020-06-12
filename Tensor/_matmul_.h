@@ -1,9 +1,13 @@
 #ifndef __MATMUL__H
 #define __MATMUL__H
 
-#include <Fastor.h>
+#include "Fastor/Fastor.h"
 
 using Fastor::SIMDVector;
+using Fastor::_mm_loadul3_ps;
+using Fastor::_mm256_loadul3_pd;
+using Fastor::_mm_storeul3_ps;
+using Fastor::_mm256_storeul3_pd;
 
 #ifdef __AVX__
 
@@ -32,7 +36,7 @@ void _matmul_2k2(size_t K, const double * FASTOR_RESTRICT a, const double * FAST
         out_row1 = _mm_fmadd_pd(a_vec1,brow,out_row1);
 #endif
     }
-    _mm_store_pd(out,out_row0);
+    _mm_storeu_pd(out,out_row0);
     _mm_storeu_pd(out+2,out_row1);
 }
 
@@ -62,7 +66,7 @@ void _matmul_2k2(size_t K, const float * FASTOR_RESTRICT a, const float * FASTOR
         out_row1 = _mm_fmadd_ps(a_vec1,brow,out_row1);
 #endif
     }
-    _mm_store_ps(out,_mm_shuffle_ps(out_row0,out_row1,_MM_SHUFFLE(1,0,1,0)));
+    _mm_storeu_ps(out,_mm_shuffle_ps(out_row0,out_row1,_MM_SHUFFLE(1,0,1,0)));
 }
 
 
@@ -98,9 +102,9 @@ void _matmul_3k3(size_t K, const double * FASTOR_RESTRICT a, const double * FAST
         out_row2 = _mm256_fmadd_pd(a_vec2,brow,out_row2);
 #endif
     }
-    _mm256_store_pd(out,out_row0);
-    _mm256_storeu_pd(out+3,out_row1);
-    _mm256_storeu_pd(out+6,out_row2);
+    _mm256_storeu_pd  (out,out_row0);
+    _mm256_storeu_pd  (out+3,out_row1);
+    _mm256_storeul3_pd(out+6,out_row2);
 }
 
 
@@ -137,9 +141,9 @@ void _matmul_3k3(size_t K, const float * FASTOR_RESTRICT a, const float * FASTOR
 #endif
 
     }
-    _mm_store_ps(out,out_row0);
-    _mm_storeu_ps(out+3,out_row1);
-    _mm_storeu_ps(out+6,out_row2);
+    _mm_storeu_ps  (out    , out_row0);
+    _mm_storeu_ps  (&out[3], out_row1);
+    _mm_storeul3_ps(&out[6], out_row2);
 }
 
 
@@ -150,48 +154,21 @@ FASTOR_INLINE
 void _matmul_22k(size_t N, const T* FASTOR_RESTRICT a, const T* FASTOR_RESTRICT b, T* FASTOR_RESTRICT out) {
 
 
-    using V256 = SIMDVector<T,256>;
-    using V128 = SIMDVector<T,128>;
+    using V = SIMDVector<T,Fastor::simd_abi::avx>;
     constexpr size_t M = 2;
 
-    constexpr size_t SIZE_AVX = V256::Size;
-    constexpr size_t SIZE_SSE = V128::Size;
+    constexpr size_t SIZE_AVX = V::Size;
     const size_t ROUND_AVX = ROUND_DOWN(N,SIZE_AVX);
-    const size_t ROUND_SSE = ROUND_DOWN(N,SIZE_SSE);
 
     size_t k=0;
     for (; k<ROUND_AVX; k+=SIZE_AVX) {
-
-        V256 out_row0, out_row1, vec_a0, vec_a1;
+        V out_row0, out_row1, vec_a0, vec_a1;
         for (size_t i=0; i<2; ++i) {
-            V256 brow; brow.load(&b[i*N+k],false);
+            V brow(&b[i*N+k],false);
             vec_a0.set(a[i]);
             vec_a1.set(a[i+M]);
-#ifndef __FMA__
-            out_row0 += vec_a0*brow;
-            out_row1 += vec_a1*brow;
-#else
             out_row0 = fmadd(vec_a0,brow,out_row0);
             out_row1 = fmadd(vec_a1,brow,out_row1);
-#endif
-        }
-        out_row0.store(out+k,false);
-        out_row1.store(out+N+k,false);
-    }
-
-    for (; k<ROUND_SSE; k+=SIZE_SSE) {
-        V128 out_row0, out_row1, vec_a0, vec_a1, brow;
-        for (size_t i=0; i<2; ++i) {
-            V128 brow; brow.load(&b[i*N+k],false);
-            vec_a0.set(a[i]);
-            vec_a1.set(a[i+M]);
-#ifndef __FMA__
-            out_row0 += vec_a0*brow;
-            out_row1 += vec_a1*brow;
-#else
-            out_row0 = fmadd(vec_a0,brow,out_row0);
-            out_row1 = fmadd(vec_a1,brow,out_row1);
-#endif
         }
         out_row0.store(out+k,false);
         out_row1.store(out+N+k,false);
@@ -216,55 +193,23 @@ FASTOR_INLINE
 void _matmul_33k(size_t N, const T* FASTOR_RESTRICT a, const T* FASTOR_RESTRICT b, T* FASTOR_RESTRICT out) {
 
 
-    using V256 = SIMDVector<T,256>;
-    using V128 = SIMDVector<T,128>;
+    using V = SIMDVector<T,Fastor::simd_abi::avx>;
     constexpr size_t M = 3;
 
-    constexpr size_t SIZE_AVX = V256::Size;
-    constexpr size_t SIZE_SSE = V128::Size;
-    const size_t ROUND_AVX = ROUND_DOWN(N,SIZE_AVX);
-    const size_t ROUND_SSE = ROUND_DOWN(N,SIZE_SSE);
+    const size_t ROUND_ = ROUND_DOWN(N,V::Size);
 
     size_t k=0;
-    for (; k<ROUND_AVX; k+=SIZE_AVX) {
-
-        V256 out_row0, out_row1, out_row2, vec_a0, vec_a1, vec_a2;
+    for (; k<ROUND_; k+=V::Size) {
+        V out_row0, out_row1, out_row2, vec_a0, vec_a1, vec_a2;
         for (size_t i=0; i<3; ++i) {
-            V256 brow; brow.load(&b[i*N+k],false);
+            V brow(&b[i*N+k],false);
             vec_a0.set(a[i]);
             vec_a1.set(a[i+M]);
             vec_a2.set(a[i+2*M]);
-#ifndef __FMA__
-            out_row0 += vec_a0*brow;
-            out_row1 += vec_a1*brow;
-            out_row2 += vec_a2*brow;
-#else
-            out_row0 = fmadd(vec_a0,brow,out_row0);
-            out_row1 = fmadd(vec_a1,brow,out_row1);
-            out_row2 = fmadd(vec_a2,brow,out_row2);
-#endif
-        }
-        out_row0.store(out+k,false);
-        out_row1.store(out+N+k,false);
-        out_row2.store(out+2*N+k,false);
-    }
 
-    for (; k<ROUND_SSE; k+=SIZE_SSE) {
-        V128 out_row0, out_row1, out_row2, vec_a0, vec_a1, vec_a2;
-        for (size_t i=0; i<3; ++i) {
-            V128 brow; brow.load(&b[i*N+k],false);
-            vec_a0.set(a[i]);
-            vec_a1.set(a[i+M]);
-            vec_a2.set(a[i+2*M]);
-#ifndef __FMA__
-            out_row0 += vec_a0*brow;
-            out_row1 += vec_a1*brow;
-            out_row2 += vec_a2*brow;
-#else
             out_row0 = fmadd(vec_a0,brow,out_row0);
             out_row1 = fmadd(vec_a1,brow,out_row1);
             out_row2 = fmadd(vec_a2,brow,out_row2);
-#endif
         }
         out_row0.store(out+k,false);
         out_row1.store(out+N+k,false);
@@ -279,11 +224,12 @@ void _matmul_33k(size_t N, const T* FASTOR_RESTRICT a, const T* FASTOR_RESTRICT 
             out_row1 += a[i+M]*brow;
             out_row2 += a[i+2*M]*brow;
         }
-        out[k] = out_row0;
-        out[N+k] = out_row1;
+        out[k]     = out_row0;
+        out[N+k]   = out_row1;
         out[2*N+k] = out_row2;
     }
 }
+
 
 
 #endif
@@ -315,40 +261,18 @@ void _matmul_(size_t M, size_t N, size_t K, const T * FASTOR_RESTRICT a, const T
     }
 #endif
 
-    using V256 = SIMDVector<T,256>;
-    using V128 = SIMDVector<T,128>;
-
-    constexpr size_t SIZE_AVX = V256::Size;
-    constexpr size_t SIZE_SSE = V128::Size;
-    const size_t ROUND_AVX = ROUND_DOWN(N,SIZE_AVX);
-    const size_t ROUND_SSE = ROUND_DOWN(N,SIZE_SSE);
+    using V = SIMDVector<T,Fastor::simd_abi::avx>;
+    constexpr size_t SIZE_AVX = V::Size;
+    const size_t N0 = ROUND_DOWN(N,SIZE_AVX);
 
     for (size_t j=0; j<M; ++j) {
         size_t k=0;
-        for (; k<ROUND_AVX; k+=SIZE_AVX) {
-            V256 out_row, vec_a;
+        for (; k<N0; k+=SIZE_AVX) {
+            V out_row, vec_a;
             for (size_t i=0; i<K; ++i) {
-                V256 brow; brow.load(&b[i*N+k],false);
+                V brow; brow.load(&b[i*N+k],false);
                 vec_a.set(a[j*K+i]);
-#ifndef __FMA__
-                out_row += vec_a*brow;
-#else
                 out_row = fmadd(vec_a,brow,out_row);
-#endif
-            }
-            out_row.store(out+k+N*j,false);
-        }
-
-        for (; k<ROUND_SSE; k+=SIZE_SSE) {
-            V128 out_row, vec_a;
-            for (size_t i=0; i<K; ++i) {
-                V128 brow; brow.load(&b[i*N+k],false);
-                vec_a.set(a[j*K+i]);
-#ifndef __FMA__
-                out_row += vec_a*brow;
-#else
-                out_row = fmadd(vec_a,brow,out_row);
-#endif
             }
             out_row.store(out+k+N*j,false);
         }

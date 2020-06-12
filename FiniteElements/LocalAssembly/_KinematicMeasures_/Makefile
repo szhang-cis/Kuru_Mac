@@ -19,7 +19,7 @@ ENTER = cd
 ADDITIONAL_FLAGS =
 
 FASTOR_OPTFLAGS = -DFASTOR_NO_ALIAS -DFASTOR_USE_VECTORISED_EXPR_ASSIGN -DCONTRACT_OPT=2 -DFASTOR_NO_STATIC_WARNING
-FASTOR_INCLUDE_PATH = /usr/local/include/Fastor
+FASTOR_INCLUDE_PATH = /usr/local/include/Fastor/
 KINEMATICS =
 
 INLINE_THRESHOLD = 100000
@@ -27,7 +27,7 @@ CXXSTD=-std=c++14
 OPTFLAGS= -O3 -fno-strict-aliasing -DNDEBUG
 CXXFLAGS= -fPIC -shared -pthread -Wall $(CYTHONFLAGS) $(OPTFLAGS)
 
-NUMPY_INCLUDE_PATH = /usr/local/lib/python2.7/dist-packages/numpy/core/include
+NUMPY_INCLUDE_PATH = /usr/lib/python2.7/dist-packages/numpy/core/include
 
 ifeq ($(findstring g++,$(CXX)),g++)
 ifneq ($(findstring clang++,$(CXX)),clang++)

@@ -8,7 +8,7 @@
 #include <mm_malloc.h>
 #endif
 
-#include <Fastor.h>
+#include <Fastor/Fastor.h>
 #include "SparseAssemblyNative.h"
 
 #ifndef LL_TYPES

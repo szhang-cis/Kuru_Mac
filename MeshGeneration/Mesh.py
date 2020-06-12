@@ -781,8 +781,7 @@ class Mesh(object):
             #self.ReadFenics(filename, element_type)
             raise ValueError("Reader not implemented yet")
         elif self.reader_type is 'vtu':
-            #self.ReadVTK(filename)
-            raise ValueError("Reader not implemented yet")
+            self.ReadVTK(filename)
         elif self.reader_type is 'unv':
             #self.ReadUNV(filename, element_type)
             raise ValueError("Reader not implemented yet")
@@ -792,7 +791,7 @@ class Mesh(object):
         elif self.reader_type is 'read_separate':
             # READ MESH FROM SEPARATE FILES FOR CONNECTIVITY AND COORDINATES
             raise ValueError("Reader not implemented yet")
-            from Florence.Utils import insensitive
+            from Kuru.Utils import insensitive
             # return insensitive(kwargs.keys())
             #for key in kwargs.keys():
             #    inkey = insensitive(key)
@@ -811,6 +810,91 @@ class Mesh(object):
         # MAKE SURE MESH DATA IS CONTIGUOUS
         self.points   = np.ascontiguousarray(self.points)
         self.elements = np.ascontiguousarray(self.elements)
+        return
+        
+    def ReadVTK(self, filename, element_type=None):
+        """Read mesh from a vtu file"""
+
+        try:
+            import vtk
+        except IOError:
+            raise IOError("vtk is not installed. Please install it first using 'pip install vtk'")
+
+        self.__reset__()
+
+        reader = vtk.vtkXMLUnstructuredGridReader()
+        reader.SetFileName(filename)
+        reader.Update()
+        vmesh = reader.GetOutput()
+        
+        npieces = vmesh.GetNumberOfPieces()
+        if npieces > 1:
+            raise IOError("VTK reader is not prepare to read more than one piece.")
+        
+        piece = vmesh.GetPiece()
+
+        flat_elements, celltypes, element_to_set = [], [], []
+        for cellid in range(vmesh.GetNumberOfCells()):
+            cell = vmesh.GetCell(cellid)
+            celltypes.append(vmesh.GetCellType(cellid))
+            element_to_set.append(piece)
+            for ptid in range(cell.GetNumberOfPoints()):
+                flat_elements.append(cell.GetPointId(ptid))
+                
+        celltypes = np.array(celltypes, copy=True)
+        flat_elements = np.array(flat_elements, copy=True)
+
+        if not np.all(celltypes == celltypes[0]):
+            raise IOError("Cannot read VTK files with hybrid elements")
+
+        cellflag = celltypes[0]
+
+        if cellflag == 5:
+            self.element_type = "tri"
+            divider = 3
+        elif cellflag == 9:
+            self.element_type = "quad"
+            divider = 4
+        elif cellflag == 10:
+            self.element_type = "tet"
+            divider = 4
+        elif cellflag == 12:
+            self.element_type = "hex"
+            divider = 8
+        elif cellflag == 3:
+            self.element_type = "line"
+            divider = 2
+        else:
+            raise IOError("VTK element type not understood")
+
+        if element_type is not None:
+            if self.element_type != element_type:
+                raise ValueError("VTK file does not contain {} elements".format(element_type))
+
+        points = np.array([vmesh.GetPoint(ptid) for ptid in range(vmesh.GetNumberOfPoints())])
+
+        self.elements = np.ascontiguousarray(flat_elements.reshape(int(flat_elements.shape[0]/divider),divider), dtype=np.uint64)
+        self.points = np.ascontiguousarray(points, dtype=np.float64)
+        self.nelem = self.elements.shape[0]
+        self.nnode = self.points.shape[0]
+
+        if self.points.shape[1] == 3:
+            if np.allclose(self.points[:,2],0.):
+                self.points = np.ascontiguousarray(self.points[:,:2])
+
+        if self.element_type == "tri" or self.element_type == "quad":
+            self.GetEdges()
+            self.GetBoundaryEdges()
+        elif self.element_type == "tet" or self.element_type == "hex":
+            self.GetFaces()
+            self.GetBoundaryFaces()
+            self.GetBoundaryEdges()
+        
+            
+        # SET OF SETS TO EACH ELEMENTS
+        element_to_set = np.array(element_to_set, dtype=np.int64, copy=True).flatten()
+        self.element_to_set = element_to_set
+
         return
 
     def ReadGmsh(self, filename, element_type, read_surface_info=False,read_curve_info=False):
@@ -958,11 +1042,13 @@ class Mesh(object):
             # LOOP OVER BLOCKS
             for i in range(elem_blocks):
                 incrementer = int(elems_content[line_number].rstrip().split()[3])
+                volume_tag = int(elems_content[line_number].rstrip().split()[1])
                 if el == int(elems_content[line_number].rstrip().split()[2]):
                     # LOOP OVER ELEMENTS OF EACH BLOCK
                     for j in range(line_number+1, line_number+incrementer+1):
                         plist = elems_content[j].rstrip().split()
                         elements.append([int(plist[k]) for k in range(1,len(plist))])
+                        element_to_set.append(volume_tag)
                 line_number += incrementer + 1
 
             if read_surface_info:
@@ -1040,6 +1126,110 @@ class Mesh(object):
         self.element_to_set = element_to_set
 
         return
+        
+    def WriteGmsh(self, filename, write_surface_info=False):
+        """Write mesh to a .msh (gmsh format) file"""
+
+        self.__do_essential_memebers_exist__()
+
+        mesh = deepcopy(self)
+        p = self.InferPolynomialDegree()
+
+        if p > 1:
+            mesh = self.GetLinearMesh(remap=True)
+
+
+        element_type = mesh.element_type
+        edim = mesh.InferElementalDimension()
+
+        # THESE TAGS ARE DIFFERENT FROM THE GMSH READER TAGS
+        bel = -1
+        if element_type == "line":
+            el = 1
+        elif element_type == "tri":
+            el = 2
+            bel = 1
+        elif element_type == "quad":
+            el = 3
+            bel = 1
+        elif element_type == "tet":
+            el = 4
+            bel = 2
+        elif element_type == "hex":
+            el = 5
+            bel = 3
+        else:
+            raise ValueError("Element type not understood")
+
+
+        elements = np.copy(mesh.elements).astype(np.int64)
+        points = mesh.points[np.unique(elements),:]
+
+        # Take care of a corner case where nnode != points.shape[0]
+        if mesh.nnode != points.shape[0]:
+            mesh.nnode = points.shape[0]
+
+        if points.shape[1] == 2:
+            points = np.hstack((points,np.zeros((points.shape[0],1))))
+
+        points_repr = np.zeros((points.shape[0],points.shape[1]+1), dtype=object)
+        points_repr[:,0] = np.arange(mesh.nnode) + 1
+        points_repr[:,1:] = points
+
+        elements_repr = np.zeros((elements.shape[0],elements.shape[1]+5), dtype=object)
+        elements_repr[:,0] = np.arange(mesh.nelem) + 1
+        elements_repr[:,1] = el
+        elements_repr[:,2] = 2
+        elements_repr[:,3] = 0
+        elements_repr[:,4] = 1
+        elements_repr[:,5:] = elements + 1
+
+        if write_surface_info:
+
+            if edim == 3:
+                boundary = np.copy(mesh.faces).astype(np.int64)
+            elif edim == 2:
+                boundary = np.copy(mesh.edges).astype(np.int64)
+            
+            if self.face_to_surface is None:
+                face_to_surface = 0
+            else:
+                face_to_surface = self.face_to_surface
+
+            boundary_repr = np.zeros((boundary.shape[0],boundary.shape[1]+5), dtype=object)
+            boundary_repr[:,0] = np.arange(boundary.shape[0]) + 1
+            boundary_repr[:,1] = bel
+            boundary_repr[:,2] = 2
+            boundary_repr[:,3] = 0
+            boundary_repr[:,4] = face_to_surface + 1
+            boundary_repr[:,5:] = boundary + 1
+
+            elements_repr[:,0] += boundary.shape[0]
+
+            gmsh_nelem = mesh.nelem + boundary.shape[0]
+        else:
+            gmsh_nelem = mesh.nelem
+
+        with open(filename, 'w') as f:
+            f.write("$MeshFormat\n")
+            f.write("2.2 0 8\n")
+            f.write("$EndMeshFormat\n")
+            f.write("$Nodes\n")
+            f.write(str(mesh.nnode) + "\n")
+
+            np.savetxt(f, points_repr, fmt="%s")
+
+            f.write("$EndNodes\n")
+            f.write("$Elements\n")
+            f.write(str(gmsh_nelem) + "\n")
+
+            if write_surface_info:
+                np.savetxt(f, boundary_repr, fmt="%s")
+
+            np.savetxt(f, elements_repr, fmt="%s")
+
+            f.write("$EndElements\n")
+
 
 
     def ChangeType(self):
@@ -1144,6 +1334,24 @@ class Mesh(object):
 
         assert self.elements.shape[0] is not None
         return self.elements.shape[1]
+        
+    def InferElementalDimension(self):
+        """Infer the actual dimension of the element. This is 3 for tet and hex,
+            2 for tri and quad, 1 for line etc
+        """
+
+        assert self.element_type is not None
+
+        if self.element_type == "tet" or self.element_type == "hex":
+            self.edim = 3
+        elif self.element_type == "tri" or self.element_type == "quad" or self.element_type == "pent":
+            self.edim = 2
+        elif self.element_type == "line":
+            self.edim = 1
+        else:
+            raise RuntimeError("Could not infer element type")
+
+        return self.edim
 
     def InferNumberOfNodesPerLinearElement(self, element_type=None):
         """Infers number of nodes per element. If element_type are

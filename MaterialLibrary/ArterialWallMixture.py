@@ -21,6 +21,7 @@ class ArterialWallMixture(Material):
     def __init__(self, ndim, **kwargs):
         mtype = type(self).__name__
         super(ArterialWallMixture, self).__init__(mtype, ndim, **kwargs)
+
         self.nvar = self.ndim
         self.is_transversely_isotropic = True
         self.energy_type = "internal_energy"
@@ -34,9 +35,9 @@ class ArterialWallMixture(Material):
 
         # LOW LEVEL DISPATCHER
         self.has_low_level_dispatcher = True
-        #self.has_low_level_dispatcher = False
 
         # FIELD VARIABLES AS GROWTH_&_REMODELING AND/OR DEPOSITION STRETCHES, ETC
+        self.has_growth_remodeling = True
         self.has_state_variables = True
 
     def KineticMeasures(self,F, elem=0):
@@ -56,10 +57,6 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
-        if J<0.0:
-            print(F)
-            print(J)
-            exit('Deformation Gradient is negative at element: '+str(elem)+' gauss: '+str(gcounter))
         # Directional vector for element
         Normal = self.anisotropic_orientations[elem][0][:,None]
         Normal = np.dot(I,Normal)[:,0]
@@ -85,7 +82,6 @@ class ArterialWallMixture(Material):
         F_gr_inv = np.linalg.inv(F_gr)
 
         # ELASTIN
-        kappa = self.kappa*self.StateVariables[gcounter][14]
         mu = self.mu*self.StateVariables[gcounter][14]
         F_e = np.dot(F,F_gr_inv)
         J_e = np.linalg.det(F_e)
@@ -98,8 +94,14 @@ class ArterialWallMixture(Material):
 
         H_Voigt = 2.*mu*(J_e**(-2./3.)/J)*(1./9.*trb*einsum('ij,kl',I,I) - \
                 1./3.*einsum('ij,kl',I,b_e) - 1./3.*einsum('ij,kl',b_e,I) + \
-                1./6.*trb*(einsum('il,jk',I,I) + einsum('ik,jl',I,I)) ) + \
-                kappa*(J_e/J)*((2.*J_e-1.)*einsum('ij,kl',I,I)-(J_e-1.)*(einsum('ik,jl',I,I)+einsum('il,jk',I,I)))
+                1./6.*trb*(einsum('il,jk',I,I) + einsum('ik,jl',I,I)) )
+
+        if self.is_nearly_incompressible:
+            H_Voigt += self.StateVariables[gcounter][14]*self.pressure*(J_e/J)*\
+                (einsum('ij,kl',I,I)-(einsum('ik,jl',I,I)+einsum('il,jk',I,I)))
+        else:
+            kappa = self.kappa*self.StateVariables[gcounter][14]
+            H_Voigt += kappa*(J_e/J)*((2.*J_e-1.)*einsum('ij,kl',I,I)-(J_e-1.)*(einsum('ik,jl',I,I)+einsum('il,jk',I,I)))
 
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:
@@ -124,16 +126,14 @@ class ArterialWallMixture(Material):
             outerFN_e = outerFN/lambda_r**2
             # Anisotropic Stiffness for this key
             expo = np.exp(k2*(innerFN_e-1.)**2)
-            if np.isnan(expo) or np.isinf(expo): exit('Fibre is NaN or Inf: '+str(expo)+', I4: '+\
-                    str(innerFN_e))
             H_Voigt += 4.*k1/J*(1.+2.*k2*(innerFN_e-1.)**2)*expo*einsum('ij,kl',outerFN_e,outerFN_e)
             # Active stress for SMC
             if fibre_i is 1:
-                den0 = 1050.0
-                s_act = 54.0e3*self.StateVariables[gcounter][15]
-                stretch_m = 1.4
-                stretch_a = 1.0
-                stretch_0 = 0.8
+                den0 = self.rho
+                s_act = self.maxi_active_stress*self.StateVariables[gcounter][15]
+                stretch_m = self.maxi_active_stretch
+                stretch_0 = self.zero_active_stretch
+                stretch_a = self.active_stretch
                 H_Voigt += -2.*(s_act/(J*den0*innerFN**2))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*\
                         einsum('ij,kl',outerFN,outerFN)
@@ -147,10 +147,6 @@ class ArterialWallMixture(Material):
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
-        if J<0.0:
-            print(F)
-            print(J)
-            exit('Deformation Gradient is negative at element: '+str(elem)+' gauss: '+str(gcounter))
         # Directional vector for element
         Normal = self.anisotropic_orientations[elem][0][:,None]
         Normal = np.dot(I,Normal)[:,0]
@@ -179,7 +175,6 @@ class ArterialWallMixture(Material):
         F_gr_inv = np.linalg.inv(F_gr)
 
         # ELASTIN
-        kappa = self.kappa*self.StateVariables[gcounter][14]
         mu = self.mu*self.StateVariables[gcounter][14]
         F_e = np.dot(F,F_gr_inv)
         J_e = np.linalg.det(F_e)
@@ -190,7 +185,13 @@ class ArterialWallMixture(Material):
         elif self.ndim == 2:
             trb = trace(b_e) + 1.
 
-        stress = mu*(J_e**(-2./3.)/J)*(b_e-1./3.*trb*I) + kappa*(J_e-1.)*(J_e/J)*I
+        stress = mu*(J_e**(-2./3.)/J)*(b_e-1./3.*trb*I)
+
+        if self.is_nearly_incompressible:
+            stress += self.StateVariables[gcounter][14]*self.pressure*(J_e/J)*I
+        else:
+            kappa = self.kappa*self.StateVariables[gcounter][14]
+            stress += kappa*(J_e-1.)*(J_e/J)*I
 
         #SMC AND COLLAGEN FIBRES
         for fibre_i in [1,2,3,4,5]:
@@ -215,16 +216,14 @@ class ArterialWallMixture(Material):
             outerFN_e = outerFN/lambda_r**2
             # Anisotropic Stiffness for this key
             expo = np.exp(k2*(innerFN_e-1.)**2)
-            if np.isnan(expo) or np.isinf(expo): exit('Fibre is NaN or Inf: '+str(expo)+', I4: '+\
-                    str(innerFN_e))
             stress += 2.*k1/J*(innerFN_e-1.)*expo*outerFN_e
             # Active stress for SMC
             if fibre_i is 1:
-                den0 = 1050.0
-                s_act = 54.0e3*self.StateVariables[gcounter][15]
-                stretch_m = 1.4
-                stretch_a = 1.0
-                stretch_0 = 0.8
+                den0 = self.rho
+                s_act = self.maxi_active_stress*self.StateVariables[gcounter][15]
+                stretch_m = self.maxi_active_stretch
+                stretch_0 = self.zero_active_stretch
+                stretch_a = self.active_stretch
                 stress += (s_act/(den0*innerFN*J))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*outerFN
 
@@ -232,7 +231,7 @@ class ArterialWallMixture(Material):
 
     def ConstituentStress(self,StrainTensors,elem=0,gcounter=0):
 
-        density0 = 1050.0
+        density0 = self.rho
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
@@ -265,10 +264,10 @@ class ArterialWallMixture(Material):
             fibre_stress[fibre_i-1] = 2.*k1*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*innerFN_e/(J*fraction)
             # Active stress for SMC
             if fibre_i is 1:
-                s_act = 54.0e3*self.StateVariables[gcounter][15]
-                stretch_m = 1.4
-                stretch_a = 1.0
-                stretch_0 = 0.8
+                s_act = self.maxi_active_stress*self.StateVariables[gcounter][15]
+                stretch_m = self.maxi_active_stretch
+                stretch_0 = self.zero_active_stretch
+                stretch_a = self.active_stretch
                 fibre_stress[0] += (s_act/density0)*(1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)/(J*fraction)
             # Fibre softness for remodeling
             stiffness = (8.*k2*innerFN_e*(innerFN_e-1.)**2 + 8.*innerFN_e-4.)*k1*\
@@ -280,7 +279,7 @@ class ArterialWallMixture(Material):
 
     def LLConstituentStress(self,F,elem=0):
 
-        density0 = 1050.0
+        density0 = self.rho
         gpoints = F.shape[0]
         fibre_stress = np.zeros((gpoints,5),dtype=np.float64)
         softness = np.zeros((gpoints,5),dtype=np.float64)
@@ -316,11 +315,10 @@ class ArterialWallMixture(Material):
                 fibre_stress[gcounter][fibre_i-1] = 2.*k1*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*innerFN_e/(J*fraction)
                 # Active stress for SMC
                 if fibre_i is 1:
-                    den0 = 1050.0
-                    s_act = 54.0e3*self.StateVariables[gcounter][15]
-                    stretch_m = 1.4
-                    stretch_a = 1.0
-                    stretch_0 = 0.8
+                    s_act = self.maxi_active_stress*self.StateVariables[gcounter][15]
+                    stretch_m = self.maxi_active_stretch
+                    stretch_0 = self.zero_active_stretch
+                    stretch_a = self.active_stretch
                     fibre_stress[gcounter][0] += (s_act/density0)*(1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)/(J*fraction)
                 # Fibre softness for remodeling
                 stiffness = (8.*k2*innerFN_e*(innerFN_e-1.)**2 + 8.*innerFN_e-4.)*k1*\

@@ -9,7 +9,7 @@ from Kuru.Tensor import trace, Voigt
 #####################################################################################################
 
 
-class NearlyIncompressibleNeoHookean(Material):
+class NeoHookean_2(Material):
     """Material model for nearly incompressible neo-Hookean with the following internal energy:
 
         W(C) = mu/2*J**(-2/3)*(C:I-3)     # for isochoric part
@@ -19,10 +19,7 @@ class NearlyIncompressibleNeoHookean(Material):
 
     def __init__(self, ndim, **kwargs):
         mtype = type(self).__name__
-        super(NearlyIncompressibleNeoHookean, self).__init__(mtype, ndim, **kwargs)
-
-        self.is_nearly_incompressible = True
-        self.is_compressible = False
+        super(NeoHookean_2, self).__init__(mtype, ndim, **kwargs)
 
         self.is_transversely_isotropic = False
         self.energy_type = "internal_energy"
@@ -35,10 +32,10 @@ class NearlyIncompressibleNeoHookean(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        self.has_low_level_dispatcher = False
+        self.has_low_level_dispatcher = True
 
     def KineticMeasures(self,F, elem=0):
-        from Kuru.MaterialLibrary.LLDispatch._NearlyIncompressibleNeoHookean_ import KineticMeasures
+        from Kuru.MaterialLibrary.LLDispatch._NeoHookean_2_ import KineticMeasures
         return KineticMeasures(self,np.ascontiguousarray(F))
 
 
@@ -48,15 +45,18 @@ class NearlyIncompressibleNeoHookean(Material):
         I = StrainTensors['I']
         b = StrainTensors['b'][gcounter]
         J = StrainTensors['J'][gcounter]
+
         mu = self.mu
-        kappa = self.kappa
 
         # ISOCHORIC
         H_Voigt = 2*mu*J**(-5./3.)*(1./9.*trace(b)*einsum('ij,kl',I,I) - \
             1./3.*(einsum('ij,kl',b,I) + einsum('ij,kl',I,b)) +\
             1./6.*trace(b)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)) )
         # VOLUMETRIC CHANGES
-        H_Voigt += kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
+        if self.is_nearly_incompressible:
+            H_Voigt += self.pressure*(einsum('ij,kl',I,I) - (einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
+        else:
+            H_Voigt += self.kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
 
         H_Voigt = Voigt(H_Voigt,1)
 
@@ -72,8 +72,13 @@ class NearlyIncompressibleNeoHookean(Material):
         b = StrainTensors['b'][gcounter]
 
         mu = self.mu
-        kappa = self.kappa
+
+        # ISOCHORIC PART
         stress = mu*J**(-5./3.)*(b - 1./3.*trace(b)*I)
-        stress += kappa*(J-1.)*I
+        # VOLUMETRIC PART
+        if self.is_nearly_incompressible:
+            stress += self.pressure*I
+        else:
+            stress += self.kappa*(J-1.)*I
 
         return stress

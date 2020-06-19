@@ -10,12 +10,12 @@ cimport numpy as np
 ctypedef double Real
 
 
-cdef extern from "_NearlyIncompressibleNeoHookean_.h" nogil:
-    cdef cppclass _NearlyIncompressibleNeoHookean_[Real]:
-        _NearlyIncompressibleNeoHookean_() except +
-        _NearlyIncompressibleNeoHookean_(Real mu, Real kappa) except +
-        void SetParameters(Real mu, Real kappa) except +
-        void KineticMeasures(Real *Snp, Real* Hnp, int ndim, int ngauss, const Real *Fnp) except +
+cdef extern from "_NeoHookean_2_.h" nogil:
+    cdef cppclass _NeoHookean_2_[Real]:
+        _NeoHookean_2_() except +
+        _NeoHookean_2_(Real mu, Real kappa, Real pressure) except +
+        void SetParameters(Real mu, Real kappa, Real pressure) except +
+        void KineticMeasures(Real *Snp, Real* Hnp, int ndim, int ngauss, const Real *Fnp, int near_incomp) except +
 
 
 
@@ -31,8 +31,10 @@ def KineticMeasures(material, np.ndarray[Real, ndim=3, mode='c'] F):
     elif ndim==2:
         hessian = np.zeros((ngauss,3,3),dtype=np.float64)
 
-    cdef _NearlyIncompressibleNeoHookean_[Real] mat_obj = _NearlyIncompressibleNeoHookean_()
-    mat_obj.SetParameters(material.mu,material.kappa)
-    mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0])
+    cdef int near_incomp = int(material.is_nearly_incompressible)
+
+    cdef _NeoHookean_2_[Real] mat_obj = _NeoHookean_2_()
+    mat_obj.SetParameters(material.mu,material.kappa,material.pressure)
+    mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], near_incomp)
 
     return stress, hessian

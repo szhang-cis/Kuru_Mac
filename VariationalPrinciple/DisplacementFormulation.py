@@ -111,6 +111,12 @@ class DisplacementFormulation(VariationalPrinciple):
             # COMPUTE ONCE detJ
             detJ = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
 
+        # COMPUTE PARAMETERS FOR MEAN DILATATION METHOD, IT NEEDS TO BE BEFORE COMPUTE HESSIAN AND STRESS
+        if material.is_nearly_incompressible:
+            dV = np.einsum('i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)))
+            stiffness_k = self.VolumetricStiffnessIntegrand(material, SpatialGradient, detJ, dV)
+            stiffness += stiffness_k
+
         # LOOP OVER GAUSS POINTS
         for counter in range(AllGauss.shape[0]):
 
@@ -143,6 +149,9 @@ class DisplacementFormulation(VariationalPrinciple):
         # GET LOCAL KINEMATICS
         SpatialGradient, F, detJ, dV = _KinematicMeasures_(function_space.Jm, function_space.AllGauss[:,0],
             LagrangeElemCoords, EulerELemCoords, fem_solver.requires_geometry_update)
+        # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
+        if material.is_nearly_incompressible:
+            stiffness_k = self.VolumetricStiffnessIntegrand(material, SpatialGradient, detJ, dV)
         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
         CauchyStressTensor, H_Voigt = material.KineticMeasures(F,elem=elem)
         # COMPUTE LOCAL CONSTITUTIVE STIFFNESS AND TRACTION
@@ -151,7 +160,7 @@ class DisplacementFormulation(VariationalPrinciple):
         # COMPUTE GEOMETRIC STIFFNESS
         if material.nature != "linear":
             stiffness += self.__GeometricStiffnessIntegrand__(SpatialGradient,CauchyStressTensor,detJ)
-        if material.is_incompressible:
+        if material.is_nearly_incompressible:
             stiffness += stiffness_k
 
         return stiffness, tractionforce

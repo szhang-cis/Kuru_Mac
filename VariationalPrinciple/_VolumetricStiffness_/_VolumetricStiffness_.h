@@ -14,10 +14,10 @@ using UInteger = std::uint64_t;
 
 void _VolumetricStiffnessFiller_(Real *volumetric_stiffness, Real *mean_volume,
     const Real *SpatialGradient, const Real *detJ, const Real *dV,
-    const Real *density, const Real *Growth, Integer has_growth_remodeling,
+    const Real *density, const Real *Growth, int has_stvar, int has_gr,
     Integer ndim, Integer nvar, Integer nodeperelem, Integer ngauss)
 {
-    if (has_growth_remodeling==1) {
+    if (has_stvar && has_gr) {
 
     Real *dve   = (Real*)malloc(sizeof(Real)*ngauss);
     Real volumex = 0.;
@@ -56,7 +56,43 @@ void _VolumetricStiffnessFiller_(Real *volumetric_stiffness, Real *mean_volume,
     free(AverageSpatialGradientv);
     }
     
-    else {
+    else if (has_stvar && !(has_gr)) {
+
+    Real volumex = 0.;
+    Real VolumeX = 0.;
+    for (Integer g=0; g<ngauss; ++g) {
+        volumex += detJ[g];
+        VolumeX += dV[g];
+    }
+    mean_volume[0] = (volumex-VolumeX)/VolumeX;
+
+    Real *AverageSpatialGradientv   = (Real*)malloc(sizeof(Real)*ndim*nodeperelem);
+    Real *AverageSpatialGradientu   = (Real*)malloc(sizeof(Real)*ndim*nodeperelem);
+    std::fill(AverageSpatialGradientv,AverageSpatialGradientv+nodeperelem*ndim,0.);
+    std::fill(AverageSpatialGradientu,AverageSpatialGradientu+nodeperelem*ndim,0.);
+    for (Integer a=0; a<nodeperelem; ++a) {
+        for (Integer i=0; i<ndim; ++i) {
+            for (Integer g=0; g<ngauss; ++g) {
+              AverageSpatialGradientv[a*ndim+i] += density[g]*SpatialGradient[g*nodeperelem*ndim+a*ndim+i]*detJ[g];
+              AverageSpatialGradientu[a*ndim+i] += SpatialGradient[g*nodeperelem*ndim+a*ndim+i]*detJ[g];
+            }
+        }
+    }
+    for (Integer a=0; a<nodeperelem; ++a) {
+        for (Integer b=0; b<nodeperelem; ++b) {
+            for (Integer i=0; i<ndim; ++i) {
+                for (Integer j=0; j<ndim; ++j) {
+                    volumetric_stiffness[(a*nvar+i)*nodeperelem*nvar+(b*nvar+j)] += 
+                             AverageSpatialGradientv[a*ndim+i]*AverageSpatialGradientu[b*ndim+j]/VolumeX;
+                }
+            }
+        }
+    }
+    free(AverageSpatialGradientu);
+    free(AverageSpatialGradientv);
+    }
+
+    else if (!(has_stvar) && !(has_gr)) {
 
     Real volumex = 0.;
     Real VolumeX = 0.;

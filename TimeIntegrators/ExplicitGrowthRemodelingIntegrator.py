@@ -33,9 +33,16 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         if len(materials)>1 and self.density_turnover=="muscle":
             warn("More than one material. I will assume the first material is the Media")
 
-        GRVariables = [[] for i in range(len(materials))]
+        # check materials with growth and remodeling
+        gr_materials = []
         for imat in range(len(materials)):
-            GRVariables[imat] = np.zeros((materials[imat].node_set.shape[0],12,fem_solver.number_of_time_increments),
+            if materials[imat].has_growth_remodeling:
+                gr_materials.append(imat)
+        gr_materials = np.array(gr_materials, dtype=np.int64, copy=True).flatten()
+
+        GRVariables = [[] for i in range(gr_materials.shape[0])]
+        for imat in range(gr_materials.shape[0]):
+            GRVariables[imat] = np.zeros((materials[gr_materials[imat]].node_set.shape[0],12,fem_solver.number_of_time_increments),
                     dtype=np.float64)
 
         TimeIncrements = fem_solver.number_of_time_increments
@@ -62,14 +69,14 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
             # COMPUTE THE GROWTH AND REMODELING
             if TIncrement != 0:
-                for imat in range(len(materials)):
-                    Rates = self.RatesGrowthRemodeling(mesh, materials, FibreStress, Softness, imat)
-                    GRVariables[imat][:,:,TIncrement] = self.ExplicitGrowthRemodeling(mesh, materials[imat],
+                for imat in range(gr_materials.shape[0]):
+                    Rates = self.RatesGrowthRemodeling(mesh, materials[gr_materials[imat]], FibreStress, Softness, imat)
+                    GRVariables[imat][:,:,TIncrement] = self.ExplicitGrowthRemodeling(mesh, materials[gr_materials[imat]],
                         IncrementalTime, Delta_t, Rates)
             else:
-                for imat in range(len(materials)):
-                    materials[imat].den0_e = np.copy(materials[imat].state_variables[:,14])
-                    GRVariables[imat][:,:,0] = materials[imat].state_variables[:,9:21]
+                for imat in range(gr_materials.shape[0]):
+                    materials[gr_materials[imat]].den0_e = np.copy(materials[gr_materials[imat]].state_variables[:,14])
+                    GRVariables[imat][:,:,0] = np.copy(materials[gr_materials[imat]].state_variables[:,9:21])
             IncrementalLoad = 1.0
 
             print("=============================")
@@ -110,19 +117,19 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             TotalDisp[:,:formulation.ndim,TIncrement] = Eulerx - mesh.points
 
             #CHECK HOMEOSTATIC DISTORTION
-            if TIncrement==0:
-                self.HomeostaticDistortion(fem_solver, formulation, TotalDisp, TIncrement)
+            #if TIncrement==0:
+            #    self.HomeostaticDistortion(fem_solver, formulation, TotalDisp, TIncrement)
 
             # COMPUTE THE FIBRE-STRESS AND SOFTNESS
-            FibreStress = [[] for i in range(len(materials))]
-            Softness = [[] for i in range(len(materials))]
-            for imat in range(len(materials)):
-                FibreStress[imat], Softness[imat] = self.GetFibreStressAndSoftness(mesh, formulation, materials[imat],
-                        fem_solver, Eulerx)
+            FibreStress = [[] for i in range(gr_materials.shape[0])]
+            Softness = [[] for i in range(gr_materials.shape[0])]
+            for imat in range(gr_materials.shape[0]):
+                FibreStress[imat], Softness[imat] = self.GetFibreStressAndSoftness(mesh, formulation, 
+                        materials[gr_materials[imat]], fem_solver, Eulerx)
             # SET HOMEOSTATIC FIBRE-STRESS
             if TIncrement==0:
-                self.HomeostaticStress = [[] for i in range(len(materials))]
-                for imat in range(len(materials)):
+                self.HomeostaticStress = [[] for i in range(gr_materials.shape[0])]
+                for imat in range(gr_materials.shape[0]):
                     self.HomeostaticStress[imat] = FibreStress[imat]
 
             # PRINT LOG IF ASKED FOR
@@ -143,6 +150,8 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                 solver.condA = np.NAN
                 TIncrement = TIncrement if TIncrement!=0 else 1
                 TotalDisp = TotalDisp[:,:,:TIncrement]
+                for imat in range(gr_materials.shape[0]):
+                    GRVariables[imat] = GRVariables[imat][:,:,:TIncrement]
                 fem_solver.number_of_time_increments = TIncrement
                 break
 
@@ -163,7 +172,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         """
 
         # Elastin degradation
-        den0_tot = 1050.0
+        den0_tot = material.rho
         D_max = 0.5
         L_dam = 0.010
         t_dam = 40.0
@@ -172,9 +181,16 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         # Loop on nodes
         for node in range(material.node_set.shape[0]):
             # Elastin function density in time f(t), analytic solution
-            AxialCoord = mesh.points[material.node_set[node],1]
+            # degradation at line
+            #AxialCoord = mesh.points[material.node_set[node],1]
+            #material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela) + \
+            #    material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(AxialCoord/L_dam)**2)*\
+            #    (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))
+            # degradation at point
+            vec_dam = mesh.points[material.node_set[node],:] - [0.036, 0.036, 0.0]
+            R_dam = np.linalg.norm(vec_dam)
             material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela) + \
-                material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(AxialCoord/L_dam)**2)*\
+                material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(R_dam/L_dam)**2)*\
                 (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))
             # Time Integration of fibre densities
             for fibre in range(5):

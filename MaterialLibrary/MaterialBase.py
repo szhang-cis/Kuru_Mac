@@ -24,9 +24,6 @@ class Material(object):
         # MATERIAL CONSTANTS
         self.rho = density
 
-        # MIXED FORMULATION FOR VOLUME CHANGE
-        self.pressure = 0.0
-
         # SET ALL THE OPTIONAL KEYWORD ARGUMENTS
         for i in kwargs.keys():
             if "__" not in i:
@@ -41,6 +38,7 @@ class Material(object):
         if self.H_Voigt is not None:
             self.H_VoigtSize = self.H_Voigt.shape[0]
 
+        # MIXED FORMULATION SELECTOR
         self.is_compressible = is_compressible
         self.is_nearly_incompressible = is_nearly_incompressible
         self.is_incompressible = is_incompressible
@@ -50,8 +48,12 @@ class Material(object):
         self.is_nonisotropic = is_nonisotropic
         self.anisotropic_orientations = anisotropic_orientations
 
+        # MIXED FORMULATION FOR VOLUME CHANGE
+        self.pressure = 0.0
+
         self.has_low_level_dispatcher = False
         self.has_state_variables = False
+        self.has_growth_remodeling = False
 
 
     def ConectivityOfMaterial(self,mesh):

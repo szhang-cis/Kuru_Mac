@@ -19,6 +19,7 @@ class AnisotropicFungQuadratic(Material):
     def __init__(self, ndim, **kwargs):
         mtype = type(self).__name__
         super(AnisotropicFungQuadratic, self).__init__(mtype, ndim, **kwargs)
+
         self.nvar = self.ndim
         self.is_transversely_isotropic = True
         self.energy_type = "internal_energy"
@@ -31,8 +32,7 @@ class AnisotropicFungQuadratic(Material):
             self.H_VoigtSize = 3
 
         # LOW LEVEL DISPATCHER
-        #self.has_low_level_dispatcher = True
-        self.has_low_level_dispatcher = False
+        self.has_low_level_dispatcher = True
 
     def KineticMeasures(self,F, elem=0):
         N = self.anisotropic_orientations[elem,:,:]
@@ -42,7 +42,6 @@ class AnisotropicFungQuadratic(Material):
 
     def Hessian(self,StrainTensors,elem=0,gcounter=0):
 
-        kappa = self.kappa
         mu = self.mu
         k1 = self.k1
         k2 = self.k2
@@ -57,13 +56,20 @@ class AnisotropicFungQuadratic(Material):
         elif self.ndim == 2:
             trb = trace(b) + 1
 
+        # ISOCHORIC PART
         H_Voigt = 2.*mu*J**(-5./3.) * (1./9.*trb*einsum('ij,kl',I,I) - \
                 1./3.*einsum('ij,kl',I,b) - 1./3.*einsum('ij,kl',b,I) + \
-                1./6.*trb*(einsum('il,jk',I,I) + einsum('ik,jl',I,I)) ) + \
-                kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
+                1./6.*trb*(einsum('il,jk',I,I) + einsum('ik,jl',I,I)) )
+
+        # VOLUMETRIC PART
+        if self.is_nearly_incompressible:
+            H_Voigt += self.pressure*(einsum('ij,kl',I,I) - (einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
+        else:
+            H_Voigt += self.kappa*((2.*J-1.)*einsum('ij,kl',I,I) - (J-1.)*(einsum('ik,jl',I,I) + einsum('il,jk',I,I)))
 
         # Anisotropic contibution
-        for i_fibre in range(2):
+        nfibres = self.anisotropic_orientations.shape[1]
+        for i_fibre in range(nfibres):
             N = self.anisotropic_orientations[elem][i_fibre][:,None]
             FN = np.dot(F,N)[:,0]
             innerFN = einsum('i,i',FN,FN)
@@ -77,7 +83,6 @@ class AnisotropicFungQuadratic(Material):
 
     def CauchyStress(self,StrainTensors,elem=0,gcounter=0):
 
-        kappa = self.kappa
         mu = self.mu
         k1 = self.k1
         k2 = self.k2
@@ -92,11 +97,19 @@ class AnisotropicFungQuadratic(Material):
         elif self.ndim == 2:
             trb = trace(b) + 1
 
-        stress = mu*J**(-5./3.)*(b - 1./3.*trb*I) + kappa*(J-1.)*I
+        # ISOCHORIC PART
+        stress = mu*J**(-5./3.)*(b - 1./3.*trb*I)
+
+        # VOLUMETRIC PART
+        if self.is_nearly_incompressible:
+            stress += self.pressure*I
+        else:
+            stress += self.kappa*(J-1.)*I
 
         # Anisotropic contibution
-        for i_fibre in range(2):
-            N = self.anisotropic_orientations[elem][i_fibre][:,None]
+        nfibres = self.anisotropic_orientations.shape[1]
+        for i_fibre in range(nfibres):
+            N = self.anisotropic_orientations[elem,i_fibre,:,None]
             FN = np.dot(F,N)[:,0]
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)

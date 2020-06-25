@@ -25,7 +25,6 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         super(ExplicitGrowthRemodelingIntegrator, self).__init__(gain, turnover, **kwargs)
 
 
-
     def Solver(self, function_spaces, formulation, solver,
         K, NeumannForces, NodalForces, Residual,
         mesh, TotalDisp, Eulerx, materials, boundary_condition, fem_solver):
@@ -182,16 +181,20 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         for node in range(material.node_set.shape[0]):
             # Elastin function density in time f(t), analytic solution
             # degradation at line
-            #AxialCoord = mesh.points[material.node_set[node],1]
-            #material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela) + \
-            #    material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(AxialCoord/L_dam)**2)*\
-            #    (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))
+            if self.degradation_at_line:
+                AxialCoord = mesh.points[material.node_set[node],1]
+                material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela) + \
+                    material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(AxialCoord/L_dam)**2)*\
+                    (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))
             # degradation at point
-            vec_dam = mesh.points[material.node_set[node],:] - [0.036, 0.036, 0.0]
-            R_dam = np.linalg.norm(vec_dam)
-            material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela) + \
-                material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(R_dam/L_dam)**2)*\
-                (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))
+            elif self.degradation_at_point:
+                vec_dam = mesh.points[material.node_set[node],:] - self.degradation_point
+                R_dam = np.linalg.norm(vec_dam)
+                material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela) + \
+                    material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(R_dam/L_dam)**2)*\
+                    (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))
+            else:
+                raise ValueError("Degradation type of elastin not undesrtood. Insert eather at point or at line.")
             # Time Integration of fibre densities
             for fibre in range(5):
                 material.state_variables[node,15+fibre] = material.state_variables[node,15+fibre] + \

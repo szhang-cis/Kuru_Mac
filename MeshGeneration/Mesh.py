@@ -1010,11 +1010,6 @@ class Mesh(object):
                             if int(plist[1]) == bel:
                                 faces.append([int(i) for i in plist[5:]])
                                 face_to_surface.append(int(plist[4]))
-                        # READ CURVE INFO - CERTAINLY ONLY IF CURVE ELEMENT TYPE IS LINE
-                        if read_curve_info:
-                            if int(plist[1]) == cel:
-                                edges.append([int(i) for i in plist[5:]])
-                                curve.append(int(plist[4]))
 
 
         elif msh_version == 4:
@@ -1100,25 +1095,6 @@ class Mesh(object):
             self.GetBoundaryFaces()
             self.GetBoundaryEdges()
 
-        if read_curve_info:
-            edges = np.array(edges,copy=True) - 1
-            assert self.edges.shape[0]==edges.shape[0]
-            edge_to_curve = np.array(curve, dtype=np.int64, copy=True).flatten()
-            for i in range(self.edges.shape[0]):
-                for j in range(edges.shape[0]):
-                    if self.edges[i,0]==edges[j,0] and self.edges[i,1]==edges[j,1]:
-                        edge_to_curve[i] = curve[j]
-                    elif self.edges[i,0]==edges[j,1] and self.edges[i,1]==edges[j,0]:
-                        edge_to_curve[i] = curve[j]
-            self.edge_to_curve = np.array(edge_to_curve, dtype=np.int64, copy=True).flatten()
-            self.edge_to_curve -= 1
-            # CHECK IF FILLED
-            if isinstance(self.edge_to_curve,list):
-                if not self.edge_to_curve:
-                    self.edge_to_curve = None
-            elif isinstance(self.edge_to_curve,np.ndarray):
-                if self.edge_to_curve.shape[0]==0:
-                    self.edge_to_curve = None
 
         # SET OF SETS TO EACH ELEMENTS
         element_to_set = np.array(element_to_set, dtype=np.int64, copy=True).flatten()
@@ -1176,12 +1152,17 @@ class Mesh(object):
         points_repr[:,0] = np.arange(mesh.nnode) + 1
         points_repr[:,1:] = points
 
+        if self.element_to_set is None:
+            element_to_set = 0
+        else:
+            element_to_set = self.element_to_set
+
         elements_repr = np.zeros((elements.shape[0],elements.shape[1]+5), dtype=object)
         elements_repr[:,0] = np.arange(mesh.nelem) + 1
         elements_repr[:,1] = el
         elements_repr[:,2] = 2
         elements_repr[:,3] = 0
-        elements_repr[:,4] = 1
+        elements_repr[:,4] = element_to_set + 1
         elements_repr[:,5:] = elements + 1
 
         if write_surface_info:

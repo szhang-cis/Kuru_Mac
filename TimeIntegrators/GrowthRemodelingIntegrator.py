@@ -23,11 +23,22 @@ class GrowthRemodelingIntegrator(object):
     """Base class for structural time integerators
     """
 
-    def __init__(self, gain, turnover, density_turnover="self", **kwargs):
+    def __init__(self, gain, turnover, density_turnover="self", degradation_at_line=True,
+        degradation_at_point=False, degradation_point=None, **kwargs):
+
         self.HomeostaticStress = None
         self.gain = gain
         self.turnover = turnover
         self.density_turnover = density_turnover
+
+        self.degradation_at_line = degradation_at_line
+        self.degradation_at_point = degradation_at_point
+        self.degradation_point = degradation_point
+
+        if degradation_at_point:
+            self.degradation_at_line = False
+        if degradation_point is None and degradation_at_point:
+            self.degradation_point = [0.,0.,0.]
 
 
     def HomeostaticDistortion(self, fem_solver, formulation, TotalDisp, Increment):

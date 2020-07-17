@@ -113,6 +113,9 @@ class PostProcess(object):
         formulation = self.formulation
         material = self.materials[imat]
 
+        if not mynode in material.node_set:
+            raise ValueError("Node {} is not in material {}".format(mynode,imat))
+
         # GET THE UNDERLYING LINEAR MESH
         # lmesh = mesh.GetLinearMesh()
         C = mesh.InferPolynomialDegree() - 1

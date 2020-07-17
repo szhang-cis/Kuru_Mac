@@ -24,7 +24,7 @@ class GrowthRemodelingIntegrator(object):
     """
 
     def __init__(self, gain, turnover, density_turnover="self", degradation_at_line=True,
-        degradation_at_point=False, degradation_point=None, **kwargs):
+        degradation_at_point=False, degradation_point=None, aging_only=False, **kwargs):
 
         self.HomeostaticStress = None
         self.gain = gain
@@ -34,8 +34,9 @@ class GrowthRemodelingIntegrator(object):
         self.degradation_at_line = degradation_at_line
         self.degradation_at_point = degradation_at_point
         self.degradation_point = degradation_point
+        self.aging_only = aging_only
 
-        if degradation_at_point:
+        if degradation_at_point or aging_only:
             self.degradation_at_line = False
         if degradation_point is None and degradation_at_point:
             self.degradation_point = [0.,0.,0.]

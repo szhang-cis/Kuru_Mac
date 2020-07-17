@@ -193,6 +193,9 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                 material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela) + \
                     material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(R_dam/L_dam)**2)*\
                     (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))
+            # just natural rate of elastin degradation
+            elif self.aging_only:
+                material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela)
             else:
                 raise ValueError("Degradation type of elastin not undesrtood. Insert eather at point or at line.")
             # Time Integration of fibre densities

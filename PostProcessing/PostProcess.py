@@ -337,7 +337,6 @@ class PostProcess(object):
         MainDict['FibreStress'] = [[] for i in range(len(materials))]
         for imat in range(len(materials)):
             materials[imat].ConectivityOfMaterial(mesh)
-            Elsm, Posm = materials[imat].GetNodeCommonality()[:2]
             MainDict['CauchyStress'][imat] = np.zeros((TimeIncrement,materials[imat].node_set.shape[0],ndim,ndim))
             if self.gr_variables is not None:
                 MainDict['FibreStress'][imat] = np.zeros((TimeIncrement,materials[imat].node_set.shape[0],5))
@@ -353,6 +352,7 @@ class PostProcess(object):
 
             for imat in range(len(materials)):
                 material = materials[imat]
+                Elsm, Posm = material.GetNodeCommonality()[:2]
                 CauchyStress = np.zeros((material.element_set.shape[0],nodeperelem,ndim,ndim))
                 if self.gr_variables is not None:
                     FibreStress = np.zeros((material.element_set.shape[0],nodeperelem,5))
@@ -387,7 +387,7 @@ class PostProcess(object):
 
                         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
                         CauchyStress[ielem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
-                        if self.gr_variables is not None:
+                        if self.gr_variables is not None and material.has_state_variables:
                             FibreStress[ielem,:,:], _ = material.LLConstituentStress(F[elem,:,:,:],elem=elem)
 
                     else:
@@ -423,7 +423,7 @@ class PostProcess(object):
                         # LOOP OVER GAUSS POINTS
                         for counter in range(AllGauss.shape[0]):
                             CauchyStress[ielem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
-                            if self.gr_variables is not None:
+                            if self.gr_variables is not None and material.has_state_variables:
                                 FibreStress[ielem,counter,:],_ = material.ConstituentStress(StrainTensors,elem,counter)
 
                 if average_derived_quantities:
@@ -993,10 +993,16 @@ class PostProcess(object):
                 augmented_sol[nstart:nend,16:19,:]  = Cauchy
                 augmented_sol[nstart:nend,19,:]     = p_hyd
                 augmented_sol[nstart:nend,20,:]     = s_VM
-                augmented_sol[nstart:nend,21:26,:]  = FibreStress
-                augmented_sol[nstart:nend,26:32,:]  = self.gr_variables[imat][:,5:11,steps].reshape(augmented_sol[nstart:nend,26:32,:].shape) #Densities
-                augmented_sol[nstart:nend,32,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,32,:].shape)   #Growth
-                augmented_sol[nstart:nend,33:38,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,33:38,:].shape)   #Remodeling
+                if self.materials[imat].has_state_variables:
+                    augmented_sol[nstart:nend,21:26,:]  = FibreStress
+                    augmented_sol[nstart:nend,26:32,:]  = self.gr_variables[imat][:,5:11,steps].reshape(augmented_sol[nstart:nend,26:32,:].shape) #Densities
+                    augmented_sol[nstart:nend,32,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,32,:].shape)   #Growth
+                    augmented_sol[nstart:nend,33:38,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,33:38,:].shape)   #Remodeling
+                else:
+                    augmented_sol[nstart:nend,21:26,:]  = np.zeros(FibreStress.shape,dtype=np.float64)
+                    augmented_sol[nstart:nend,26:32,:]  = np.zeros(augmented_sol[nstart:nend,26:32,:].shape,dtype=np.float64) #Densities
+                    augmented_sol[nstart:nend,32,:]     = np.zeros(augmented_sol[nstart:nend,32,:].shape,dtype=np.float64)   #Growth
+                    augmented_sol[nstart:nend,33:38,:]  = np.zeros(augmented_sol[nstart:nend,33:38,:].shape,dtype=np.float64)   #Remodeling
 
             elif fields == "mechanics" and ndim == 3 and self.gr_variables is not None:
                 augmented_sol[nstart:nend,:3,:]     = self.sol[self.materials[imat].node_set,:3,steps].reshape(augmented_sol[nstart:nend,:3,:].shape)
@@ -1010,10 +1016,16 @@ class PostProcess(object):
                 augmented_sol[nstart:nend,28:34,:]  = Cauchy
                 augmented_sol[nstart:nend,34,:]     = p_hyd
                 augmented_sol[nstart:nend,35,:]     = s_VM
-                augmented_sol[nstart:nend,36:41,:]  = FibreStress
-                augmented_sol[nstart:nend,41:47,:]  = self.gr_variables[imat][:,5:11,steps].reshape(augmented_sol[nstart:nend,41:47,:].shape)
-                augmented_sol[nstart:nend,47,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,47,:].shape)
-                augmented_sol[nstart:nend,48:53,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,48:53,:].shape)
+                if self.materials[imat].has_state_variables:
+                    augmented_sol[nstart:nend,36:41,:]  = FibreStress
+                    augmented_sol[nstart:nend,41:47,:]  = self.gr_variables[imat][:,5:11,steps].reshape(augmented_sol[nstart:nend,41:47,:].shape)
+                    augmented_sol[nstart:nend,47,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,47,:].shape)
+                    augmented_sol[nstart:nend,48:53,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,48:53,:].shape)
+                else:
+                    augmented_sol[nstart:nend,36:41,:]  = np.zeros(FibreStress.shape,dtype=np.float64)
+                    augmented_sol[nstart:nend,41:47,:]  = np.zeros(augmented_sol[nstart:nend,41:47,:].shape,dtype=np.float64)
+                    augmented_sol[nstart:nend,47,:]     = np.zeros(augmented_sol[nstart:nend,47,:].shape,dtype=np.float64)
+                    augmented_sol[nstart:nend,48:53,:]  = np.zeros(augmented_sol[nstart:nend,48:53,:].shape,dtype=np.float64)
 
             nstart += nnode_set
 

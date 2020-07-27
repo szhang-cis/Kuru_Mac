@@ -5,7 +5,7 @@ from scipy.sparse import csr_matrix, csc_matrix
 try:
     #from ._LLADF__NearlyIncompressibleNeoHookean_ import _LLADF__NearlyIncompressibleNeoHookean_
     #from ._LLADF__AnisotropicFungQuadratic_ import _LLADF__AnisotropicFungQuadratic_
-    from ._LLADF__ArterialWallMixture_ import _LLADF__ArterialWallMixture_
+    #from ._LLADF__ArterialWallMixture_ import _LLADF__ArterialWallMixture_
     #from ._LLADF__IncompressibleNeoHookean_ import _LLADF__IncompressibleNeoHookean_
     #from ._LLADF__IncompressibleAnisotropicFungQuadratic_ import _LLADF__IncompressibleAnisotropicFungQuadratic_
     #from ._LLADF__IncompressibleArterialWallMixture_ import _LLADF__IncompressibleArterialWallMixture_

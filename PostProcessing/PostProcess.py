@@ -439,7 +439,7 @@ class PostProcess(object):
                         if self.gr_variables is not None:
                             MainDict['FibreStress'][imat][incr,inode,:] /= ncommon_nodes
                 else:
-                    for inode in all_nodes:
+                    for inode in range(material.node_set.shape[0]):
                         Els, Pos = Elsm[inode], Posm[inode]
                         ncommon_nodes = Els.shape[0]
                         uelem = 0
@@ -522,23 +522,24 @@ class PostProcess(object):
 
 
         # COMPUTE THE COMMON/NEIGHBOUR NODES ONCE
-        all_nodes = np.unique(elements)
-        Elss, Poss = mesh.GetNodeCommonality()[:2]
+        #all_nodes = np.unique(elements)
+        #Elss, Poss = mesh.GetNodeCommonality()[:2]
 
         I = np.eye(3,3,dtype=np.float64)
-        DeformationGradient = np.ones((npoint,ndim,ndim))
-
 
         if TotalDisp.ndim == 3:
             Eulerx = points + TotalDisp[:,:ndim,-1]
         else:
             Eulerx = points + TotalDisp[:,:ndim]
 
-        F_e = np.zeros((nelem,ndim,ndim))
+        DeformationGradient = [[] for i in range(len(mat_array))]
 
         # LOOP OVER ELEMENTS
         for imat in mat_array:
             material = materials[imat]
+            Elsm, Posm = material.GetNodeCommonality()[:2]
+            DeformationGradient[imat] = np.zeros((material.node_set.shape[0],ndim,ndim))
+            F_e = np.zeros((material.element_set.shape[0],ndim,ndim))
             for ielem in range(material.element_set.shape[0]):
                 elem = material.element_set[ielem]
                 # GET THE FIELDS AT THE ELEMENT LEVEL
@@ -583,23 +584,23 @@ class PostProcess(object):
                     F_r = material.StateVariables[counter][0:9].reshape(3,3)
                     F_r_inv = np.linalg.inv(F_r)
                     F[counter,:,:] = np.dot(Rotation,np.dot(F[counter,:,:],Rotation.T))
-                    F_e[elem,:,:] += np.dot(F[counter,:,:],F_r_inv)
-                F_e[elem,:,:] /= AllGauss.shape[0]
+                    F_e[ielem,:,:] += np.dot(F[counter,:,:],F_r_inv)
+                F_e[ielem,:,:] /= AllGauss.shape[0]
 
-        if average_derived_quantities:
-            for inode in all_nodes:
-                Els, Pos = Elss[inode], Poss[inode]
-                ncommon_nodes = Els.shape[0]
-                for uelem in range(ncommon_nodes):
-                    DeformationGradient[inode,:,:] += F_e[Els[uelem],:,:]
-                # AVERAGE OUT
-                DeformationGradient[inode,:,:] /= ncommon_nodes
-        else:
-            for inode in all_nodes:
-                Els, Pos = Elss[inode], Poss[inode]
-                ncommon_nodes = Els.shape[0]
-                uelem = 0
-                DeformationGradient[inode,:,:] = F_e[Els[uelem],:,:]
+            if average_derived_quantities:
+                for inode in range(material.node_set.shape[0]):
+                    Els, Pos = Elsm[inode], Posm[inode]
+                    ncommon_nodes = Els.shape[0]
+                    for uelem in range(ncommon_nodes):
+                        DeformationGradient[imat][inode,:,:] += F_e[Els[uelem],:,:]
+                    # AVERAGE OUT
+                    DeformationGradient[imat][inode,:,:] /= ncommon_nodes
+            else:
+                for inode in range(material.node_set.shape[0]):
+                    Els, Pos = Elsm[inode], Posm[inode]
+                    ncommon_nodes = Els.shape[0]
+                    uelem = 0
+                    DeformationGradient[imat][inode,:,:] = F_e[Els[uelem],:,:]
 
         self.elastic_deformation_gradient = DeformationGradient
         return

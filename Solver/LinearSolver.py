@@ -4,7 +4,7 @@ from time import time
 from warnings import warn
 import numpy as np
 #import scipy as sp
-from scipy.sparse import issparse #, isspmatrix_coo, isspmatrix_csr, isspmatrix_csc
+from scipy.sparse import issparse, isspmatrix_csr #, isspmatrix_coo, isspmatrix_csc
 from scipy.sparse.linalg import spsolve #, cg, cgs, bicgstab, gmres, lgmres, splu, spilu, LinearOperator, onenormest
 #from subprocess import call
 

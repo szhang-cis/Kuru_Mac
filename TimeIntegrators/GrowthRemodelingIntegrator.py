@@ -24,7 +24,8 @@ class GrowthRemodelingIntegrator(object):
     """
 
     def __init__(self, gain, turnover, density_turnover="self", degradation_at_line=True,
-        degradation_at_point=False, degradation_point=None, aging_only=False, **kwargs):
+        degradation_at_point=False, degradation_point=None, aging_only=False, 
+        monitoring_node=0, **kwargs):
 
         self.HomeostaticStress = None
         self.gain = gain
@@ -35,6 +36,8 @@ class GrowthRemodelingIntegrator(object):
         self.degradation_at_point = degradation_at_point
         self.degradation_point = degradation_point
         self.aging_only = aging_only
+
+        self.monitoring_node = monitoring_node
 
         if degradation_at_point or aging_only:
             self.degradation_at_line = False
@@ -57,28 +60,42 @@ class GrowthRemodelingIntegrator(object):
             sys.exit("Growth and Remodeling solver stop, distortion in Homeostasis is to big")
 
 
-    def LogSave(self, fem_solver, formulation, TotalDisp, Increment, materials, FibreStress):
+    def LogSave(self, fem_solver, formulation, TotalDisp, Increment, materials, FibreStress, gr_materials):
 
         if fem_solver.print_incremental_log:
+            # find the set of the node under surveillance
+            imat = -1
+            for i in range(gr_materials.shape[0]):
+                if self.monitoring_node in materials[gr_materials[i]].node_set:
+                    imat = gr_materials[i]
+                    imat0 = i
+                    inode = np.where(materials[imat].node_set==self.monitoring_node)[0][0]
+                    break
+            if imat is -1:
+                print("Set of the node is not recognized. I will use material 0 and its node 0.")
+                imat = gr_materials[0]
+                imat0 = 0
+                inode = 0
+
             dmesh = Mesh()
             dmesh.points = TotalDisp[:,:formulation.ndim,Increment]
             dmesh_bounds = dmesh.Bounds
             print("\nMinimum and maximum incremental solution values at increment {} are \n".\
                     format(Increment),dmesh_bounds)
 
-            print("\nGrowth and Remodeling properties at central node,")
+            print("\nGrowth and Remodeling properties at node, {}".format(self.monitoring_node))
             print("Densities: {:8.3f}, {:8.3f}, {:8.3f}, {:8.3f}, {:8.3f}, {:8.3f}".\
-                    format(materials[0].state_variables[0,14],materials[0].state_variables[0,15],\
-                    materials[0].state_variables[0,16],materials[0].state_variables[0,17],\
-                    materials[0].state_variables[0,18],materials[0].state_variables[0,19]))
+                    format(materials[imat].state_variables[inode,14],materials[imat].state_variables[inode,15],\
+                    materials[imat].state_variables[inode,16],materials[imat].state_variables[inode,17],\
+                    materials[imat].state_variables[inode,18],materials[imat].state_variables[inode,19]))
             print("Remodeling: {:6.3f}, {:6.3f}, {:6.3f}, {:6.3f}, {:6.3f}".\
-                    format(materials[0].state_variables[0,9],materials[0].state_variables[0,10],\
-                    materials[0].state_variables[0,11],materials[0].state_variables[0,12],\
-                    materials[0].state_variables[0,13]))
-            print("Growth: {:6.3f}".format(materials[0].state_variables[0,20]))
+                    format(materials[imat].state_variables[inode,9],materials[imat].state_variables[inode,10],\
+                    materials[imat].state_variables[inode,11],materials[imat].state_variables[inode,12],\
+                    materials[imat].state_variables[inode,13]))
+            print("Growth: {:6.3f}".format(materials[imat].state_variables[inode,20]))
             print("FibreStress: {:8.1f}, {:8.1f}, {:8.1f}, {:8.1f}, {:8.1f}".\
-                    format(FibreStress[0][0,0],FibreStress[0][0,1],FibreStress[0][0,2],\
-                    FibreStress[0][0,3],FibreStress[0][0,4]))
+                    format(FibreStress[imat0][inode,0],FibreStress[imat0][inode,1],FibreStress[imat0][inode,2],\
+                    FibreStress[imat0][inode,3],FibreStress[imat0][inode,4]))
 
         # SAVE INCREMENTAL SOLUTION IF ASKED FOR
         if fem_solver.save_incremental_solution:

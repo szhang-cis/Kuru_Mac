@@ -132,7 +132,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                     self.HomeostaticStress[imat] = FibreStress[imat]
 
             # PRINT LOG IF ASKED FOR
-            self.LogSave(fem_solver, formulation, TotalDisp, TIncrement, materials, FibreStress)
+            self.LogSave(fem_solver, formulation, TotalDisp, TIncrement, materials, FibreStress, gr_materials)
 
             # UPDATE THE TIME
             IncrementalTime += TimeFactor

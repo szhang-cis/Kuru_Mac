@@ -24,8 +24,8 @@ class GrowthRemodelingIntegrator(object):
     """
 
     def __init__(self, gain, turnover, density_turnover="self", degradation_at_line=True,
-        degradation_at_point=False, degradation_point=None, aging_only=False, 
-        monitoring_node=0, **kwargs):
+        degradation_at_point=False, degradation_point=None, aging_only=False, monitoring_node=0, 
+        damage_spread_space=0.010, damage_spread_time=40.0, **kwargs):
 
         self.HomeostaticStress = None
         self.gain = gain
@@ -43,6 +43,9 @@ class GrowthRemodelingIntegrator(object):
             self.degradation_at_line = False
         if degradation_point is None and degradation_at_point:
             self.degradation_point = [0.,0.,0.]
+
+        self.damage_spread_space = damage_spread_space
+        self.damage_spread_time = damage_spread_time
 
 
     def HomeostaticDistortion(self, fem_solver, formulation, TotalDisp, Increment):

@@ -96,7 +96,7 @@ class GrowthRemodelingIntegrator(object):
                     materials[imat].state_variables[inode,11],materials[imat].state_variables[inode,12],\
                     materials[imat].state_variables[inode,13]))
             print("Growth: {:6.3f}".format(materials[imat].state_variables[inode,20]))
-            print("FibreStress: {:8.1f}, {:8.1f}, {:8.1f}, {:8.1f}, {:8.1f}".\
+            print("FibreStress: {:8.3f}, {:8.3f}, {:8.3f}, {:8.3f}, {:8.3f}".\
                     format(FibreStress[imat0][inode,0],FibreStress[imat0][inode,1],FibreStress[imat0][inode,2],\
                     FibreStress[imat0][inode,3],FibreStress[imat0][inode,4]))
 

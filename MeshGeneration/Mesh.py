@@ -775,8 +775,7 @@ class Mesh(object):
         elif self.reader_type is 'gmsh':
             self.ReadGmsh(filename, element_type=element_type, read_surface_info=read_surface_info, read_curve_info=read_curve_info)
         elif self.reader_type is 'obj':
-            #self.ReadOBJ(filename, element_type=element_type, read_surface_info=read_surface_info)
-            raise ValueError("Reader not implemented yet")
+            self.ReadOBJ(filename, element_type=element_type, read_surface_info=read_surface_info)
         elif self.reader_type is 'fenics':
             #self.ReadFenics(filename, element_type)
             raise ValueError("Reader not implemented yet")
@@ -1103,6 +1102,85 @@ class Mesh(object):
 
         return
         
+    def ReadOBJ(self, filename, element_type="tri"):
+
+        try:
+            fid = open(filename, "r")
+        except IOError:
+            print("File '%s' not found." % (filename))
+            sys.exit()
+
+        if self.elements is not None and self.points is not None:
+            self.__reset__()
+
+        self.filename = filename
+
+
+        bel = -1
+        if element_type == "line":
+            el = 2
+        elif element_type == "tri":
+            el = 3
+            bel = 2
+        elif element_type == "quad":
+            el = 4
+            bel = 2
+        elif element_type == "tet":
+            el = 4
+            bel = 3
+        elif element_type == "hex":
+            el = 8
+            bel = 4
+        else:
+            raise ValueError("Element type not understood")
+
+
+        # Read
+        points, elements, faces = [],[], []
+        vertex_normal, vertex_texture = [], []
+        for line_counter, line in enumerate(open(filename)):
+            item = line.rstrip()
+            plist = item.split()
+            if not plist:
+                continue
+
+            if plist[0] == 'v':
+                points.append([float(i) for i in plist[1:4]])
+            if plist[0] == 'f' and len(plist) > el:
+                for i in range(1,el+1):
+                    if "/" in plist[i]:
+                        plist[i] = plist[i].split("//")[0]
+                elements.append([int(i) for i in plist[1:el+1]])
+            if plist[0] == 'vn':
+                vertex_normal.append([float(i) for i in plist[1:4]])
+
+
+        self.points = np.array(points,copy=True)
+        self.elements = np.array(elements,copy=True) - 1
+        if not vertex_normal:
+            self.vertex_normal = np.array(vertex_normal,copy=True)
+
+        # CORRECT
+        self.nelem = self.elements.shape[0]
+        self.nnode = self.points.shape[0]
+        if self.nelem == 0:
+            raise ValueError("obj file does not contain {} elements".format(element_type))
+
+        if self.points.shape[1] == 3:
+            if np.allclose(self.points[:,2],0.):
+                self.points = np.ascontiguousarray(self.points[:,:2])
+
+        self.element_type = element_type
+        ndim = self.InferSpatialDimension()
+        if self.element_type == "tri" or self.element_type == "quad":
+            self.GetEdges()
+            self.GetBoundaryEdges()
+        elif self.element_type == "tet" or self.element_type == "hex":
+            self.GetFaces()
+            self.GetBoundaryFaces()
+            self.GetBoundaryEdges()
+
+        
     def WriteGmsh(self, filename, write_surface_info=False):
         """Write mesh to a .msh (gmsh format) file"""
 
@@ -1211,6 +1289,49 @@ class Mesh(object):
 
             f.write("$EndElements\n")
 
+    def WriteOBJ(self, filename):
+        """Write mesh to an obj file. For 3D elements writes the faces only
+        """
+
+        self.__do_essential_memebers_exist__()
+
+        mesh = deepcopy(self)
+        p = self.InferPolynomialDegree()
+
+        if p > 1:
+            mesh = self.GetLinearMesh(remap=True)
+
+        edim = mesh.InferElementalDimension()
+
+        if edim == 2:
+            elements = np.copy(mesh.elements).astype(np.int64)
+        elif edim == 3:
+            elements = np.copy(mesh.faces).astype(np.int64)
+        else:
+            raise RuntimeError("Writing obj file for {} elements not supported".format(mesh.element_type))
+
+        points = mesh.points[np.unique(elements),:]
+        if points.shape[1] == 2:
+            points = np.hstack((points,np.zeros((points.shape[0],1))))
+
+        points_repr = np.zeros((points.shape[0],points.shape[1]+1), dtype=object)
+        points_repr[:,0] = "v "
+        points_repr[:,1:] = points
+
+        elements_repr = np.zeros((elements.shape[0],elements.shape[1]+1), dtype=object)
+        elements_repr[:,0] = "f "
+        elements_repr[:,1:] = elements + 1
+
+        with open(filename, "w") as f:
+            f.write("# "+ str(mesh.nnode))
+            f.write('\n')
+            f.write("# "+ str(mesh.nelem))
+            f.write('\n')
+
+            np.savetxt(f, points_repr, fmt="%s")
+            f.write('\n')
+            np.savetxt(f, elements_repr, fmt="%s")
+            f.write('\n')
 
 
     def ChangeType(self):

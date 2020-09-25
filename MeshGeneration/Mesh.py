@@ -83,6 +83,7 @@ class Mesh(object):
         self.writer_type = None
 
         self.filename = None
+        self.element_to_set = None
 
     def GetEdges(self):
         assert self.element_type is not None

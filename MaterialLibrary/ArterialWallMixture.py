@@ -109,13 +109,6 @@ class ArterialWallMixture(Material):
             N = self.anisotropic_orientations[elem][fibre_i][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
-            if fibre_i is 1:
-                k1 = self.k1m*self.StateVariables[gcounter][15]
-                k2 = self.k2m
-            elif fibre_i is not 1:
-                k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
-                k2 = self.k2c
-
             # Remodeling stretch in fibre direction
             lambda_r = self.StateVariables[gcounter][fibre_i+8]
             # TOTAL deformation
@@ -124,6 +117,17 @@ class ArterialWallMixture(Material):
             # ELASTIC deformation
             innerFN_e = innerFN/lambda_r**2
             outerFN_e = outerFN/lambda_r**2
+            if innerFN_e >= 1.0:
+                if fibre_i is 1:
+                    k1 = self.k1tm*self.StateVariables[gcounter][15]
+                    k2 = self.k2tm
+                elif fibre_i is not 1:
+                    k1 = self.k1tc*self.StateVariables[gcounter][14+fibre_i]
+                    k2 = self.k2tc
+            else:
+                k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
+                k2 = self.k2c
+
             # Anisotropic Stiffness for this key
             expo = np.exp(k2*(innerFN_e-1.)**2)
             H_Voigt += 4.*k1/J*(1.+2.*k2*(innerFN_e-1.)**2)*expo*einsum('ij,kl',outerFN_e,outerFN_e)
@@ -199,21 +203,25 @@ class ArterialWallMixture(Material):
             N = self.anisotropic_orientations[elem][fibre_i][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
-            if fibre_i is 1:
-                k1 = self.k1m*self.StateVariables[gcounter][15]
-                k2 = self.k2m
-            elif fibre_i is not 1:
-                k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
-                k2 = self.k2c
-
+            # Remodeling stretch in fibre direction
             lambda_r = self.StateVariables[gcounter][fibre_i+8]
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
             outerFN = einsum('i,j',FN,FN)
-            # Remodeling stretch in fibre direction
             # ELASTIC deformation
             innerFN_e = innerFN/lambda_r**2
             outerFN_e = outerFN/lambda_r**2
+            if innerFN_e >= 1.0:
+                if fibre_i is 1:
+                    k1 = self.k1tm*self.StateVariables[gcounter][15]
+                    k2 = self.k2tm
+                elif fibre_i is not 1:
+                    k1 = self.k1tc*self.StateVariables[gcounter][14+fibre_i]
+                    k2 = self.k2tc
+            else:
+                k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
+                k2 = self.k2c
+
             # Anisotropic Stiffness for this key
             expo = np.exp(k2*(innerFN_e-1.)**2)
             stress += 2.*k1/J*(innerFN_e-1.)*expo*outerFN_e
@@ -247,19 +255,23 @@ class ArterialWallMixture(Material):
             N = self.anisotropic_orientations[elem][fibre_i][:,None]
             N = np.dot(I,N)[:,0]
             FN = np.dot(F,N)
-            if fibre_i is 1:
-                k1 = self.k1m*self.StateVariables[gcounter][15]
-                k2 = self.k2m
-            elif fibre_i is not 1:
-                k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
-                k2 = self.k2c
-
             # Remodeling along the fibre
             lambda_r = self.StateVariables[gcounter][8+fibre_i]
             # TOTAL deformation
             innerFN = einsum('i,i',FN,FN)
             # Elastic deformation
             innerFN_e = innerFN/lambda_r**2
+            if innerFN_e >= 1.0:
+                if fibre_i is 1:
+                    k1 = self.k1tm*self.StateVariables[gcounter][15]
+                    k2 = self.k2tm
+                elif fibre_i is not 1:
+                    k1 = self.k1tc*self.StateVariables[gcounter][14+fibre_i]
+                    k2 = self.k2tc
+            else:
+                k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
+                k2 = self.k2c
+
             # Anisotropic Stress for this fibre
             fibre_stress[fibre_i-1] = 2.*k1*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*innerFN_e/(J*fraction)
             # Active stress for SMC
@@ -298,19 +310,23 @@ class ArterialWallMixture(Material):
                 N = self.anisotropic_orientations[elem][fibre_i][:,None]
                 N = np.dot(I,N)[:,0]
                 FN = np.dot(Fp,N)
-                if fibre_i is 1:
-                    k1 = self.k1m*self.StateVariables[gcounter][15]
-                    k2 = self.k2m
-                elif fibre_i is not 1:
-                    k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
-                    k2 = self.k2c
-
                 # Remodeling along the fibre
                 lambda_r = self.StateVariables[gcounter][8+fibre_i]
                 # TOTAL deformation
                 innerFN = einsum('i,i',FN,FN)
                 # Elastic deformation
                 innerFN_e = innerFN/lambda_r**2
+                if innerFN_e >= 1.0:
+                    if fibre_i is 1:
+                        k1 = self.k1tm*self.StateVariables[gcounter][15]
+                        k2 = self.k2tm
+                    elif fibre_i is not 1:
+                        k1 = self.k1tc*self.StateVariables[gcounter][14+fibre_i]
+                        k2 = self.k2tc
+                else:
+                    k1 = self.k1c*self.StateVariables[gcounter][14+fibre_i]
+                    k2 = self.k2c
+
                 # Anisotropic Stress for this fibre
                 fibre_stress[gcounter][fibre_i-1] = 2.*k1*(innerFN_e-1.)*np.exp(k2*(innerFN_e-1.)**2)*innerFN_e/(J*fraction)
                 # Active stress for SMC

@@ -5,8 +5,10 @@ class _ArterialWallMixture_ : public _MaterialBase_<U> {
 public:
     U mu;
     U kappa;
-    U k1m;
-    U k2m;
+    U k1tm;
+    U k2tm;
+    U k1tc;
+    U k2tc;
     U k1c;
     U k2c;
     U rho;
@@ -19,11 +21,13 @@ public:
     FASTOR_INLINE _ArterialWallMixture_() = default;
 
     FASTOR_INLINE
-    _ArterialWallMixture_(U mu, U kappa, U k1m, U k2m, U k1c, U k2c, U rho, U s_act, U stretch_m, U stretch_0, U stretch_a, U pressure) {
+    _ArterialWallMixture_(U mu, U kappa, U k1tm, U k2tm, U k1tc, U k2tc, U k1c, U k2c, U rho, U s_act, U stretch_m, U stretch_0, U stretch_a, U pressure) {
     this->mu = mu;
     this->kappa = kappa;
-    this->k1m = k1m;
-	 this->k2m = k2m;
+    this->k1tm = k1tm;
+	 this->k2tm = k2tm;
+	 this->k1tc = k1tc;
+    this->k2tc = k2tc;
 	 this->k1c = k1c;
     this->k2c = k2c;
     this->rho = rho;
@@ -35,11 +39,13 @@ public:
     }
 
     FASTOR_INLINE
-    void SetParameters(U mu, U kappa, U k1m, U k2m, U k1c, U k2c, U rho, U s_act, U stretch_m, U stretch_0, U stretch_a, U pressure){
+    void SetParameters(U mu, U kappa, U k1tm, U k2tm, U k1tc, U k2tc, U k1c, U k2c, U rho, U s_act, U stretch_m, U stretch_0, U stretch_a, U pressure){
     this->mu = mu;
     this->kappa = kappa;
-	 this->k1m = k1m;
-    this->k2m = k2m;
+	 this->k1tm = k1tm;
+    this->k2tm = k2tm;
+    this->k1tc = k1tc;
+    this->k2tc = k2tc;
     this->k1c = k1c;
     this->k2c = k2c;
     this->rho = rho;
@@ -135,11 +141,13 @@ public:
 	    auto outerFN_e = outerFN/coeff1;
 	    T coeff2 = std::pow((innerFN_e-1.),2);
 	    auto FNFN_ijkl_e = einsum<Index<i,j>,Index<k,l>>(outerFN_e,outerFN_e);
+       T k1=0.; T k2=0.;
 	    if (n==1) {
+         if (innerFN_e>=1.) {k1=k1tm; k2=k2tm;} else {k1=k1c; k2=k2c;}
 	      // Passive component of muscles
-	      T coeff3 = std::exp(k2m*coeff2);
-	      stress += 2.*k1m*SVnp[15]/J*(innerFN_e-1.)*coeff3*outerFN_e;
-	      elasticity += 4.*k1m*SVnp[15]/J*(1.+2.*k2m*coeff2)*coeff3*FNFN_ijkl_e;
+	      T coeff3 = std::exp(k2*coeff2);
+	      stress += 2.*k1*SVnp[15]/J*(innerFN_e-1.)*coeff3*outerFN_e;
+	      elasticity += 4.*k1*SVnp[15]/J*(1.+2.*k2*coeff2)*coeff3*FNFN_ijkl_e;
 	      // Active component of muscles
 	      auto FNFN_ijkl = einsum<Index<i,j>,Index<k,l>>(outerFN,outerFN);
 	      T coeff4 = std::pow(((stretch_m-stretch_a)/(stretch_m-stretch_0)),2);
@@ -148,10 +156,11 @@ public:
 	      elasticity += -2.*(s_act*SVnp[15]/(rho*coeff5*J))*(1.-coeff4)*FNFN_ijkl;
 	    }
 	    else if (n>1) {
+         if (innerFN_e>=1.) {k1=k1tc; k2=k2tc;} else {k1=k1c; k2=k2c;}
 	      // Component from the collagen
-	      T coeff3 = std::exp(k2c*coeff2);
-	      stress += 2.*k1c*SVnp[14+n]/J*(innerFN_e-1.)*coeff3*outerFN_e;
-	      elasticity += 4.*k1c*SVnp[14+n]/J*(1.+2.*k2c*coeff2)*coeff3*FNFN_ijkl_e;
+	      T coeff3 = std::exp(k2*coeff2);
+	      stress += 2.*k1*SVnp[14+n]/J*(innerFN_e-1.)*coeff3*outerFN_e;
+	      elasticity += 4.*k1*SVnp[14+n]/J*(1.+2.*k2*coeff2)*coeff3*FNFN_ijkl_e;
 	    }
 	}
 

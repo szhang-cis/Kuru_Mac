@@ -14,9 +14,11 @@ cdef extern from "_ArterialWallMixture_.h" nogil:
     cdef cppclass _ArterialWallMixture_[Real]:
         _ArterialWallMixture_() except +
         _ArterialWallMixture_(Real mu,Real kappa,Real k1tm,Real k2tm,Real k1tc,Real k2tc,
-                Real k1c,Real k2c,Real rho,Real s_act,Real stretch_m,Real stretch_0,Real stretch_a,Real pressure) except +
+                Real k1cm,Real k2cm,Real k1cc,Real k2cc,Real rho,Real s_act,Real stretch_m,
+                Real stretch_0,Real stretch_a,Real pressure) except +
         void SetParameters(Real mu,Real kappa,Real k1tm,Real k2tm,Real k1tc,Real k2tc,
-                Real k1c,Real k2c,Real rho,Real s_act,Real stretch_m,Real stretch_0,Real stretch_a,Real pressure) except +
+                Real k1cm,Real k2cm,Real k1cc,Real k2cc,Real rho,Real s_act,Real stretch_m,
+                Real stretch_0,Real stretch_a,Real pressure) except +
         void KineticMeasures(Real *Snp, Real* Hnp, int ndim, int ngauss, const Real *Fnp, int nfibre,
                 const Real *Nnp, int nstatv, const Real *SVnp, int near_incomp) except +
 
@@ -42,8 +44,8 @@ def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,
 
     cdef _ArterialWallMixture_[Real] mat_obj = _ArterialWallMixture_()
     mat_obj.SetParameters(material.mu,material.kappa,material.k1tm,material.k2tm,material.k1tc,material.k2tc,
-            material.k1c,material.k2c,material.rho,material.maxi_active_stress,material.maxi_active_stretch,
-            material.zero_active_stretch,material.active_stretch,material.pressure)
+            material.k1cm,material.k2cm,material.k1cc,material.k2cc,material.rho,material.maxi_active_stress,
+            material.maxi_active_stretch,material.zero_active_stretch,material.active_stretch,material.pressure)
     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre, 
             &anisotropic_orientations[0,0], nstatv, &state_variables[0,0], near_incomp)
 

@@ -60,23 +60,26 @@ class BoundaryCondition(object):
         self.analysis_type = 'static'
         self.analysis_nature = 'linear'
 
+        self.dirichlet_flags = None
+        self.applied_dirichlet = None
         self.is_dirichlet_computed = False
         self.columns_out = None
         self.columns_in = None
-        self.applied_dirichlet = None
         self.save_dirichlet_data = save_dirichlet_data
         self.save_nurbs_data = save_nurbs_data
         self.filename = filename
         self.read_dirichlet_from_file = read_dirichlet_from_file
 
-        self.dirichlet_flags = None
         self.neumann_flags = None
         self.applied_neumann = None
+        self.is_applied_neumann_shape_functions_computed = False
+
+        self.has_robin_conditions = False
         self.pressure_flags = None
         self.applied_pressure = None
         self.pressure_increment = 1.0
-        self.is_applied_neumann_shape_functions_computed = False
-        self.is_applied_pressure_shape_functions_computed = False
+        self.spring_flags = None
+        self.applied_spring = None
         self.is_body_force_shape_functions_computed = False
 
         self.make_loading = make_loading # "ramp" or "constant"
@@ -133,28 +136,40 @@ class BoundaryCondition(object):
             self.applied_neumann = tups[1]
             return tups
 
-    def SetPressureCriteria(self, func, *args, **kwargs):
-        """Applies user defined Neumann data to self
+    def SetRobinCriteria(self, func, *args, **kwargs):
+        """Applies user defined Robin data to self, just working on surfaces
         """
 
-        if "apply" in kwargs.keys():
-            del kwargs["apply"]
-            self.has_step_wise_pressure_loading = True
-            self.step_wise_pressure_data = {'func':func, 'args': args, 'kwargs': kwargs}
-            tups = func(0, *args, **kwargs)
-        else:
-            tups = func(*args, **kwargs)
+        tups = func(*args, **kwargs)
 
-        if not isinstance(tups,tuple):
-            raise ValueError("User-defined Pressure criterion function {} "
-                "should return one flag and one data array".format(func.__name__))
+        if isinstance(tups,dict):
+            self.RobinLoadSelector(tups)
+        elif isinstance(tups,tuple):
+            for itup in range(len(tups)):
+                if isinstance(tups[itup],dict):
+                    self.RobinLoadSelector(tups[itup])
+                else:
+                    raise ValueError("User-defined Robin criterion function {} "
+                        "should return dict or tuple(dict,dict,...)".format(func.__name__))
         else:
-            if len(tups) !=2:
-                raise ValueError("User-defined Pressure criterion function {} "
-                    "should return one flag and one data array".format(func.__name__))
-            self.pressure_flags = tups[0]
-            self.applied_pressure = tups[1]
-            return tups
+            raise ValueError("User-defined Robin criterion function {} "
+                "should return dict or tuple".format(func.__name__))
+
+        self.has_robin_conditions = True
+        return tups
+
+    def RobinLoadSelector(self, tups):
+        if tups['type'] == 'Pressure':
+            self.pressure_flags = tups['flags']
+            self.applied_pressure = tups['data']
+        elif tups['type'] == 'Spring':
+            self.spring_flags = tups['flags']
+            self.applied_spring = tups['data']
+        elif tups['type'] == 'Dashpot':
+            raise ValueError("Surrounding viscoelastic effects not implemented yet")
+        else:
+            raise ValueError("Type force {} not understood or not available. "
+                "Types are Pressure, Spring and Dashpot.".format(tups['type']))
 
     def GetDirichletBoundaryConditions(self, formulation, mesh, materials=None, solver=None, fem_solver=None):
 

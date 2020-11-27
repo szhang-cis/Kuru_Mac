@@ -17,7 +17,7 @@ from .RHSAssemblyNative import RHSAssemblyNative
 #import multiprocessing
 #import Florence.ParallelProcessing.parmap as parmap
 
-__all__ = ['Assemble', 'AssemblyFollowerForces','AssembleForces']
+__all__ = ['Assemble', 'AssemblyRobinForces','AssembleForces']
 
 #---------------------------------------------------------------------------------------------------#
 #------------------------ ASSEMBLY ROUTINE FOR INTERNAL TRACTION FORCES ----------------------------#
@@ -232,10 +232,17 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, materials, bou
                 shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])))
             fem_solver.is_mass_computed = True
 
-    if fem_solver.has_moving_boundary:
-        K_pressure, F_pressure = AssemblyFollowerForces(boundary_condition, mesh, materials[0], function_spaces, fem_solver, Eulerx)
-        stiffness -= K_pressure
-        T -= F_pressure[:,None]
+    if boundary_condition.has_robin_conditions:
+        if not boundary_condition.pressure_flags is None:
+            K_pressure, F_pressure = AssemblyRobinForces(boundary_condition, mesh,
+                materials[0], function_spaces, fem_solver, Eulerx, 'pressure')
+            stiffness -= K_pressure
+            T -= F_pressure[:,None]
+        if not boundary_condition.spring_flags is None:
+            K_spring, F_spring = AssemblyRobinForces(boundary_condition, mesh,
+                materials[0], function_spaces, fem_solver, Eulerx, 'spring')
+            stiffness += K_spring
+            T += F_spring[:,None]
 
     fem_solver.assembly_time = time() - t_assembly
     return stiffness, T, mass
@@ -245,18 +252,22 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, materials, bou
 #----------------------------------------------------------------------------------------------------------------#
 
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL PRESSURE FORCES ----------------------------------#
-def AssemblyFollowerForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx):
+def AssemblyRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, type_load):
     """Compute/assemble traction (follower)"""
-
-    if boundary_condition.pressure_flags is None:
-        raise RuntimeError("Pressure boundary conditions are not set for the analysis")
 
     ndim = mesh.InferSpatialDimension()
     nvar = material.nvar
 
-    if boundary_condition.pressure_flags.shape[0] == mesh.points.shape[0]:
-        boundary_condition.pressure_data_applied_at = "node"
-        raise ValueError("Follower forces applied at nodes")
+    if type_load == 'pressure':
+        if boundary_condition.pressure_flags.shape[0] == mesh.points.shape[0]:
+            #boundary_condition.robin_data_applied_at = "node"
+            raise ValueError("Robin boundary forces (pressure) applied at nodes")
+    elif type_load == 'spring':
+        if boundary_condition.spring_flags.shape[0] == mesh.points.shape[0]:
+            #boundary_condition.robin_data_applied_at = "node"
+            raise ValueError("Robin boundary forces (spring) applied at nodes")
+    else:
+        raise ValueError("Load {} not unserstood. Just spring or pressure.".format(type_load))
 
     if not isinstance(function_spaces,tuple):
         raise ValueError("Boundary functional spaces not available for computing pressure stiffness")
@@ -280,20 +291,44 @@ def AssemblyFollowerForces(boundary_condition, mesh, material, function_spaces, 
                 bquadrature, p=p, equally_spaced=mesh.IsEquallySpaced, use_optimal_quadrature=False)
             function_spaces = (function_spaces[0],bfunction_space)
 
-    from .FollowerForces import StaticForces
-    if boundary_condition.analysis_type == "static":
-        if fem_solver.recompute_sparsity_pattern:
-            I_stiffness, J_stiffness, V_stiffness, F = StaticForces(boundary_condition, mesh, material, function_spaces[-1], fem_solver, Eulerx)
-            stiffness = coo_matrix((V_stiffness,(I_stiffness,J_stiffness)),
-                shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])),dtype=np.float64).tocsr()
-        else:
-            V_stiffness, F = StaticForces(boundary_condition, mesh, material, function_spaces[-1], fem_solver, Eulerx)
-            stiffness = csr_matrix((V_stiffness,fem_solver.indices,fem_solver.indptr),
-                shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])))
-    elif boundary_condition.analysis_type == "dynamic":
-        raise ValueError("Not implemented yet")
+    if type_load == 'pressure':
+        from .RobinForces import StaticPressureForces
+        if boundary_condition.analysis_type == "static":
+            if fem_solver.recompute_sparsity_pattern:
+                I_robin, J_robin, V_robin, F_robin = StaticPressureForces(boundary_condition,
+                    mesh, material, function_spaces[-1], fem_solver, Eulerx)
+                K_robin = coo_matrix((V_robin,(I_robin,J_robin)),
+                    shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])),dtype=np.float64).tocsr()
+            else:
+                V_robin, F_robin = StaticPressureForces(boundary_condition, mesh,
+                    material, function_spaces[-1], fem_solver, Eulerx, type_load)
+                K_robin = csr_matrix((V_robin,fem_solver.indices,fem_solver.indptr),
+                    shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])))
 
-    return stiffness, F
+        elif boundary_condition.analysis_type == "dynamic":
+            raise ValueError("Not implemented yet")
+
+        return K_robin, F_robin
+
+    if type_load == 'spring':
+        from .RobinForces import StaticSpringForces
+        if boundary_condition.analysis_type == "static":
+            if fem_solver.recompute_sparsity_pattern:
+                I_robin, J_robin, V_robin, F_robin = StaticSpringForces(boundary_condition,
+                    mesh, material, function_spaces[-1], fem_solver, Eulerx)
+                K_robin = coo_matrix((V_robin,(I_robin,J_robin)),
+                    shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])),dtype=np.float64).tocsr()
+            else:
+                V_robin, F_robin = StaticSpringForces(boundary_condition, mesh,
+                    material, function_spaces[-1], fem_solver, Eulerx, type_load)
+                K_robin = csr_matrix((V_robin,fem_solver.indices,fem_solver.indptr),
+                    shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])))
+
+        elif boundary_condition.analysis_type == "dynamic":
+            raise ValueError("Not implemented yet")
+
+        return K_robin, F_robin
+
 
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL TRACTION FORCES ----------------------------------#
 

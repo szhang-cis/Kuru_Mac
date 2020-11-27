@@ -5,7 +5,7 @@ from warnings import warn
 import numpy as np
 #import scipy as sp
 from scipy.sparse import issparse, isspmatrix_csr #, isspmatrix_coo, isspmatrix_csc
-from scipy.sparse.linalg import spsolve #, cg, cgs, bicgstab, gmres, lgmres, splu, spilu, LinearOperator, onenormest
+from scipy.sparse.linalg import spsolve, cg, gmres, lgmres, bicgstab#, cgs, splu, spilu, LinearOperator, onenormest
 #from subprocess import call
 
 __all__ = ["LinearSolver"]
@@ -69,7 +69,7 @@ class LinearSolver(object):
 
         self.has_mumps = False
         try:
-            from mumps.mumps_context import MUMPSContext
+            from _dMUMPS_ import dMUMPS_solve
             self.has_mumps = True
         except ImportError:
             self.has_mumps = False
@@ -163,21 +163,22 @@ class LinearSolver(object):
 
             elif self.solver_subtype=='mumps' and self.has_mumps:
 
-                from mumps.mumps_context import MUMPSContext
+                from _dMUMPS_ import dMUMPS_solve
                 t_solve = time()
                 A = A.tocoo()
+                sol=dMUMPS_solve(A.data,A.row,A.col,b)
                 # False means non-symmetric - Do not change it to True. True means symmetric pos def
                 # which is not the case for electromechanics
-                if self.solver_context_manager is None:
-                    context = MUMPSContext((A.shape[0], A.row, A.col, A.data, False), verbose=False)
-                    context.analyze()
-                    context.factorize()
-                    sol = context.solve(rhs=b)
+                #if self.solver_context_manager is None:
+                    #context = MUMPSContext((A.shape[0], A.row, A.col, A.data, False), verbose=False)
+                    #context.analyze()
+                    #context.factorize()
+                    #sol = context.solve(rhs=b)
 
-                    if self.reuse_factorisation:
-                        self.solver_context_manager = context
-                else:
-                    sol = self.solver_context_manager.solve(rhs=b)
+                    #if self.reuse_factorisation:
+                    #    self.solver_context_manager = context
+                #else:
+                    #sol = self.solver_context_manager.solve(rhs=b)
 
                 print("MUMPS solver time is {}".format(time() - t_solve))
 

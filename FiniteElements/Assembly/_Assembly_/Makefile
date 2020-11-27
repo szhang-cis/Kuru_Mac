@@ -98,12 +98,6 @@ source_clean:
 
 
 cython_assembler_build:
-	@echo "Building kuru FEM follower forces assembler module"
-	$(CYTHON) FollowerForces.pyx
-	$(CXX) $(CXXSTD) $(CXXFLAGS) FollowerForces.cpp -o FollowerForces.$(EXT_POSTFIX) -I. \
-	-I$(PYTHON_INCLUDE_PATH) -I$(NUMPY_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION)
-	$(MOVE) FollowerForces.$(EXT_POSTFIX) ../
-
 	@echo "Building kuru FEM sparse assembler module"
 	$(CYTHON) SparseAssemblyNative.pyx
 	$(CXX) $(CXXSTD) $(CXXFLAGS) SparseAssemblyNative.cpp -o SparseAssemblyNative.$(EXT_POSTFIX) -I. \
@@ -131,3 +125,17 @@ cython_assembler_source_clean:
 	$(REMOVE) SparseAssemblyNative.cpp
 	$(REMOVE) RHSAssemblyNative.cpp
 	$(REMOVE) ComputeSparsityPattern.cpp
+	
+robin_build:
+	@echo "Building kuru FEM Robin boundary forces assembler module"
+	$(CYTHON) RobinForces.pyx
+	$(CXX) $(CXXSTD) $(CXXFLAGS) RobinForces.cpp -o RobinForces.$(EXT_POSTFIX) -I. \
+	-I$(PYTHON_INCLUDE_PATH) -I$(NUMPY_INCLUDE_PATH) -L$(PYTHON_LD_PATH) -l$(PYTHON_VERSION)
+	$(MOVE) RobinForces.$(EXT_POSTFIX) ../
+
+robin_clean:
+	$(REMOVE) RobinForces.cpp RobinForces.$(EXT_POSTFIX) ../RobinForces.$(EXT_POSTFIX)
+
+robin_source_clean:
+	$(REMOVE) RobinForces.cpp
+

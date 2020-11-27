@@ -1,5 +1,5 @@
-#ifndef FOLLOWER_FORCES_H
-#define FOLLOWER_FORCES_H
+#ifndef ROBIN_FORCES_H
+#define ROBIN_FORCES_H
 
 #include <algorithm>
 
@@ -153,16 +153,17 @@ void fill_global_data(
 
 
 /*---------------------------------------------------------------------------------------------*/
-void GetFacesForces(Real *stiff_face,
+/* GetFacesForces works at element (face) level. This function produce the pressure. */
+void GetFacesPressureForces(Real *stiff_face,
 	            Real *force,
-		    const Real pressure,
-		    const Real *Bases,
-		    const Real *Jm,
-		    const Real *AllGauss,
-		    const Real *EulerElemCoords,
-		    Integer nodeperface,
-		    Integer ngauss,
-		    Integer nvar)
+		        const Real pressure,
+		        const Real *Bases,
+		        const Real *Jm,
+		        const Real *AllGauss,
+		        const Real *EulerElemCoords,
+		        Integer nodeperface,
+		        Integer ngauss,
+		        Integer nvar)
 {
    Integer ndof = nodeperface*nvar;
    //Integer local_capacity = ndof*ndof;
@@ -210,7 +211,7 @@ void GetFacesForces(Real *stiff_face,
          for (Integer i=0; i<nodeperface; ++i) {
             tangentialx[j*nvar+k] += Jm[0*nodeperface*ngauss+i*ngauss+j]*EulerElemCoords[i*nvar+k];
             tangentialy[j*nvar+k] += Jm[1*nodeperface*ngauss+i*ngauss+j]*EulerElemCoords[i*nvar+k];
-	 }
+	     }
       }
    }
    std::fill(normal,normal+ngauss*nvar,0.0);
@@ -221,8 +222,8 @@ void GetFacesForces(Real *stiff_face,
          for (Integer j=0; j<nvar; ++j) {
             for (Integer k=0; k<nvar; ++k) {
                normal[l*nvar+i] += alternating[i*nvar*nvar+j*nvar+k]*tangentialx[l*nvar+j]*tangentialy[l*nvar+k];
-	    }
-	 }
+	        }
+	     }
       }
    }
    // Gauss quadrature of follower load (traction)
@@ -231,7 +232,7 @@ void GetFacesForces(Real *stiff_face,
       for (Integer k=0; k<ngauss; ++k) {
          for (Integer j=0; j<nvar; ++j) {
             force[i] += pressure*N[i*nvar*ngauss+j*ngauss+k]*normal[k*nvar+j]*AllGauss[k];
-	 }
+	     }
       }
    }
    std::fill(crossx,crossx+ndof*ndof*nvar*ngauss,0.0);
@@ -246,17 +247,17 @@ void GetFacesForces(Real *stiff_face,
                for (Integer j=0; j<nvar; ++j) {
                   for (Integer k=0; k<nvar; ++k) {
                      crossy[l*ndof*nvar*ngauss+n*nvar*ngauss+i*ngauss+m] += 
-		      alternating[i*nvar*nvar+j*nvar+k]*gNy[l*nvar*ngauss+j*ngauss+m]*
-		      N[n*nvar*ngauss+k*ngauss+m] - alternating[i*nvar*nvar+j*nvar+k]*
-		      N[l*nvar*ngauss+j*ngauss+m]*gNy[n*nvar*ngauss+k*ngauss+m];
+		                alternating[i*nvar*nvar+j*nvar+k]*gNy[l*nvar*ngauss+j*ngauss+m]*
+		                N[n*nvar*ngauss+k*ngauss+m] - alternating[i*nvar*nvar+j*nvar+k]*
+		                N[l*nvar*ngauss+j*ngauss+m]*gNy[n*nvar*ngauss+k*ngauss+m];
                      crossx[l*ndof*nvar*ngauss+n*nvar*ngauss+i*ngauss+m] += 
-                      alternating[i*nvar*nvar+j*nvar+k]*gNx[l*nvar*ngauss+j*ngauss+m]*
-		      N[n*nvar*ngauss+k*ngauss+m] - alternating[i*nvar*nvar+j*nvar+k]*
-		      N[l*nvar*ngauss+j*ngauss+m]*gNx[n*nvar*ngauss+k*ngauss+m];
-		  }
-	       }
-	    }
-	 }
+                        alternating[i*nvar*nvar+j*nvar+k]*gNx[l*nvar*ngauss+j*ngauss+m]*
+		                N[n*nvar*ngauss+k*ngauss+m] - alternating[i*nvar*nvar+j*nvar+k]*
+		                N[l*nvar*ngauss+j*ngauss+m]*gNx[n*nvar*ngauss+k*ngauss+m];
+		          }
+	           }
+	        }
+	     }
       }
    }
    //quadrature1 = einsum("ij,klji,i->kli",tangentialx,crossy,AllGauss[:,0]).sum(axis=2)
@@ -270,7 +271,7 @@ void GetFacesForces(Real *stiff_face,
 		crossy[k*ndof*nvar*ngauss+l*nvar*ngauss+j*ngauss+i] - 
 		tangentialy[i*nvar+j]*crossx[k*ndof*nvar*ngauss+l*nvar*ngauss+j*ngauss+i])*AllGauss[i];
             }
-	 }
+	     }
       }
    }
    free(alternating);
@@ -284,7 +285,10 @@ void GetFacesForces(Real *stiff_face,
    free(crossy);
 }
 
-void StaticForcesAssembler(const UInteger *faces,
+/* This function assembles the whole forces and stiffness due to
+   pressure boundary conditions */
+
+void StaticPressureAssembler(const UInteger *faces,
                            const Real *Eulerx,
                            const Real *Bases,
                            const Real *Jm,
@@ -298,9 +302,9 @@ void StaticForcesAssembler(const UInteger *faces,
                            const int *data_local_indices,
                            const UInteger *sorted_elements,
                            const Integer *sorter,
-                           int *I_stiff,
-                           int *J_stiff,
-                           Real *V_stiff,
+                           int *I_press,
+                           int *J_press,
+                           Real *V_press,
                            Real *F,
                            Integer nface,
                            Integer nodeperface,
@@ -319,19 +323,19 @@ void StaticForcesAssembler(const UInteger *faces,
    // LOOP OVER FACES
    for (Integer face=0; face<nface; ++face) {
       if (pressure_flags[face]) {
-	 // APPLIED PRESSURE BY INCREMENT AND FACE
+         // APPLIED ROBIN (PRESSURE) BY INCREMENT AND FACE
          Real pressure = pressure_increment*applied_pressure[face];
-	 // GET FIELD AT ELEMENT LEVEL (JUST CURRENT)
+         // GET FIELD AT ELEMENT LEVEL (JUST CURRENT)
          for (Integer i=0; i<nodeperface; ++i) {
             Integer inode = faces[face*nodeperface+i];
             for (Integer j=0; j<nvar; ++j) {
                EulerElemCoords[i*nvar+j] = Eulerx[inode*nvar+j];
-	    }
-	 }
-	 // COMPUTE STIFFNESS AND FORCE
-	 std::fill(force,force+ndof,0.0);
-	 std::fill(stiff_face,stiff_face+local_capacity,0.0);
-	 GetFacesForces( stiff_face,
+            }
+         }
+         // COMPUTE STIFFNESS AND FORCE
+	     std::fill(force,force+ndof,0.0);
+	     std::fill(stiff_face,stiff_face+local_capacity,0.0);
+	     GetFacesPressureForces( stiff_face,
 			 force,
 			 pressure,
 			 Bases,
@@ -347,9 +351,9 @@ void StaticForcesAssembler(const UInteger *faces,
                 nullptr,
                 nullptr,
                 stiff_face,
-                I_stiff,
-                J_stiff,
-                V_stiff,
+                I_press,
+                J_press,
+                V_press,
                 face,
                 nvar,
                 nodeperface,
@@ -361,21 +365,181 @@ void StaticForcesAssembler(const UInteger *faces,
                 data_local_indices,
                 data_global_indices,
                 sorted_elements,
-		sorter);
+                sorter);
 
-	 // ASSEMBLE FORCES
-	 // F[faces[face,:]*nvar+ivar,0]+=force[ivar::nvar,0]
-	 for (Integer i=0; i<nodeperface; ++i) {
-	    Integer inode = faces[face*nodeperface+i]*nvar;
-	    for (Integer j=0; j<nvar; ++j) {
-	       F[inode+j] += force[i*nvar+j];
-	    }
-	 }
+         // ASSEMBLE FORCES
+         // F[faces[face,:]*nvar+ivar,0]+=force[ivar::nvar,0]
+         for (Integer i=0; i<nodeperface; ++i) {
+	        Integer inode = faces[face*nodeperface+i]*nvar;
+	        for (Integer j=0; j<nvar; ++j) {
+	           F[inode+j] += force[i*nvar+j];
+	        }
+	     }
       }
    }
    free(force);
    free(stiff_face);
    free(EulerElemCoords);
 }
+
 /*---------------------------------------------------------------------------------------------*/
-#endif  //FOLLOWER_FORCES_H
+
+/* GetFacesForces works at element (face) level. This function produce the spring elastic reaction. */
+void GetFacesSpringForces(Real *stiff_face,
+	            Real *force,
+		        const Real spring,
+		        const Real *Bases,
+		        const Real *AllGauss,
+		        const Real *ElemDisplacements,
+		        Integer nodeperface,
+		        Integer ngauss,
+		        Integer nvar)
+{
+   Integer ndof = nodeperface*nvar;
+   //Integer local_capacity = ndof*ndof;
+   
+   Real *N            = (Real*)malloc(ndof*nvar*ngauss*sizeof(Real));
+   Real *displacement = (Real*)malloc(ngauss*nvar*sizeof(Real));
+
+   std::fill(N,N+ndof*nvar*ngauss,0.0);
+   // Loop to fill function spaces for dimensons
+   // 0::3=>0,3,6,9 -- 1::3=>1,4,7,10 -- 2::3=>2,5,8,11
+   for (Integer i=0; i<nvar; ++i) {
+      for (Integer j=0; j<nodeperface; ++j) {
+         Integer idof = j*nvar + i;
+         for (Integer k=0; k<ngauss; ++k) {
+            N[idof*nvar*ngauss+i*ngauss+k] = Bases[j*ngauss+k];
+	     }
+      }
+   }
+   std::fill(displacement,displacement+ngauss*nvar,0.0);
+   // mapping displacement vector [\vec{u} (ngauss x ndim)]
+   //displacement = einsum("ij,ik->jk",Bases,ElemDisplacements)
+   for (Integer j=0; j<ngauss; ++j) {
+      for (Integer k=0; k<nvar; ++k) {
+         for (Integer i=0; i<nodeperface; ++i) {
+            displacement[j*nvar+k] += Bases[i*ngauss+j]*ElemDisplacements[i*nvar+k];
+	     }
+      }
+   }
+   // Gauss quadrature of spring elastic load (traction)
+   //force = einsum("ijk,kj,k->ik",N,u,AllGauss[:,0]).sum(axis=1)
+   for (Integer i=0; i<ndof; ++i) {
+      for (Integer k=0; k<ngauss; ++k) {
+         for (Integer j=0; j<nvar; ++j) {
+            force[i] += spring*N[i*nvar*ngauss+j*ngauss+k]*displacement[k*nvar+j]*AllGauss[k];
+	     }
+      }
+   }
+   //quadrature = einsum("kji,lji,i->kli",N,N,AllGauss[:,0]).sum(axis=2)
+   //spring*quadrature
+   for (Integer k=0; k<ndof; ++k) {
+      for (Integer l=0; l<ndof; ++l) {
+         for (Integer i=0; i<ngauss; ++i) {
+            for (Integer j=0; j<nvar; ++j) {
+               stiff_face[k*ndof+l] += spring*N[k*nvar*ngauss+j*ngauss+i]*N[l*nvar*ngauss+j*ngauss+i]*AllGauss[i];
+            }
+	     }
+      }
+   }
+   free(N);
+   free(displacement);
+}
+
+/* This function assembles the whole forces and stiffness due to
+   spring boundary conditions */
+
+void StaticSpringAssembler(const UInteger *faces,
+                           const Real *LagrangeX,
+                           const Real *Eulerx,
+                           const Real *Bases,
+                           const Real *AllGauss,
+                           const int *spring_flags,
+                           const Real *applied_spring,
+                           int recompute_sparsity_pattern,
+                           int squeeze_sparsity_pattern,
+                           const int *data_global_indices,
+                           const int *data_local_indices,
+                           const UInteger *sorted_elements,
+                           const Integer *sorter,
+                           int *I_spring,
+                           int *J_spring,
+                           Real *V_spring,
+                           Real *F,
+                           Integer nface,
+                           Integer nodeperface,
+                           Integer ngauss,
+                           Integer local_size,
+                           Integer nvar)
+{
+   Integer ndof = nodeperface*nvar;
+   Integer local_capacity = ndof*ndof;
+
+   Real *ElemDisplacements = (Real*)malloc(sizeof(Real)*nodeperface*nvar);
+
+   Real *force = (Real*)malloc(ndof*sizeof(Real));
+   Real *stiff_face = (Real*)malloc(local_capacity*sizeof(Real));
+
+   // LOOP OVER FACES
+   for (Integer face=0; face<nface; ++face) {
+      if (spring_flags[face]) {
+         // APPLIED ROBIN (SPRING) BY INCREMENT AND FACE
+         Real spring = applied_spring[face];
+         // GET FIELD AT ELEMENT LEVEL (JUST CURRENT)
+         for (Integer i=0; i<nodeperface; ++i) {
+            Integer inode = faces[face*nodeperface+i];
+            for (Integer j=0; j<nvar; ++j) {
+               ElemDisplacements[i*nvar+j] = Eulerx[inode*nvar+j] - LagrangeX[inode*nvar+j];
+            }
+         }
+         // COMPUTE STIFFNESS AND FORCE
+	     std::fill(force,force+ndof,0.0);
+	     std::fill(stiff_face,stiff_face+local_capacity,0.0);
+	     GetFacesSpringForces( stiff_face,
+			 force,
+			 spring,
+			 Bases,
+			 AllGauss,
+			 ElemDisplacements,
+			 nodeperface,
+			 ngauss,
+			 nvar);
+
+         // ASSEMBLE CONSTITUTIVE STIFFNESS
+         fill_global_data(
+                nullptr,
+                nullptr,
+                stiff_face,
+                I_spring,
+                J_spring,
+                V_spring,
+                face,
+                nvar,
+                nodeperface,
+                faces,
+                local_capacity,
+                local_capacity,
+                recompute_sparsity_pattern,
+                squeeze_sparsity_pattern,
+                data_local_indices,
+                data_global_indices,
+                sorted_elements,
+                sorter);
+
+         // ASSEMBLE FORCES
+         // F[faces[face,:]*nvar+ivar,0]+=force[ivar::nvar,0]
+         for (Integer i=0; i<nodeperface; ++i) {
+	        Integer inode = faces[face*nodeperface+i]*nvar;
+	        for (Integer j=0; j<nvar; ++j) {
+	           F[inode+j] += force[i*nvar+j];
+	        }
+	     }
+      }
+   }
+   free(force);
+   free(stiff_face);
+   free(ElemDisplacements);
+}
+
+/*---------------------------------------------------------------------------------------------*/
+#endif  //ROBIN_FORCES_H

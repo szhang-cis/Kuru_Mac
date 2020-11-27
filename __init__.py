@@ -8,7 +8,7 @@ from .BoundaryCondition import BoundaryCondition
 from .Solver import *
 #from .Utils import PWD, RSWD
 from .PostProcessing import *
-from .FiniteElements import AssemblyFollowerForces #AssembleMass, AssembleForm
+from .FiniteElements import AssemblyRobinForces #AssembleMass, AssembleForm
 from .TimeIntegrators import *
 
 __version__ = "0.1.5"

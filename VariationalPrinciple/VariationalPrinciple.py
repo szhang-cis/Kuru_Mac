@@ -182,7 +182,9 @@ class VariationalPrinciple(object):
 
         if material.has_low_level_dispatcher:
             from ._VolumetricStiffness_ import _VolumetricStiffnessIntegrand_
-            stiffness, MeanVolume = _VolumetricStiffnessIntegrand_(material, SpatialGradient, detJ, dV, self.nvar)
+            stiffness, MeanVolume = _VolumetricStiffnessIntegrand_(material,
+                np.ascontiguousarray(SpatialGradient), np.ascontiguousarray(detJ),
+                np.ascontiguousarray(dV), self.nvar)
         else:
             MaterialVolume = np.sum(dV)
             if material.has_state_variables and material.has_growth_remodeling:

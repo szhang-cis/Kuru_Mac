@@ -1,7 +1,7 @@
 import numpy as np
 from .VariationalPrinciple import VariationalPrinciple
 #from Florence import QuadratureRule, FunctionSpace
-
+from sys import exit
 from Kuru.FiniteElements.LocalAssembly.KinematicMeasures import *
 from Kuru.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
 from .DisplacementApproachIndices import *
@@ -69,7 +69,7 @@ class DisplacementFormulation(VariationalPrinciple):
 
         return I_stiff_elem, J_stiff_elem, V_stiff_elem, t, I_mass_elem, J_mass_elem, V_mass_elem
 
-    def GetLocalStiffness(self, function_space, material, LagrangeElemCoords, EulerELemCoords, fem_solver, elem=0):
+    def GetLocalStiffness(self, function_space, material, LagrangeElemCoords, EulerElemCoords, fem_solver, elem=0):
         """Get stiffness matrix of the system"""
 
         nvar = self.nvar
@@ -92,17 +92,17 @@ class DisplacementFormulation(VariationalPrinciple):
         # MATERIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla_0 (N) (ngauss x ndim x nodesperelem)]
         MaterialGradient = np.einsum('ijk,kli->ijl', inv(ParentGradientX), Jm)
         # DEFORMATION GRADIENT TENSOR [\vec{x} \otimes \nabla_0 (N) (ngauss x ndim x ndim)]
-        F = np.einsum('ij,kli->kjl', EulerELemCoords, MaterialGradient)
+        F = np.einsum('ij,kli->kjl', EulerElemCoords, MaterialGradient)
 
         # COMPUTE REMAINING KINEMATIC MEASURES
         StrainTensors = KinematicMeasures(F, fem_solver.analysis_nature)
-
+        
         # UPDATE/NO-UPDATE GEOMETRY
         if fem_solver.requires_geometry_update:
             # MAPPING TENSOR [\partial\vec{X}/ \partial\vec{\varepsilon} (ngauss x ndim x ndim)]
-            ParentGradientx = np.einsum('ijk,jl->kil',Jm, EulerELemCoords)
+            ParentGradientx = np.einsum('ijk,jl->kil',Jm, EulerElemCoords)
             # SPATIAL GRADIENT TENSOR IN PHYSICAL ELEMENT [\nabla (N) (ngauss x nodesperelem x ndim)]
-            SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx),Jm)
+            SpatialGradient = np.einsum('ijk,kli->ilj',inv(ParentGradientx), Jm)
             # COMPUTE ONCE detJ (GOOD SPEEDUP COMPARED TO COMPUTING TWICE) (dv = dV*J)
             detJ = np.einsum('i,i,i->i',AllGauss[:,0],np.abs(det(ParentGradientX)),np.abs(StrainTensors['J']))
         else:
@@ -143,12 +143,12 @@ class DisplacementFormulation(VariationalPrinciple):
 
         return stiffness, tractionforce
 
-    def __GetLocalStiffness__(self, function_space, material, LagrangeElemCoords, EulerELemCoords, fem_solver, elem=0):
+    def __GetLocalStiffness__(self, function_space, material, LagrangeElemCoords, EulerElemCoords, fem_solver, elem=0):
         """Get stiffness matrix of the system"""
 
         # GET LOCAL KINEMATICS
         SpatialGradient, F, detJ, dV = _KinematicMeasures_(function_space.Jm, function_space.AllGauss[:,0],
-            LagrangeElemCoords, EulerELemCoords, fem_solver.requires_geometry_update)
+            LagrangeElemCoords, EulerElemCoords, fem_solver.requires_geometry_update)
         # PARAMETERS FOR INCOMPRESSIBILITY (MEAN DILATATION METHOD HU-WASHIZU)
         if material.is_nearly_incompressible:
             stiffness_k = self.VolumetricStiffnessIntegrand(material, SpatialGradient, detJ, dV)

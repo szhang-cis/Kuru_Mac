@@ -145,10 +145,13 @@ class GrowthRemodelingIntegrator(object):
 
             # RE-ASSEMBLE - COMPUTE STIFFNESS AND INTERNAL TRACTION FORCES
             K, TractionForces = Assemble(fem_solver, function_spaces, formulation, mesh, materials,
-                    boundary_condition, Eulerx)[:2]
+                boundary_condition, Eulerx)[:2]
+            # COMPUTE ROBIN STIFFNESS AND FORCES (EXTERNAL)
+            K, TractionForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
+                fem_solver, Eulerx, K, TractionForces)
 
             # FIND THE RESIDUAL
-            Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] -\
+            Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] - \
                 NodalForces[boundary_condition.columns_in]
 
             # SAVE THE NORM
@@ -269,7 +272,7 @@ class GrowthRemodelingIntegrator(object):
                     material.pressure = material.kappa*(CurrentVolume-MaterialVolume)/MaterialVolume
 
                 # COMPUTE FIBRE STRESS AND SOFTNESS
-                ElemFibreStress[ielem,:,:],ElemSoftness[ielem,:,:] = material.LLConstituentStress(F[ielem,:,:,:],elem)
+                ElemFibreStress[ielem,:,:],ElemSoftness[ielem,:,:] = material._ConstituentMeasures_(F[ielem,:,:,:],elem)
 
             else:
                 # GAUSS LOOP IN VECTORISED FORM
@@ -304,7 +307,7 @@ class GrowthRemodelingIntegrator(object):
                 # LOOP OVER GAUSS POINTS
                 for counter in range(AllGauss.shape[0]):
                     # COMPUTE FIBRE STRESS AND SOFTNESS
-                    ElemFibreStress[ielem,counter,:],ElemSoftness[ielem,counter,:] = material.ConstituentStress(
+                    ElemFibreStress[ielem,counter,:],ElemSoftness[ielem,counter,:] = material.ConstituentMeasures(
                         StrainTensors,elem,counter)
 
 

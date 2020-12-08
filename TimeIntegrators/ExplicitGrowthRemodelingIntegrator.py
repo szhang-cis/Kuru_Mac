@@ -10,7 +10,7 @@ from copy import deepcopy
 from warnings import warn
 from time import time
 
-#from Florence.FiniteElements.Assembly import Assemble, AssembleExplicit
+from Kuru.FiniteElements.Assembly import Assemble #, AssembleExplicit
 #from Florence import Mesh
 #from Florence.PostProcessing import PostProcess
 from .GrowthRemodelingIntegrator import GrowthRemodelingIntegrator
@@ -49,7 +49,6 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
         LoadIncrements = fem_solver.number_of_load_increments
         LoadFactor = 1./LoadIncrements
-
         AppliedDirichletInc = np.zeros(boundary_condition.applied_dirichlet.shape[0],dtype=np.float64)
 
         # HOMEOSTATIC STATE
@@ -61,7 +60,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         # TIME LOOP
         for TIncrement in range(TimeIncrements):
 
-            # CHECK ADAPTIVE LOAD FACTOR
+            # CHECK ADAPTIVE STEP TIME FACTOR
             if fem_solver.time_factor is not None:
                 TimeFactor = fem_solver.time_factor[TIncrement]
             Delta_t = TimeFactor
@@ -82,17 +81,28 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             print("== Time elapsed, {:4.0f} days ==".format(IncrementalTime))
             print("=============================")
 
+            # MATERIALS CHANGE AT EACH STEP
+            if TIncrement != 0:
+                tAssembly = time()
+                K, TractionForces = Assemble(fem_solver, function_spaces, formulation, mesh, materials,
+                    boundary_condition, Eulerx)[:2]
+
+            # APPLY ROBIN BOUNDARY CONDITIONS - STIFFNESS(_) AND FORCES
             boundary_condition.pressure_increment = IncrementalLoad
+            _, RobinForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
+                fem_solver, Eulerx, K, np.zeros_like(Residual))
             # APPLY NEUMANN BOUNDARY CONDITIONS
             DeltaF = LoadFactor*NeumannForces
             NodalForces += DeltaF
             # OBRTAIN INCREMENTAL RESIDUAL - CONTRIBUTION FROM BOTH NEUMANN AND DIRICHLET
             Residual = -boundary_condition.ApplyDirichletGetReducedMatrices(K,np.zeros_like(Residual),
                 boundary_condition.applied_dirichlet,LoadFactor=LoadFactor,only_residual=True)
-            Residual -= DeltaF
+            Residual += RobinForces - DeltaF
             # GET THE INCREMENTAL DISPLACEMENT
             AppliedDirichletInc = LoadFactor*boundary_condition.applied_dirichlet
 
+            if TIncrement != 0:
+                print('Finished the assembly stage. Time elapsed was', time()-tAssembly, 'seconds')
             t_increment = time()
 
             # LET NORM OF THE FIRST RESIDUAL BE THE NORM WITH RESPECT TO WHICH WE
@@ -103,6 +113,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                 # AVOID DIVISION BY ZERO
                 if np.isclose(fem_solver.NormForces,0.0):
                     fem_solver.NormForces = 1e-14
+
             fem_solver.norm_residual = np.linalg.norm(Residual)/fem_solver.NormForces
 
             if fem_solver.nonlinear_iterative_technique == "newton_raphson":
@@ -163,8 +174,13 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                         fem_solver.number_of_time_increments = TIncrement
                     break
 
+#            # UPDATE. MATERIAL ADAPTATIVE LOAD FACTOR. FOR DEPOSITION STRETCH
+#            if Increment is not (LoadIncrement-1):
+#                for imat in range(len(materials)):
+#                    if materials[imat].load_factor is not None:
+#                        materials[imat].factor_increment += materials[imat].load_factor[Increment+1]
 
-        return TotalDisp,GRVariables
+        return TotalDisp, GRVariables
 
     def ExplicitGrowthRemodeling(self, mesh, material, IncrementalTime, Delta_t, Rates):
         """ Routine to get the evolution of Growth and Remodeling parameters

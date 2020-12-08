@@ -17,7 +17,7 @@ from .RHSAssemblyNative import RHSAssemblyNative
 #import multiprocessing
 #import Florence.ParallelProcessing.parmap as parmap
 
-__all__ = ['Assemble', 'AssemblyRobinForces','AssembleForces']
+__all__ = ['Assemble', 'AssembleRobinForces','AssembleForces']
 
 #---------------------------------------------------------------------------------------------------#
 #------------------------ ASSEMBLY ROUTINE FOR INTERNAL TRACTION FORCES ----------------------------#
@@ -232,17 +232,6 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, materials, bou
                 shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])))
             fem_solver.is_mass_computed = True
 
-    if boundary_condition.has_robin_conditions:
-        if not boundary_condition.pressure_flags is None:
-            K_pressure, F_pressure = AssemblyRobinForces(boundary_condition, mesh,
-                materials[0], function_spaces, fem_solver, Eulerx, 'pressure')
-            stiffness -= K_pressure
-            T -= F_pressure[:,None]
-        if not boundary_condition.spring_flags is None:
-            K_spring, F_spring = AssemblyRobinForces(boundary_condition, mesh,
-                materials[0], function_spaces, fem_solver, Eulerx, 'spring')
-            stiffness += K_spring
-            T += F_spring[:,None]
 
     fem_solver.assembly_time = time() - t_assembly
     return stiffness, T, mass
@@ -252,7 +241,7 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, materials, bou
 #----------------------------------------------------------------------------------------------------------------#
 
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL PRESSURE FORCES ----------------------------------#
-def AssemblyRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, type_load):
+def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, type_load):
     """Compute/assemble traction (follower)"""
 
     ndim = mesh.InferSpatialDimension()

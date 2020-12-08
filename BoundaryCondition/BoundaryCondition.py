@@ -379,6 +379,23 @@ class BoundaryCondition(object):
 
         return F
 
+    def ComputeRobinForces(self, mesh, materials, function_spaces, fem_solver, Eulerx, stiffness, F):
+        """Compute/assemble traction and body forces"""
+
+        from Kuru.FiniteElements.Assembly import AssembleRobinForces
+        if not self.pressure_flags is None:
+            K_pressure, F_pressure = AssembleRobinForces(self, mesh,
+                materials[0], function_spaces, fem_solver, Eulerx, 'pressure')
+            stiffness -= K_pressure
+            F -= F_pressure[:,None]
+        if not self.spring_flags is None:
+            K_spring, F_spring = AssembleRobinForces(self, mesh,
+                materials[0], function_spaces, fem_solver, Eulerx, 'spring')
+            stiffness += K_spring
+            F += F_spring[:,None]
+
+        return stiffness, F
+
     def GetReducedMatrices(self, stiffness, F, mass=None, only_residual=False):
 
         # GET REDUCED FORCE VECTOR

@@ -347,6 +347,13 @@ class FEMSolver(object):
             if self.analysis_type == "static" and materials[imat].rho is None and self.has_low_level_dispatcher:
                 # FOR LOW-LEVEL DISPATCHER
                 materials[imat].rho = 1.0
+            # check material load factor against solver load increments
+            if materials[imat].load_factor is not None:
+                materials[imat].load_factor = np.array(materials[imat].load_factor).ravel()
+                if materials[imat].load_factor.shape[0] != self.number_of_load_increments:
+                    raise ValueError("Supplied material load factor should have the same length as the number of load increments")
+                if not np.isclose(materials[imat].load_factor.sum(),1.0):
+                    raise ValueError("Load factor (material {}) should sum up to one".format(imat))
         ##############################################################################
 
         ##############################################################################
@@ -628,22 +635,25 @@ class FEMSolver(object):
         LoadFactor = 1./LoadIncrement
         AppliedDirichletInc = np.zeros(boundary_condition.applied_dirichlet.shape[0],dtype=np.float64)
 
-        LoadFactorAdd = 0.0
+        LoadFactorInc = 0.0
         for Increment in range(LoadIncrement):
 
             # CHECK ADAPTIVE LOAD FACTOR
             if self.load_factor is not None:
                 LoadFactor = self.load_factor[Increment]
 
-            LoadFactorAdd += LoadFactor
-            boundary_condition.pressure_increment = LoadFactorAdd
+            LoadFactorInc += LoadFactor
+            # APPLY ROBIN BOUNDARY CONDITIONS - STIFFNESS(_) AND FORCES
+            boundary_condition.pressure_increment = LoadFactorInc
+            _, RobinForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
+                self, Eulerx, K, np.zeros_like(Residual))
             # APPLY NEUMANN BOUNDARY CONDITIONS
             DeltaF = LoadFactor*NeumannForces
             NodalForces += DeltaF
             # OBRTAIN INCREMENTAL RESIDUAL - CONTRIBUTION FROM BOTH NEUMANN AND DIRICHLET
             Residual = -boundary_condition.ApplyDirichletGetReducedMatrices(K,np.zeros_like(Residual),
                 boundary_condition.applied_dirichlet,LoadFactor=LoadFactor,only_residual=True)
-            Residual -= DeltaF
+            Residual += RobinForces - DeltaF
             # GET THE INCREMENTAL DISPLACEMENT
             AppliedDirichletInc = LoadFactor*boundary_condition.applied_dirichlet
 
@@ -705,6 +715,12 @@ class FEMSolver(object):
                         self.number_of_load_increments = Increment
                     break
 
+            # UPDATE. MATERIAL ADAPTATIVE LOAD FACTOR. FOR DEPOSITION STRETCH
+            if Increment is not (LoadIncrement-1):
+                for imat in range(len(materials)):
+                    if materials[imat].load_factor is not None:
+                        materials[imat].factor_increment += materials[imat].load_factor[Increment+1]
+
 
         return TotalDisp
 
@@ -738,10 +754,14 @@ class FEMSolver(object):
             Eulerx += dU[:,:formulation.ndim]
 
             # RE-ASSEMBLE - COMPUTE STIFFNESS AND INTERNAL TRACTION FORCES
-            K, TractionForces = Assemble(self, function_spaces, formulation, mesh, materials, boundary_condition, Eulerx)[:2]
+            K, TractionForces = Assemble(self, function_spaces, formulation, mesh, materials,
+                boundary_condition, Eulerx)[:2]
+            # COMPUTE ROBIN STIFFNESS AND FORCES (EXTERNAL)
+            K, TractionForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
+                self, Eulerx, K, TractionForces)
 
             # FIND THE RESIDUAL
-            Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] -\
+            Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] - \
                 NodalForces[boundary_condition.columns_in]
 
             # SAVE THE NORM
@@ -763,7 +783,7 @@ class FEMSolver(object):
                 break
 
             # BREAK BASED ON INCREMENTAL SOLUTION - KEEP IT AFTER UPDATE
-            if norm(dU) <=  self.newton_raphson_solution_tolerance and Iter!=0:
+            if norm(dU) <=  self.newton_raphson_solution_tolerance: # and Iter!=0:
                 print("Incremental solution within tolerance i.e. norm(dU): {}".format(norm(dU)))
                 break
 
@@ -794,7 +814,6 @@ class FEMSolver(object):
                 if self.user_defined_stop_func(Increment,Iter,self.norm_residual,self.abs_norm_residual, Tolerance):
                     self.newton_raphson_failed_to_converge = True
                     break
-
 
         return Eulerx, K, Residual
 

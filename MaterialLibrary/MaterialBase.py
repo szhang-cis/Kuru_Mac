@@ -9,8 +9,8 @@ class Material(object):
 
     def __init__(self, mtype, ndim, energy_type="internal_energy", density=None,
         is_compressible=True, is_incompressible=False, is_nearly_incompressible=False,
-        is_nonisotropic=True,is_anisotropic=False,is_transversely_isotropic=False, anisotropic_orientations=None,
-        **kwargs):
+        is_nonisotropic=True,is_anisotropic=False,is_transversely_isotropic=False,
+        anisotropic_orientations=None, load_factor=None, **kwargs):
 
 
         # SAFETY CHECKS
@@ -55,6 +55,12 @@ class Material(object):
         self.has_state_variables = False
         self.has_growth_remodeling = False
 
+        # APPLY LOAD FACTOR TO DESPOSITION STRETCH
+        self.load_factor = load_factor
+        if self.load_factor is not None:
+            self.factor_increment = self.load_factor[0]
+        else:
+            self.factor_increment = 1.0
 
     def ConectivityOfMaterial(self,mesh):
         """

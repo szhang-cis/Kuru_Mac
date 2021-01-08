@@ -89,7 +89,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
             # APPLY ROBIN BOUNDARY CONDITIONS - STIFFNESS(_) AND FORCES
             boundary_condition.pressure_increment = IncrementalLoad
-            _, RobinForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
+            K, RobinForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
                 fem_solver, Eulerx, K, np.zeros_like(Residual))
             # APPLY NEUMANN BOUNDARY CONDITIONS
             DeltaF = LoadFactor*NeumannForces
@@ -198,7 +198,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             # Elastin function density in time f(t), analytic solution
             # degradation at line
             if self.degradation_at_line:
-                AxialCoord = mesh.points[material.node_set[node],1]
+                AxialCoord = mesh.points[material.node_set[node],self.damage_axis]
                 material.state_variables[node,14] = material.den0_e[node]*np.exp(-IncrementalTime/T_ela) + \
                     material.den0_e[node]*(D_max/t_dam)*(T_ela*t_dam/(t_dam-T_ela))*np.exp(-0.5*(AxialCoord/L_dam)**2)*\
                     (np.exp(-IncrementalTime/T_ela)-np.exp(-IncrementalTime/t_dam))

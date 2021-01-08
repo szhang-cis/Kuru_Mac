@@ -154,10 +154,11 @@ public:
           elasticity += -2.*(s_act*SVnp[15]/(rho*coeff5*J))*(1.-coeff4)*FNFN_ijkl;
        }
        else if (n>1) {
+          T k1 = (innerFN_e>=1.0) ? k1c : 0.075*k1c;
           // Component from the collagen
           T coeff3 = std::exp(k2c*coeff2);
-          stress += 2.*k1c*SVnp[14+n]/J*(innerFN_e-1.)*coeff3*outerFN_e;
-          elasticity += 4.*k1c*SVnp[14+n]/J*(1.+2.*k2c*coeff2)*coeff3*FNFN_ijkl_e;
+          stress += 2.*k1*SVnp[14+n]/J*(innerFN_e-1.)*coeff3*outerFN_e;
+          elasticity += 4.*k1*SVnp[14+n]/J*(1.+2.*k2c*coeff2)*coeff3*FNFN_ijkl_e;
         }
     }
 

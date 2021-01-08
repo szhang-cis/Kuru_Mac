@@ -74,7 +74,6 @@ class BoundaryCondition(object):
         self.applied_neumann = None
         self.is_applied_neumann_shape_functions_computed = False
 
-        self.has_robin_conditions = False
         self.pressure_flags = None
         self.applied_pressure = None
         self.pressure_increment = 1.0
@@ -155,7 +154,6 @@ class BoundaryCondition(object):
             raise ValueError("User-defined Robin criterion function {} "
                 "should return dict or tuple".format(func.__name__))
 
-        self.has_robin_conditions = True
         return tups
 
     def RobinLoadSelector(self, tups):
@@ -428,7 +426,8 @@ class BoundaryCondition(object):
         if self.columns_out[nnz_cols].shape[0]==0:
             F[self.columns_in] = F[self.columns_in]
         else:
-            F[self.columns_in] = F[self.columns_in] - (stiffness[self.columns_in,:][:,self.columns_out[nnz_cols]]*AppliedDirichlet[nnz_cols]*LoadFactor)[:,None]
+            F[self.columns_in] = F[self.columns_in] - (stiffness[self.columns_in,:]\
+                [:,self.columns_out[nnz_cols]]*AppliedDirichlet[nnz_cols]*LoadFactor)[:,None]
 
         if only_residual:
             return F

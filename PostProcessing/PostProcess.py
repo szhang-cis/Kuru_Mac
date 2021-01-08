@@ -406,7 +406,7 @@ class PostProcess(object):
                         # COMPUTE WORK-CONJUGATES AND HESSIAN AT THIS GAUSS POINT
                         CauchyStress[ielem,:,:], _ = material.KineticMeasures(F[elem,:,:,:],elem=elem)
                         if self.gr_variables is not None and material.has_state_variables:
-                            FibreStress[ielem,:,:], _ = material.LLConstituentStress(F[elem,:,:,:],elem=elem)
+                            FibreStress[ielem,:,:], _ = material._ConstituentMeasures_(F[elem,:,:,:],elem=elem)
 
                     else:
                         # GAUSS LOOP IN VECTORISED FORM
@@ -442,7 +442,7 @@ class PostProcess(object):
                         for counter in range(AllGauss.shape[0]):
                             CauchyStress[ielem,counter,:] = material.CauchyStress(StrainTensors,elem,counter)
                             if self.gr_variables is not None and material.has_state_variables:
-                                FibreStress[ielem,counter,:],_ = material.ConstituentStress(StrainTensors,elem,counter)
+                                FibreStress[ielem,counter,:],_ = material.ConstituentMeasures(StrainTensors,elem,counter)
 
                 if average_derived_quantities:
                     for inode in range(material.node_set.shape[0]):
@@ -705,7 +705,7 @@ class PostProcess(object):
                 ----------------------------------------------------------------------------------------
                 41          None            p_hyd           None                    den_e
                 ----------------------------------------------------------------------------------------
-                42          None            None            None                    den_m
+                42          None            s_VM            None                    den_m
                 ----------------------------------------------------------------------------------------
                 43          None            None            None                    den_c1
                 ----------------------------------------------------------------------------------------
@@ -779,7 +779,7 @@ class PostProcess(object):
             namer = "\phi"
         return namer
 
-    def GetAugmentedSolution(self, steps=None, average_derived_quantities=True, parallelise=False):
+    def GetAugmentedSolution(self, steps=None, average_derived_quantities=True, parallelise=False, time_problem=True):
         """This function modifies self.sol to augmented_sol and returns the augmented solution
             augmented_sol
         """
@@ -863,7 +863,7 @@ class PostProcess(object):
 
 
         # GET RECOVERED VARIABLES ALL VARIABLE CHECKS ARE DONE IN STRESS RECOVERY
-        self.StressRecovery(steps=steps, average_derived_quantities=average_derived_quantities)
+        self.StressRecovery(steps=steps, average_derived_quantities=average_derived_quantities, time_problem=time_problem)
 
         ndim = self.formulation.ndim
         fields = self.formulation.fields
@@ -878,8 +878,8 @@ class PostProcess(object):
             if steps is not None:
                 increments = len(steps)
             else:
-                if increments != self.fem_solver.number_of_time_increments:
-                    raise ValueError("Incosistent number of time increments between FEMSolver and provided solution")
+                if increments != self.fem_solver.number_of_time_increments and increments != self.fem_solver.number_of_load_increments:
+                    raise ValueError("Incosistent number of time/load increments between FEMSolver and provided solution")
 
 
         # Get tensors
@@ -895,7 +895,7 @@ class PostProcess(object):
         if fields == "mechanics" and ndim == 2 and self.gr_variables is None:
             augmented_sol = np.zeros((nnodes,22,increments),dtype=np.float64)
         elif fields == "mechanics" and ndim == 3 and self.gr_variables is None:
-            augmented_sol = np.zeros((nnodes,42,increments),dtype=np.float64)
+            augmented_sol = np.zeros((nnodes,43,increments),dtype=np.float64)
         elif fields == "mechanics" and ndim == 2 and self.gr_variables is not None:
             augmented_sol = np.zeros((nnodes,38,increments),dtype=np.float64)
         elif fields == "mechanics" and ndim == 3 and self.gr_variables is not None:
@@ -916,9 +916,12 @@ class PostProcess(object):
             if self.gr_variables is None:
                 H = np.einsum('ij,ijlk->ijkl',J,np.linalg.inv(F))
                 G = np.einsum('ijlk,ijkm->ijlm',np.einsum('ijlk',H),H)
+                s_d = Cauchy - np.einsum('ij,kl->ijkl',p_hyd,I)
+                s_VM = np.sqrt(3./2.*np.einsum('ijkl,ijkl->ij',s_d,s_d))
                 # Reshape
                 H = np.einsum('lijk',H).reshape(nnode_set,ndim**2,increments)
                 G = np.einsum('lijk',G).reshape(nnode_set,ndim**2,increments)
+                s_VM = np.einsum('ji',s_VM).reshape(nnode_set,increments)
             else:
                 b_inv = np.einsum('ijlk,ijkm->ijlm',np.linalg.inv(F),np.linalg.inv(F))
                 e = 1./2.*(I-b_inv)
@@ -978,6 +981,7 @@ class PostProcess(object):
                 augmented_sol[nstart:nend,34,:]     = detC
                 augmented_sol[nstart:nend,35:41,:]  = Cauchy
                 augmented_sol[nstart:nend,41,:]     = p_hyd
+                augmented_sol[nstart:nend,42,:]     = s_VM
 
             elif fields == "mechanics" and ndim == 2 and self.gr_variables is not None:
                 augmented_sol[nstart:nend,:2,:]     = self.sol[self.materials[imat].node_set,:2,steps].reshape(augmented_sol[nstart:nend,:2,:].shape)
@@ -1033,7 +1037,7 @@ class PostProcess(object):
 
 
     def WriteVTK(self,filename=None, quantity="all", configuration="deformed", steps=None, write_curved_mesh=True,
-        interpolation_degree=10, ProjectionFlags=None, fmt="binary", equally_spaced=False, parallelise=False):
+        interpolation_degree=10, ProjectionFlags=None, fmt="binary", equally_spaced=False, parallelise=False, time_problem=True):
         """Writes results to a VTK file for Paraview
             quantity = "all" means write all solution fields, otherwise specific quantities
             would be written based on augmented solution numbering order
@@ -1063,13 +1067,13 @@ class PostProcess(object):
 
         if isinstance(quantity,int):
             if quantity>=self.sol.shape[1]:
-                self.GetAugmentedSolution(parallelise=parallelise)
+                self.GetAugmentedSolution(parallelise=parallelise, time_problem=time_problem)
                 if quantity >= self.sol.shape[1]:
                     raise ValueError('Plotting quantity not understood')
             iterator = range(quantity,quantity+1)
         elif isinstance(quantity,str):
             if quantity=="all":
-                self.GetAugmentedSolution(parallelise=parallelise)
+                self.GetAugmentedSolution(parallelise=parallelise, time_problem=time_problem)
                 iterator = range(self.sol.shape[1])
             else:
                 raise ValueError('Plotting quantity not understood')
@@ -1080,7 +1084,7 @@ class PostProcess(object):
                     requires_augmented_solution = True
                     break
             if requires_augmented_solution:
-                self.GetAugmentedSolution(parallelise=parallelise)
+                self.GetAugmentedSolution(parallelise=parallelise, time_problem=time_problem)
             iterator = quantity
         else:
             raise ValueError('Writing quantity not understood')

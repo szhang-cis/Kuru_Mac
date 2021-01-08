@@ -645,7 +645,7 @@ class FEMSolver(object):
             LoadFactorInc += LoadFactor
             # APPLY ROBIN BOUNDARY CONDITIONS - STIFFNESS(_) AND FORCES
             boundary_condition.pressure_increment = LoadFactorInc
-            _, RobinForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
+            K, RobinForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
                 self, Eulerx, K, np.zeros_like(Residual))
             # APPLY NEUMANN BOUNDARY CONDITIONS
             DeltaF = LoadFactor*NeumannForces

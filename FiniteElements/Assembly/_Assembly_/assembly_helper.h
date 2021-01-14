@@ -9,11 +9,11 @@
 #include <immintrin.h>
 #include <emmintrin.h>
 
-#include "Fastor.h"
+#include <Fastor/Fastor.h>
 
 #include "_KinematicMeasures_.h"
 #include "_GeometricStiffness_.h"
-#include "FollowerForces.h"
+#include "RobinForces.h"
 
 
 #ifndef LL_TYPES

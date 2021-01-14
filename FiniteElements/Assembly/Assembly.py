@@ -43,7 +43,7 @@ def LowLevelAssembly(fem_solver, function_spaces, formulation, mesh, materials, 
     t_assembly = time()
 
     for imat in range(len(materials)):
-        if not material.has_low_level_dispatcher:
+        if not materials[imat].has_low_level_dispatcher:
             raise RuntimeError("Cannot dispatch to low level module since material {} does not support it".format(type(material).__name__))
 
     # HACK TO DISPATCH TO EFFICIENT MASS MATRIX COMUTATION
@@ -78,10 +78,9 @@ def LowLevelAssembly(fem_solver, function_spaces, formulation, mesh, materials, 
             warn("Low level mass assembly not available. Falling back to python version")
             ll_failed = True
 
-
     if fem_solver.parallel:
         stiffness, T, mass = ImplicitParallelLauncher(fem_solver, function_spaces[0], formulation, 
-                mesh, material, Eulerx)
+                mesh, materials, Eulerx)
     else:
         stiffness, T, mass = _LowLevelAssembly_(fem_solver, function_spaces[0], formulation, mesh, 
                 materials, Eulerx)
@@ -92,12 +91,6 @@ def LowLevelAssembly(fem_solver, function_spaces, formulation, mesh, materials, 
             fem_solver.is_mass_computed = True
     else:
         mass = M
-
-    if fem_solver.has_moving_boundary:
-        K_pressure, F_pressure = AssemblyFollowerForces(boundary_condition, mesh, materials,
-                function_spaces, fem_solver, Eulerx)
-        stiffness -= K_pressure
-        T -= F_pressure
 
     fem_solver.assembly_time = time() - t_assembly
 
@@ -231,7 +224,6 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, materials, bou
             mass = csr_matrix((V_mass,indices,indptr),
                 shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])))
             fem_solver.is_mass_computed = True
-
 
     fem_solver.assembly_time = time() - t_assembly
     return stiffness, T, mass

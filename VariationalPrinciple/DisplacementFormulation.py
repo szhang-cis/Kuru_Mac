@@ -122,6 +122,8 @@ class DisplacementFormulation(VariationalPrinciple):
 
             # COMPUTE THE HESSIAN AT THIS GAUSS POINT
             H_Voigt = material.Hessian(StrainTensors,elem,counter)
+            print(H_Voigt)
+            exit()
             # COMPUTE CAUCHY STRESS TENSOR
             CauchyStressTensor = []
             if fem_solver.requires_geometry_update:
@@ -163,6 +165,8 @@ class DisplacementFormulation(VariationalPrinciple):
         if material.is_nearly_incompressible:
             stiffness += stiffness_k
 
+        print(H_Voigt[0,:,:])
+        exit()
         return stiffness, tractionforce
 
     def ConstitutiveStiffnessIntegrand(self, B, SpatialGradient, CauchyStressTensor, H_Voigt,

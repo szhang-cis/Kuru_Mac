@@ -322,7 +322,7 @@ class FEMSolver(object):
             if materials[imat].is_transversely_isotropic or materials[imat].is_anisotropic:
                 if materials[imat].anisotropic_orientations is None:
                     materials[imat].GetFibresOrientation(mesh)
-            materials[imat].ConectivityOfMaterial(mesh)
+            materials[imat].ConnectivityOfMaterial(mesh)
         ##############################################################################
 
         ##############################################################################
@@ -716,10 +716,9 @@ class FEMSolver(object):
                     break
 
             # UPDATE. MATERIAL ADAPTATIVE LOAD FACTOR. FOR DEPOSITION STRETCH
-            if Increment is not (LoadIncrement-1):
-                for imat in range(len(materials)):
-                    if materials[imat].load_factor is not None:
-                        materials[imat].factor_increment += materials[imat].load_factor[Increment+1]
+            for imat in range(len(materials)):
+                if materials[imat].load_factor is not None and Increment is not (LoadIncrement-1):
+                    materials[imat].factor_increment += materials[imat].load_factor[Increment+1]
 
 
         return TotalDisp

@@ -62,7 +62,7 @@ class Material(object):
         else:
             self.factor_increment = 1.0
 
-    def ConectivityOfMaterial(self,mesh):
+    def ConnectivityOfMaterial(self,mesh):
         """
         Set conectivity between element_set and node_set for local nodes
         """

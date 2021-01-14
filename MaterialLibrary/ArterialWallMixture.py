@@ -54,11 +54,11 @@ class ArterialWallMixture(Material):
 
     def _ConstituentMeasures_(self,F,elem=0):
         anisotropic_orientations = self.anisotropic_orientations[elem,:,:]
-        state_variables = self.StateVariables
+        StateVariables = self.StateVariables
         from Kuru.MaterialLibrary.LLDispatch._ArterialWallMixture_ import LLConstituentMeasures
         return LLConstituentMeasures(self,np.ascontiguousarray(F),
                 np.ascontiguousarray(anisotropic_orientations),
-                np.ascontiguousarray(state_variables))
+                np.ascontiguousarray(StateVariables))
 
     def Hessian(self,StrainTensors,elem=0,gcounter=0):
 
@@ -115,6 +115,7 @@ class ArterialWallMixture(Material):
             # Fibre direction
             N = self.anisotropic_orientations[elem][fibre_i][:,None]
             N = np.dot(I,N)[:,0]
+            print(N)
             FN = np.dot(F,N)
             # Remodeling stretch in fibre direction
             lambda_r = 1. + (self.StateVariables[gcounter][fibre_i+8] - 1.)*self.factor_increment
@@ -134,7 +135,7 @@ class ArterialWallMixture(Material):
                 stretch_m = self.maxi_active_stretch
                 stretch_0 = self.zero_active_stretch
                 stretch_a = self.active_stretch
-                H_Voigt += -2.*(s_act/(self.rho*innerFN**2))*\
+                H_Voigt += -2.*(s_act/(self.rho0*innerFN**2))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*einsum('ij,kl',outerFN,outerFN)
             elif fibre_i is not 1:
                 k1 = self.k1c if innerFN_e>=1.0 else 0.075*self.k1c
@@ -217,7 +218,7 @@ class ArterialWallMixture(Material):
                 stretch_m = self.maxi_active_stretch
                 stretch_0 = self.zero_active_stretch
                 stretch_a = self.active_stretch
-                stress += (s_act/(self.rho*innerFN))*\
+                stress += (s_act/(self.rho0*innerFN))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*outerFN
             elif fibre_i is not 1:
                 k1 = self.k1c if innerFN_e>=1.0 else 0.075*self.k1c
@@ -230,7 +231,7 @@ class ArterialWallMixture(Material):
 
     def ConstituentMeasures(self,StrainTensors,elem=0,gcounter=0):
 
-        density0 = self.rho
+        density0 = self.rho0
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]

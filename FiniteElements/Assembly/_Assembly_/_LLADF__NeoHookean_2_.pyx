@@ -7,8 +7,8 @@ ctypedef uint64_t UInteger
 ctypedef double Real
 
 
-cdef extern from "_LLADF__IncompressibleArterialWallMixture_.h" nogil:
-    void _GlobalAssemblyDF__IncompressibleArterialWallMixture_(const Real *points,
+cdef extern from "_LLADF__NeoHookean_2_.h" nogil:
+    void _GlobalAssemblyDF__NeoHookean_2_(const Real *points,
                             const UInteger* elements,
                             const Real* Eulerx,
                             const Real* Bases,
@@ -34,22 +34,22 @@ cdef extern from "_LLADF__IncompressibleArterialWallMixture_.h" nogil:
                             const int *data_global_indices,
                             const UInteger *sorted_elements,
                             const Integer *sorter,
+                            const Integer* element_set,
+                            const Integer* node_set,
+                            Integer nelem_set,
+                            Integer nnode_set,
+                            const Integer* element_set_connectivity,
+                            int near_incomp,
+                            int has_stvar,
+                            int has_gr,
                             Real rho,
                             Real mu,
                             Real kappa,
-                            Real k1m,
-                            Real k2m,
-                            Real k1c,
-                            Real k2c,
-                            const Real *anisotropic_orientations,
-                            Integer nfibre,
-                            const Real *field_variables,
-                            Integer nfield,
-                            Integer has_growth_remodeling
+                            Real pressure
                             )
 
 
-def _LLADF__IncompressibleArterialWallMixture_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):
+def _LLADF__NeoHookean_2_(fem_solver, function_space, formulation, mesh, material, Real[:,::1] Eulerx):
 
     # GET VARIABLES FOR DISPATCHING TO C
     cdef Integer ndim                       = formulation.ndim
@@ -67,7 +67,6 @@ def _LLADF__IncompressibleArterialWallMixture_(fem_solver, function_space, formu
     cdef np.ndarray[Real,ndim=1, mode='c'] AllGauss     = function_space.AllGauss.flatten()
 
     cdef Integer requires_geometry_update               = fem_solver.requires_geometry_update
-    cdef Integer has_growth_remodeling                  = material.has_growth_remodeling
 
     cdef np.ndarray[Integer,ndim=1,mode='c'] local_rows_stiffness   = formulation.local_rows
     cdef np.ndarray[Integer,ndim=1,mode='c'] local_cols_stiffness   = formulation.local_columns
@@ -102,23 +101,20 @@ def _LLADF__IncompressibleArterialWallMixture_(fem_solver, function_space, formu
 
     cdef np.ndarray[Real,ndim=1,mode='c'] T = np.zeros(mesh.points.shape[0]*nvar,np.float64)
 
-    cdef Integer nfibre = 0, nfield=0
-    cdef np.ndarray[Real,ndim=3,mode='c'] anisotropic_orientations = np.zeros((1,1,1),np.float64)
-    cdef np.ndarray[Real,ndim=2,mode='c'] field_variables = np.zeros((1,1),np.float64)
-    if material.is_transversely_isotropic:
-        anisotropic_orientations = material.anisotropic_orientations
-        nfibre = material.anisotropic_orientations.shape[1]
-    if material.has_field_variables:
-        field_variables = material.field_variables
-        nfield = material.field_variables.shape[1]
-
-    cdef Real mu=0.,kappa=0.,k1m=0,k2m=0.,k1c=0,k2c=0.
-
-    mu, kappa, k1m, k2m, k1c, k2c = material.mu, material.kappa, material.k1m, material.k2m, material.k1c, material.k2c
-
+    cdef int near_incomp = int(material.is_nearly_incompressible)
+    cdef Real mu=0., kappa=0.
+    mu, kappa = material.mu, material.kappa
     cdef Real rho = material.rho
+    cdef Real pressure = material.pressure
+    cdef np.ndarray[Integer, ndim=1, mode='c'] element_set              = material.element_set
+    cdef np.ndarray[Integer, ndim=1, mode='c'] node_set                 = material.node_set
+    cdef np.ndarray[Integer, ndim=2, mode='c'] element_set_connectivity = material.elements
+    cdef Integer nelem_set                                              = material.element_set.shape[0]
+    cdef Integer nnode_set                                              = material.node_set.shape[0]
+    cdef int has_stvar                                                  = int(material.has_state_variables)
+    cdef int has_gr                                                     = int(material.has_growth_remodeling)
 
-    _GlobalAssemblyDF__IncompressibleArterialWallMixture_(&points[0,0],
+    _GlobalAssemblyDF__NeoHookean_2_(&points[0,0],
                             &elements[0,0],
                             &Eulerx[0,0],
                             &Bases[0,0],
@@ -144,18 +140,18 @@ def _LLADF__IncompressibleArterialWallMixture_(fem_solver, function_space, formu
                             &data_global_indices[0],
                             &sorted_elements[0,0],
                             &sorter[0,0],
+                            &element_set[0],
+                            &node_set[0],
+                            nelem_set,
+                            nnode_set,
+                            &element_set_connectivity[0,0],
+                            near_incomp,
+                            has_stvar,
+                            has_gr,
                             rho,
                             mu,
                             kappa,
-                            k1m,
-                            k2m,
-                            k1c,
-                            k2c,
-                            &anisotropic_orientations[0,0,0],
-                            nfibre,
-                            &field_variables[0,0],
-                            nfield,
-                            has_growth_remodeling
+                            pressure
                             )
 
 

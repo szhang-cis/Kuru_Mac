@@ -59,6 +59,7 @@ public:
     _KineticMeasures_(const T *Fnp, const T *Nnp, int nfibre, const T *SVnp, int near_incomp, const T pressure)
     {
 
+    //T deps = std::numeric_limits<T>::epsilon();
     // CREATE FASTOR TENSORS
     // deformation gradient
     Tensor<T,ndim,ndim> F;
@@ -125,7 +126,6 @@ public:
 
     // LOOP OVER FIBRES ORIENTATIONS
     for (int n=1; n<nfibre; ++n) {
-       std::cout << "n= " << n << "\n";
        Tensor<T,ndim> N;
        copy_numpy(N,Nnp+3*n);
        auto FN = matmul(F,N);
@@ -153,13 +153,11 @@ public:
           elasticity += -2.*(s_act*SVnp[15]/(rho0*coeff5*J))*(1.-coeff4)*FNFN_ijkl;
        }
        else if (n>1) {
-          T k1 = (innerFN_e>=1.0) ? k1c : 0.075*k1c;
+          T k1 = ((innerFN_e-1.0)>=0.0) ? k1c : 0.075*k1c;
           // Component from the collagen
           T coeff6 = std::exp(k2c*coeff2);
           stress += 2.*k1*SVnp[14+n]/J*(innerFN_e-1.)*coeff6*outerFN_e;
           elasticity += 4.*k1*SVnp[14+n]/J*(1.+2.*k2c*coeff2)*coeff6*FNFN_ijkl_e;
-          Tensor<T,ndim,ndim,ndim,ndim> toprint = 4.*k1*SVnp[14+n]/J*(1.+2.*k2c*coeff2)*coeff6*FNFN_ijkl_e;
-          std::cout << voigt(toprint) << "\n";
         }
     }
 

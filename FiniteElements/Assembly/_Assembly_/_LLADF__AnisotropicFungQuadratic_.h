@@ -111,8 +111,8 @@ void _GlobalAssemblyDF__AnisotropicFungQuadratic_(const Real *points,
         //    }
         //  }
         //}
-        // COMPUTE KINEMATIC MEASURES
 
+        // COMPUTE KINEMATIC MEASURES
         std::fill(F,F+ngauss*ndim*ndim,0.);
         std::fill(SpatialGradient,SpatialGradient+ngauss*nodeperelem*ndim,0.);
         std::fill(detJ,detJ+ngauss,0.);

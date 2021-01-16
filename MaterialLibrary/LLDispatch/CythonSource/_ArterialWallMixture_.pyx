@@ -126,7 +126,7 @@ cdef ConstituentMeasures_(Real *stress, Real *softness, Real *Fnp, Real *SVnp, R
                 stiffness = (8.*k2m*innerFN_e*pow((innerFN_e-1.),2) + 8.*innerFN_e-4.)*\
                     k1m*SVnp[g*nstatv+15]*sqrt(innerFN_e)*exp(k2m*pow((innerFN_e-1.),2))/(J*frac)
             elif n != 1:
-                k1 = k1c if innerFN_e>=1.0 else 0.075*k1c
+                k1 = k1c if (innerFN_e-1.0)>=0.0 else 0.075*k1c
                 # Anisotropic Stress for this fibre
                 stress[g*(nfibre-1)+n-1] = 2.*k1*SVnp[g*nstatv+14+n]*(innerFN_e-1.)*\
                     exp(k2c*pow((innerFN_e-1.),2))*innerFN_e/(J*frac)

@@ -34,17 +34,34 @@ cdef extern from "_LLADF__ArterialWallMixture_.h" nogil:
                             const int *data_global_indices,
                             const UInteger *sorted_elements,
                             const Integer *sorter,
+                            const Integer* element_set,
+                            const Integer* node_set,
+                            Integer nelem_set,
+                            Integer nnode_set,
+                            const Integer* element_set_connectivity,
+                            int near_incomp,
+                            int has_stvar,
+                            int has_gr,
+                            Integer id_density,
+                            Integer id_growth,
                             Real rho,
+                            Real rho0,
                             Real mu,
                             Real kappa,
                             Real k1m,
                             Real k2m,
                             Real k1c,
                             Real k2c,
+                            Real s_act,
+                            Real stretch_m,
+                            Real stretch_0,
+                            Real stretch_a,
+                            Real f_incr,
                             const Real *anisotropic_orientations,
                             Integer nfibre,
                             const Real *state_variables,
-                            Integer nstatv
+                            Integer nstatv,
+                            Real pressure
                             )
 
 
@@ -100,21 +117,37 @@ def _LLADF__ArterialWallMixture_(fem_solver, function_space, formulation, mesh, 
 
     cdef np.ndarray[Real,ndim=1,mode='c'] T = np.zeros(mesh.points.shape[0]*nvar,np.float64)
 
-    cdef Integer nfibre = 0, nfield=0
-    cdef np.ndarray[Real,ndim=3,mode='c'] anisotropic_orientations = np.zeros((1,1,1),np.float64)
-    cdef np.ndarray[Real,ndim=2,mode='c'] state_variables = np.zeros((1,1),np.float64)
+    cdef int near_incomp = int(material.is_nearly_incompressible)
+    cdef Real mu=0.,kappa=0.,k1m=0,k2m=0.,k1c=0,k2c=0.
+    cdef Real rho0=0.,s_act=0.,stretch_m=0.,stretch_0=0.,stretch_a=0.
+    mu,kappa,k1m,k2m,k1c,k2c = material.mu,material.kappa,material.k1m,material.k2m,material.k1c,material.k2c
+    rho0,s_act,stretch_m = material.rho0,material.maxi_active_stress,material.maxi_active_stretch
+    stretch_0,stretch_a,f_incr = material.zero_active_stretch,material.active_stretch,material.factor_increment
+
+    cdef Real rho = material.rho
+    cdef Real pressure = material.pressure
+    cdef np.ndarray[Integer, ndim=1, mode='c'] element_set              = material.element_set
+    cdef np.ndarray[Integer, ndim=1, mode='c'] node_set                 = material.node_set
+    cdef np.ndarray[Integer, ndim=2, mode='c'] element_set_connectivity = material.elements
+    cdef Integer nelem_set                                              = material.element_set.shape[0]
+    cdef Integer nnode_set                                              = material.node_set.shape[0]
+    cdef int has_stvar                                                  = int(material.has_state_variables)
+    cdef int has_gr                                                     = int(material.has_growth_remodeling)
+    cdef Integer nfibre                                                 = 0
+    cdef np.ndarray[Real, ndim=3, mode='c'] anisotropic_orientations    = np.zeros((1,1,1),np.float64)
     if material.is_transversely_isotropic:
         anisotropic_orientations = material.anisotropic_orientations
         nfibre = material.anisotropic_orientations.shape[1]
+    cdef Integer nstatv                                                 = 0
+    cdef np.ndarray[Real, ndim=2, mode='c'] state_variables             = np.zeros((1,1),dtype=np.float64)
+    cdef Integer id_density                                             = 0
+    cdef Integer id_growth                                              = 0
     if material.has_state_variables:
-        state_variables = material.state_variables
+        state_variables = np.ascontiguousarray(material.state_variables)
         nstatv = material.state_variables.shape[1]
-
-    cdef Real mu=0.,kappa=0.,k1m=0,k2m=0.,k1c=0,k2c=0.
-
-    mu,kappa,k1m,k2m,k1c,k2c = material.mu,material.kappa,material.k1m,material.k2m,material.k1c, material.k2c
-
-    cdef Real rho = material.rho
+        id_density = material.id_density
+    if material.has_growth_remodeling:
+        id_growth  = material.id_growth
 
     _GlobalAssemblyDF__ArterialWallMixture_(&points[0,0],
                             &elements[0,0],
@@ -142,17 +175,34 @@ def _LLADF__ArterialWallMixture_(fem_solver, function_space, formulation, mesh, 
                             &data_global_indices[0],
                             &sorted_elements[0,0],
                             &sorter[0,0],
+                            &element_set[0],
+                            &node_set[0],
+                            nelem_set,
+                            nnode_set,
+                            &element_set_connectivity[0,0],
+                            near_incomp,
+                            has_stvar,
+                            has_gr,
+                            id_density,
+                            id_growth,
                             rho,
+                            rho0,
                             mu,
                             kappa,
                             k1m,
                             k2m,
                             k1c,
                             k2c,
+                            s_act,
+                            stretch_m,
+                            stretch_0,
+                            stretch_a,
+                            f_incr,
                             &anisotropic_orientations[0,0,0],
                             nfibre,
                             &state_variables[0,0],
-                            nstatv
+                            nstatv,
+                            pressure
                             )
 
 

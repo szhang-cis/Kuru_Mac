@@ -62,6 +62,7 @@ class ArterialWallMixture(Material):
 
     def Hessian(self,StrainTensors,elem=0,gcounter=0):
 
+        #print(np.finfo(np.float64).eps)
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]
@@ -115,7 +116,6 @@ class ArterialWallMixture(Material):
             # Fibre direction
             N = self.anisotropic_orientations[elem][fibre_i][:,None]
             N = np.dot(I,N)[:,0]
-            print(N)
             FN = np.dot(F,N)
             # Remodeling stretch in fibre direction
             lambda_r = 1. + (self.StateVariables[gcounter][fibre_i+8] - 1.)*self.factor_increment
@@ -138,7 +138,7 @@ class ArterialWallMixture(Material):
                 H_Voigt += -2.*(s_act/(self.rho0*innerFN**2))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*einsum('ij,kl',outerFN,outerFN)
             elif fibre_i is not 1:
-                k1 = self.k1c if innerFN_e>=1.0 else 0.075*self.k1c
+                k1 = self.k1c if (innerFN_e-1.0)>=0.0 else 0.075*self.k1c
                 k1 = k1*self.StateVariables[gcounter][14+fibre_i]/J
                 k2 = self.k2c
                 # Anisotropic Stiffness for this key
@@ -221,7 +221,7 @@ class ArterialWallMixture(Material):
                 stress += (s_act/(self.rho0*innerFN))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*outerFN
             elif fibre_i is not 1:
-                k1 = self.k1c if innerFN_e>=1.0 else 0.075*self.k1c
+                k1 = self.k1c if (innerFN_e-1.0)>=0.0 else 0.075*self.k1c
                 k1 = k1*self.StateVariables[gcounter][14+fibre_i]/J
                 k2 = self.k2c
                 # Anisotropic Stiffness for this key
@@ -265,7 +265,7 @@ class ArterialWallMixture(Material):
                 stretch_a = self.active_stretch
                 fibre_stress[0] += (s_act/density0)*(1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)/(J*fraction)
             elif fibre_i is not 1:
-                k1 = self.k1c if innerFN_e>=1.0 else 0.075*self.k1c
+                k1 = self.k1c if (innerFN_e-1.0)>=0.0 else 0.075*self.k1c
                 k1 = k1*self.StateVariables[gcounter][14+fibre_i]
                 k2 = self.k2c
                 # Anisotropic Stress for this fibre

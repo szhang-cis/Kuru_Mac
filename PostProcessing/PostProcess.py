@@ -161,7 +161,7 @@ class PostProcess(object):
         if self.gr_variables is not None:
             MainDict['FibreStress'] = np.zeros((TimeIncrement,5))
 
-        material.ConectivityOfMaterial(mesh)
+        material.ConnectivityOfMaterial(mesh)
         Elsm, Posm = material.GetNodeCommonality()[:2]
         Elm = Elsm[material_node]
         ncommon_nodes_m = Elm.shape[0]
@@ -332,7 +332,7 @@ class PostProcess(object):
             MainDict['CauchyStress'] = [[] for i in range(len(materials))]
             MainDict['FibreStress'] = [[] for i in range(len(materials))]
             for imat in range(len(materials)):
-                materials[imat].ConectivityOfMaterial(mesh)
+                materials[imat].ConnectivityOfMaterial(mesh)
                 MainDict['CauchyStress'][imat] = np.zeros((TimeIncrement,materials[imat].node_set.shape[0],ndim,ndim))
                 if self.gr_variables is not None:
                     MainDict['FibreStress'][imat] = np.zeros((TimeIncrement,materials[imat].node_set.shape[0],5))
@@ -350,7 +350,7 @@ class PostProcess(object):
             MainDict['CauchyStress'] = [[] for i in range(len(materials))]
             MainDict['FibreStress'] = [[] for i in range(len(materials))]
             for imat in range(len(materials)):
-                materials[imat].ConectivityOfMaterial(mesh)
+                materials[imat].ConnectivityOfMaterial(mesh)
                 MainDict['CauchyStress'][imat] = np.zeros((LoadIncrement,materials[imat].node_set.shape[0],ndim,ndim))
                 if self.gr_variables is not None:
                     MainDict['FibreStress'][imat] = np.zeros((LoadIncrement,materials[imat].node_set.shape[0],5))
@@ -1106,7 +1106,7 @@ class PostProcess(object):
             nnode = 0
             for imat in range(len(self.materials)):
                 nnode += self.materials[imat].node_set.shape[0]
-                self.materials[imat].ConectivityOfMaterial(self.mesh)
+                self.materials[imat].ConnectivityOfMaterial(self.mesh)
 
             points = np.zeros((nnode,self.mesh.points.shape[1]),dtype=np.float64)
             elements = np.zeros((self.mesh.elements.shape[0],self.mesh.elements.shape[1]),dtype=np.int64)

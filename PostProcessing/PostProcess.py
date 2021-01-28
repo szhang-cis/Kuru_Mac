@@ -677,25 +677,25 @@ class PostProcess(object):
                 ----------------------------------------------------------------------------------------
                 27          None            C_zz            den_m                   e_VM
                 ----------------------------------------------------------------------------------------
-                28          None            G_xx            den_c1                  s_xx
+                28          None            G_xx            den_c                   s_xx
                 ----------------------------------------------------------------------------------------
-                29          None            G_xy            den_c2                  s_xy
+                29          None            G_xy            growth                  s_xy
                 ----------------------------------------------------------------------------------------
-                30          None            G_xz            den_c3                  s_xz
+                30          None            G_xz            rem_m                   s_xz
                 ----------------------------------------------------------------------------------------
-                31          None            G_yy            den_c4                  s_yy
+                31          None            G_yy            rem_c1                  s_yy
                 ----------------------------------------------------------------------------------------
-                32          None            G_yz            growth                  s_yz
+                32          None            G_yz            rem_c2                  s_yz
                 ----------------------------------------------------------------------------------------
-                33          None            G_zz            rem_m                   s_zz
+                33          None            G_zz            rem_c3                  s_zz
                 ----------------------------------------------------------------------------------------
-                34          None            detC            rem_c1                  p_hyd
+                34          None            detC            rem_c4                  p_hyd
                 ----------------------------------------------------------------------------------------
-                35          None            S_xx            rem_c2                  s_VM
+                35          None            S_xx            None                    s_VM
                 ----------------------------------------------------------------------------------------
-                36          None            S_xy            rem_c3                  s_m
+                36          None            S_xy            None                    s_m
                 ----------------------------------------------------------------------------------------
-                37          None            S_xz            rem_c4                  s_c1
+                37          None            S_xz            None                    s_c1
                 ----------------------------------------------------------------------------------------
                 38          None            S_yy            None                    s_c2
                 ----------------------------------------------------------------------------------------
@@ -707,25 +707,19 @@ class PostProcess(object):
                 ----------------------------------------------------------------------------------------
                 42          None            s_VM            None                    den_m
                 ----------------------------------------------------------------------------------------
-                43          None            None            None                    den_c1
+                43          None            None            None                    den_c
                 ----------------------------------------------------------------------------------------
-                44          None            None            None                    den_c2
+                44          None            None            None                    growth
                 ----------------------------------------------------------------------------------------
-                45          None            None            None                    den_c3
+                45          None            None            None                    rem_m
                 ----------------------------------------------------------------------------------------
-                46          None            None            None                    den_c4
+                46          None            None            None                    rem_c1
                 ----------------------------------------------------------------------------------------
-                47          None            None            None                    growth
+                47          None            None            None                    rem_c2
                 ----------------------------------------------------------------------------------------
-                48          None            None            None                    rem_m
+                48          None            None            None                    rem_c3
                 ----------------------------------------------------------------------------------------
-                49          None            None            None                    rem_c1
-                ----------------------------------------------------------------------------------------
-                50          None            None            None                    rem_c2
-                ----------------------------------------------------------------------------------------
-                51          None            None            None                    rem_c3
-                ----------------------------------------------------------------------------------------
-                52          None            None            None                    rem_c4
+                49          None            None            None                    rem_c4
                 ----------------------------------------------------------------------------------------
 
 
@@ -736,7 +730,7 @@ class PostProcess(object):
             {den_e,den_m,den_ci} the densities and {rem_m,rem_ci} the fibre remodelig
         """
         namer = None
-        if num > 52:
+        if num > 49:
             if print_name:
                 print('Quantity corresponds to ' + str(namer))
             return namer
@@ -752,7 +746,7 @@ class PostProcess(object):
             line = line.strip()
             if "quantity" in line and "mechanics" in line and "2D" in line and "3D" in line:
                 line_number = counter
-            if counter > line_number+1 and counter < line_number+110:
+            if counter > line_number+1 and counter < line_number+105:
                 spl = list(filter(None, line.split(" ")))
                 if spl[0] == str(num):
                     if self.nvar == 2 and self.ndim==2 and self.gr_variables is None:
@@ -897,9 +891,9 @@ class PostProcess(object):
         elif fields == "mechanics" and ndim == 3 and self.gr_variables is None:
             augmented_sol = np.zeros((nnodes,43,increments),dtype=np.float64)
         elif fields == "mechanics" and ndim == 2 and self.gr_variables is not None:
-            augmented_sol = np.zeros((nnodes,38,increments),dtype=np.float64)
+            augmented_sol = np.zeros((nnodes,35,increments),dtype=np.float64)
         elif fields == "mechanics" and ndim == 3 and self.gr_variables is not None:
-            augmented_sol = np.zeros((nnodes,53,increments),dtype=np.float64)
+            augmented_sol = np.zeros((nnodes,50,increments),dtype=np.float64)
 
         nstart = 0
         nend = 0
@@ -931,12 +925,14 @@ class PostProcess(object):
                 s_d = Cauchy - np.einsum('ij,kl->ijkl',p_hyd,I)
                 s_VM = np.sqrt(3./2.*np.einsum('ijkl,ijkl->ij',s_d,s_d))
                 FibreStress = self.recovered_fields['FibreStress'][imat]
+                collagen_density = np.einsum('ijk->ik',self.gr_variables[imat][:,7:11,:])
                 # Reshape
                 e = np.einsum('lijk',e).reshape(nnode_set,ndim**2,increments)
                 e_hyd = np.einsum('ji',e_hyd).reshape(nnode_set,increments)
                 e_VM = np.einsum('ji',e_VM).reshape(nnode_set,increments)
                 s_VM = np.einsum('ji',s_VM).reshape(nnode_set,increments)
                 FibreStress = np.einsum('lij',FibreStress).reshape(nnode_set,5,increments)
+                collagen_density = collagen_density.reshape(nnode_set,increments)
             # Reshape tensors
             F = np.einsum('lijk',F).reshape(nnode_set,ndim**2,increments)
             J = J.reshape(nnode_set,increments)
@@ -997,14 +993,18 @@ class PostProcess(object):
                 augmented_sol[nstart:nend,20,:]     = s_VM
                 if self.materials[imat].has_state_variables:
                     augmented_sol[nstart:nend,21:26,:]  = FibreStress
-                    augmented_sol[nstart:nend,26:32,:]  = self.gr_variables[imat][:,5:11,steps].reshape(augmented_sol[nstart:nend,26:32,:].shape) #Densities
-                    augmented_sol[nstart:nend,32,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,32,:].shape)   #Growth
-                    augmented_sol[nstart:nend,33:38,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,33:38,:].shape)   #Remodeling
+                    # Elastin and Muscle Densities
+                    augmented_sol[nstart:nend,26:28,:]  = self.gr_variables[imat][:,5:7,steps].reshape(augmented_sol[nstart:nend,26:28,:].shape)
+                    # Collagen Density
+                    augmented_sol[nstart:nend,28,:]  = collagen_density
+                    augmented_sol[nstart:nend,29,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,29,:].shape)   #Growth
+                    augmented_sol[nstart:nend,30:35,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,30:35,:].shape)   #Remodeling
                 else:
                     augmented_sol[nstart:nend,21:26,:]  = np.zeros(FibreStress.shape,dtype=np.float64)
-                    augmented_sol[nstart:nend,26:32,:]  = np.zeros(augmented_sol[nstart:nend,26:32,:].shape,dtype=np.float64) #Densities
-                    augmented_sol[nstart:nend,32,:]     = np.zeros(augmented_sol[nstart:nend,32,:].shape,dtype=np.float64)   #Growth
-                    augmented_sol[nstart:nend,33:38,:]  = np.zeros(augmented_sol[nstart:nend,33:38,:].shape,dtype=np.float64)   #Remodeling
+                    augmented_sol[nstart:nend,26:28,:]  = np.zeros(augmented_sol[nstart:nend,26:28,:].shape,dtype=np.float64) #EyMDensities
+                    augmented_sol[nstart:nend,28,:]     = np.zeros(augmented_sol[nstart:nend,28,:].shape,dtype=np.float64)   #C Density
+                    augmented_sol[nstart:nend,29,:]     = np.zeros(augmented_sol[nstart:nend,29,:].shape,dtype=np.float64)   #Growth
+                    augmented_sol[nstart:nend,30:35,:]  = np.zeros(augmented_sol[nstart:nend,30:35,:].shape,dtype=np.float64)   #Remodeling
 
             elif fields == "mechanics" and ndim == 3 and self.gr_variables is not None:
                 augmented_sol[nstart:nend,:3,:]     = self.sol[self.materials[imat].node_set,:3,steps].reshape(augmented_sol[nstart:nend,:3,:].shape)
@@ -1020,14 +1020,16 @@ class PostProcess(object):
                 augmented_sol[nstart:nend,35,:]     = s_VM
                 if self.materials[imat].has_state_variables:
                     augmented_sol[nstart:nend,36:41,:]  = FibreStress
-                    augmented_sol[nstart:nend,41:47,:]  = self.gr_variables[imat][:,5:11,steps].reshape(augmented_sol[nstart:nend,41:47,:].shape)
-                    augmented_sol[nstart:nend,47,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,47,:].shape)
-                    augmented_sol[nstart:nend,48:53,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,48:53,:].shape)
+                    augmented_sol[nstart:nend,41:43,:]  = self.gr_variables[imat][:,5:7,steps].reshape(augmented_sol[nstart:nend,41:43,:].shape)
+                    augmented_sol[nstart:nend,43,:]     = collagen_density
+                    augmented_sol[nstart:nend,44,:]     = self.gr_variables[imat][:,11,steps].reshape(augmented_sol[nstart:nend,44,:].shape)
+                    augmented_sol[nstart:nend,45:50,:]  = self.gr_variables[imat][:,:5,steps].reshape(augmented_sol[nstart:nend,45:50,:].shape)
                 else:
                     augmented_sol[nstart:nend,36:41,:]  = np.zeros(FibreStress.shape,dtype=np.float64)
-                    augmented_sol[nstart:nend,41:47,:]  = np.zeros(augmented_sol[nstart:nend,41:47,:].shape,dtype=np.float64)
-                    augmented_sol[nstart:nend,47,:]     = np.zeros(augmented_sol[nstart:nend,47,:].shape,dtype=np.float64)
-                    augmented_sol[nstart:nend,48:53,:]  = np.zeros(augmented_sol[nstart:nend,48:53,:].shape,dtype=np.float64)
+                    augmented_sol[nstart:nend,41:43,:]  = np.zeros(augmented_sol[nstart:nend,41:43,:].shape,dtype=np.float64)
+                    augmented_sol[nstart:nend,43,:]     = np.zeros(augmented_sol[nstart:nend,43,:].shape,dtype=np.float64)
+                    augmented_sol[nstart:nend,44,:]     = np.zeros(augmented_sol[nstart:nend,44,:].shape,dtype=np.float64)
+                    augmented_sol[nstart:nend,45:50,:]  = np.zeros(augmented_sol[nstart:nend,45:50,:].shape,dtype=np.float64)
 
             nstart += nnode_set
 

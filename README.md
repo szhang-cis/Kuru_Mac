@@ -1,4 +1,4 @@
-# kuru
+# kuru_mac
 
 This is a Finite-Element code to solve my tesis problem about Growth and Remodeling of aneurysms on the Aorta artery. The code is mainly base on Florence.
 

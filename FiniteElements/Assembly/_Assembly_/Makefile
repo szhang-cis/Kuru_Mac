@@ -1,7 +1,7 @@
 PYTHON_VERSION = python2.7
 PYTHON_LANG_LEVEL = 2
-PYTHON_INCLUDE_PATH = /usr/include/python2.7/
-PYTHON_LD_PATH = /usr/lib/
+PYTHON_INCLUDE_PATH = /Library/Frameworks/Python.framework/Versions/2.7/include/python2.7
+PYTHON_LD_PATH = /Library/Frameworks/Python.framework/Versions/2.7/lib
 EXT_POSTFIX = so
 CYTHONFLAGS = -DNPY_NO_DEPRECATED_API
 
@@ -29,11 +29,11 @@ OPTFLAGS= -O3 -fno-strict-aliasing -DNDEBUG
 CXXFLAGS= -fPIC -shared -pthread -Wall $(CYTHONFLAGS) $(OPTFLAGS)
 
 #NUMPY_INCLUDE_PATH = /usr/local/lib/python2.7/dist-packages/numpy/core/include
-NUMPY_INCLUDE_PATH = /usr/include/numpy/
+NUMPY_INCLUDE_PATH = /Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/
 
 BLAS_VERSION = openblas
-BLAS_INCLUDE_PATH = /opt/OpenBLAS/include/
-BLAS_LD_PATH = /opt/OpenBLAS/lib/
+BLAS_INCLUDE_PATH = /Users/shaojie/Desktop/Visu_Kuru/include/
+BLAS_LD_PATH = /Users/shaojie/Desktop/Visu_Kuru/lib/
 
 ifeq ($(findstring mkl,$(BLAS_VERSION)),mkl)
 CXXFLAGS += -DHAS_MKL

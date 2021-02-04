@@ -17,9 +17,9 @@ ctypedef double Real
 cdef extern from "_ArterialWallMixture_.h" nogil:
     cdef cppclass _ArterialWallMixture_[Real]:
         _ArterialWallMixture_() except +
-        _ArterialWallMixture_(Real mu,Real kappa,Real k1m,Real k2m,Real k1c,Real k2c,Real rho0,
+        _ArterialWallMixture_(Real mu,Real kappa,Real k1m,Real k2m,Real k1c,Real k2c,Real rho,
             Real s_act,Real stretch_m,Real stretch_0,Real stretch_a,Real f_incr) except +
-        void SetParameters(Real mu,Real kappa,Real k1m,Real k2m,Real k1c,Real k2c,Real rho0,
+        void SetParameters(Real mu,Real kappa,Real k1m,Real k2m,Real k1c,Real k2c,Real rho,
             Real s_act,Real stretch_m,Real stretch_0,Real stretch_a,Real f_incr) except +
         void KineticMeasures(Real *Snp, Real* Hnp, int ndim, int ngauss, const Real *Fnp, 
             int nfibre, const Real *Nnp, int nstatv, const Real *SVnp, int near_incomp, const Real pressure) except +
@@ -46,7 +46,7 @@ def KineticMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,
 
     cdef _ArterialWallMixture_[Real] mat_obj = _ArterialWallMixture_()
     mat_obj.SetParameters(material.mu,material.kappa,material.k1m,material.k2m,material.k1c,
-        material.k2c,material.rho0,material.maxi_active_stress,material.maxi_active_stretch,
+        material.k2c,material.rho,material.maxi_active_stress,material.maxi_active_stretch,
         material.zero_active_stretch,material.active_stretch,material.factor_increment)
     mat_obj.KineticMeasures(&stress[0,0,0], &hessian[0,0,0], ndim, ngauss, &F[0,0,0], nfibre,
             &anisotropic_orientations[0,0], nstatv, &state_variables[0,0], near_incomp, pressure)
@@ -58,7 +58,7 @@ def LLConstituentMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,
         np.ndarray[Real,ndim=2,mode='c'] anisotropic_orientations,
         np.ndarray[Real,ndim=2,mode='c'] state_variables):
 
-    cdef Real rho0 = material.rho0
+    cdef Real rho = material.rho
     cdef Real k1m = material.k1m
     cdef Real k2m = material.k2m
     cdef Real k1c = material.k1c
@@ -77,12 +77,12 @@ def LLConstituentMeasures(material, np.ndarray[Real,ndim=3,mode='c'] F,
     cdef np.ndarray[Real,ndim=2, mode='c'] softness = np.zeros((ngauss,nfibre-1),dtype=np.float64)
 
     ConstituentMeasures_(&fibre_stress[0,0], &softness[0,0], &F[0,0,0], &state_variables[0,0],
-        &anisotropic_orientations[0,0], rho0, k1m, k2m, k1c, k2c, s_act, stretch_m, stretch_0, stretch_a,
+        &anisotropic_orientations[0,0], rho, k1m, k2m, k1c, k2c, s_act, stretch_m, stretch_0, stretch_a,
         ngauss, ndim, nfibre, nstatv)
 
     return fibre_stress, softness
 
-cdef ConstituentMeasures_(Real *stress, Real *softness, Real *Fnp, Real *SVnp, Real *Nnp, Real rho0,
+cdef ConstituentMeasures_(Real *stress, Real *softness, Real *Fnp, Real *SVnp, Real *Nnp, Real rho,
         Real k1m, Real k2m, Real k1c, Real k2c, Real s_act, Real stretch_m, Real stretch_0, Real stretch_a,
         int ngauss, int ndim, int nfibre, int nstatv):
 
@@ -101,7 +101,7 @@ cdef ConstituentMeasures_(Real *stress, Real *softness, Real *Fnp, Real *SVnp, R
             Fnp[g*ndim*ndim+2]*Fnp[g*ndim*ndim+ndim+1]*Fnp[g*ndim*ndim+2*ndim]
         #SMC AND COLLAGEN FIBRES
         for n in range(1,nfibre):
-            frac = SVnp[g*nstatv+14+n]/(J*rho0)
+            frac = SVnp[g*nstatv+14+n]/(J*rho)
             if frac == 0.:
                 continue
             # Fibre direction
@@ -120,7 +120,7 @@ cdef ConstituentMeasures_(Real *stress, Real *softness, Real *Fnp, Real *SVnp, R
                 stress[g*(nfibre-1)] = 2.*k1m*SVnp[g*nstatv+15]*(innerFN_e-1.)*\
                     exp(k2m*pow((innerFN_e-1.),2))*innerFN_e/(J*frac)
                 # Active stress for SMC
-                stress[g*(nfibre-1)] += (s_act*SVnp[g*nstatv+15]/rho0)*\
+                stress[g*(nfibre-1)] += (s_act*SVnp[g*nstatv+15]/rho)*\
                     (1.-pow(((stretch_m-stretch_a)/(stretch_m-stretch_0)),2))/(J*frac)
                 # Fibre softness for remodeling
                 stiffness = (8.*k2m*innerFN_e*pow((innerFN_e-1.),2) + 8.*innerFN_e-4.)*\

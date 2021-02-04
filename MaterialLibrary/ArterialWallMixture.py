@@ -135,7 +135,7 @@ class ArterialWallMixture(Material):
                 stretch_m = self.maxi_active_stretch
                 stretch_0 = self.zero_active_stretch
                 stretch_a = self.active_stretch
-                H_Voigt += -2.*(s_act/(self.rho0*innerFN**2))*\
+                H_Voigt += -2.*(s_act/(self.rho*innerFN**2))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*einsum('ij,kl',outerFN,outerFN)
             elif fibre_i is not 1:
                 k1 = self.k1c if (innerFN_e-1.0)>=0.0 else 0.075*self.k1c
@@ -218,7 +218,7 @@ class ArterialWallMixture(Material):
                 stretch_m = self.maxi_active_stretch
                 stretch_0 = self.zero_active_stretch
                 stretch_a = self.active_stretch
-                stress += (s_act/(self.rho0*innerFN))*\
+                stress += (s_act/(self.rho*innerFN))*\
                         (1.-((stretch_m-stretch_a)/(stretch_m-stretch_0))**2)*outerFN
             elif fibre_i is not 1:
                 k1 = self.k1c if (innerFN_e-1.0)>=0.0 else 0.075*self.k1c
@@ -231,7 +231,7 @@ class ArterialWallMixture(Material):
 
     def ConstituentMeasures(self,StrainTensors,elem=0,gcounter=0):
 
-        density0 = self.rho0
+        density0 = self.rho
         I = StrainTensors['I']
         J = StrainTensors['J'][gcounter]
         F = StrainTensors['F'][gcounter]

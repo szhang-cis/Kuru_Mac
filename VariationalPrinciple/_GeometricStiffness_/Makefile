@@ -1,7 +1,7 @@
 PYTHON_VERSION = python2.7
 PYTHON_LANG_LEVEL = 2
-PYTHON_INCLUDE_PATH = /usr/include/python2.7/
-PYTHON_LD_PATH = /usr/lib/
+PYTHON_INCLUDE_PATH = /Library/Frameworks/Python.framework/Versions/2.7/include/python2.7
+PYTHON_LD_PATH = /Library/Frameworks/Python.framework/Versions/2.7/lib
 EXT_POSTFIX= so
 CYTHONFLAGS = -DNPY_NO_DEPRECATED_API
 
@@ -23,7 +23,7 @@ OPTFLAGS= -O3 -fno-strict-aliasing -DNDEBUG
 CCFLAGS= -fPIC -shared -pthread -Wall $(CYTHONFLAGS) $(OPTFLAGS)
 
 # NUMPY_INCLUDE_PATH=python -c "import numpy; print numpy.get_include()"
-NUMPY_INCLUDE_PATH = /usr/lib/python2.7/dist-packages/numpy/core/include
+NUMPY_INCLUDE_PATH = /Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/
 
 ifeq ($(findstring gcc,$(CC)),gcc)
 CCFLAGS += -Wno-cpp -Wno-unused-function -Wno-maybe-uninitialized

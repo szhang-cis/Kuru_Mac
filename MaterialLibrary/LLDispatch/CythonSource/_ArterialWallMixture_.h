@@ -9,7 +9,7 @@ public:
     U k2m;
     U k1c;
     U k2c;
-    U rho0;
+    U rho;
     U s_act;
     U stretch_m;
     U stretch_0;
@@ -19,7 +19,7 @@ public:
     FASTOR_INLINE _ArterialWallMixture_() = default;
 
     FASTOR_INLINE
-    _ArterialWallMixture_(U mu,U kappa,U k1m,U k2m,U k1c,U k2c,U rho0,U s_act,U stretch_m,U stretch_0,U stretch_a,U f_incr)
+    _ArterialWallMixture_(U mu,U kappa,U k1m,U k2m,U k1c,U k2c,U rho,U s_act,U stretch_m,U stretch_0,U stretch_a,U f_incr)
     {
     this->mu = mu;
     this->kappa = kappa;
@@ -27,7 +27,7 @@ public:
     this->k2m = k2m;
     this->k1c = k1c;
     this->k2c = k2c;
-    this->rho0 = rho0;
+    this->rho = rho;
     this->s_act = s_act;
     this->stretch_m = stretch_m;
     this->stretch_0 = stretch_0;
@@ -36,7 +36,7 @@ public:
     }
 
     FASTOR_INLINE
-    void SetParameters(U mu,U kappa,U k1m,U k2m,U k1c,U k2c,U rho0,U s_act,U stretch_m,U stretch_0,U stretch_a,U f_incr)
+    void SetParameters(U mu,U kappa,U k1m,U k2m,U k1c,U k2c,U rho,U s_act,U stretch_m,U stretch_0,U stretch_a,U f_incr)
     {
     this->mu = mu;
     this->kappa = kappa;
@@ -44,7 +44,7 @@ public:
     this->k2m = k2m;
     this->k1c = k1c;
     this->k2c = k2c;
-    this->rho0 = rho0;
+    this->rho = rho;
     this->s_act = s_act;
     this->stretch_m = stretch_m;
     this->stretch_0 = stretch_0;
@@ -149,8 +149,8 @@ public:
           auto FNFN_ijkl = einsum<Index<i,j>,Index<k,l>>(outerFN,outerFN);
           T coeff4 = std::pow(((stretch_m-stretch_a)/(stretch_m-stretch_0)),2);
           T coeff5 = std::pow(innerFN,2);
-          stress += (s_act*SVnp[15]/(rho0*innerFN*J))*(1.-coeff4)*outerFN;
-          elasticity += -2.*(s_act*SVnp[15]/(rho0*coeff5*J))*(1.-coeff4)*FNFN_ijkl;
+          stress += (s_act*SVnp[15]/(rho*innerFN*J))*(1.-coeff4)*outerFN;
+          elasticity += -2.*(s_act*SVnp[15]/(rho*coeff5*J))*(1.-coeff4)*FNFN_ijkl;
        }
        else if (n>1) {
           T k1 = ((innerFN_e-1.0)>=0.0) ? k1c : 0.075*k1c;

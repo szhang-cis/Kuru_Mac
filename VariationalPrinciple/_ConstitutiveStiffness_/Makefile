@@ -1,7 +1,7 @@
 PYTHON_VERSION = python2.7
 PYTHON_LANG_LEVEL = 2
-PYTHON_INCLUDE_PATH = /usr/include/python2.7/
-PYTHON_LD_PATH = /usr/lib/python2.7/
+PYTHON_INCLUDE_PATH = /Library/Frameworks/Python.framework/Versions/2.7/include/python2.7
+PYTHON_LD_PATH = /Library/Frameworks/Python.framework/Versions/2.7/lib
 EXT_POSTFIX = so
 CYTHONFLAGS = -DNPY_NO_DEPRECATED_API
 
@@ -24,15 +24,15 @@ OPTFLAGS= -O3 -fno-strict-aliasing -DNDEBUG
 CXXFLAGS= -fPIC -shared -pthread -Wall $(CYTHONFLAGS) $(OPTFLAGS)
 
 BLAS_VERSION = openblas
-BLAS_INCLUDE_PATH = /opt/OpenBLAS/include/
-BLAS_LD_PATH = /opt/OpenBLAS/lib/
+BLAS_INCLUDE_PATH = /Users/shaojie/Desktop/Visu_Kuru/include/
+BLAS_LD_PATH = /Users/shaojie/Desktop/Visu_Kuru/lib/
 
 ifeq ($(findstring mkl,$(BLAS_VERSION)),mkl)
 CXXFLAGS += -DHAS_MKL
 endif
 
 #NUMPY_INCLUDE_PATH = /usr/local/lib/python2.7/dist-packages/numpy/core/include
-NUMPY_INCLUDE_PATH = /usr/include/numpy/
+NUMPY_INCLUDE_PATH = /Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/
 
 ifeq ($(findstring g++,$(CXX)),g++)
 ifneq ($(findstring clang++,$(CXX)),clang++)
@@ -44,7 +44,7 @@ CXXFLAGS += -march=native -ffast-math -mllvm -inline-threshold=$(INLINE_THRESHOL
 endif
 endif
 ifeq ($(findstring c++,$(CXX)),c++)
-CXXFLAGS += -Wno-uninitialized -Wno-missing-braces -Wno -NPY_NO_DEPRECATED_API
+CXXFLAGS += -Wno-uninitialized -Wno-missing-braces -Wno -DNPY_NO_DEPRECATED_API
 CXXFLAGS += -march=native -ffast-math -mllvm -inline-threshold=$(INLINE_THRESHOLD) -ffp-contract=fast
 endif
 ifeq ($(findstring icpc,$(CXX)),icpc)

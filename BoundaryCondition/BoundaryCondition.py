@@ -323,9 +323,19 @@ class BoundaryCondition(object):
                     # raise ValueError("Boundary functional spaces not available for computing Neumman and body forces")
 
             t_tassembly = time()
-            if self.analysis_type == "static":
-                F = AssembleForces(self, mesh, materials, function_spaces,
-                    compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces)
+            if self.analysis_type == "static": 
+                tmp_flags = np.copy(self.neumann_flags)
+                tmp_data = np.copy(self.applied_neumann)
+                F = np.zeros((mesh.points.shape[0]*nvar,self.neumann_flags.shape[1]))
+                for step in range(self.neumann_flags.shape[1]):
+                    self.neumann_flags = tmp_flags[:,step]
+                    self.applied_neumann = tmp_data[:,:,step]
+                    F[:,step] = AssembleForces(self, mesh, materials, function_spaces,
+                    compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
+                self.neumann_flags = tmp_flags
+                self.applied_neumann = tmp_data                
+            #    F = AssembleForces(self, mesh, materials, function_spaces,
+            #        compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces)
             elif self.analysis_type == "dynamic":
                 if self.neumann_flags.ndim==2:
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY

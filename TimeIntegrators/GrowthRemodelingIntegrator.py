@@ -149,7 +149,7 @@ class GrowthRemodelingIntegrator(object):
                 boundary_condition, Eulerx)[:2]
             # COMPUTE ROBIN STIFFNESS AND FORCES (EXTERNAL)
             K, TractionForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
-                fem_solver, Eulerx, K, TractionForces)
+                fem_solver, Eulerx, K, TractionForces, Increment)
 
             # FIND THE RESIDUAL
             Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] - \

@@ -387,16 +387,28 @@ class BoundaryCondition(object):
 
         return F
 
-    def ComputeRobinForces(self, mesh, materials, function_spaces, fem_solver, Eulerx, stiffness, F):
+    def ComputeRobinForces(self, mesh, materials, function_spaces, fem_solver, Eulerx, stiffness, F, inc):
         """Compute/assemble traction and body forces"""
 
         from Kuru.FiniteElements.Assembly import AssembleRobinForces
         if not self.pressure_flags is None:
+            tmp_flags = np.copy(self.pressure_flags,order = 'F')
+            tmp_data = np.copy(self.applied_pressure,order ='F')
+
+            self.pressure_flags = tmp_flags[:,inc]
+            self.applied_pressure = tmp_data[:,inc]
+
             K_pressure, F_pressure = AssembleRobinForces(self, mesh,
-                materials[0], function_spaces, fem_solver, Eulerx, 'pressure')
+            materials[0], function_spaces, fem_solver, Eulerx, 'pressure')
+
             stiffness -= K_pressure
             F -= F_pressure[:,None]
+
+            self.pressure_flags = tmp_flags
+            self.applied_pressure = tmp_data
+            
         if not self.spring_flags is None:
+
             K_spring, F_spring = AssembleRobinForces(self, mesh,
                 materials[0], function_spaces, fem_solver, Eulerx, 'spring')
             stiffness += K_spring

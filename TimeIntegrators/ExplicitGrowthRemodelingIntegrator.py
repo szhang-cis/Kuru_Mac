@@ -81,6 +81,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             print("== Time elapsed, {:4.0f} days ==".format(IncrementalTime))
             print("=============================")
 
+
             # MATERIALS CHANGE AT EACH STEP
             if TIncrement != 0:
                 tAssembly = time()
@@ -93,6 +94,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                 fem_solver, Eulerx, K, np.zeros_like(Residual),TIncrement)
 
             # APPLY NEUMANN BOUNDARY CONDITIONS
+            NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx,compute_traction_forces=True, compute_body_forces=False)
             DeltaF = LoadFactor*NeumannForces
 
             NodalForces += DeltaF[:, [TIncrement]] #modif SJ for step-related neumann force

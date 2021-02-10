@@ -313,7 +313,7 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
 
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL TRACTION FORCES ----------------------------------#
 
-def AssembleForces(boundary_condition, mesh, materials, function_spaces,
+def AssembleForces(boundary_condition, mesh, materials, function_spaces, Eulerx,
         compute_traction_forces=True, compute_body_forces=False):
 
     Ft = np.zeros((mesh.points.shape[0]*materials[0].nvar,1))
@@ -322,11 +322,11 @@ def AssembleForces(boundary_condition, mesh, materials, function_spaces,
     if compute_body_forces:
         Fb = AssembleBodyForces(boundary_condition, mesh, materials, function_spaces[0])
     if compute_traction_forces:
-        Ft = AssembleExternalTractionForces(boundary_condition, mesh, materials[0], function_spaces[-1])
+        Ft = AssembleExternalTractionForces(boundary_condition, mesh, materials[0], function_spaces[-1], Eulerx)
 
     return Ft + Fb
 
-def AssembleExternalTractionForces(boundary_condition, mesh, material, function_space):
+def AssembleExternalTractionForces(boundary_condition, mesh, material, function_space, Eulerx):
 
 
     nvar = material.nvar
@@ -353,9 +353,30 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
     F = np.zeros((mesh.points.shape[0]*nvar,1))
     for face in range(faces.shape[0]):
         if boundary_condition.neumann_flags[face] == True:
-            ElemTraction = boundary_condition.applied_neumann[face,:]
+            #compute the local normal(z), tangential(theta) and axial(r) directions
+            coord = Eulerx[mesh.faces[face,:],:]
+            avg = np.mean(coord,axis=0)
+            #
+            ez = [0.,0.,1.]
+            et = np.cross(ez,avg)
+            et = et/np.linalg.norm(et)
+            er = np.cross(et,ez)     
+            er = er/np.linalg.norm(er)
+            #print(er)
+            #current average radius of the stent surface
+            r = np.linalg.norm(avg[0:2])
+            #print("r",r)
+            r0 = 11   #11 = 10 * (1+ 10%)  10% oversizing
+            E = 0.01   #constant coefficient of F/displacement
+            temp = E * (r0 - r)
+            mag = temp if temp > 0 else 0
+
+            ElemTraction = np.zeros(3)
+            ElemTraction[0] = boundary_condition.applied_neumann[face,0]*er[0]*mag
+            ElemTraction[1] = boundary_condition.applied_neumann[face,1]*er[1]*mag
+            ElemTraction[2] = boundary_condition.applied_neumann[face,2]*er[2]*mag
+            
             external_traction = np.einsum("ijk,j,k->ik",N,ElemTraction,function_space.AllGauss[:,0]).sum(axis=1)
             RHSAssemblyNative(F,np.ascontiguousarray(external_traction[:,None]),face,nvar,nodeperelem,faces)
-
     return F
 

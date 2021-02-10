@@ -277,7 +277,7 @@ class BoundaryCondition(object):
             savemat(self.filename,diri_dict, do_compression=True)
 
 
-    def ComputeNeumannForces(self, mesh, materials, function_spaces, compute_traction_forces=True, compute_body_forces=False):
+    def ComputeNeumannForces(self, mesh, materials, function_spaces, Eulerx,compute_traction_forces=True, compute_body_forces=False):
         """Compute/assemble traction and body forces"""
 
         if self.neumann_flags is None:
@@ -330,7 +330,7 @@ class BoundaryCondition(object):
                 for step in range(self.neumann_flags.shape[1]):
                     self.neumann_flags = tmp_flags[:,step]
                     self.applied_neumann = tmp_data[:,:,step]
-                    F[:,step] = AssembleForces(self, mesh, materials, function_spaces,
+                    F[:,step] = AssembleForces(self, mesh, materials, function_spaces, Eulerx,
                     compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
                 self.neumann_flags = tmp_flags
                 self.applied_neumann = tmp_data                
@@ -345,14 +345,14 @@ class BoundaryCondition(object):
                     for step in range(self.neumann_flags.shape[1]):
                         self.neumann_flags = tmp_flags[:,step]
                         self.applied_neumann = tmp_data[:,:,step]
-                        F[:,step] = AssembleForces(self, mesh, materials, function_spaces,
+                        F[:,step] = AssembleForces(self, mesh, materials, function_spaces, Eulerx,
                             compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
 
                     self.neumann_flags = tmp_flags
                     self.applied_neumann = tmp_data
                 else:
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY
-                    F = AssembleForces(self, mesh, materials, function_spaces,
+                    F = AssembleForces(self, mesh, materials, function_spaces, Eulerx,
                             compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
 
             print("Assembled external traction forces. Time elapsed is {} seconds".format(time()-t_tassembly))

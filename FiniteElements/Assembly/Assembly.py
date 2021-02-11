@@ -362,20 +362,14 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
             et = et/np.linalg.norm(et)
             er = np.cross(et,ez)     
             er = er/np.linalg.norm(er)
-            #print(er)
-            #current average radius of the stent surface
+            #compute geometry-dependent spring-like force
             r = np.linalg.norm(avg[0:2])
-            #print("r",r)
-            r0 = 11   #11 = 10 * (1+ 10%)  10% oversizing
+            r0 = 11    #11 = 10 * (1+ 10%)  10% oversizing
             E = 0.01   #constant coefficient of F/displacement
             temp = E * (r0 - r)
             mag = temp if temp > 0 else 0
-
-            ElemTraction = np.zeros(3)
-            ElemTraction[0] = boundary_condition.applied_neumann[face,0]*er[0]*mag
-            ElemTraction[1] = boundary_condition.applied_neumann[face,1]*er[1]*mag
-            ElemTraction[2] = boundary_condition.applied_neumann[face,2]*er[2]*mag
-            
+            #
+            ElemTraction = mag * np.multiply(boundary_condition.applied_neumann[face,:],er)
             external_traction = np.einsum("ijk,j,k->ik",N,ElemTraction,function_space.AllGauss[:,0]).sum(axis=1)
             RHSAssemblyNative(F,np.ascontiguousarray(external_traction[:,None]),face,nvar,nodeperelem,faces)
     return F

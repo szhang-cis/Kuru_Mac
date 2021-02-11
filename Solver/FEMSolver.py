@@ -544,7 +544,7 @@ class FEMSolver(object):
         Eulerx = np.copy(mesh.points)
 
         # FIND PURE NEUMANN (EXTERNAL) NODAL FORCE VECTOR
-        NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx,
+        NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx, 0,
             compute_traction_forces=True, compute_body_forces=self.add_self_weight)
 
         # ADOPT A DIFFERENT PATH FOR INCREMENTAL LINEAR ELASTICITY

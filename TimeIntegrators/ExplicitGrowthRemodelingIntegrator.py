@@ -94,15 +94,15 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                 fem_solver, Eulerx, K, np.zeros_like(Residual),TIncrement)
 
             # APPLY NEUMANN BOUNDARY CONDITIONS
-            NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx,compute_traction_forces=True, compute_body_forces=False)
-            DeltaF = LoadFactor*NeumannForces
+            NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx, TIncrement, compute_traction_forces=True, compute_body_forces=False)
+            DeltaF = LoadFactor*np.array([NeumannForces]).T
 
-            NodalForces += DeltaF[:, [TIncrement]] #modif SJ for step-related neumann force
+            NodalForces += DeltaF
             # OBRTAIN INCREMENTAL RESIDUAL - CONTRIBUTION FROM BOTH NEUMANN AND DIRICHLET
             Residual = -boundary_condition.ApplyDirichletGetReducedMatrices(K,np.zeros_like(Residual),
                 boundary_condition.applied_dirichlet,LoadFactor=LoadFactor,only_residual=True)
 
-            Residual += RobinForces - DeltaF[:, [TIncrement]] #modif SJ for step-related neumann force
+            Residual += RobinForces - DeltaF
             # GET THE INCREMENTAL DISPLACEMENT
             AppliedDirichletInc = LoadFactor*boundary_condition.applied_dirichlet
 

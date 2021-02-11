@@ -277,7 +277,7 @@ class BoundaryCondition(object):
             savemat(self.filename,diri_dict, do_compression=True)
 
 
-    def ComputeNeumannForces(self, mesh, materials, function_spaces, Eulerx,compute_traction_forces=True, compute_body_forces=False):
+    def ComputeNeumannForces(self, mesh, materials, function_spaces, Eulerx, inc, compute_traction_forces=True, compute_body_forces=False):
         """Compute/assemble traction and body forces"""
 
         if self.neumann_flags is None:
@@ -326,16 +326,12 @@ class BoundaryCondition(object):
             if self.analysis_type == "static": 
                 tmp_flags = np.copy(self.neumann_flags)
                 tmp_data = np.copy(self.applied_neumann)
-                F = np.zeros((mesh.points.shape[0]*nvar,self.neumann_flags.shape[1]))
-                for step in range(self.neumann_flags.shape[1]):
-                    self.neumann_flags = tmp_flags[:,step]
-                    self.applied_neumann = tmp_data[:,:,step]
-                    F[:,step] = AssembleForces(self, mesh, materials, function_spaces, Eulerx,
-                    compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
+                self.neumann_flags = tmp_flags[:,inc]
+                self.applied_neumann = tmp_data[:,:,inc]
+                F = AssembleForces(self, mesh, materials, function_spaces, Eulerx,
+                compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces).flatten()
                 self.neumann_flags = tmp_flags
-                self.applied_neumann = tmp_data                
-            #    F = AssembleForces(self, mesh, materials, function_spaces,
-            #        compute_traction_forces=compute_traction_forces, compute_body_forces=compute_body_forces)
+                self.applied_neumann = tmp_data
             elif self.analysis_type == "dynamic":
                 if self.neumann_flags.ndim==2:
                     # THE POSITION OF NEUMANN DATA APPLIED AT FACES CAN CHANGE DYNAMICALLY

@@ -193,10 +193,10 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
         # Elastin degradation
         den0_tot = material.rho
-        D_max = 0.5
+        D_max = 0.5 #0.5
         L_dam = self.damage_spread_space
         t_dam = self.damage_spread_time
-        T_ela = 101.0*365.25
+        T_ela = 101*365.25 #101.0*365.25
 
         # Loop on nodes
         for node in range(material.node_set.shape[0]):

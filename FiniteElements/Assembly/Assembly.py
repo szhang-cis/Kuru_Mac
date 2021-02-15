@@ -351,6 +351,9 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
 
 
     F = np.zeros((mesh.points.shape[0]*nvar,1))
+    avgF = 0
+    avgr = 0
+    compt = 0
     for face in range(faces.shape[0]):
         if boundary_condition.neumann_flags[face] == True:
             #compute the local normal(z), tangential(theta) and axial(r) directions
@@ -367,10 +370,19 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
             r0 = 11    #11 = 10 * (1+ 10%)  10% oversizing
             E = 0.01   #constant coefficient of F/displacement
             temp = E * (r0 - r)
-            mag = temp if temp > 0 else 0
-            #
+            mag = temp if temp > 0.001 else 0
+            #mag = 0
+            avgr += r
+            avgF += mag
+            compt += 1
             ElemTraction = mag * np.multiply(boundary_condition.applied_neumann[face,:],er)
             external_traction = np.einsum("ijk,j,k->ik",N,ElemTraction,function_space.AllGauss[:,0]).sum(axis=1)
             RHSAssemblyNative(F,np.ascontiguousarray(external_traction[:,None]),face,nvar,nodeperelem,faces)
+    compt = 1 if compt == 0 else compt
+    avgF /= compt
+    avgr /= compt
+    print("averaged force of stent:", avgF)
+    print("averaged length of stent:", avgr)
+    #
     return F
 

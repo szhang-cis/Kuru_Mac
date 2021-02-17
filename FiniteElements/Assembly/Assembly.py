@@ -233,11 +233,37 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, materials, bou
 #----------------------------------------------------------------------------------------------------------------#
 
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL PRESSURE FORCES ----------------------------------#
-def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, type_load):
+def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, inc,type_load):
     """Compute/assemble traction (follower)"""
 
     ndim = mesh.InferSpatialDimension()
     nvar = material.nvar
+
+    #update the Boundary condition data value according to its averaged z coordinate
+    faces = mesh.faces
+    #
+    time_step = 120
+    temp = np.linspace(1, time_step, time_step)
+    temp1 = temp - 101
+    heaviside = np.heaviside(temp1, 1)
+    heaviside1 = 1 - heaviside
+    #
+    for i in range(0, 10):
+        heaviside1[100 + i] = 0.9 - 0.1 * i
+    #print("=========================")
+    #print("== User defined pressure release factor [unit: -]")
+    #print(np.reshape(heaviside1, (12, 10)))
+    #print("=========================")
+    #exit()
+    for face in range(faces.shape[0]):
+        coord = Eulerx[mesh.faces[face, :], :]
+        avg = np.mean(coord, axis=0)
+        #
+        if (avg[2]<=60):
+            boundary_condition.applied_pressure[face] = -13.3322e-3 * heaviside1[inc]
+        else:
+            boundary_condition.applied_pressure[face] = -13.3322e-3
+    #end of Modif SJ
 
     if type_load == 'pressure':
         if boundary_condition.pressure_flags.shape[0] == mesh.points.shape[0]:
@@ -351,7 +377,7 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
 
 
     F = np.zeros((mesh.points.shape[0]*nvar,1))
-    avgF = 0
+    avgf = 0
     avgr = 0
     compt = 0
     for face in range(faces.shape[0]):
@@ -367,22 +393,29 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
             er = er/np.linalg.norm(er)
             #compute geometry-dependent spring-like force
             r = np.linalg.norm(avg[0:2])
-            r0 = 11    #11 = 10 * (1+ 10%)  10% oversizing
-            E = 0.01   #constant coefficient of F/displacement
-            temp = E * (r0 - r)
-            mag = temp if temp > 0.001 else 0
-            #mag = 0
-            avgr += r
-            avgF += mag
-            compt += 1
-            ElemTraction = mag * np.multiply(boundary_condition.applied_neumann[face,:],er)
+            #
+            r0 = 10               # simulation results defined
+            os = 0.1              # user defined
+            r_free = r0*(1+os)    #11 = 10 * (1+ 10%)  10% oversizing
+            E = 0.02              # user defined
+            temp = E * (r_free - r)
+            mag = temp if temp > 0.00000001 else 0
+            #
+            if (mag > 0):
+                avgr += r
+                avgf += mag
+                compt += 1
+            if (avg[2]<=60):
+                ElemTraction = mag * np.multiply(boundary_condition.applied_neumann[face,:],er)
+            else:
+                ElemTraction = 0 * np.multiply(boundary_condition.applied_neumann[face, :], er)
             external_traction = np.einsum("ijk,j,k->ik",N,ElemTraction,function_space.AllGauss[:,0]).sum(axis=1)
             RHSAssemblyNative(F,np.ascontiguousarray(external_traction[:,None]),face,nvar,nodeperelem,faces)
     compt = 1 if compt == 0 else compt
-    avgF /= compt
+    avgf /= compt
     avgr /= compt
-    print("averaged force of stent:", avgF)
-    print("averaged length of stent:", avgr)
+    print("Averaged force of stent:", avgf)
+    print("Averaged length of stent:", avgr)
     #
     return F
 

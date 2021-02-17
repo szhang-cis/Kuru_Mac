@@ -395,7 +395,7 @@ class BoundaryCondition(object):
             self.applied_pressure = tmp_data[:,inc]
 
             K_pressure, F_pressure = AssembleRobinForces(self, mesh,
-            materials[0], function_spaces, fem_solver, Eulerx, 'pressure')
+            materials[0], function_spaces, fem_solver, Eulerx, inc,'pressure')
 
             stiffness -= K_pressure
             F -= F_pressure[:,None]

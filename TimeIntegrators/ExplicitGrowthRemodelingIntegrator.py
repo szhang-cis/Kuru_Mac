@@ -77,10 +77,11 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                     GRVariables[imat][:,:,0] = np.copy(materials[gr_materials[imat]].state_variables[:,9:21])
             IncrementalLoad = 1.0
 
-            print("=============================")
-            print("== Time elapsed, {:4.0f} days ==".format(IncrementalTime))
-            print("=============================")
-
+            print("=======================================================")
+            print("== Time elapsed, {:4.3f} days".format(IncrementalTime))
+            print("== Current increment, {:4.3f}".format(TIncrement))
+            print("== Current time increment, {:4.3f} days".format(Delta_t))
+            print("=======================================================")
 
             # MATERIALS CHANGE AT EACH STEP
             if TIncrement != 0:
@@ -193,7 +194,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
         # Elastin degradation
         den0_tot = material.rho
-        D_max = 0.5 #0.5
+        D_max = 0.95 #0.5
         L_dam = self.damage_spread_space
         t_dam = self.damage_spread_time
         T_ela = 101*365.25 #101.0*365.25

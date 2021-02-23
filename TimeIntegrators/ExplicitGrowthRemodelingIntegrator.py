@@ -29,6 +29,10 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         K, NeumannForces, NodalForces, Residual,
         mesh, TotalDisp, Eulerx, materials, boundary_condition, fem_solver):
 
+
+
+
+
         if len(materials)>1 and self.density_turnover=="muscle":
             warn("More than one material. I will assume the first material is the Media")
 
@@ -194,10 +198,10 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
         # Elastin degradation
         den0_tot = material.rho
-        D_max = 0.95 #0.5
+        D_max = 0.8 #0.5
         L_dam = self.damage_spread_space
         t_dam = self.damage_spread_time
-        T_ela = 101*365.25 #101.0*365.25
+        T_ela = 20*365.25 #101.0*365.25
 
         # Loop on nodes
         for node in range(material.node_set.shape[0]):

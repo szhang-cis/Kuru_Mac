@@ -242,7 +242,7 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
     #update the Boundary condition data value according to its averaged z coordinate
     faces = mesh.faces
     #
-    time_step = 120
+    time_step = 200
     temp = np.linspace(1, time_step, time_step)
     temp1 = temp - 101
     heaviside = np.heaviside(temp1, 1)
@@ -250,17 +250,24 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
     #
     for i in range(0, 10):
         heaviside1[100 + i] = 0.9 - 0.1 * i
+    #for i in range (0,94):
+    #    heaviside1[106 + i] = 0.3
+    #print("Release factor of pressure", heaviside1[inc])
     #print("=========================")
     #print("== User defined pressure release factor [unit: -]")
-    #print(np.reshape(heaviside1, (12, 10)))
+    #print(np.reshape(heaviside1, (15, 10)))
     #print("=========================")
     #exit()
     for face in range(faces.shape[0]):
         coord = Eulerx[mesh.faces[face, :], :]
         avg = np.mean(coord, axis=0)
         #
-        if (avg[2]<=60):
+        if (avg[2]<=75):
+            #if (avg[2] <= 40):
             boundary_condition.applied_pressure[face] = -13.3322e-3 * heaviside1[inc]
+            #else:
+                #alpha = 0.05*(avg[2]-40)
+                #boundary_condition.applied_pressure[face] = -13.3322e-3 * (heaviside1[inc]*(1-alpha)+alpha)
         else:
             boundary_condition.applied_pressure[face] = -13.3322e-3
     #end of Modif SJ
@@ -377,9 +384,9 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
 
 
     F = np.zeros((mesh.points.shape[0]*nvar,1))
-    avgf = 0
-    avgr = 0
-    compt = 0
+    #avgf = 0
+    #avgr = 0
+    #compt = 0
     for face in range(faces.shape[0]):
         if boundary_condition.neumann_flags[face] == True:
             #compute the local normal(z), tangential(theta) and axial(r) directions
@@ -394,28 +401,40 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
             #compute geometry-dependent spring-like force
             r = np.linalg.norm(avg[0:2])
             #
-            r0 = 10               # simulation results defined
+            r0 = 11               # simulation results defined
             os = 0.1              # user defined
             r_free = r0*(1+os)    #11 = 10 * (1+ 10%)  10% oversizing
             E = 0.02              # user defined
             temp = E * (r_free - r)
-            mag = temp if temp > 0.00000001 else 0
+            mag = temp if temp>0 else 0 #>0.0001
             #
-            if (mag > 0):
-                avgr += r
-                avgf += mag
-                compt += 1
-            if (avg[2]<=60):
+            #if (mag > 0):
+            #    avgr += r
+            #    avgf += mag
+            #    compt += 1
+            if (avg[2]<=75):
+                #
+                #if (mag>0):
+                    #print("coordinates of surfaces",coord)
+                    #print("averaged surface coordinate",avg)
+                    #print("averaged surface temp",temp)
+                    #print("averaged surface force", mag)
+                    #print("Load factor x of stent force", boundary_condition.applied_neumann[0, 0])
+                #
                 ElemTraction = mag * np.multiply(boundary_condition.applied_neumann[face,:],er)
             else:
                 ElemTraction = 0 * np.multiply(boundary_condition.applied_neumann[face, :], er)
             external_traction = np.einsum("ijk,j,k->ik",N,ElemTraction,function_space.AllGauss[:,0]).sum(axis=1)
             RHSAssemblyNative(F,np.ascontiguousarray(external_traction[:,None]),face,nvar,nodeperelem,faces)
-    compt = 1 if compt == 0 else compt
-    avgf /= compt
-    avgr /= compt
-    print("Averaged force of stent:", avgf)
-    print("Averaged length of stent:", avgr)
+    #compt = 1 if compt == 0 else compt
+    #avgf /= compt
+    #avgr /= compt
+    #print("Total force of stent:", avgf)
+    #print("Total length of stent:", avgr)
+    #print("Number of contact surfaces:", compt)
+    #print("Load factor x of stent force", boundary_condition.applied_neumann[0, 0])
+    #print("Load factor y of stent force", boundary_condition.applied_neumann[0, 1])
+    #print("Load factor z of stent force", boundary_condition.applied_neumann[0, 2])
     #
     return F
 

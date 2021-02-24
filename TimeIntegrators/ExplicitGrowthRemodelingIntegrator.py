@@ -29,10 +29,6 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         K, NeumannForces, NodalForces, Residual,
         mesh, TotalDisp, Eulerx, materials, boundary_condition, fem_solver):
 
-
-
-
-
         if len(materials)>1 and self.density_turnover=="muscle":
             warn("More than one material. I will assume the first material is the Media")
 
@@ -54,7 +50,8 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         LoadIncrements = fem_solver.number_of_load_increments
         LoadFactor = 1./LoadIncrements
         AppliedDirichletInc = np.zeros(boundary_condition.applied_dirichlet.shape[0],dtype=np.float64)
-
+        #print(boundary_condition.applied_dirichlet.shape[0])
+        #exit()
         # HOMEOSTATIC STATE
         #TotalDisp = self.GetHomeostaticState(function_spaces, formulation, solver, 
         #        K, NeumannForces, NodalForces, Residual, mesh, TotalDisp, Eulerx, 
@@ -63,7 +60,53 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         IncrementalTime = 0.0
         # TIME LOOP
         for TIncrement in range(TimeIncrements):
-
+            #print(boundary_condition.columns_in)
+            #print(boundary_condition.columns_in.shape[0])
+            #print("====")
+            #print(boundary_condition.columns_out)
+            #print(boundary_condition.columns_out.shape[0])
+            #print("====")
+            #print(boundary_condition.applied_dirichlet)
+            #print(boundary_condition.applied_dirichlet.shape[0])
+            #exit()
+            #update the dirichlet boundary conditions in stent contact zones
+            t1 = boundary_condition.columns_out
+            t2 = boundary_condition.applied_dirichlet
+            t3 = boundary_condition.columns_in
+            #print(~(np.any(t1[:] == 1)))
+            #exit()
+            for face in range(mesh.faces.shape[0]):
+                if boundary_condition.neumann_flags[face][0] == True:
+                    for node in mesh.faces[face,:]:
+                        coord = Eulerx[node, :]
+                        r = np.linalg.norm(coord[0:2])
+                        r0 = 11  # simulation results defined
+                        os = 0.2  # user defined
+                        r_free = r0 * (1 + os)  # 11 = 10 * (1+ 10%)  10% oversizing
+                        #if (r < r_free) and (TIncrement>=110):
+                        if (coord[2]<75) and (coord[2]>55):
+                            #print("node",node)
+                            #print("coord",coord)
+                            #print("=====")
+                            #stent contact node, add it in colums_in and update its value in applied_dirichelet
+                            if (TIncrement>=120):
+                                ind = 3*node-1
+                                if(~(np.any(t1[:] == ind))):
+                                    t1=np.insert(t1,t1.shape[0],ind)
+                                    t2=np.insert(t2,t2.shape[0],0)
+            t3 = np.delete(np.arange(0, 3 * mesh.points.shape[0]), t1)
+            #
+            boundary_condition.columns_out = t1
+            boundary_condition.applied_dirichlet=t2
+            boundary_condition.columns_in=t3
+            #print("t1",t1)
+            #print(t1.shape[0])
+            #print("t2",t2)
+            #print(t2.shape[0])
+            #print("t3",t3)
+            #print(t3.shape[0])
+            #exit()
+            #
             # CHECK ADAPTIVE STEP TIME FACTOR
             if fem_solver.time_factor is not None:
                 TimeFactor = fem_solver.time_factor[TIncrement]

@@ -250,8 +250,8 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
     #
     for i in range(0, 10):
         heaviside1[100 + i] = 0.9 - 0.1 * i
-    #for i in range (0,94):
-    #    heaviside1[106 + i] = 0.3
+    for i in range (0,94):
+        heaviside1[106 + i] = 0.3
     #print("Release factor of pressure", heaviside1[inc])
     #print("=========================")
     #print("== User defined pressure release factor [unit: -]")
@@ -263,11 +263,14 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
         avg = np.mean(coord, axis=0)
         #
         if (avg[2]<=75):
-            #if (avg[2] <= 40):
+            #if (avg[2] < 60):
             boundary_condition.applied_pressure[face] = -13.3322e-3 * heaviside1[inc]
             #else:
-                #alpha = 0.05*(avg[2]-40)
-                #boundary_condition.applied_pressure[face] = -13.3322e-3 * (heaviside1[inc]*(1-alpha)+alpha)
+            #    alpha = (75-avg[2])/float(15)
+            #    if (inc>106):
+            #        boundary_condition.applied_pressure[face] = -13.3322e-3 * heaviside1[inc]*alpha
+            #    else:
+            #        boundary_condition.applied_pressure[face] = -13.3322e-3 * heaviside1[inc]
         else:
             boundary_condition.applied_pressure[face] = -13.3322e-3
     #end of Modif SJ
@@ -402,7 +405,7 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
             r = np.linalg.norm(avg[0:2])
             #
             r0 = 11               # simulation results defined
-            os = 0.1              # user defined
+            os = 0.2              # user defined
             r_free = r0*(1+os)    #11 = 10 * (1+ 10%)  10% oversizing
             E = 0.02              # user defined
             temp = E * (r_free - r)

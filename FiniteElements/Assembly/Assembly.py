@@ -242,35 +242,37 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
     #update the Boundary condition data value according to its averaged z coordinate
     faces = mesh.faces
     #
-    time_step = 200
+    time_step = 120
     temp = np.linspace(1, time_step, time_step)
     temp1 = temp - 101
     heaviside = np.heaviside(temp1, 1)
     heaviside1 = 1 - heaviside
     #
-    for i in range(0, 10):
-        heaviside1[100 + i] = 0.9 - 0.1 * i
-    for i in range (0,94):
-        heaviside1[106 + i] = 0.3
-    #print("Release factor of pressure", heaviside1[inc])
-    #print("=========================")
-    #print("== User defined pressure release factor [unit: -]")
-    #print(np.reshape(heaviside1, (15, 10)))
-    #print("=========================")
-    #exit()
+    for i in range(0,10):
+        heaviside1[100+i] = 1 - 0.1*(i+1)
+    #
     for face in range(faces.shape[0]):
         coord = Eulerx[mesh.faces[face, :], :]
         avg = np.mean(coord, axis=0)
         #
+        r = np.linalg.norm(avg[0:2]) #inner radius of artery
+        r0 = 7.88  # simulation results defined
+        os = 0.2  # user defined
+        r_free = r0 * (1 + os)  # 11 = 10 * (1+ 10%)  10% oversizing
+        r_free_textile = r_free * 1.1
+        p_residual = 0.3
+        #
         if (avg[2]<=75):
-            #if (avg[2] < 60):
-            boundary_condition.applied_pressure[face] = -13.3322e-3 * heaviside1[inc]
-            #else:
-            #    alpha = (75-avg[2])/float(15)
-            #    if (inc>106):
-            #        boundary_condition.applied_pressure[face] = -13.3322e-3 * heaviside1[inc]*alpha
-            #    else:
-            #        boundary_condition.applied_pressure[face] = -13.3322e-3 * heaviside1[inc]
+            if (r<=r_free):
+                boundary_condition.applied_pressure[face] = -13.3322e-3
+            else:
+                if (r > r_free_textile):
+                    p_res = -13.3322e-3*p_residual
+                    boundary_condition.applied_pressure[face] = p_res*(1-heaviside1[inc])-13.3322e-3*heaviside1[inc]
+                else:
+                    alpha = (r_free_textile - r)/(r_free_textile-r_free)
+                    p_tra = -13.3322e-3*alpha -13.3322e-3*p_residual*(1-alpha)
+                    boundary_condition.applied_pressure[face] = p_tra*(1-heaviside1[inc])-13.3322e-3*heaviside1[inc]
         else:
             boundary_condition.applied_pressure[face] = -13.3322e-3
     #end of Modif SJ
@@ -385,11 +387,11 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
     else:
         N = boundary_condition.__Nt__
 
-
     F = np.zeros((mesh.points.shape[0]*nvar,1))
-    #avgf = 0
-    #avgr = 0
-    #compt = 0
+    #
+
+    #print(boundary_condition.applied_neumann[0, :])
+
     for face in range(faces.shape[0]):
         if boundary_condition.neumann_flags[face] == True:
             #compute the local normal(z), tangential(theta) and axial(r) directions
@@ -401,43 +403,31 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
             et = et/np.linalg.norm(et)
             er = np.cross(et,ez)     
             er = er/np.linalg.norm(er)
-            #compute geometry-dependent spring-like force
+            #
             r = np.linalg.norm(avg[0:2])
+            r0 = 7.88
+            os = 0.2
+            r_free = r0*(1+os)
+            r_free_textile = r_free * 1.1
+            E = 0.2
+            E1 = 2e-7
+            if (r<=r_free):
+                mag = E * (r_free - r)/r_free
+            else:
+                if (r<=r_free_textile):
+                    mag = E1*(r_free_textile -r)/r_free_textile
+                else:
+                    mag = 0
             #
-            r0 = 11               # simulation results defined
-            os = 0.2              # user defined
-            r_free = r0*(1+os)    #11 = 10 * (1+ 10%)  10% oversizing
-            E = 0.02              # user defined
-            temp = E * (r_free - r)
-            mag = temp if temp>0 else 0 #>0.0001
-            #
-            #if (mag > 0):
-            #    avgr += r
-            #    avgf += mag
-            #    compt += 1
             if (avg[2]<=75):
-                #
-                #if (mag>0):
-                    #print("coordinates of surfaces",coord)
-                    #print("averaged surface coordinate",avg)
-                    #print("averaged surface temp",temp)
-                    #print("averaged surface force", mag)
-                    #print("Load factor x of stent force", boundary_condition.applied_neumann[0, 0])
-                #
-                ElemTraction = mag * np.multiply(boundary_condition.applied_neumann[face,:],er)
+                if (mag>0):
+                    #mag = mag + 13.3322e-3 #* 0.7
+                    ElemTraction = mag * np.multiply(boundary_condition.applied_neumann[face,:],er)
+                else:
+                    ElemTraction = 0 * np.multiply(boundary_condition.applied_neumann[face, :], er)
             else:
                 ElemTraction = 0 * np.multiply(boundary_condition.applied_neumann[face, :], er)
             external_traction = np.einsum("ijk,j,k->ik",N,ElemTraction,function_space.AllGauss[:,0]).sum(axis=1)
             RHSAssemblyNative(F,np.ascontiguousarray(external_traction[:,None]),face,nvar,nodeperelem,faces)
-    #compt = 1 if compt == 0 else compt
-    #avgf /= compt
-    #avgr /= compt
-    #print("Total force of stent:", avgf)
-    #print("Total length of stent:", avgr)
-    #print("Number of contact surfaces:", compt)
-    #print("Load factor x of stent force", boundary_condition.applied_neumann[0, 0])
-    #print("Load factor y of stent force", boundary_condition.applied_neumann[0, 1])
-    #print("Load factor z of stent force", boundary_condition.applied_neumann[0, 2])
-    #
     return F
 

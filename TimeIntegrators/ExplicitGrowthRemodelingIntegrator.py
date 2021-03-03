@@ -80,7 +80,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                     for node in mesh.faces[face,:]:
                         coord = Eulerx[node, :]
                         r = np.linalg.norm(coord[0:2])
-                        r0 = 11  # simulation results defined
+                        r0 = 7.8  # simulation results defined
                         os = 0.2  # user defined
                         r_free = r0 * (1 + os)  # 11 = 10 * (1+ 10%)  10% oversizing
                         #if (r < r_free) and (TIncrement>=110):
@@ -141,11 +141,24 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             K, RobinForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
                 fem_solver, Eulerx, K, np.zeros_like(Residual),TIncrement)
 
+            #if (TIncrement >=20):
+            #    boundary_condition.neumann_flags[:] = False
             # APPLY NEUMANN BOUNDARY CONDITIONS
             NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx, TIncrement, compute_traction_forces=True, compute_body_forces=False)
             DeltaF = LoadFactor*np.array([NeumannForces]).T
 
             NodalForces += DeltaF
+            #
+            for dof in range(DeltaF.shape[0]):
+                if (DeltaF[dof]==0):
+                    NodalForces[dof]=0
+            print("Max stent force",np.amax(NodalForces))
+            #test release at this level
+            #if (TIncrement == 59):
+            #    DeltaF[:] = 0
+            #    NodalForces[:] = 0
+            #exit()
+
             # OBRTAIN INCREMENTAL RESIDUAL - CONTRIBUTION FROM BOTH NEUMANN AND DIRICHLET
             Residual = -boundary_condition.ApplyDirichletGetReducedMatrices(K,np.zeros_like(Residual),
                 boundary_condition.applied_dirichlet,LoadFactor=LoadFactor,only_residual=True)
@@ -241,10 +254,10 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
         # Elastin degradation
         den0_tot = material.rho
-        D_max = 0.8 #0.5
+        D_max = 0.5 #0.5
         L_dam = self.damage_spread_space
         t_dam = self.damage_spread_time
-        T_ela = 20*365.25 #101.0*365.25
+        T_ela = 101*365.25 #101.0*365.25
 
         # Loop on nodes
         for node in range(material.node_set.shape[0]):

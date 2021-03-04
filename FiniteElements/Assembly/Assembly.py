@@ -242,15 +242,15 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
     #update the Boundary condition data value according to its averaged z coordinate
     faces = mesh.faces
     #
-    time_step = 120
+    time_step = 30
     temp = np.linspace(1, time_step, time_step)
-    temp1 = temp - 101
+    temp1 = temp - 11
     heaviside = np.heaviside(temp1, 1)
     heaviside1 = 1 - heaviside
     #
     for i in range(0,10):
-        heaviside1[100+i] = 1 - 0.1*(i+1)
-    #
+        heaviside1[10+i] = 1 - 0.1*(i+1)
+
     for face in range(faces.shape[0]):
         coord = Eulerx[mesh.faces[face, :], :]
         avg = np.mean(coord, axis=0)
@@ -259,20 +259,24 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
         r0 = 7.88  # simulation results defined
         os = 0.2  # user defined
         r_free = r0 * (1 + os)  # 11 = 10 * (1+ 10%)  10% oversizing
-        r_free_textile = r_free * 1.1
+        r_free_textile = r_free * 1.5
         p_residual = 0.3
         #
         if (avg[2]<=75):
             if (r<=r_free):
-                boundary_condition.applied_pressure[face] = -13.3322e-3
+                #boundary_condition.applied_pressure[face] = -13.3322e-3
+                p_res = -13.3322e-3 * p_residual
+                boundary_condition.applied_pressure[face] = p_res*(1-heaviside1[inc])-13.3322e-3*heaviside1[inc]
             else:
                 if (r > r_free_textile):
                     p_res = -13.3322e-3*p_residual
                     boundary_condition.applied_pressure[face] = p_res*(1-heaviside1[inc])-13.3322e-3*heaviside1[inc]
                 else:
-                    alpha = (r_free_textile - r)/(r_free_textile-r_free)
-                    p_tra = -13.3322e-3*alpha -13.3322e-3*p_residual*(1-alpha)
-                    boundary_condition.applied_pressure[face] = p_tra*(1-heaviside1[inc])-13.3322e-3*heaviside1[inc]
+                    #alpha = (r_free_textile - r)/(r_free_textile-r_free)
+                    #p_tra = -13.3322e-3*alpha -13.3322e-3*p_residual*(1-alpha)
+                    #boundary_condition.applied_pressure[face] = p_tra*(1-heaviside1[inc])-13.3322e-3*heaviside1[inc]
+                    p_res = -13.3322e-3 * p_residual
+                    boundary_condition.applied_pressure[face] = p_res*(1-heaviside1[inc])-13.3322e-3*heaviside1[inc]
         else:
             boundary_condition.applied_pressure[face] = -13.3322e-3
     #end of Modif SJ
@@ -389,9 +393,6 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
 
     F = np.zeros((mesh.points.shape[0]*nvar,1))
     #
-
-    #print(boundary_condition.applied_neumann[0, :])
-
     for face in range(faces.shape[0]):
         if boundary_condition.neumann_flags[face] == True:
             #compute the local normal(z), tangential(theta) and axial(r) directions
@@ -408,14 +409,14 @@ def AssembleExternalTractionForces(boundary_condition, mesh, material, function_
             r0 = 7.88
             os = 0.2
             r_free = r0*(1+os)
-            r_free_textile = r_free * 1.1
+            r_free_textile = r_free * 1.05
             E = 0.2
             E1 = 2e-7
             if (r<=r_free):
                 mag = E * (r_free - r)/r_free
             else:
                 if (r<=r_free_textile):
-                    mag = E1*(r_free_textile -r)/r_free_textile
+                    mag = 0 #E1*(r_free_textile -r)/r_free_textile
                 else:
                     mag = 0
             #

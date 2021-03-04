@@ -60,52 +60,32 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         IncrementalTime = 0.0
         # TIME LOOP
         for TIncrement in range(TimeIncrements):
-            #print(boundary_condition.columns_in)
-            #print(boundary_condition.columns_in.shape[0])
-            #print("====")
-            #print(boundary_condition.columns_out)
-            #print(boundary_condition.columns_out.shape[0])
-            #print("====")
-            #print(boundary_condition.applied_dirichlet)
-            #print(boundary_condition.applied_dirichlet.shape[0])
-            #exit()
             #update the dirichlet boundary conditions in stent contact zones
-            t1 = boundary_condition.columns_out
-            t2 = boundary_condition.applied_dirichlet
-            t3 = boundary_condition.columns_in
-            #print(~(np.any(t1[:] == 1)))
-            #exit()
-            for face in range(mesh.faces.shape[0]):
-                if boundary_condition.neumann_flags[face][0] == True:
-                    for node in mesh.faces[face,:]:
-                        coord = Eulerx[node, :]
-                        r = np.linalg.norm(coord[0:2])
-                        r0 = 7.8  # simulation results defined
-                        os = 0.2  # user defined
-                        r_free = r0 * (1 + os)  # 11 = 10 * (1+ 10%)  10% oversizing
-                        #if (r < r_free) and (TIncrement>=110):
-                        if (coord[2]<75) and (coord[2]>55):
-                            #print("node",node)
-                            #print("coord",coord)
-                            #print("=====")
-                            #stent contact node, add it in colums_in and update its value in applied_dirichelet
-                            if (TIncrement>=120):
-                                ind = 3*node-1
-                                if(~(np.any(t1[:] == ind))):
-                                    t1=np.insert(t1,t1.shape[0],ind)
-                                    t2=np.insert(t2,t2.shape[0],0)
-            t3 = np.delete(np.arange(0, 3 * mesh.points.shape[0]), t1)
+            #t1 = boundary_condition.columns_out
+            #t2 = boundary_condition.applied_dirichlet
+            #t3 = boundary_condition.columns_in
             #
-            boundary_condition.columns_out = t1
-            boundary_condition.applied_dirichlet=t2
-            boundary_condition.columns_in=t3
-            #print("t1",t1)
-            #print(t1.shape[0])
-            #print("t2",t2)
-            #print(t2.shape[0])
-            #print("t3",t3)
-            #print(t3.shape[0])
-            #exit()
+            #for face in range(mesh.faces.shape[0]):
+                #if boundary_condition.neumann_flags[face][0] == True:
+                    #for node in mesh.faces[face,:]:
+                        #coord = Eulerx[node, :]
+                        #r = np.linalg.norm(coord[0:2])
+                        #r0 = 7.88  # simulation results defined
+                        #os = 0.2  # user defined
+                        #r_free = r0 * (1 + os)  # 11 = 10 * (1+ 10%)  10% oversizing
+                        #if (r < r_free) and (TIncrement>=110):
+                        #if (coord[2]<75) and (coord[2]>55):
+                            #if (TIncrement>=120000): #actuellement pas active
+                                #ind = 3*node-1
+                                #if(~(np.any(t1[:] == ind))):
+                                    #t1=np.insert(t1,t1.shape[0],ind)
+                                    #t2=np.insert(t2,t2.shape[0],0)
+            #t3 = np.delete(np.arange(0, 3 * mesh.points.shape[0]), t1)
+            #
+            #boundary_condition.columns_out = t1
+            #boundary_condition.applied_dirichlet=t2
+            #boundary_condition.columns_in=t3
+
             #
             # CHECK ADAPTIVE STEP TIME FACTOR
             if fem_solver.time_factor is not None:
@@ -144,21 +124,17 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             #if (TIncrement >=20):
             #    boundary_condition.neumann_flags[:] = False
             # APPLY NEUMANN BOUNDARY CONDITIONS
-            NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx, TIncrement, compute_traction_forces=True, compute_body_forces=False)
-            DeltaF = LoadFactor*np.array([NeumannForces]).T
-
+            #if (TIncrement == 100):
+                #NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx, TIncrement, compute_traction_forces=True, compute_body_forces=False)
+            #
+            #if (TIncrement >= 110):
+                #NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx, TIncrement, compute_traction_forces=True, compute_body_forces=False)
+            #
+            #DeltaF = LoadFactor*np.array([NeumannForces]).T
+            DeltaF = LoadFactor * NeumannForces
+            #
             NodalForces += DeltaF
             #
-            for dof in range(DeltaF.shape[0]):
-                if (DeltaF[dof]==0):
-                    NodalForces[dof]=0
-            print("Max stent force",np.amax(NodalForces))
-            #test release at this level
-            #if (TIncrement == 59):
-            #    DeltaF[:] = 0
-            #    NodalForces[:] = 0
-            #exit()
-
             # OBRTAIN INCREMENTAL RESIDUAL - CONTRIBUTION FROM BOTH NEUMANN AND DIRICHLET
             Residual = -boundary_condition.ApplyDirichletGetReducedMatrices(K,np.zeros_like(Residual),
                 boundary_condition.applied_dirichlet,LoadFactor=LoadFactor,only_residual=True)
@@ -191,7 +167,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
             # UPDATE DISPLACEMENTS FOR THE CURRENT LOAD INCREMENT
             TotalDisp[:,:formulation.ndim,TIncrement] = Eulerx - mesh.points
-
+            #
             #CHECK HOMEOSTATIC DISTORTION
             #if TIncrement==0:
             #    self.HomeostaticDistortion(fem_solver, formulation, TotalDisp, TIncrement)

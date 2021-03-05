@@ -233,7 +233,7 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, materials, bou
 #----------------------------------------------------------------------------------------------------------------#
 
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL PRESSURE FORCES ----------------------------------#
-def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, inc,type_load):
+def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, inc, type_load):
     """Compute/assemble traction (follower)"""
 
     ndim = mesh.InferSpatialDimension()
@@ -244,12 +244,12 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
     #
     time_step = 30
     temp = np.linspace(1, time_step, time_step)
-    temp1 = temp - 11
+    temp1 = temp - 20
     heaviside = np.heaviside(temp1, 1)
     heaviside1 = 1 - heaviside
     #
-    for i in range(0,10):
-        heaviside1[10+i] = 1 - 0.1*(i+1)
+    #for i in range(0,10):
+    #    heaviside1[10+i] = 1 - 0.1*(i+1)
 
     for face in range(faces.shape[0]):
         coord = Eulerx[mesh.faces[face, :], :]
@@ -260,7 +260,7 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
         os = 0.2  # user defined
         r_free = r0 * (1 + os)  # 11 = 10 * (1+ 10%)  10% oversizing
         r_free_textile = r_free * 1.5
-        p_residual = 0.3
+        p_residual = 0.0
         #
         if (avg[2]<=75):
             if (r<=r_free):

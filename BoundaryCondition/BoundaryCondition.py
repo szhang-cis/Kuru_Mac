@@ -404,11 +404,20 @@ class BoundaryCondition(object):
             self.applied_pressure = tmp_data
             
         if not self.spring_flags is None:
+            tmp_flags1 = np.copy(self.spring_flags,order = 'F')
+            tmp_data1 = np.copy(self.applied_spring,order ='F')
+
+            self.spring_flags = tmp_flags1[:,inc]
+            self.applied_spring = tmp_data1[:,inc]
 
             K_spring, F_spring = AssembleRobinForces(self, mesh,
-                materials[0], function_spaces, fem_solver, Eulerx, 'spring')
+                materials[0], function_spaces, fem_solver, Eulerx, inc, 'spring')
+
             stiffness += K_spring
             F += F_spring[:,None]
+
+            self.spring_flags = tmp_flags1
+            self.applied_spring = tmp_data1
 
         return stiffness, F
 

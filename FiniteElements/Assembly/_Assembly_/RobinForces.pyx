@@ -37,6 +37,7 @@ cdef extern from "RobinForces.h" nogil:
                                const Real *LagrangeX,
                                const Real *Eulerx,
                                const Real *Bases,
+                               const Real *Jm,
                                const Real *AllGauss,
                                const int *spring_flags,
                                const Real *applied_spring,
@@ -174,6 +175,7 @@ def StaticSpringForces(boundary_condition, mesh, material, function_space, fem_s
         nodeperface = mesh.faces.shape[1]
 
     cdef np.ndarray[Real,ndim=2, mode='c'] Bases         = function_space.Bases
+    cdef np.ndarray[Real,ndim=3, mode='c'] Jm            = function_space.Jm
     cdef np.ndarray[Real,ndim=1, mode='c'] AllGauss      = function_space.AllGauss.flatten()
     cdef Integer ngauss                                  = function_space.AllGauss.shape[0]
     cdef Integer local_size                              = function_space.Bases.shape[0]*nvar
@@ -216,6 +218,7 @@ def StaticSpringForces(boundary_condition, mesh, material, function_space, fem_s
                             &LagrangeX[0,0],
                             &Eulerx[0,0],
                             &Bases[0,0],
+                            &Jm[0,0,0],
                             &AllGauss[0],
                             &spring_flags[0],
                             &applied_spring[0],

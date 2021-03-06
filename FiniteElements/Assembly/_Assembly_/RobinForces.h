@@ -2,6 +2,7 @@
 #define ROBIN_FORCES_H
 
 #include <algorithm>
+#include <math.h>
 
 #ifdef __SSE4_2__
 #include <emmintrin.h>
@@ -389,14 +390,51 @@ void GetFacesSpringForces(Real *stiff_face,
 	            Real *force,
 		        const Real spring,
 		        const Real *Bases,
+		        const Real *Jm,
 		        const Real *AllGauss,
 		        const Real *ElemDisplacements,
+		        const Real *EulerElemCoords,
 		        Integer nodeperface,
 		        Integer ngauss,
 		        Integer nvar)
 {
    Integer ndof = nodeperface*nvar;
    //Integer local_capacity = ndof*ndof;
+
+   Real *alternating = (Real*)malloc(3*3*3*sizeof(Real));
+   std::fill(alternating,alternating+3*3*3,0.0);
+   alternating[0*3*3 + 1*3 + 2] =  1.0;
+   alternating[0*3*3 + 2*3 + 1] = -1.0;
+   alternating[1*3*3 + 0*3 + 2] = -1.0;
+   alternating[1*3*3 + 2*3 + 0] =  1.0;
+   alternating[2*3*3 + 0*3 + 1] =  1.0;
+   alternating[2*3*3 + 1*3 + 0] = -1.0;
+
+   Real *tangentialx = (Real*)malloc(ngauss*nvar*sizeof(Real));
+   Real *tangentialy = (Real*)malloc(ngauss*nvar*sizeof(Real));
+   Real *normal      = (Real*)malloc(ngauss*nvar*sizeof(Real));
+
+   std::fill(tangentialx,tangentialx+ngauss*nvar,0.0);
+   std::fill(tangentialy,tangentialy+ngauss*nvar,0.0);
+   for (Integer j=0; j<ngauss; ++j) {
+      for (Integer k=0; k<nvar; ++k) {
+         for (Integer i=0; i<nodeperface; ++i) {
+            tangentialx[j*nvar+k] += Jm[0*nodeperface*ngauss+i*ngauss+j]*EulerElemCoords[i*nvar+k];
+            tangentialy[j*nvar+k] += Jm[1*nodeperface*ngauss+i*ngauss+j]*EulerElemCoords[i*nvar+k];
+	     }
+      }
+   }
+
+   std::fill(normal,normal+ngauss*nvar,0.0);
+   for (Integer l=0; l<ngauss; ++l) {
+      for (Integer i=0; i<nvar; ++i) {
+         for (Integer j=0; j<nvar; ++j) {
+            for (Integer k=0; k<nvar; ++k) {
+               normal[l*nvar+i] += alternating[i*nvar*nvar+j*nvar+k]*tangentialx[l*nvar+j]*tangentialy[l*nvar+k];
+	        }
+	     }
+      }
+   }
    
    Real *N            = (Real*)malloc(ndof*nvar*ngauss*sizeof(Real));
    Real *displacement = (Real*)malloc(ngauss*nvar*sizeof(Real));
@@ -427,7 +465,7 @@ void GetFacesSpringForces(Real *stiff_face,
    for (Integer i=0; i<ndof; ++i) {
       for (Integer k=0; k<ngauss; ++k) {
          for (Integer j=0; j<nvar; ++j) {
-            force[i] += spring*N[i*nvar*ngauss+j*ngauss+k]*displacement[k*nvar+j]*AllGauss[k];
+            force[i] += spring*N[i*nvar*ngauss+j*ngauss+k]*(displacement[k*nvar+j])*AllGauss[k];
 	     }
       }
    }
@@ -444,6 +482,10 @@ void GetFacesSpringForces(Real *stiff_face,
    }
    free(N);
    free(displacement);
+   free(alternating);
+   free(tangentialx);
+   free(tangentialy);
+   free(normal);
 }
 
 /* This function assembles the whole forces and stiffness due to
@@ -453,6 +495,7 @@ void StaticSpringAssembler(const UInteger *faces,
                            const Real *LagrangeX,
                            const Real *Eulerx,
                            const Real *Bases,
+                           const Real *Jm,
                            const Real *AllGauss,
                            const int *spring_flags,
                            const Real *applied_spring,
@@ -480,6 +523,8 @@ void StaticSpringAssembler(const UInteger *faces,
    Real *force = (Real*)malloc(ndof*sizeof(Real));
    Real *stiff_face = (Real*)malloc(local_capacity*sizeof(Real));
 
+   Real *EulerElemCoords = (Real*)malloc(sizeof(Real)*nodeperface*nvar);
+
    // LOOP OVER FACES
    for (Integer face=0; face<nface; ++face) {
       if (spring_flags[face]) {
@@ -488,10 +533,27 @@ void StaticSpringAssembler(const UInteger *faces,
          // GET FIELD AT ELEMENT LEVEL (JUST CURRENT)
          for (Integer i=0; i<nodeperface; ++i) {
             Integer inode = faces[face*nodeperface+i];
+
+            Real dUx = Eulerx[inode*nvar+0] - LagrangeX[inode*nvar+0];
+            Real dUy = Eulerx[inode*nvar+1] - LagrangeX[inode*nvar+1];
+            //Real dUz = Eulerx[inode*nvar+2] - LagrangeX[inode*nvar+2];
+
+            ElemDisplacements[i*nvar+0] = Eulerx[inode*nvar+0]-LagrangeX[inode*nvar+0]-1*dUx/sqrt(dUx*dUx+dUy*dUy);
+            ElemDisplacements[i*nvar+1] = Eulerx[inode*nvar+1]-LagrangeX[inode*nvar+1]-1*dUy/sqrt(dUx*dUx+dUy*dUy);
+            ElemDisplacements[i*nvar+2] = Eulerx[inode*nvar+2]-LagrangeX[inode*nvar+2];
+
+            //for (Integer j=0; j<nvar; ++j) {
+            //   ElemDisplacements[i*nvar+j] = Eulerx[inode*nvar+j] - LagrangeX[inode*nvar+j];
+            //}
+         }
+
+         for (Integer i=0; i<nodeperface; ++i) {
+            Integer inode = faces[face*nodeperface+i];
             for (Integer j=0; j<nvar; ++j) {
-               ElemDisplacements[i*nvar+j] = Eulerx[inode*nvar+j] - LagrangeX[inode*nvar+j];
+               EulerElemCoords[i*nvar+j] = Eulerx[inode*nvar+j];
             }
          }
+
          // COMPUTE STIFFNESS AND FORCE
 	     std::fill(force,force+ndof,0.0);
 	     std::fill(stiff_face,stiff_face+local_capacity,0.0);
@@ -499,8 +561,10 @@ void StaticSpringAssembler(const UInteger *faces,
 			 force,
 			 spring,
 			 Bases,
+			 Jm,
 			 AllGauss,
 			 ElemDisplacements,
+			 EulerElemCoords,
 			 nodeperface,
 			 ngauss,
 			 nvar);
@@ -539,6 +603,7 @@ void StaticSpringAssembler(const UInteger *faces,
    free(force);
    free(stiff_face);
    free(ElemDisplacements);
+   free(EulerElemCoords);
 }
 
 /*---------------------------------------------------------------------------------------------*/

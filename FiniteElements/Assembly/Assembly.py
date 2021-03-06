@@ -244,7 +244,7 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
     #
     time_step = 30
     temp = np.linspace(1, time_step, time_step)
-    temp1 = temp - 20
+    temp1 = temp - 21
     heaviside = np.heaviside(temp1, 1)
     heaviside1 = 1 - heaviside
     #

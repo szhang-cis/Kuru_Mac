@@ -534,12 +534,16 @@ void StaticSpringAssembler(const UInteger *faces,
          for (Integer i=0; i<nodeperface; ++i) {
             Integer inode = faces[face*nodeperface+i];
 
-            Real dUx = Eulerx[inode*nvar+0] - LagrangeX[inode*nvar+0];
-            Real dUy = Eulerx[inode*nvar+1] - LagrangeX[inode*nvar+1];
-            //Real dUz = Eulerx[inode*nvar+2] - LagrangeX[inode*nvar+2];
+            ElemDisplacements[i*nvar+0] = Eulerx[inode*nvar+0]-1.2*LagrangeX[inode*nvar+0];
+            if (ElemDisplacements[i*nvar+0]>0) {
+                ElemDisplacements[i*nvar+0] = 0;
+            }
 
-            ElemDisplacements[i*nvar+0] = Eulerx[inode*nvar+0]-LagrangeX[inode*nvar+0]-1*dUx/sqrt(dUx*dUx+dUy*dUy);
-            ElemDisplacements[i*nvar+1] = Eulerx[inode*nvar+1]-LagrangeX[inode*nvar+1]-1*dUy/sqrt(dUx*dUx+dUy*dUy);
+            ElemDisplacements[i*nvar+1] = Eulerx[inode*nvar+1]-1.2*LagrangeX[inode*nvar+1];
+            if (ElemDisplacements[i*nvar+1]>0) {
+                ElemDisplacements[i*nvar+1] = 0;
+            }
+
             ElemDisplacements[i*nvar+2] = Eulerx[inode*nvar+2]-LagrangeX[inode*nvar+2];
 
             //for (Integer j=0; j<nvar; ++j) {

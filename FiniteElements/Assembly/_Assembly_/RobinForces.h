@@ -474,7 +474,7 @@ void GetFacesSpringForces(Real *stiff_face,
    for (Integer k=0; k<ndof; ++k) {
       for (Integer l=0; l<ndof; ++l) {
          for (Integer i=0; i<ngauss; ++i) {
-            for (Integer j=0; j<nvar; ++j) {
+            for (Integer j=0; j<(nvar-1); ++j) {
                stiff_face[k*ndof+l] += spring*N[k*nvar*ngauss+j*ngauss+i]*N[l*nvar*ngauss+j*ngauss+i]*AllGauss[i];
             }
 	     }

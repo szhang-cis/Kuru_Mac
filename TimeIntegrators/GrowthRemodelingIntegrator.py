@@ -170,6 +170,7 @@ class GrowthRemodelingIntegrator(object):
             print("Iteration {} for increment {}.".format(Iter, Increment) +\
                 " Residual (abs) {0:>16.7g}".format(fem_solver.abs_norm_residual),
                 "\t Residual (rel) {0:>16.7g}".format(fem_solver.norm_residual))
+            print("norm(dU)",norm(dU))
 
             # BREAK BASED ON RELATIVE NORM
             if np.abs(fem_solver.abs_norm_residual) < Tolerance:

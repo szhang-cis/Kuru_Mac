@@ -233,31 +233,10 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, materials, bou
 #----------------------------------------------------------------------------------------------------------------#
 
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL PRESSURE FORCES ----------------------------------#
-def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, inc, type_load):
+def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, Eulerx0, inc, type_load):
     """Compute/assemble traction (follower)"""
     ndim = mesh.InferSpatialDimension()
     nvar = material.nvar
-
-    #Block for stent control
-    if (inc >= 10):
-        for face in np.where(boundary_condition.pressure_flags==True)[0]:
-            coord = Eulerx[mesh.faces[face, :], :]
-            avg = np.mean(coord, axis=0)
-            if (avg[2]<=50 and avg[2]>=25):
-                boundary_condition.spring_flags[face] = True
-                boundary_condition.applied_spring[face] = 0.02
-    #Block for pressure control
-    if (inc >= 20):
-        for face in np.where(boundary_condition.pressure_flags == True)[0]:
-            coord = Eulerx[mesh.faces[face, :], :]
-            avg = np.mean(coord, axis=0)
-            r = np.linalg.norm(avg[0:2])
-            r0 = 10.07 * (1 + 0.2)  # modified os with respect to 10mm
-            if ((avg[2]<=50 and avg[2]>=25) and r>r0):
-                boundary_condition.applied_pressure[face] = -13.3322e-3*0.0
-            else:
-                if (avg[2]<25):
-                    boundary_condition.applied_pressure[face] = -13.3322e-3*0.0
     #
     if type_load == 'pressure':
         if boundary_condition.pressure_flags.shape[0] == mesh.points.shape[0]:
@@ -316,7 +295,7 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
         if boundary_condition.analysis_type == "static":
             if fem_solver.recompute_sparsity_pattern:
                 I_robin, J_robin, V_robin, F_robin = StaticSpringForces(boundary_condition,
-                    mesh, material, function_spaces[-1], fem_solver, Eulerx)
+                    mesh, material, function_spaces[-1], fem_solver, Eulerx, Eulerx0)
                 K_robin = coo_matrix((V_robin,(I_robin,J_robin)),
                     shape=((nvar*mesh.points.shape[0],nvar*mesh.points.shape[0])),dtype=np.float64).tocsr()
             else:

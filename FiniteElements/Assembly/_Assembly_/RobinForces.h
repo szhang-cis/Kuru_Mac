@@ -494,6 +494,7 @@ void GetFacesSpringForces(Real *stiff_face,
 void StaticSpringAssembler(const UInteger *faces,
                            const Real *LagrangeX,
                            const Real *Eulerx,
+                           const Real *Eulerx0,
                            const Real *Bases,
                            const Real *Jm,
                            const Real *AllGauss,
@@ -544,8 +545,7 @@ void StaticSpringAssembler(const UInteger *faces,
                 ElemDisplacements[i*nvar+1] = 0;
             }
 
-            ElemDisplacements[i*nvar+2] = Eulerx[inode*nvar+2]-LagrangeX[inode*nvar+2];
-
+            ElemDisplacements[i*nvar+2] = 0; //Eulerx[inode*nvar+2] - Eulerx0[inode*nvar+2];//LagrangeX[inode*nvar+2];
             //for (Integer j=0; j<nvar; ++j) {
             //   ElemDisplacements[i*nvar+j] = Eulerx[inode*nvar+j] - LagrangeX[inode*nvar+j];
             //}

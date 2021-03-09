@@ -117,7 +117,7 @@ class GrowthRemodelingIntegrator(object):
                 raise ValueError("No file name provided to save incremental solution")
 
     def NewtonRaphson(self, function_spaces, formulation, solver, Increment, K, NodalForces, 
-            Residual, mesh, Eulerx, materials, boundary_condition, AppliedDirichletInc, fem_solver):
+            Residual, mesh, Eulerx, Eulerx0, materials, boundary_condition, AppliedDirichletInc, fem_solver):
 
         Tolerance = fem_solver.newton_raphson_tolerance
         LoadIncrement = fem_solver.number_of_load_increments
@@ -129,7 +129,9 @@ class GrowthRemodelingIntegrator(object):
             K.shape[0],formulation.nvar)
         # UPDATE EULERIAN COORDINATE
         Eulerx += IncDirichlet[:,:formulation.ndim]
-
+        Eulerx0 = Eulerx
+        #print("je suis passe ici")
+        #exit()
         while fem_solver.norm_residual > Tolerance or Iter==0:
             # GET THE REDUCED SYSTEM OF EQUATIONS
             K_b, F_b = boundary_condition.GetReducedMatrices(K,Residual)[:2]
@@ -149,7 +151,7 @@ class GrowthRemodelingIntegrator(object):
                 boundary_condition, Eulerx)[:2]
             # COMPUTE ROBIN STIFFNESS AND FORCES (EXTERNAL)
             K, TractionForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
-                fem_solver, Eulerx, K, TractionForces, Increment)
+                fem_solver, Eulerx, Eulerx0, K, TractionForces, Increment)
 
             # FIND THE RESIDUAL
             Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] - \

@@ -36,6 +36,7 @@ cdef extern from "RobinForces.h" nogil:
     void StaticSpringAssembler(const UInteger *faces,
                                const Real *LagrangeX,
                                const Real *Eulerx,
+                               const Real *Eulerx0,
                                const Real *Bases,
                                const Real *Jm,
                                const Real *AllGauss,
@@ -150,7 +151,7 @@ def StaticPressureForces(boundary_condition, mesh, material, function_space, fem
         return V_press, F
 
 
-def StaticSpringForces(boundary_condition, mesh, material, function_space, fem_solver, Real[:,::1] Eulerx):
+def StaticSpringForces(boundary_condition, mesh, material, function_space, fem_solver, Real[:,::1] Eulerx, Real[:,::1] Eulerx0):
     """
     This routine assembles the stiffness matrix and forces vector from pressure over the material
     so the number of variables is same than the number of dimensions of deformation.
@@ -217,6 +218,7 @@ def StaticSpringForces(boundary_condition, mesh, material, function_space, fem_s
     StaticSpringAssembler(&faces[0,0],
                             &LagrangeX[0,0],
                             &Eulerx[0,0],
+                            &Eulerx0[0,0],
                             &Bases[0,0],
                             &Jm[0,0,0],
                             &AllGauss[0],

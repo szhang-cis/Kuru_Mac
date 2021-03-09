@@ -542,6 +542,7 @@ class FEMSolver(object):
         # ALLOCATE FOR GEOMETRY - GetDirichletBoundaryConditions CHANGES THE MESH
         # SO EULERX SHOULD BE ALLOCATED AFTERWARDS
         Eulerx = np.copy(mesh.points)
+        Eulerx0 = np.copy(mesh.points)
 
         # FIND PURE NEUMANN (EXTERNAL) NODAL FORCE VECTOR
         NeumannForces = boundary_condition.ComputeNeumannForces(mesh, materials, function_spaces, Eulerx, 0,
@@ -601,7 +602,7 @@ class FEMSolver(object):
         else:
             if self.has_growth_remodeling:
                 TotalDisp,GRVariables = growth_remodeling.Solver(function_spaces, formulation, 
-                        solver, K, NeumannForces, NodalForces, Residual, mesh, TotalDisp, Eulerx, 
+                        solver, K, NeumannForces, NodalForces, Residual, mesh, TotalDisp, Eulerx, Eulerx0,
                         materials, boundary_condition, self)
                 return self.__makeoutput__(mesh, TotalDisp, formulation, function_spaces, materials,
                         gr_variables=GRVariables)
@@ -629,8 +630,9 @@ class FEMSolver(object):
 
     def StaticSolver(self, function_spaces, formulation, solver, K,
             NeumannForces, NodalForces, Residual,
-            mesh, TotalDisp, Eulerx, materials, boundary_condition):
+            mesh, TotalDisp, Eulerx, Eulerx0, materials, boundary_condition):
 
+        Eulerx0 = Eulerx
         LoadIncrement = self.number_of_load_increments
         LoadFactor = 1./LoadIncrement
         AppliedDirichletInc = np.zeros(boundary_condition.applied_dirichlet.shape[0],dtype=np.float64)
@@ -646,7 +648,7 @@ class FEMSolver(object):
             # APPLY ROBIN BOUNDARY CONDITIONS - STIFFNESS(_) AND FORCES
             boundary_condition.pressure_increment = LoadFactorInc
             K, RobinForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
-                self, Eulerx, K, np.zeros_like(Residual))
+                self, Eulerx, Eulerx0, K, np.zeros_like(Residual))
             # APPLY NEUMANN BOUNDARY CONDITIONS
             DeltaF = LoadFactor*NeumannForces
             NodalForces += DeltaF
@@ -672,7 +674,7 @@ class FEMSolver(object):
 
             if self.nonlinear_iterative_technique == "newton_raphson":
                 Eulerx, K, Residual = self.NewtonRaphson(function_spaces, formulation, solver,
-                    Increment, K, NodalForces, Residual, mesh, Eulerx,
+                    Increment, K, NodalForces, Residual, mesh, Eulerx, Eulerx0,
                     materials, boundary_condition, AppliedDirichletInc)
             elif self.nonlinear_iterative_technique == "modified_newton_raphson":
                 Eulerx, K, Residual = self.ModifiedNewtonRaphson(function_spaces, formulation, solver,
@@ -724,7 +726,7 @@ class FEMSolver(object):
         return TotalDisp
 
     def NewtonRaphson(self, function_spaces, formulation, solver,
-        Increment, K, NodalForces, Residual, mesh, Eulerx, materials,
+        Increment, K, NodalForces, Residual, mesh, Eulerx, Eulerx0, materials,
         boundary_condition, AppliedDirichletInc):
 
         Tolerance = self.newton_raphson_tolerance
@@ -757,7 +759,7 @@ class FEMSolver(object):
                 boundary_condition, Eulerx)[:2]
             # COMPUTE ROBIN STIFFNESS AND FORCES (EXTERNAL)
             K, TractionForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
-                self, Eulerx, K, TractionForces)
+                self, Eulerx, Eulerx0, K, TractionForces)
 
             # FIND THE RESIDUAL
             Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] - \

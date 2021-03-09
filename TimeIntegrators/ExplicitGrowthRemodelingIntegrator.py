@@ -27,7 +27,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
     def Solver(self, function_spaces, formulation, solver,
         K, NeumannForces, NodalForces, Residual,
-        mesh, TotalDisp, Eulerx, materials, boundary_condition, fem_solver):
+        mesh, TotalDisp, Eulerx, Eulerx0, materials, boundary_condition, fem_solver):
 
         if len(materials)>1 and self.density_turnover=="muscle":
             warn("More than one material. I will assume the first material is the Media")
@@ -60,6 +60,34 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         IncrementalTime = 0.0
         # TIME LOOP
         for TIncrement in range(TimeIncrements):
+            #update the robin boundary condition
+            # Block for stent control
+            if (TIncrement >= 10):
+                for face in np.where(boundary_condition.pressure_flags == True)[0]:
+                    coord = Eulerx[mesh.faces[face, :], :]
+                    avg = np.mean(coord, axis=0)
+                    if (avg[2] <= 50 and avg[2]>=25):
+                        boundary_condition.spring_flags[face] = True
+                        boundary_condition.applied_spring[face] = 0.02
+                    else:
+                        boundary_condition.spring_flags[face] = False
+                        boundary_condition.applied_spring[face] = 0.0
+            # Block for pressure control
+            if (TIncrement >= 20):  # for instatnt not activated
+                for face in np.where(boundary_condition.pressure_flags == True)[0]:
+                    coord = Eulerx[mesh.faces[face, :], :]
+                    avg = np.mean(coord, axis=0)
+                    r = np.linalg.norm(avg[0:2])
+                    r0 = 10.07 * 1.2  # modified os with respect to 10mm
+                    #if (avg[2] <= 75 and r > r0):
+                    #    boundary_condition.applied_pressure[face] = -13.3322e-3 * 0.0
+                    #else:
+                    #    boundary_condition.applied_pressure[face] = -13.3322e-3
+
+                    #for test
+                    if (avg[2] < 25):
+                        boundary_condition.applied_pressure[face] = -13.3322e-3*0.0
+            #
             #update the dirichlet boundary conditions in stent contact zones
             #t1 = boundary_condition.columns_out
             #t2 = boundary_condition.applied_dirichlet
@@ -119,7 +147,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             # APPLY ROBIN BOUNDARY CONDITIONS - STIFFNESS(_) AND FORCES
             boundary_condition.pressure_increment = IncrementalLoad
             K, RobinForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
-                fem_solver, Eulerx, K, np.zeros_like(Residual),TIncrement)
+                fem_solver, Eulerx, Eulerx0, K, np.zeros_like(Residual),TIncrement)
 
             #if (TIncrement >=20):
             #    boundary_condition.neumann_flags[:] = False
@@ -160,7 +188,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
             if fem_solver.nonlinear_iterative_technique == "newton_raphson":
                 Eulerx, K, Residual = self.NewtonRaphson(function_spaces, formulation, solver,
-                        TIncrement, K, NodalForces, Residual, mesh, Eulerx, materials,
+                        TIncrement, K, NodalForces, Residual, mesh, Eulerx, Eulerx0, materials,
                         boundary_condition, AppliedDirichletInc, fem_solver)
             else:
                 raise RuntimeError("Iterative technique for nonlinear solver not understood")
@@ -168,6 +196,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             # UPDATE DISPLACEMENTS FOR THE CURRENT LOAD INCREMENT
             TotalDisp[:,:formulation.ndim,TIncrement] = Eulerx - mesh.points
             #
+            #Eulerx0 = Eulerx
             #CHECK HOMEOSTATIC DISTORTION
             #if TIncrement==0:
             #    self.HomeostaticDistortion(fem_solver, formulation, TotalDisp, TIncrement)

@@ -279,7 +279,7 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
                 if (inc >= 110):  # for instatnt not activated
                     release_factor = [1] * 120
                     for i in range(0,10):
-                        release_factor[110+i]= 0.1
+                        release_factor[110+i]= 0.0
                     #for i in range(0, 5):
                     #    release_factor[110 + i] = 1 - 0.1 * (i + 1)
                     #for i in range(0, 5):

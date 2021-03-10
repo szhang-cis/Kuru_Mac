@@ -133,6 +133,10 @@ class GrowthRemodelingIntegrator(object):
         #print("je suis passe ici")
         #exit()
         while fem_solver.norm_residual > Tolerance or Iter==0:
+            #
+            residualmoins = fem_solver.norm_residual
+            theta = 1.0
+            #
             # GET THE REDUCED SYSTEM OF EQUATIONS
             K_b, F_b = boundary_condition.GetReducedMatrices(K,Residual)[:2]
 
@@ -144,6 +148,7 @@ class GrowthRemodelingIntegrator(object):
 
             # UPDATE THE EULERIAN COMPONENTS
             # UPDATE THE GEOMETRY
+
             Eulerx += dU[:,:formulation.ndim]
 
             # RE-ASSEMBLE - COMPUTE STIFFNESS AND INTERNAL TRACTION FORCES
@@ -162,7 +167,19 @@ class GrowthRemodelingIntegrator(object):
             if Iter==0:
                 fem_solver.NormForces = la.norm(Residual[boundary_condition.columns_in])
             fem_solver.norm_residual = np.abs(la.norm(Residual[boundary_condition.columns_in])/fem_solver.NormForces)
-
+            #
+            while fem_solver.norm_residual >= residualmoins and Iter >1:
+                theta = theta/2.0
+                Eulerx -= theta*dU[:, :formulation.ndim]
+                K, TractionForces = Assemble(fem_solver, function_spaces, formulation, mesh, materials,
+                                             boundary_condition, Eulerx)[:2]
+                K, TractionForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
+                                            fem_solver, Eulerx, Eulerx0, K, TractionForces, Increment)
+                Residual[boundary_condition.columns_in] = TractionForces[boundary_condition.columns_in] - \
+                                                      NodalForces[boundary_condition.columns_in]
+                fem_solver.abs_norm_residual = la.norm(Residual[boundary_condition.columns_in])
+                fem_solver.norm_residual = np.abs(la.norm(Residual[boundary_condition.columns_in]) / fem_solver.NormForces)
+            #
             # SAVE THE NORM
             fem_solver.NRConvergence['Increment_'+str(Increment)] = np.append(fem_solver.NRConvergence[\
                     'Increment_'+str(Increment)],fem_solver.norm_residual)

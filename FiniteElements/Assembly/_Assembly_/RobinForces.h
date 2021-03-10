@@ -475,7 +475,10 @@ void GetFacesSpringForces(Real *stiff_face,
       for (Integer l=0; l<ndof; ++l) {
          for (Integer i=0; i<ngauss; ++i) {
             for (Integer j=0; j<(nvar-1); ++j) {
-               stiff_face[k*ndof+l] += spring*N[k*nvar*ngauss+j*ngauss+i]*N[l*nvar*ngauss+j*ngauss+i]*AllGauss[i];
+               if (displacement[i*nvar+j] != 0){
+                  stiff_face[k*ndof+l] += spring*N[k*nvar*ngauss+j*ngauss+i]*N[l*nvar*ngauss+j*ngauss+i]*AllGauss[i];
+               }
+               //stiff_face[k*ndof+l] += spring*N[k*nvar*ngauss+j*ngauss+i]*N[l*nvar*ngauss+j*ngauss+i]*AllGauss[i];
             }
 	     }
       }
@@ -535,12 +538,12 @@ void StaticSpringAssembler(const UInteger *faces,
          for (Integer i=0; i<nodeperface; ++i) {
             Integer inode = faces[face*nodeperface+i];
 
-            ElemDisplacements[i*nvar+0] = Eulerx[inode*nvar+0]-1.2*LagrangeX[inode*nvar+0];
+            ElemDisplacements[i*nvar+0] = Eulerx[inode*nvar+0]-0.94125*LagrangeX[inode*nvar+0];
             if (ElemDisplacements[i*nvar+0]>0) {
                 ElemDisplacements[i*nvar+0] = 0;
             }
 
-            ElemDisplacements[i*nvar+1] = Eulerx[inode*nvar+1]-1.2*LagrangeX[inode*nvar+1];
+            ElemDisplacements[i*nvar+1] = Eulerx[inode*nvar+1]-0.94125*LagrangeX[inode*nvar+1];
             if (ElemDisplacements[i*nvar+1]>0) {
                 ElemDisplacements[i*nvar+1] = 0;
             }

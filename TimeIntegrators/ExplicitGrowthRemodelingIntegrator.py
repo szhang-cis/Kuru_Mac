@@ -62,31 +62,18 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         for TIncrement in range(TimeIncrements):
             #update the robin boundary condition
             # Block for stent control
-            if (TIncrement >= 10):
+            if (TIncrement >= 100):
                 for face in np.where(boundary_condition.pressure_flags == True)[0]:
                     coord = Eulerx[mesh.faces[face, :], :]
                     avg = np.mean(coord, axis=0)
-                    if (avg[2] <= 50 and avg[2]>=25):
+                    if (avg[2] <= 75):
                         boundary_condition.spring_flags[face] = True
                         boundary_condition.applied_spring[face] = 0.02
                     else:
                         boundary_condition.spring_flags[face] = False
                         boundary_condition.applied_spring[face] = 0.0
             # Block for pressure control
-            if (TIncrement >= 20):  # for instatnt not activated
-                for face in np.where(boundary_condition.pressure_flags == True)[0]:
-                    coord = Eulerx[mesh.faces[face, :], :]
-                    avg = np.mean(coord, axis=0)
-                    r = np.linalg.norm(avg[0:2])
-                    r0 = 10.07 * 1.2  # modified os with respect to 10mm
-                    #if (avg[2] <= 75 and r > r0):
-                    #    boundary_condition.applied_pressure[face] = -13.3322e-3 * 0.0
-                    #else:
-                    #    boundary_condition.applied_pressure[face] = -13.3322e-3
-
-                    #for test
-                    if (avg[2] < 25):
-                        boundary_condition.applied_pressure[face] = -13.3322e-3*0.0
+            #??? relocated to assembly
             #
             #update the dirichlet boundary conditions in stent contact zones
             #t1 = boundary_condition.columns_out

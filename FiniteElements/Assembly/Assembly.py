@@ -275,6 +275,25 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
         from .RobinForces import StaticPressureForces
         if boundary_condition.analysis_type == "static":
             if fem_solver.recompute_sparsity_pattern:
+                #block for pressure release control
+                if (inc >= 110):  # for instatnt not activated
+                    release_factor = [1] * 120
+                    for i in range(0,10):
+                        release_factor[110+i]= 0.1
+                    #for i in range(0, 5):
+                    #    release_factor[110 + i] = 1 - 0.1 * (i + 1)
+                    #for i in range(0, 5):
+                    #    release_factor[115 + i] = 0.5
+                    for face in np.where(boundary_condition.pressure_flags == True)[0]:
+                        coord = Eulerx[mesh.faces[face, :], :]
+                        avg = np.mean(coord, axis=0)
+                        r = np.linalg.norm(avg[0:2])
+                        r0 = 10.0717 * 0.94125  # modified os with respect to 10mm
+                        if (avg[2] <= 75): # and r > r0):
+                            boundary_condition.applied_pressure[face] = -13.3322e-3 * release_factor[inc]
+                        else:
+                            boundary_condition.applied_pressure[face] = -13.3322e-3
+                #
                 I_robin, J_robin, V_robin, F_robin = StaticPressureForces(boundary_condition,
                     mesh, material, function_spaces[-1], fem_solver, Eulerx)
                 K_robin = coo_matrix((V_robin,(I_robin,J_robin)),

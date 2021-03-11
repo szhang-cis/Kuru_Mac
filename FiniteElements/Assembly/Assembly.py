@@ -1,5 +1,6 @@
 from __future__ import print_function
 import gc, sys #, os
+from math import *
 #from copy import deepcopy
 from warnings import warn
 from time import time
@@ -231,7 +232,15 @@ def AssemblySmall(fem_solver, function_spaces, formulation, mesh, materials, bou
 #----------------------------------------------------------------------------------------------------------------#
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL TRACTION FORCES ----------------------------------#
 #----------------------------------------------------------------------------------------------------------------#
-
+def SmoothedHeaviside(x):
+    result =0.0
+    if (x < -1.0):
+        result = 1.0
+    if (x > 1.0):
+        result = 0.0
+    if (x >= -1.0 and x <= 1.0):
+        result = 1.0 - 0.5*(1 + x + 1/pi*sin(pi*x))
+    return result
 #------------------------------- ASSEMBLY ROUTINE FOR EXTERNAL PRESSURE FORCES ----------------------------------#
 def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem_solver, Eulerx, Eulerx0, inc, type_load):
     """Compute/assemble traction (follower)"""
@@ -276,10 +285,10 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
         if boundary_condition.analysis_type == "static":
             if fem_solver.recompute_sparsity_pattern:
                 #block for pressure release control
-                if (inc >= 110):  # for instatnt not activated
-                    release_factor = [1] * 120
-                    for i in range(0,10):
-                        release_factor[110+i]= 0.0
+                if (inc >= 100):  # for instatnt not activated
+                    #release_factor = [1] * 120
+                    #for i in range(0,20):
+                    #    release_factor[100+i]= 0.3
                     #for i in range(0, 5):
                     #    release_factor[110 + i] = 1 - 0.1 * (i + 1)
                     #for i in range(0, 5):
@@ -289,8 +298,19 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
                         avg = np.mean(coord, axis=0)
                         r = np.linalg.norm(avg[0:2])
                         r0 = 10.0717 * 0.94125  # modified os with respect to 10mm
-                        if (avg[2] <= 75): # and r > r0):
-                            boundary_condition.applied_pressure[face] = -13.3322e-3 * release_factor[inc]
+                        r1 = r0*1.5
+                        if (avg[2] <= 75):
+                            if (r <= r0):
+                                boundary_condition.applied_pressure[face] = -13.3322e-3
+                            #else:
+                            #    boundary_condition.applied_pressure[face] = -13.3322e-3*0.3
+                            if (r>r0 and r<r1):
+                                #rmid = (r0+r1)/2.0
+                                #alpha = SmoothedHeaviside((r-rmid)/(r1-rmid))
+                                alpha = (r1-r)/(r1-r0)
+                                boundary_condition.applied_pressure[face]=-13.3322e-3*alpha-13.3322e-3*0.3*(1.0-alpha)
+                            if (r>=r1):
+                                boundary_condition.applied_pressure[face] = -13.3322e-3 * 0.3
                         else:
                             boundary_condition.applied_pressure[face] = -13.3322e-3
                 #

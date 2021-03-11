@@ -149,6 +149,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             DeltaF = LoadFactor * NeumannForces
             #
             NodalForces += DeltaF
+            #print(np.linalg.norm(NodalForces))
             #
             # OBRTAIN INCREMENTAL RESIDUAL - CONTRIBUTION FROM BOTH NEUMANN AND DIRICHLET
             Residual = -boundary_condition.ApplyDirichletGetReducedMatrices(K,np.zeros_like(Residual),

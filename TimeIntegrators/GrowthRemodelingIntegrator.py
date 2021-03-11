@@ -135,7 +135,6 @@ class GrowthRemodelingIntegrator(object):
         while fem_solver.norm_residual > Tolerance or Iter==0:
             #
             residualmoins = fem_solver.norm_residual
-            theta = 1.0
             #
             # GET THE REDUCED SYSTEM OF EQUATIONS
             K_b, F_b = boundary_condition.GetReducedMatrices(K,Residual)[:2]
@@ -168,10 +167,19 @@ class GrowthRemodelingIntegrator(object):
                 fem_solver.NormForces = la.norm(Residual[boundary_condition.columns_in])
             fem_solver.norm_residual = np.abs(la.norm(Residual[boundary_condition.columns_in])/fem_solver.NormForces)
             #
+            compt = 0.
+            theta = 1.0
             while fem_solver.norm_residual >= residualmoins and Iter >1:
+                compt = compt + 1.
+                if (compt > 3):
+                    print("too many sub-iterations")
+                    exit()
+                theta = theta / 2.
                 Eulerx -= theta * dU[:, :formulation.ndim]
-                theta = theta/1.2
-                Eulerx += theta * dU[:, :formulation.ndim]
+                print("=======================================")
+                print("residual too big, sub-iteration=",compt)
+                print("theta=",theta)
+                print("=======================================")
                 K, TractionForces = Assemble(fem_solver, function_spaces, formulation, mesh, materials,
                                             boundary_condition, Eulerx)[:2]
                 K, TractionForces = boundary_condition.ComputeRobinForces(mesh, materials, function_spaces,
@@ -203,7 +211,11 @@ class GrowthRemodelingIntegrator(object):
             Iter +=1
 
             if Iter==fem_solver.maximum_iteration_for_newton_raphson:
-                fem_solver.newton_raphson_failed_to_converge = True
+                print("============================================")
+                print("Attention, maximum iteration is attained !!!")
+                print("check for convergence problem")
+                print("============================================")
+                #fem_solver.newton_raphson_failed_to_converge = True
                 break
             if np.isnan(fem_solver.norm_residual) or fem_solver.norm_residual>1e06:
                 fem_solver.newton_raphson_failed_to_converge = True

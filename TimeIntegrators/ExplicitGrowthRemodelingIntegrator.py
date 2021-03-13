@@ -24,7 +24,6 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
     def __init__(self, gain, turnover, **kwargs):
         super(ExplicitGrowthRemodelingIntegrator, self).__init__(gain, turnover, **kwargs)
 
-
     def Solver(self, function_spaces, formulation, solver,
         K, NeumannForces, NodalForces, Residual,
         mesh, TotalDisp, Eulerx, Eulerx0, materials, boundary_condition, fem_solver):
@@ -60,18 +59,19 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         IncrementalTime = 0.0
         # TIME LOOP
         for TIncrement in range(TimeIncrements):
-            #update the robin boundary condition
+            #pressure flags for this increment (always true for all inner surfaces)
+            pressure_flags_inc = np.atleast_2d(boundary_condition.pressure_flags[:, TIncrement]).T
             # Block for stent control
             if (TIncrement >= 100):
-                for face in np.where(boundary_condition.pressure_flags == True)[0]:
+                for face in np.where(pressure_flags_inc == True)[0]:
                     coord = Eulerx[mesh.faces[face, :], :]
                     avg = np.mean(coord, axis=0)
                     if (avg[2] <= 75):
-                        boundary_condition.spring_flags[face] = True
-                        boundary_condition.applied_spring[face] = 0.02
+                        boundary_condition.spring_flags[face,:] = True
+                        boundary_condition.applied_spring[face,:] = 0.02
                     else:
-                        boundary_condition.spring_flags[face] = False
-                        boundary_condition.applied_spring[face] = 0.0
+                        boundary_condition.spring_flags[face,:] = False
+                        boundary_condition.applied_spring[face,:] = 0.0
             # Block for pressure control
             #??? relocated to assembly
             #

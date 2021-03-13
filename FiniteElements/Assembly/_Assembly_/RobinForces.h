@@ -538,12 +538,12 @@ void StaticSpringAssembler(const UInteger *faces,
          for (Integer i=0; i<nodeperface; ++i) {
             Integer inode = faces[face*nodeperface+i];
 
-            ElemDisplacements[i*nvar+0] = Eulerx[inode*nvar+0] - 0.86281 * LagrangeX[inode*nvar+0];
+            ElemDisplacements[i*nvar+0] = Eulerx[inode*nvar+0] - 0.94125 * LagrangeX[inode*nvar+0];
             if (ElemDisplacements[i*nvar+0]>0) {
                 ElemDisplacements[i*nvar+0] = 0;
             }
 
-            ElemDisplacements[i*nvar+1] = Eulerx[inode*nvar+1] - 0.86281 * LagrangeX[inode*nvar+1];
+            ElemDisplacements[i*nvar+1] = Eulerx[inode*nvar+1] - 0.94125 * LagrangeX[inode*nvar+1];
             if (ElemDisplacements[i*nvar+1]>0) {
                 ElemDisplacements[i*nvar+1] = 0;
             }

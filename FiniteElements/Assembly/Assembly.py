@@ -285,32 +285,21 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
         if boundary_condition.analysis_type == "static":
             if fem_solver.recompute_sparsity_pattern:
                 #block for pressure release control
-                if (inc >= 100):  # for instatnt not activated
-                    #release_factor = [1] * 120
-                    #for i in range(0,20):
-                    #    release_factor[100+i]= 0.3
-                    #for i in range(0, 5):
-                    #    release_factor[110 + i] = 1 - 0.1 * (i + 1)
-                    #for i in range(0, 5):
-                    #    release_factor[115 + i] = 0.5
+                if (inc >= 100):
                     for face in np.where(boundary_condition.pressure_flags == True)[0]:
                         coord = Eulerx[mesh.faces[face, :], :]
                         avg = np.mean(coord, axis=0)
                         r = np.linalg.norm(avg[0:2])
                         r0 = 10.0717 * 0.94125  # modified os with respect to 10mm
-                        r1 = r0*1.5
+                        r1 = r0*1.2
                         if (avg[2] <= 75):
                             if (r <= r0):
                                 boundary_condition.applied_pressure[face] = -13.3322e-3
-                            #else:
-                            #    boundary_condition.applied_pressure[face] = -13.3322e-3*0.3
                             if (r>r0 and r<r1):
-                                #rmid = (r0+r1)/2.0
-                                #alpha = SmoothedHeaviside((r-rmid)/(r1-rmid))
                                 alpha = (r1-r)/(r1-r0)
-                                boundary_condition.applied_pressure[face]=-13.3322e-3*alpha-13.3322e-3*0.3*(1.0-alpha)
+                                boundary_condition.applied_pressure[face]=-13.3322e-3*alpha-13.3322e-3*0.7*(1.0-alpha)
                             if (r>=r1):
-                                boundary_condition.applied_pressure[face] = -13.3322e-3 * 0.3
+                                boundary_condition.applied_pressure[face] = -13.3322e-3 * 0.7
                         else:
                             boundary_condition.applied_pressure[face] = -13.3322e-3
                 #

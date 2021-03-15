@@ -297,9 +297,9 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
                                 boundary_condition.applied_pressure[face] = -13.3322e-3
                             if (r>r0 and r<r1):
                                 alpha = (r1-r)/(r1-r0)
-                                boundary_condition.applied_pressure[face]=-13.3322e-3*alpha-13.3322e-3*0.7*(1.0-alpha)
+                                boundary_condition.applied_pressure[face]=-13.3322e-3*alpha-13.3322e-3*0.3*(1.0-alpha)
                             if (r>=r1):
-                                boundary_condition.applied_pressure[face] = -13.3322e-3 * 0.7
+                                boundary_condition.applied_pressure[face] = -13.3322e-3 * 0.3
                         else:
                             boundary_condition.applied_pressure[face] = -13.3322e-3
                 #

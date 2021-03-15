@@ -68,7 +68,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                     avg = np.mean(coord, axis=0)
                     if (avg[2] <= 75):
                         boundary_condition.spring_flags[face,:] = True
-                        boundary_condition.applied_spring[face,:] = 0.02
+                        boundary_condition.applied_spring[face,:] = 0.03
                     else:
                         boundary_condition.spring_flags[face,:] = False
                         boundary_condition.applied_spring[face,:] = 0.0

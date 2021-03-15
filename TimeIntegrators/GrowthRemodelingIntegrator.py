@@ -171,7 +171,7 @@ class GrowthRemodelingIntegrator(object):
             theta = 1.0
             while fem_solver.norm_residual >= residualmoins and Iter >1:
                 compt = compt + 1.
-                if (compt > 3):
+                if (compt > 8):
                     print("too many sub-iterations")
                     exit()
                 theta = theta / 2.

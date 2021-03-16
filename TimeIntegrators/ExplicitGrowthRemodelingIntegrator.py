@@ -59,6 +59,10 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         IncrementalTime = 0.0
         # TIME LOOP
         for TIncrement in range(TimeIncrements):
+            #temprary test of gain parameter after stenting
+            #if (TIncrement >= 100):
+            #    self.gain=0.15
+
             #pressure flags for this increment (always true for all inner surfaces)
             pressure_flags_inc = np.atleast_2d(boundary_condition.pressure_flags[:, TIncrement]).T
             # Block for stent control
@@ -68,7 +72,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                     avg = np.mean(coord, axis=0)
                     if (avg[2] <= 75):
                         boundary_condition.spring_flags[face,:] = True
-                        boundary_condition.applied_spring[face,:] = 0.03
+                        boundary_condition.applied_spring[face,:] = 0.02
                     else:
                         boundary_condition.spring_flags[face,:] = False
                         boundary_condition.applied_spring[face,:] = 0.0

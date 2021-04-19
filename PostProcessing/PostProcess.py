@@ -721,16 +721,18 @@ class PostProcess(object):
                 ----------------------------------------------------------------------------------------
                 49          None            None            None                    rem_c4
                 ----------------------------------------------------------------------------------------
-
+                50          None            None            None                    s_max
+                ----------------------------------------------------------------------------------------
 
 
 
 
             where S represents Cauchy stress tensor, E the strain tenosr, {S_m,S_ci} the fibre stresses,
             {den_e,den_m,den_ci} the densities and {rem_m,rem_ci} the fibre remodelig
+            s_max represents the maximum principal stress
         """
         namer = None
-        if num > 49:
+        if num > 50:
             if print_name:
                 print('Quantity corresponds to ' + str(namer))
             return namer
@@ -893,7 +895,8 @@ class PostProcess(object):
         elif fields == "mechanics" and ndim == 2 and self.gr_variables is not None:
             augmented_sol = np.zeros((nnodes,35,increments),dtype=np.float64)
         elif fields == "mechanics" and ndim == 3 and self.gr_variables is not None:
-            augmented_sol = np.zeros((nnodes,50,increments),dtype=np.float64)
+            #augmented_sol = np.zeros((nnodes,50,increments),dtype=np.float64)
+            augmented_sol = np.zeros((nnodes, 51, increments), dtype=np.float64)
 
         nstart = 0
         nend = 0
@@ -906,6 +909,19 @@ class PostProcess(object):
             detC = J**2
             Cauchy = self.recovered_fields['CauchyStress'][imat]
             p_hyd = 1./3.*np.einsum('ijkk',Cauchy)
+
+            #compute the maximum principal stress
+            e_val,e_vec=np.linalg.eig(Cauchy)
+            n_inc = e_val.shape[0]
+            n_node = e_val.shape[1]
+            n_dim = e_val.shape[2]
+            s_max = np.zeros_like(p_hyd)
+            #
+            for i in range(0, n_inc):
+                for j in range(0, n_node):
+                    s_max[i,j] = np.max(e_val[i,j])
+            #
+
             # Get tensor for just mechanics fields or for growth and remodeling
             if self.gr_variables is None:
                 H = np.einsum('ij,ijlk->ijkl',J,np.linalg.inv(F))
@@ -940,6 +956,7 @@ class PostProcess(object):
             detC = detC.reshape(nnode_set,increments)
             Cauchy = np.einsum('lijk',Cauchy).reshape(nnode_set,ndim**2,increments)
             p_hyd = np.einsum('ji',p_hyd).reshape(nnode_set,increments)
+            s_max = np.einsum('ji', s_max).reshape(nnode_set, increments)
 
             if ndim == 2:
                 C = C[:,[0,1,3],:]
@@ -1018,6 +1035,7 @@ class PostProcess(object):
                 augmented_sol[nstart:nend,28:34,:]  = Cauchy
                 augmented_sol[nstart:nend,34,:]     = p_hyd
                 augmented_sol[nstart:nend,35,:]     = s_VM
+                augmented_sol[nstart:nend,50,:]     = s_max
                 if self.materials[imat].has_state_variables:
                     augmented_sol[nstart:nend,36:41,:]  = FibreStress
                     augmented_sol[nstart:nend,41:43,:]  = self.gr_variables[imat][:,5:7,steps].reshape(augmented_sol[nstart:nend,41:43,:].shape)

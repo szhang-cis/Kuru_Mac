@@ -79,6 +79,15 @@ class BoundaryCondition(object):
         self.pressure_increment = 1.0
         self.spring_flags = None
         self.applied_spring = None
+
+        #start: connector for dissection
+        self.master_faces = None
+        self.slave_faces = None
+        self.applied_connector = None
+        self.connector_flags = None
+        self.connector_elements = None
+        self.connector_faces = None
+        #end
         self.is_body_force_shape_functions_computed = False
 
         self.make_loading = make_loading # "ramp" or "constant"
@@ -139,22 +148,22 @@ class BoundaryCondition(object):
         """Applies user defined Robin data to self, just working on surfaces
         """
 
-        tups = func(*args, **kwargs)
+        dics = func(*args, **kwargs)
 
-        if isinstance(tups,dict):
-            self.RobinLoadSelector(tups)
-        elif isinstance(tups,tuple):
-            for itup in range(len(tups)):
-                if isinstance(tups[itup],dict):
-                    self.RobinLoadSelector(tups[itup])
+        if isinstance(dics,dict):
+            self.RobinLoadSelector(dics)
+        elif isinstance(dics,tuple):
+            for idic in range(len(dics)):
+                if isinstance(dics[idic],dict):
+                    self.RobinLoadSelector(dics[idic])
                 else:
                     raise ValueError("User-defined Robin criterion function {} "
-                        "should return dict or tuple(dict,dict,...)".format(func.__name__))
+                        "should return dictionary or tuple(dict,dict,...)".format(func.__name__))
         else:
             raise ValueError("User-defined Robin criterion function {} "
-                "should return dict or tuple".format(func.__name__))
+                "should return dictionary or tuple".format(func.__name__))
 
-        return tups
+        return dics
 
     def RobinLoadSelector(self, tups):
         if tups['type'] == 'Pressure':
@@ -163,11 +172,67 @@ class BoundaryCondition(object):
         elif tups['type'] == 'Spring':
             self.spring_flags = tups['flags']
             self.applied_spring = tups['data']
+        #start: connector for dissection
+        elif tups['type'] == 'Connector':
+            self.master_faces = tups['master_faces']
+            self.slave_faces = tups['slave_faces']
+            self.applied_connector = tups['data']
+            self.connector_flags = tups['flags']
+            if self.master_faces.shape[0] != self.slave_faces.shape[0]:
+                raise ValueError("The size of master_faces and slave_faces should be equal")
+        #end
         elif tups['type'] == 'Dashpot':
             raise ValueError("Surrounding viscoelastic effects not implemented yet")
         else:
             raise ValueError("Type force {} not understood or not available. "
-                "Types are Pressure, Spring and Dashpot.".format(tups['type']))
+                "Types are Pressure, Spring, SpringJoint and Dashpot.".format(tups['type']))
+
+    #start: connector for dissection
+    def GetConnectorElements(self, mesh):
+        """ Receive the faces along the surfaces interacting """
+
+        # gets the points in the dissection surfaces
+        master_points = np.unique(mesh.faces[self.master_faces,:])
+        slave_points = np.unique(mesh.faces[self.slave_faces,:])
+        # array with the coordinate of the master and slave points
+        master_points_coor = mesh.points[master_points]
+        slave_points_coor = mesh.points[slave_points]
+        # look for a connection between master and slave points
+        from scipy.spatial import cKDTree
+        tree = cKDTree(master_points_coor)
+        distance, id_point = tree.query(slave_points_coor,k=1)
+        pair_node_master_slave = np.c_[master_points[id_point],slave_points]
+        # build the elements
+        nodeperface = mesh.faces.shape[1]
+        connector_elements = np.zeros((self.master_faces.shape[0],2*nodeperface),np.uint64)
+        connector_elements[:,:4] = mesh.faces[self.master_faces]
+        # match the master nodes with its slave within the element
+        faces_s = np.zeros(self.master_faces.shape[0],dtype=np.uint64)
+        for i in range(self.master_faces.shape[0]):
+            iface = self.master_faces[i]
+            jnode_array = np.zeros(nodeperface,dtype=np.uint64)
+            for j in range(nodeperface):
+                inode = mesh.faces[iface,j]
+                idx = np.where(pair_node_master_slave[:,0]==inode)[0]
+                jnode = pair_node_master_slave[idx,1]
+                connector_elements[i,j+nodeperface] = jnode
+                jnode_array[j] = jnode
+            # use the slave point to recover the slave face respect a master face
+            jface_array = np.where(mesh.faces==jnode_array[0])[0]
+            for k in range(1,jnode_array.shape[0]):
+                jface_array = np.append(jface_array, np.where(mesh.faces==jnode_array[k])[0])
+            values, counts = np.unique(jface_array,return_counts=True)
+            jface = values[np.where(counts==nodeperface)[0]]
+            faces_s[i] = jface
+
+        pair_face_master_slave = np.c_[self.master_faces,faces_s]
+        pair_face_master_slave = np.array(pair_face_master_slave, dtype=np.uint64, copy=True)
+
+        self.connector_elements = connector_elements
+        self.connector_faces = pair_face_master_slave
+
+        return
+    #end
 
     def GetDirichletBoundaryConditions(self, formulation, mesh, materials=None, solver=None, fem_solver=None):
 
@@ -418,6 +483,14 @@ class BoundaryCondition(object):
 
             self.spring_flags = tmp_flags1
             self.applied_spring = tmp_data1
+
+            #start: connector for dissection, attention, additional inputs Eulerx0 and inc
+            if not self.connector_elements is None:
+                K_connector, F_connector = AssembleRobinForces(self, mesh,
+                materials[0], function_spaces, fem_solver, Eulerx, Eulerx0, inc, 'connector')
+                stiffness += K_connector
+                F += F_connector[:,None]
+            #end
 
         return stiffness, F
 

@@ -415,6 +415,10 @@ class FEMSolver(object):
                 if self.analysis_nature == "linear":
                     raise NotImplementedError("User defined step loading under this setting is not supported")
         ##############################################################################
+        ##############################################################################
+        if boundary_condition.connector_flags is not None:
+            boundary_condition.GetConnectorElements(mesh)
+        ##############################################################################
 
         return function_spaces, solver
 

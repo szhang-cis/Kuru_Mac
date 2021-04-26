@@ -18,7 +18,7 @@ from Kuru.FiniteElements.LocalAssembly.KinematicMeasures import *
 from Kuru.FiniteElements.LocalAssembly._KinematicMeasures_ import _KinematicMeasures_
 from Kuru import Mesh
 #from Kuru import FEMSolver
-#from Florence.MeshGeneration import vtk_writer
+from Kuru.MeshGeneration import vtk_writer
 #from Florence.Utils import constant_camera_view
 
 class PostProcess(object):
@@ -1057,7 +1057,7 @@ class PostProcess(object):
 
 
     def WriteVTK(self,filename=None, quantity="all", configuration="deformed", steps=None, write_curved_mesh=True,
-        interpolation_degree=10, ProjectionFlags=None, fmt="binary", equally_spaced=False, parallelise=False, time_problem=True):
+        interpolation_degree=10, ProjectionFlags=None, fmt="xml", equally_spaced=False, parallelise=False, time_problem=True):
         """Writes results to a VTK file for Paraview
             quantity = "all" means write all solution fields, otherwise specific quantities
             would be written based on augmented solution numbering order

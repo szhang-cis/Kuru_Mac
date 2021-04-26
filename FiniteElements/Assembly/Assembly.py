@@ -294,7 +294,7 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
         if boundary_condition.analysis_type == "static":
             if fem_solver.recompute_sparsity_pattern:
                 #block for pressure release control
-                if (inc >= 100):
+                if (inc >= 100000000): #number of increment to drop pressure
                     for face in np.where(boundary_condition.pressure_flags == True)[0]:
                         coord = Eulerx[mesh.faces[face, :], :]
                         avg = np.mean(coord, axis=0)

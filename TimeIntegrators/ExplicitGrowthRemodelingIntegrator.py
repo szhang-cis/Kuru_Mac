@@ -66,7 +66,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             #pressure flags for this increment (always true for all inner surfaces)
             pressure_flags_inc = np.atleast_2d(boundary_condition.pressure_flags[:, TIncrement]).T
             # Block for stent control
-            if (TIncrement >= 100):
+            if (TIncrement >= 100000000): #number of increment to apply spring-like stent forces
                 for face in np.where(pressure_flags_inc == True)[0]:
                     coord = Eulerx[mesh.faces[face, :], :]
                     avg = np.mean(coord, axis=0)

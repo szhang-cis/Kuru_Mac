@@ -485,12 +485,12 @@ class BoundaryCondition(object):
             self.applied_spring = tmp_data1
 
             #start: connector for dissection, attention, additional inputs Eulerx0 and inc
-            if not self.connector_elements is None:
-                K_connector, F_connector = AssembleRobinForces(self, mesh,
+        if not self.connector_elements is None:
+            K_connector, F_connector = AssembleRobinForces(self, mesh,
                 materials[0], function_spaces, fem_solver, Eulerx, Eulerx0, inc, 'connector')
-                stiffness += K_connector
-                F += F_connector[:,None]
-            #end
+            stiffness += K_connector
+            F += F_connector[:,None]
+        #end
 
         return stiffness, F
 

@@ -114,7 +114,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             # COMPUTE THE GROWTH AND REMODELING
             if TIncrement != 0:
                 if self.has_dissection:
-                    self.ComputeDissectionSpread(boundary_condition, mesh, IncrementalTime)
+                    self.ComputeDissectionSpread(boundary_condition, mesh, IncrementalTime, Eulerx, TIncrement)
                 for imat in range(gr_materials.shape[0]):
                     Rates = self.RatesGrowthRemodeling(mesh, materials[gr_materials[imat]], FibreStress, Softness, imat)
                     GRVariables[imat][:,:,TIncrement] = self.ExplicitGrowthRemodeling(mesh, materials[gr_materials[imat]],
@@ -256,7 +256,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         D_max = 0.5 #0.5
         L_dam = self.damage_spread_space
         t_dam = self.damage_spread_time
-        T_ela = 101*365.25 #101.0*365.25
+        T_ela = 101.0*365.25 #101.0*365.25
 
         # Loop on nodes
         for node in range(material.node_set.shape[0]):
@@ -294,24 +294,36 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
         return material.state_variables[:,9:21]
 
-    def ComputeDissectionSpread(self, boundary_condition, mesh, IncrementalTime):
+    def ComputeDissectionSpread(self, boundary_condition, mesh, IncrementalTime, Eulerx, TIncrement):
         """ Routine to compute the spread of the dissection"""
 
         # a ramp function for the dissection spread wich stop after a time threshold
-        dissection_speed = self.maximum_dissection_spread/self.dissection_time_threshold
-        if IncrementalTime < self.dissection_time_threshold:
-            dissection_spread = dissection_speed*IncrementalTime
-        else:
-            dissection_spread = self.maximum_dissection_spread
+        #dissection_speed = self.maximum_dissection_spread/self.dissection_time_threshold
+        #if IncrementalTime < self.dissection_time_threshold:
+        #    dissection_spread = dissection_speed*IncrementalTime
+        #else:
+        #    dissection_spread = self.maximum_dissection_spread
+        dissection_spread = self.maximum_dissection_spread
+        #text_file = open(str(TIncrement)+"Output.txt","w")
 
         divider = boundary_condition.connector_elements.shape[1]
         # Loop into the connector elements
         for elem in range(boundary_condition.connector_elements.shape[0]):
             center = np.sum(mesh.points[boundary_condition.connector_elements[elem,:],:],axis=0)/divider
-            if center[2] < dissection_spread:
+            #print(mesh.points[boundary_condition.connector_elements[elem,:],:])
+            masterface = boundary_condition.connector_faces[elem][0]
+            slaveface = boundary_condition.connector_faces[elem][1]
+            masterAvgCoord = np.mean(Eulerx[mesh.faces[masterface, :], :],axis=0)
+            slaveAvgCoord =  np.mean(Eulerx[mesh.faces[slaveface, :], :],axis=0)
+            lspring = np.linalg.norm(masterAvgCoord-slaveAvgCoord)
+            #text_file.write("%s,%s\n" %(elem,lspring))
+            #exit() lbreak depending on z position
+            lbreak = 0.0125 #should be defined according to
+            #if center[2] < dissection_spread:
+            if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False
                 free_faces = boundary_condition.connector_faces[elem]
                 boundary_condition.pressure_flags[free_faces] = True
                 boundary_condition.applied_pressure[free_faces] = self.dissection_pressure
-
+        #text_file.close
         return

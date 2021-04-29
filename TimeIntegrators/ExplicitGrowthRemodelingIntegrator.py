@@ -319,7 +319,8 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             #text_file.write("%s,%s\n" %(elem,lspring))
             #exit() lbreak depending on z position
             lbreak = 0.0125 #should be defined according to
-            if center[2] < dissection_spread and abs(center[0]) < 5.0:
+            if center[2] < dissection_spread and center[0] > 8.0:
+            #if center[2] < dissection_spread:
             #if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False
                 free_faces = boundary_condition.connector_faces[elem]

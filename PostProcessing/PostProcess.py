@@ -703,11 +703,11 @@ class PostProcess(object):
                 ----------------------------------------------------------------------------------------
                 40          None            S_zz            None                    s_c4
                 ----------------------------------------------------------------------------------------
-                41          None            p_hyd           None                    den_e
+                41          None            p_hyd           None                    Rhoe
                 ----------------------------------------------------------------------------------------
-                42          None            s_VM            None                    den_m
+                42          None            s_VM            None                    Rhom
                 ----------------------------------------------------------------------------------------
-                43          None            None            None                    den_c
+                43          None            None            None                    Rhoc
                 ----------------------------------------------------------------------------------------
                 44          None            None            None                    growth
                 ----------------------------------------------------------------------------------------
@@ -721,7 +721,7 @@ class PostProcess(object):
                 ----------------------------------------------------------------------------------------
                 49          None            None            None                    rem_c4
                 ----------------------------------------------------------------------------------------
-                50          None            None            None                    s_max
+                50          None            None            None                    Smax
                 ----------------------------------------------------------------------------------------
 
 
@@ -766,11 +766,11 @@ class PostProcess(object):
             print('Quantity corresponds to ' + str(namer))
 
         if "ux" in namer:
-            namer = "u_x"
+            namer = "Ux"
         elif "uy" in namer:
-            namer = "u_y"
+            namer = "Uy"
         elif "uz" in namer:
-            namer = "u_z"
+            namer = "Uz"
         elif "phi" in namer:
             namer = "\phi"
         return namer
@@ -1382,10 +1382,11 @@ class PostProcess(object):
             elif configuration == "deformed":
                 for Increment in increments:
                     if formatter == "xml":
-                        for quant in iterator:
+                        #for quant in iterator:
+                        for counter, quant in enumerate(iterator):
                             vtk_writer.write_vtu(Verts=lmesh.points+sol[:,:ndim,Increment],
                                 Cells={cellflag:lmesh.elements}, pdata=sol[:,quant,Increment],
-                                fname=filename.split('.')[0]+'_quantity_'+str(quant)+'_increment_'+str(Increment)+'.vtu')
+                                fname=filename.split('.')[0]+q_names[counter]+'_'+ str(Increment)+'.vtu')
                     elif formatter == "binary":
                         if lmesh.InferSpatialDimension() == 2:
                             points = np.zeros((lmesh.points.shape[0],3))

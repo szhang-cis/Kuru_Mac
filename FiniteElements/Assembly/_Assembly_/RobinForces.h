@@ -474,11 +474,17 @@ void GetFacesSpringForces(Real *stiff_face,
    for (Integer k=0; k<ndof; ++k) {
       for (Integer l=0; l<ndof; ++l) {
          for (Integer i=0; i<ngauss; ++i) {
+            /* block of code in case of stent-graft
             for (Integer j=0; j<(nvar-1); ++j) {
                if (displacement[i*nvar+j] != 0){
                   stiff_face[k*ndof+l] += spring*N[k*nvar*ngauss+j*ngauss+i]*N[l*nvar*ngauss+j*ngauss+i]*AllGauss[i];
                }
                //stiff_face[k*ndof+l] += spring*N[k*nvar*ngauss+j*ngauss+i]*N[l*nvar*ngauss+j*ngauss+i]*AllGauss[i];
+            }
+            */
+            //block of code in case of spring stabilization
+            for (Integer j=0; j<nvar; ++j) {
+                stiff_face[k*ndof+l] += spring*N[k*nvar*ngauss+j*ngauss+i]*N[l*nvar*ngauss+j*ngauss+i]*AllGauss[i];
             }
 	     }
       }
@@ -535,6 +541,8 @@ void StaticSpringAssembler(const UInteger *faces,
          // APPLIED ROBIN (SPRING) BY INCREMENT AND FACE
          Real spring = applied_spring[face];
          // GET FIELD AT ELEMENT LEVEL (JUST CURRENT)
+
+         /* Compute of ElemDisplacements in case of stent-graft
          for (Integer i=0; i<nodeperface; ++i) {
             Integer inode = faces[face*nodeperface+i];
 
@@ -549,9 +557,15 @@ void StaticSpringAssembler(const UInteger *faces,
             }
 
             ElemDisplacements[i*nvar+2] = 0; //Eulerx[inode*nvar+2] - Eulerx0[inode*nvar+2];//LagrangeX[inode*nvar+2];
-            //for (Integer j=0; j<nvar; ++j) {
-            //   ElemDisplacements[i*nvar+j] = Eulerx[inode*nvar+j] - LagrangeX[inode*nvar+j];
-            //}
+
+         }*/
+
+         // Compute of ElemeDisplacmenets in case of spring stabilization
+         for (Integer i=0; i<nodeperface; ++i) {
+            Integer inode = faces[face*nodeperface+i];
+            for (Integer j=0; j<nvar; ++j) {
+                ElemDisplacements[i*nvar+j] = Eulerx[inode*nvar+j] - LagrangeX[inode*nvar+j];
+            }
          }
 
          for (Integer i=0; i<nodeperface; ++i) {

@@ -318,13 +318,47 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             lspring = np.linalg.norm(masterAvgCoord-slaveAvgCoord)
             #text_file.write("%s,%s\n" %(elem,lspring))
             #exit() lbreak depending on z position
-            lbreak = 0.0125 #should be defined according to
-            if center[2] < dissection_spread and center[0] > 8.0:
+            lbreak = 0.0122 #should be defined according to
+            lcir = 5.0
+            #if center[2] < dissection_spread and center[0] > 8.0:
+            if (center[2] < dissection_spread and abs(center[0]) < lcir) or (lspring > lbreak):
             #if center[2] < dissection_spread:
             #if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False
+                #boundary_condition.applied_connector[elem] = 1e-10
                 free_faces = boundary_condition.connector_faces[elem]
                 boundary_condition.pressure_flags[free_faces] = True
                 boundary_condition.applied_pressure[free_faces] = self.dissection_pressure
+
+            #isExtraZoneZ = (center[2] < dissection_spread*1.5 and center[2] > dissection_spread) and abs(center[0]) < lcir*1.5
+            #isExtraZoneX = (abs(center[0]) < lcir*1.5 and abs(center[0]) > lcir) and center[2] < dissection_spread*1.5
+
+            #if isExtraZoneZ:
+            #    alpha = (center[2]-dissection_spread)/(0.5*dissection_spread)
+            #    alpha = 1 if alpha > 1 else alpha
+                #print("alpha", alpha)
+                #boundary_condition.applied_connector[elem] = 1 * alpha**3
+            #    free_faces = boundary_condition.connector_faces[elem]
+                #boundary_condition.pressure_flags[free_faces] = True
+                #boundary_condition.applied_pressure[free_faces] = self.dissection_pressure #*(1-alpha**3)
+
+            #if isExtraZoneX:
+            #    beta = (abs(center[0])-lcir)/(0.5*lcir)
+            #    beta = 1 if beta > 1 else beta
+                #print("beta", beta)
+                #boundary_condition.applied_connector[elem] = 1 * beta**3
+            #    free_faces = boundary_condition.connector_faces[elem]
+                #boundary_condition.pressure_flags[free_faces] = True
+                #boundary_condition.applied_pressure[free_faces] = self.dissection_pressure #*(1-beta**3)
+
+            #if isExtraZoneZ and isExtraZoneX:
+            #    alpha = (center[2] - dissection_spread) / (0.5 * dissection_spread)
+            #    alpha = 1 if alpha > 1 else alpha
+            #    beta = (abs(center[0]) - lcir) / (0.5 * lcir)
+            #    beta = 1 if beta > 1 else beta
+                #boundary_condition.applied_connector[elem] = 1 * (alpha**3+beta**3)/2.0
+            #    free_faces = boundary_condition.connector_faces[elem]
+                #boundary_condition.pressure_flags[free_faces] = True
+                #boundary_condition.applied_pressure[free_faces] = self.dissection_pressure #*(1-(alpha**3+beta**3)/2.0)
         #text_file.close
         return

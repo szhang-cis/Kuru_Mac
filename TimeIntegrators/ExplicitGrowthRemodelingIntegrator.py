@@ -298,12 +298,12 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         """ Routine to compute the spread of the dissection"""
 
         # a ramp function for the dissection spread wich stop after a time threshold
-        #dissection_speed = self.maximum_dissection_spread/self.dissection_time_threshold
-        #if IncrementalTime < self.dissection_time_threshold:
-        #    dissection_spread = dissection_speed*IncrementalTime
-        #else:
-        #    dissection_spread = self.maximum_dissection_spread
-        dissection_spread = self.maximum_dissection_spread
+        dissection_speed = self.maximum_dissection_spread/self.dissection_time_threshold
+        if IncrementalTime < self.dissection_time_threshold:
+            dissection_spread = dissection_speed*IncrementalTime
+        else:
+            dissection_spread = self.maximum_dissection_spread
+        #dissection_spread = self.maximum_dissection_spread
         #text_file = open(str(TIncrement)+"Output.txt","w")
 
         divider = boundary_condition.connector_elements.shape[1]
@@ -318,10 +318,10 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             lspring = np.linalg.norm(masterAvgCoord-slaveAvgCoord)
             #text_file.write("%s,%s\n" %(elem,lspring))
             #exit() lbreak depending on z position
-            lbreak = 0.0122 #should be defined according to
+            lbreak = 0.012 #should be defined according to
             lcir = 5.0
             #if center[2] < dissection_spread and center[0] > 8.0:
-            if (center[2] < dissection_spread and abs(center[0]) < lcir) or (lspring > lbreak):
+            if (center[2] < dissection_spread and abs(center[0]) < lcir): # or (lspring > lbreak):
             #if center[2] < dissection_spread:
             #if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False

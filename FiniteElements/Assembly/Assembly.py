@@ -250,11 +250,16 @@ def AssembleRobinForces(boundary_condition, mesh, material, function_spaces, fem
     if type_load == 'pressure':
         if boundary_condition.pressure_flags.shape[0] == mesh.points.shape[0]:
             #boundary_condition.robin_data_applied_at = "node"
-            raise ValueError("Robin boundary forces (pressure) applied at nodes")
+            #in case of pure cylinder, it is true, so desactivate the error
+            pass
+            #print("Pay attentin, are you in case of full cylinderical geometry")
+            #raise ValueError("Robin boundary forces (pressure) applied at nodes")
     elif type_load == 'spring':
         if boundary_condition.spring_flags.shape[0] == mesh.points.shape[0]:
             #boundary_condition.robin_data_applied_at = "node"
-            raise ValueError("Robin boundary forces (spring) applied at nodes")
+            pass
+            #print("Pay attentin, are you in case of full cylinderical geometry")
+            #raise ValueError("Robin boundary forces (spring) applied at nodes")
     #start: connector for dissection
     elif type_load == 'connector':
         if ndim == 2:

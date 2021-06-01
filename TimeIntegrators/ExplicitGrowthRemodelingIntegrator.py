@@ -62,8 +62,8 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             #temprary test of gain parameter after stenting
             #if (TIncrement >= 100):
             #    self.gain=0.15
-            #if (TIncrement >= 10):
-            #    epsilon_p=0.7
+            #if (TIncrement >= 1):
+            #    epsilon_p=0.8
             #    boundary_condition.applied_pressure[:,:] = -13.3322e-3*epsilon_p
             #pressure flags for this increment (always true for all inner surfaces)
             pressure_flags_inc = np.atleast_2d(boundary_condition.pressure_flags[:, TIncrement]).T
@@ -306,8 +306,9 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         #else:
         #    dissection_spread = self.maximum_dissection_spread
         dissection_spread = self.maximum_dissection_spread
-        text_file = open(str(TIncrement)+"Output.txt","w")
-
+        active_text = -1
+        if active_text > 0:
+            text_file = open(str(TIncrement)+"Output.txt","w")
         divider = boundary_condition.connector_elements.shape[1]
         # Loop into the connector elements
         for elem in range(boundary_condition.connector_elements.shape[0]):
@@ -318,12 +319,13 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             masterAvgCoord = np.mean(Eulerx[mesh.faces[masterface, :], :],axis=0)
             slaveAvgCoord =  np.mean(Eulerx[mesh.faces[slaveface, :], :],axis=0)
             lspring = np.linalg.norm(masterAvgCoord-slaveAvgCoord)
-            text_file.write("%s,%s\n" %(elem,lspring))
+            if active_text > 0:
+                text_file.write("%s,%s\n" %(elem,lspring))
             #exit() lbreak depending on z position
-            lbreak = 0.012 #should be defined according to
-            lcir = 5.0 #5.0
+            lbreak = 0.008 #should be defined according to
+            lcir = 8 #5.0
             #if center[2] < dissection_spread and center[0] > 8.0:
-            if ((center[2] < dissection_spread and abs(center[0]) < lcir) and center[1] > 0) or (lspring > lbreak):
+            if ((center[2] < dissection_spread and abs(center[0]) < lcir) and center[1] > 0): #or (lspring > lbreak):
             #if center[2] < dissection_spread:
             #if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False
@@ -362,5 +364,6 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             #    free_faces = boundary_condition.connector_faces[elem]
                 #boundary_condition.pressure_flags[free_faces] = True
                 #boundary_condition.applied_pressure[free_faces] = self.dissection_pressure #*(1-(alpha**3+beta**3)/2.0)
-        text_file.close
+            if active_text > 0:
+                text_file.close
         return

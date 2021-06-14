@@ -1,12 +1,12 @@
 PYTHON_VERSION = python2.7
 PYTHON_LANG_LEVEL = 2
-PYTHON_INCLUDE_PATH = /usr/include/python2.7/
-PYTHON_LD_PATH = /usr/lib/
+PYTHON_INCLUDE_PATH = /Library/Frameworks/Python.framework/Versions/2.7/include/python2.7
+PYTHON_LD_PATH = /Library/Frameworks/Python.framework/Versions/2.7/lib
 CYTHONFLAGS = -DNPY_NO_DEPRECATED_API
 OUTEXT= o
 LIBEXT= so
 
-NUMPY_INCLUDE_PATH = /usr/lib/python2.7/dist-packages/numpy/core/include
+NUMPY_INCLUDE_PATH = /Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/
 
 ifeq ($(OS),Windows_NT)
 REMOVE = del
@@ -19,18 +19,20 @@ endif
 # cython compiler PYX->C
 CYTHON = cython -$(PYTHON_LANG_LEVEL)
 # gnu c compiler C->O
-CC=gcc
-CCFLAGS = -O -fopenmp -DAdd_ $(CYTHONFLAGS) -fPIC
+#CC=gcc
+CC = /usr/local/opt/llvm/bin/clang
+#CCFLAGS = -O -fopenmp -DAdd_ $(CYTHONFLAGS) -fPIC
+CCFLAGS = -I/usr/local/opt/llvm/include -fopenmp
 # gnu fortran compiler (linker) O->SO
 FL=gfortran
-FLFLAGS = -O -fopenmp -shared -fPIC
-
+#FLFLAGS = -O -fopenmp -shared -fPIC
+FLFLAGS = -L/usr/local/opt/llvm/lib
 FLLIBS = -ldmumps -lmumps_common -lpord -llapack -lmpiseq -lblas -lpthread
 
-MUMPS_INCLUDE_PATH = ${HOME}/.local/mumps/include
-MUMPS_LIBRARY_PATH = ${HOME}/.local/mumps/lib
-MUMPS_LIBRSEQ_PATH = ${HOME}/.local/mumps/libseq
-LAPACK_LIBRARY_PATH = ${HOME}/.local/lapack
+MUMPS_INCLUDE_PATH = /usr/local/opt/brewsci-mumps/lib
+MUMPS_LIBRARY_PATH = /usr/local/opt/brewsci-mumps/include
+MUMPS_LIBRSEQ_PATH = /usr/local/opt/brewsci-mumps/libexec/include
+LAPACK_LIBRARY_PATH = /usr/local/opt/lapack/lib
 
 all: build_mumps
 

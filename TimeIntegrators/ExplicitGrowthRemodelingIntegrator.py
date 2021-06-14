@@ -322,10 +322,11 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             if active_text > 0:
                 text_file.write("%s,%s\n" %(elem,lspring))
             #exit() lbreak depending on z position
-            lbreak = 0.008 #should be defined according to
-            lcir = 8 #5.0
+            lbreak = 0.329#0.329 #according to k_connector = 1 MPa/mm and Gc = 5 mJ/cm^2
+            lcir = 6.0 #8.0 #10.0
             #if center[2] < dissection_spread and center[0] > 8.0:
-            if ((center[2] < dissection_spread and abs(center[0]) < lcir) and center[1] > 0): #or (lspring > lbreak):
+            #if ((center[2] < dissection_spread and abs(center[0]) < lcir) and center[1] > 0) or (lspring > lbreak):
+            if center[2] < dissection_spread and center[1] > -2.0: ####instability even with inner stab spring###
             #if center[2] < dissection_spread:
             #if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False
@@ -333,7 +334,10 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
                 free_faces = boundary_condition.connector_faces[elem]
                 boundary_condition.pressure_flags[free_faces] = True
                 boundary_condition.applied_pressure[free_faces] = self.dissection_pressure
-
+            #if (center[2] < dissection_spread and center[1] < -6.0) and center[1] > -8.0 :
+            #    ratio = -(center[1]+6.0)/2.0
+            #    temp_stiff = 0.001
+            #    boundary_condition.applied_connector[elem] = temp_stiff*ratio
             #isExtraZoneZ = (center[2] < dissection_spread*1.5 and center[2] > dissection_spread) and abs(center[0]) < lcir*1.5
             #isExtraZoneX = (abs(center[0]) < lcir*1.5 and abs(center[0]) > lcir) and center[2] < dissection_spread*1.5
 

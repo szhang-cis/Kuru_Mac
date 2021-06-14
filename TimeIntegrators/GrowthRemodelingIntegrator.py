@@ -163,8 +163,9 @@ class GrowthRemodelingIntegrator(object):
             K_b, F_b = boundary_condition.GetReducedMatrices(K,Residual)[:2]
 
             # SOLVE THE SYSTEM
+            #print("Linear resolution starts")
             sol = solver.Solve(K_b,-F_b)
-
+            #print("Linear resolution ends")
             # GET ITERATIVE SOLUTION
             dU = boundary_condition.UpdateFreeDoFs(sol,K.shape[0],formulation.nvar)
 
@@ -219,7 +220,7 @@ class GrowthRemodelingIntegrator(object):
             print("Iteration {} for increment {}.".format(Iter, Increment) +\
                 " Residual (abs) {0:>16.7g}".format(fem_solver.abs_norm_residual),
                 "\t Residual (rel) {0:>16.7g}".format(fem_solver.norm_residual))
-            print("norm(dU)",norm(dU))
+            #("norm(dU)",norm(dU))
 
             # BREAK BASED ON RELATIVE NORM
             if np.abs(fem_solver.abs_norm_residual) < Tolerance:

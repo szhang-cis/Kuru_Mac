@@ -60,19 +60,22 @@ class LinearSolver(object):
                 import pyamg
             except ImportError:
                 self.has_amg_solver = False
+                print("ImportError of amg")
 
         self.has_umfpack = True
         try:
             from scikits.umfpack import spsolve
         except (ImportError, AttributeError) as umfpack_error:
             self.has_umfpack = False
+            print("ImportError of umfpack")
 
         self.has_mumps = False
         try:
-            from _dMUMPS_ import dMUMPS_solve
+            from mumps.mumps_context import MUMPSContext
             self.has_mumps = True
         except ImportError:
             self.has_mumps = False
+            print("ImportError of mumps")
 
         self.has_pardiso = False
         try:
@@ -80,6 +83,7 @@ class LinearSolver(object):
             self.has_pardiso = True
         except ImportError:
             self.has_pardiso = False
+            print("ImportError of pardiso")
 
         self.has_petsc = False
         try:
@@ -87,12 +91,13 @@ class LinearSolver(object):
             self.has_petsc = True
         except ImportError:
             self.has_petsc = False
+            print("ImportError of petsc")
 
         self.switcher_message = False
 
     def Solve(self, A, b, reuse_factorisation=False):
         """Solves the linear system of equations"""
-
+        #print(self.preconditioner_type)
         if not issparse(A):
             raise ValueError("Linear system is not of sparse type")
 
@@ -145,7 +150,6 @@ class LinearSolver(object):
                         sol = spsolve(A,b,permc_spec='MMD_AT_PLUS_A',use_umfpack=True)
                         # from scikits import umfpack
                         # sol = umfpack.spsolve(A, b)
-
                         # SuperLU
                         # from scipy.sparse.linalg import splu
                         # lu = splu(A.tocsc())
@@ -163,24 +167,23 @@ class LinearSolver(object):
 
             elif self.solver_subtype=='mumps' and self.has_mumps:
 
-                from _dMUMPS_ import dMUMPS_solve
+                from mumps.mumps_context import MUMPSContext
                 t_solve = time()
                 A = A.tocoo()
-                sol=dMUMPS_solve(A.data,A.row,A.col,b)
                 # False means non-symmetric - Do not change it to True. True means symmetric pos def
                 # which is not the case for electromechanics
-                #if self.solver_context_manager is None:
-                    #context = MUMPSContext((A.shape[0], A.row, A.col, A.data, False), verbose=False)
-                    #context.analyze()
-                    #context.factorize()
-                    #sol = context.solve(rhs=b)
+                if self.solver_context_manager is None:
+                    context = MUMPSContext((A.shape[0], A.row, A.col, A.data, False), verbose=False)
+                    context.analyze()
+                    context.factorize()
+                    sol = context.solve(rhs=b)
 
-                    #if self.reuse_factorisation:
-                    #    self.solver_context_manager = context
-                #else:
-                    #sol = self.solver_context_manager.solve(rhs=b)
+                    if self.reuse_factorisation:
+                        self.solver_context_manager = context
+                else:
+                    sol = self.solver_context_manager.solve(rhs=b)
 
-                print("MUMPS solver time is {}".format(time() - t_solve))
+                #print("MUMPS solver time is {}".format(time() - t_solve))
 
                 return sol
 

@@ -911,16 +911,16 @@ class PostProcess(object):
             p_hyd = 1./3.*np.einsum('ijkk',Cauchy)
 
             #compute the maximum principal stress
-            e_val,e_vec=np.linalg.eig(Cauchy)
-            n_inc = e_val.shape[0]
-            n_node = e_val.shape[1]
-            n_dim = e_val.shape[2]
+            #e_val,e_vec=np.linalg.eig(Cauchy)
+            #n_inc = e_val.shape[0]
+            #n_node = e_val.shape[1]
+            #n_dim = e_val.shape[2]
             s_max = np.zeros_like(p_hyd)
             #
-            for i in range(0, n_inc):
-                for j in range(0, n_node):
-                    s_max[i,j] = np.max(e_val[i,j])
-            #
+            #for i in range(0, n_inc):
+            #    for j in range(0, n_node):
+            #        s_max[i,j] = np.max(e_val[i,j])
+
 
             # Get tensor for just mechanics fields or for growth and remodeling
             if self.gr_variables is None:

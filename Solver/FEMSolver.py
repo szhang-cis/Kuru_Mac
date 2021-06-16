@@ -857,8 +857,8 @@ class FEMSolver(object):
         print("+++++++++++++++++++++++++++++++++++++++++")
         print("++++++++++++++ "+datetime.today().strftime('%Y-%m-%d')+" +++++++++++++++")
         print("+++++++++++++++++++++++++++++++++++++++++")
-        #print('----------> Number of nodes ', mesh.points.shape[0])
-        #print('----------> Number of elements ', mesh.elements.shape[0])
+        print('Number of nodes ', mesh.points.shape[0])
+        print('Number of elements ', mesh.elements.shape[0])
         #print('Pre-processing the information. Getting paths, solution parameters, mesh info, interpolation info etc...')
         #print('Number of nodes is',mesh.points.shape[0], 'and number of DoFs is', mesh.points.shape[0]*formulation.nvar)
         #if formulation.ndim==2:

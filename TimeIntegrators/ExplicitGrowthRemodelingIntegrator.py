@@ -217,11 +217,11 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             IncrementalTime += TimeFactor
 
             print('\nFinished Time increment', TIncrement, 'in', time()-t_increment, 'seconds')
-            try:
-                print('Norm of Residual is',
-                    np.abs(la.norm(Residual[boundary_condition.columns_in])/fem_solver.NormForces), '\n')
-            except RuntimeWarning:
-                print("Invalid value encountered in norm of Newton-Raphson residual")
+            #try:
+            #    print('Norm of Residual is',
+            #        np.abs(la.norm(Residual[boundary_condition.columns_in])/fem_solver.NormForces), '\n')
+            #except RuntimeWarning:
+            #    print("Invalid value encountered in norm of Newton-Raphson residual")
 
             # STORE THE INFORMATION IF NEWTON-RAPHSON FAILS
             if fem_solver.newton_raphson_failed_to_converge:

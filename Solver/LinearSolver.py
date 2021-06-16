@@ -83,7 +83,7 @@ class LinearSolver(object):
             self.has_pardiso = True
         except ImportError:
             self.has_pardiso = False
-            print("ImportError of pardiso")
+            #print("ImportError of pardiso")
 
         self.has_petsc = False
         try:

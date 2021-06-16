@@ -217,10 +217,11 @@ class GrowthRemodelingIntegrator(object):
             fem_solver.NRConvergence['Increment_'+str(Increment)] = np.append(fem_solver.NRConvergence[\
                     'Increment_'+str(Increment)],fem_solver.norm_residual)
 
-            print("Iteration {} for increment {}.".format(Iter, Increment) +\
-                " Residual (abs) {0:>16.7g}".format(fem_solver.abs_norm_residual),
-                "\t Residual (rel) {0:>16.7g}".format(fem_solver.norm_residual))
-            #("norm(dU)",norm(dU))
+            #print("Iter {} for Inc {}.".format(Iter, Increment) +\
+            print("{0:<14.3g} ".format(Iter) + \
+                  "{0:<20.4g}".format(fem_solver.abs_norm_residual) + \
+                  "{0:<14.4g}".format(fem_solver.norm_residual))
+            #print("norm(dU)",norm(dU))
 
             # BREAK BASED ON RELATIVE NORM
             if np.abs(fem_solver.abs_norm_residual) < Tolerance:

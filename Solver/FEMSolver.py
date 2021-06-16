@@ -4,6 +4,8 @@ import gc, os, sys
 from copy import deepcopy
 from warnings import warn
 from time import time
+import datetime
+from datetime import datetime
 import numpy as np
 import numpy.linalg as la
 from numpy.linalg import norm
@@ -537,7 +539,7 @@ class FEMSolver(object):
                     int(self.number_of_load_increments/self.save_frequency)),dtype=np.float64)
 
         # PRE-ASSEMBLY
-        print('Assembling the system and acquiring neccessary information for the analysis...')
+        #print('Assembling the system and acquiring neccessary information for the analysis...')
         tAssembly=time()
 
         # APPLY DIRICHELT BOUNDARY CONDITIONS AND GET DIRICHLET RELATED FORCES
@@ -580,7 +582,8 @@ class FEMSolver(object):
                 TractionForces, _, M = AssembleExplicit(self, fspace, formulation, mesh, material, Eulerx)
 
         if self.analysis_nature == 'nonlinear':
-            print('Finished all pre-processing stage. Time elapsed was', time()-tAssembly, 'seconds')
+            print()
+            #print('Finished all pre-processing stage. Time elapsed was', time()-tAssembly, 'seconds')
         else:
             print('Finished the assembly stage. Time elapsed was', time()-tAssembly, 'seconds')
 
@@ -847,17 +850,25 @@ class FEMSolver(object):
                     raise ValueError("No file name provided to save incremental solution")
 
     def PrintPreAnalysisInfo(self, mesh, formulation):
-
-        print('Pre-processing the information. Getting paths, solution parameters, mesh info, interpolation info etc...')
-        print('Number of nodes is',mesh.points.shape[0], 'and number of DoFs is', mesh.points.shape[0]*formulation.nvar)
-        if formulation.ndim==2:
-            print('Number of elements is', mesh.elements.shape[0], \
-                 'and number of boundary nodes is', np.unique(mesh.edges).shape[0], \
-                 ' and number of element sets is', mesh.nset_elem)
-        elif formulation.ndim==3:
-            print('Number of elements is', mesh.elements.shape[0], \
-                 'and number of boundary nodes is', np.unique(mesh.faces).shape[0], \
-                 ' and number of element sets is', np.unique(mesh.element_to_set).shape[0])
+        print("                                         ")
+        print("                                         ")
+        print("+++++++++++++++++++++++++++++++++++++++++")
+        print("+++++++++++ Start of analysis +++++++++++")
+        print("+++++++++++++++++++++++++++++++++++++++++")
+        print("++++++++++++++ "+datetime.today().strftime('%Y-%m-%d')+" +++++++++++++++")
+        print("+++++++++++++++++++++++++++++++++++++++++")
+        #print('----------> Number of nodes ', mesh.points.shape[0])
+        #print('----------> Number of elements ', mesh.elements.shape[0])
+        #print('Pre-processing the information. Getting paths, solution parameters, mesh info, interpolation info etc...')
+        #print('Number of nodes is',mesh.points.shape[0], 'and number of DoFs is', mesh.points.shape[0]*formulation.nvar)
+        #if formulation.ndim==2:
+        #    print('Number of elements is', mesh.elements.shape[0], \
+        #         'and number of boundary nodes is', np.unique(mesh.edges).shape[0], \
+        #         ' and number of element sets is', mesh.nset_elem)
+        #elif formulation.ndim==3:
+        #    print('Number of elements is', mesh.elements.shape[0], \
+        #         'and number of boundary nodes is', np.unique(mesh.faces).shape[0], \
+        #         ' and number of element sets is', np.unique(mesh.element_to_set).shape[0])
 
     def ComputeSparsityFEM(self, mesh, formulation):
 

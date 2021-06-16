@@ -9,7 +9,7 @@ try:
     has_low_level_dispatcher = True
 except ImportError:
     has_low_level_dispatcher = False
-    warn("Cannot use low level dispatchers for Assembly")
+    #warn("Cannot use low level dispatchers for Assembly")
 
 __all__ = ['_LowLevelAssembly_']
 

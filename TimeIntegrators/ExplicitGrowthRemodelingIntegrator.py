@@ -9,6 +9,7 @@ from time import time
 from copy import deepcopy
 from warnings import warn
 from time import time
+import math
 
 from Kuru.FiniteElements.Assembly import Assemble #, AssembleExplicit
 #from Florence import Mesh
@@ -132,7 +133,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             print("== Current increment, {:4.3f}".format(TIncrement))
             print("== Current time increment, {:4.3f} days".format(Delta_t))
             print("=======================================================")
-
+            print("Iter           Res(abs)            Res(rel)            ")
             # MATERIALS CHANGE AT EACH STEP
             if TIncrement != 0:
                 tAssembly = time()
@@ -167,8 +168,8 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             # GET THE INCREMENTAL DISPLACEMENT
             AppliedDirichletInc = LoadFactor*boundary_condition.applied_dirichlet
 
-            if TIncrement != 0:
-                print('Finished the assembly stage. Time elapsed was', time()-tAssembly, 'seconds')
+            #if TIncrement != 0:
+                #print('Finished the assembly stage. Time elapsed was', time()-tAssembly, 'seconds')
             t_increment = time()
 
             # LET NORM OF THE FIRST RESIDUAL BE THE NORM WITH RESPECT TO WHICH WE
@@ -326,7 +327,13 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             lcir = 6.0 #8.0 #10.0
             #if center[2] < dissection_spread and center[0] > 8.0:
             #if ((center[2] < dissection_spread and abs(center[0]) < lcir) and center[1] > 0) or (lspring > lbreak):
-            if center[2] < dissection_spread and center[1] > -2.0: ####instability even with inner stab spring###
+
+            #case for cylinder
+            #if center[2] < dissection_spread and center[1] > -2.0: ####instability even with inner stab spring###
+
+            #case for arch
+            if center[0] < center[1] and math.sqrt(center[0]**2+center[1]**2) > 60.0:
+
             #if center[2] < dissection_spread:
             #if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False

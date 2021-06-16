@@ -216,7 +216,8 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             # UPDATE THE TIME
             IncrementalTime += TimeFactor
 
-            print('\nFinished Time increment', TIncrement, 'in', time()-t_increment, 'seconds')
+            print('Finished increment', TIncrement, 'in', time()-t_increment, 'seconds')
+            print('\n')
             #try:
             #    print('Norm of Residual is',
             #        np.abs(la.norm(Residual[boundary_condition.columns_in])/fem_solver.NormForces), '\n')

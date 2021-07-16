@@ -331,10 +331,28 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
 
             #case for cylinder
             #if center[2] < dissection_spread and center[1] > -2.0: ####instability even with inner stab spring###
-
+            #temp_input center of arc, precomputed as given in external file
+            center0 = np.array([-24.394115021, 37.391617922, 6.432253589]) #position of arch center
+            center1 = np.array([-22.245547535, 36.380053313, 6.250302173])
+            arc_center = np.array([-55.0, 0.0, 2.595246969])
+            #temp_y = center[1] - sectioncenter[1]
+            #temp_x = center[0] - sectioncenter[0] if (center[0] - sectioncenter[0]) > 0 else 1e-9
+            #angle = np.arctan(temp_y/temp_x)
+            signe = np.vdot(center-center0,center0-center1)
+            temp_vec = center - arc_center
+            dis = np.sqrt(temp_vec[0]**2+temp_vec[1]**2)
+            #if (signe>0):
+            #    print(dis)
+            #if elem == 10065:
+            #    print(dis)
+            #if elem == 11602:
+            #    print(dis)
+            #exit()
+            #print(angle)
             #case for arch
-            if center[0] < center[1] and math.sqrt(center[0]**2+center[1]**2) > 60.0:
-
+            #if center[0] < 2*center[1] and math.sqrt(center[0]**2+center[1]**2) > 70.0:
+            #if angle > np.pi/4.0:
+            if (signe > 0 and dis > 50):
             #if center[2] < dissection_spread:
             #if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False

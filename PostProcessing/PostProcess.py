@@ -601,6 +601,7 @@ class PostProcess(object):
                 F_local[elem,:,:] += np.dot(Rotation,np.dot(F[counter,:,:],Rotation.T))
             F_local[elem,:,:] /= AllGauss.shape[0]
 
+        output_file = open("F.txt", "w")
         for inode in all_nodes:
             Els, Pos = Elss[inode], Poss[inode]
             ncommon_nodes = Els.shape[0]
@@ -608,8 +609,14 @@ class PostProcess(object):
                 DeformationGradient[inode,:,:] += F_local[Els[uelem],:,:]
             # AVERAGE OUT
             DeformationGradient[inode,:,:] /= ncommon_nodes
+            output_file.write("%d %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f\n" % (inode,\
+                DeformationGradient[inode, 0, 0], DeformationGradient[inode, 0, 1], DeformationGradient[inode, 0, 2], \
+                DeformationGradient[inode, 1, 0], DeformationGradient[inode, 1, 1], DeformationGradient[inode, 1, 2], \
+                DeformationGradient[inode, 2, 0], DeformationGradient[inode, 2, 1], DeformationGradient[inode, 2, 2]))
+        output_file.close
 
         self.average_deformation = DeformationGradient
+
         return
 
 
@@ -775,6 +782,7 @@ class PostProcess(object):
             namer = "\phi"
         return namer
 
+
     def GetAugmentedSolution(self, steps=None, average_derived_quantities=True, parallelise=False, time_problem=True):
         """This function modifies self.sol to augmented_sol and returns the augmented solution
             augmented_sol
@@ -856,7 +864,6 @@ class PostProcess(object):
 
             self.sol = augmented_sol
             return augmented_sol
-
 
         # GET RECOVERED VARIABLES ALL VARIABLE CHECKS ARE DONE IN STRESS RECOVERY
         self.StressRecovery(steps=steps, average_derived_quantities=average_derived_quantities, time_problem=time_problem)

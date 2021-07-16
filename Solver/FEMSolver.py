@@ -87,7 +87,8 @@ class FEMSolver(object):
         squeeze_sparsity_pattern=False,
         ensure_structured_grid=False,
         do_not_reset=True,
-        report_log_level=2):
+        report_log_level=2,
+        print_info = True):
 
         # ASSUME TRUE IF AT LEAST ONE IS TRUE
         if has_low_level_dispatcher != optimise:
@@ -171,6 +172,9 @@ class FEMSolver(object):
             self.newton_raphson_solution_tolerance = 10.*self.newton_raphson_tolerance
 
         self.report_log_level = report_log_level
+
+        self.print_info = print_info
+
 
         # STORE A COPY OF SELF AT THE START TO RESET TO AT THE END
         self.__save_state__()
@@ -497,7 +501,8 @@ class FEMSolver(object):
 
         # PRINT INFO
         #---------------------------------------------------------------------------#
-        self.PrintPreAnalysisInfo(mesh, formulation)
+        if self.print_info == True:
+            self.PrintPreAnalysisInfo(mesh, formulation)
         #---------------------------------------------------------------------------#
 
         # COMPUTE SPARSITY PATTERN

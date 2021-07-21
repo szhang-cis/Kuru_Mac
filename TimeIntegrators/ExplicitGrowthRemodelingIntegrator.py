@@ -312,9 +312,49 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
         if active_text > 0:
             text_file = open(str(TIncrement)+"Output.txt","w")
         divider = boundary_condition.connector_elements.shape[1]
-        # Loop into the connector elements
+
+        #read external file of average slice outer diameter
+        diameterperangle = [line.rstrip().split(",") for line in open("OuterDiameterPerAngle.txt", "r")]
+        for i in range(len(diameterperangle)):
+            for j in range(len(diameterperangle[i])):
+                diameterperangle[i][j] = float(diameterperangle[i][j])
+        array_diameterperangle = np.array(diameterperangle, copy=True)
+
+        #read external file of center lines points
+        centerline = [line.rstrip().split(",") for line in open("CenterLine.txt", "r")]
+        for i in range(len(centerline)):
+            for j in range(len(centerline[i])):
+                centerline[i][j] = float(centerline[i][j])
+        array_centerline = np.array(centerline, copy=True)
+
+        #
+        ndim = mesh.InferSpatialDimension()
+        nn_centerline = array_centerline.shape[0]
+        directslice = np.zeros((nn_centerline, ndim), dtype=np.float64)
+        for idpt in range(0, nn_centerline):
+            if idpt == 0:
+                vec = array_centerline[1, :] - array_centerline[0, :]
+            elif idpt == (nn_centerline - 1):
+                vec = array_centerline[nn_centerline - 1, :] - array_centerline[nn_centerline - 2, :]
+            else:
+                vec = array_centerline[idpt + 1, :] - array_centerline[idpt - 1, :]
+            vec_unit = vec / np.linalg.norm(vec)
+            vec_axis = np.array([0, 0, 1])
+            directslice[idpt, :] = np.cross(vec_unit, vec_axis)
+
+        ## Loop into the connector elements
         for elem in range(boundary_condition.connector_elements.shape[0]):
             center = np.sum(mesh.points[boundary_condition.connector_elements[elem,:],:],axis=0)/divider
+            s_k = mesh.elements[elem, :] % 48
+            s_i = ((mesh.elements[elem, :] - s_k) % 2064) / 48
+            origin_slice = np.average(array_centerline[s_i],axis=0)
+            vec_radius = center-origin_slice
+            direct_radius = np.average(directslice[s_i],axis=0)
+            val_radius = np.vdot(vec_radius, direct_radius)
+            radius_slice = np.average(array_diameterperangle[:, 1][s_i],axis=0)/2
+            Rx = val_radius / radius_slice
+            Rx = (Rx+1.0)/2.0
+
             #print(mesh.points[boundary_condition.connector_elements[elem,:],:])
             masterface = boundary_condition.connector_faces[elem][0]
             slaveface = boundary_condition.connector_faces[elem][1]
@@ -352,7 +392,10 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             #case for arch
             #if center[0] < 2*center[1] and math.sqrt(center[0]**2+center[1]**2) > 70.0:
             #if angle > np.pi/4.0:
-            if (signe > 0 and dis > 50):
+            #if (signe > 0):
+            #    print(Rx)
+
+            if (signe > 0 and Rx > 0.6):
             #if center[2] < dissection_spread:
             #if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False

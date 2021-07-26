@@ -374,6 +374,18 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             #temp_input center of arc, precomputed as given in external file
             center0 = np.array([-24.394115021, 37.391617922, 6.432253589]) #position of arch center
             center1 = np.array([-22.245547535, 36.380053313, 6.250302173])
+            #center0 = np.array([-18.209699755, 34.068393374, 5.634220511])
+            #center1 = np.array([-16.273048375, 32.793781751, 5.225931637])
+            # position of axial tear length plus haut
+            #-3.137582622,     14.168838042,      0.398910399 (slice 7)
+            #-3.809584423,     16.473272545,      0.671329427 (slice 8)
+            #-4.681411547,     18.692392075,      1.022036887 (slice 9)
+            #-5.692180447,     20.802771579,      1.452708004 (slice 10)
+            #-14.448071411, 31.388876988, 4.739021232 (slice 16)
+            #-16.273048375, 32.793781751, 5.225931637 (slice 17)
+            #-18.209699755, 34.068393374, 5.634220511 (slice 18)
+            #-20.200178949, 35.242647882, 5.971906703 (slice 19)
+
             arc_center = np.array([-55.0, 0.0, 2.595246969])
             #temp_y = center[1] - sectioncenter[1]
             #temp_x = center[0] - sectioncenter[0] if (center[0] - sectioncenter[0]) > 0 else 1e-9
@@ -395,7 +407,7 @@ class ExplicitGrowthRemodelingIntegrator(GrowthRemodelingIntegrator):
             #if (signe > 0):
             #    print(Rx)
 
-            if (signe > 0 and Rx > 0.6):
+            if (signe > 0 and Rx > 0.7): #0.7 #0.6 #0.5
             #if center[2] < dissection_spread:
             #if center[2] < dissection_spread or lspring > lbreak:
                 boundary_condition.connector_flags[elem] = False
